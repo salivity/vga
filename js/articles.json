@@ -1,0 +1,44 @@
+[
+  [
+    7,
+    "What Voltage Range Is Used for VGA RGB Color Signals?",
+    "Video Graphics Array (VGA) interfaces carry analog video via three dedicated color lines: red, green, and blue. In standard implementations, these color signals operate within a peak-to-peak voltage range of 0.0 V to 0.7 V into a standard 75-ohm terminat",
+    false
+  ],
+  [
+    6,
+    "How Does a VGA DAC Convert Color Indices to Analog?",
+    "The Video Graphics Array (VGA) Digital-to-Analog Converter (RAMDAC) translates indexed digital display data into continuous analog voltages that cathode-ray tube (CRT) monitors require to produce an image. Instead of storing discrete color intensities di",
+    false
+  ],
+  [
+    5,
+    "What Is the Horizontal Sync for 640x480 60Hz VGA?",
+    "The default horizontal synchronization (H-sync) frequency for an industry-standard 640x480 Video Graphics Array (VGA) signal running at 60 Hz is 31.469 kHz (commonly rounded to 31.5 kHz). This timing standard, established by IBM and formalized by VESA, d",
+    false
+  ],
+  [
+    4,
+    "How Many Color Planes Does VGA Hardware Use?",
+    "The classic Video Graphics Array (VGA) hardware architecture uses 4 color planes (Planes 0 through 3) in its native physical memory arrangement. Introduced by IBM in 1987 with the PS/2 series, the standard 256 KB VGA frame buffer is structured as four pa",
+    false
+  ],
+  [
+    3,
+    "How Many Pins Does a DE-15 VGA Connector Have?",
+    "A standard DE-15 Video Graphics Array (VGA) connector has 15 pins arranged in three horizontal rows of five pins each. First introduced by IBM in 1987 alongside the PS/2 line of personal computers, the connector served as the primary analog display stand",
+    false
+  ],
+  [
+    2,
+    "Which IBM PC First Featured Built-in VGA?",
+    "The IBM Personal System/2 (PS/2) family, launched in April 1987, was the first computer line to feature the Video Graphics Array (VGA) directly integrated onto the motherboard. Designed to replace the older PC, XT, and AT architectures, the PS/2 introduc",
+    false
+  ],
+  [
+    1,
+    "What Year Was IBM VGA Introduced?",
+    "IBM introduced the Video Graphics Array (VGA) display standard in 1987 alongside the launch of its Personal System/2 (PS/2) computer line. VGA marked a major leap forward in personal computer display technology, establishing a 640×480 pixel resolution b",
+    false
+  ]
+]
