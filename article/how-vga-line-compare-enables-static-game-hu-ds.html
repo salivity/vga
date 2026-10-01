@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Line Compare Enables Static Game HUDs - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) Line Compare register provides a hardware-level split-screen mechanism that allows game developers to display a fixed heads-up display (HUD) alongside a smoothly scrolling playfield without consuming CPU cycles. By commandi">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-line-compare-enables-static-game-hu-ds">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Line Compare Enables Static Game HUDs - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-line-compare-enables-static-game-hu-ds" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) Line Compare register provides a hardware-level split-screen mechanism that allows game developers to display a fixed heads-up display (HUD) alongside a smoothly scrolling playfield without consuming CPU cycles. By commandi" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-line-compare-enables-static-game-huds">How VGA Line
+Compare Enables Static Game HUDs</h1>
+<p>The Video Graphics Array (VGA) Line Compare register provides a
+hardware-level split-screen mechanism that allows game developers to
+display a fixed heads-up display (HUD) alongside a smoothly scrolling
+playfield without consuming CPU cycles. By commanding the VGA cathode
+ray tube controller (CRTC) to reset its internal memory read address
+back to zero once the raster scan reaches a specific vertical scanline,
+the graphics hardware decouples the static HUD elements from the
+dynamically scrolled world viewport.</p>
+<h3 id="the-mechanics-of-vga-hardware-scrolling">The Mechanics of VGA
+Hardware Scrolling</h3>
+<p>To scroll a game world smoothly in VGA mode (such as standard Mode
+13h or planar Mode X), the display hardware adjusts where in video
+memory (VRAM) it begins reading pixel data for the frame. Coarse
+scrolling is achieved by modifying the CRTC Start Address High and Low
+registers (indices <code>0x0C</code> and <code>0x0D</code>), which
+shifts the start of the frame in multi-pixel or byte increments. Fine
+scrolling is handled by the Attribute Controller’s Horizontal Pel
+Panning register (<code>0x33</code>), shifting the display horizontally
+pixel-by-pixel.</p>
+<p>While this allows smooth 360-degree camera movement across a large
+off-screen map stored in VRAM, it introduces an immediate issue:
+altering the Start Address shifts every pixel drawn on the display.
+Without a hardware split, any HUD or status bar drawn in that memory
+space would drift and scroll along with the scenery. Redrawing the HUD
+manually every frame using the CPU would cause severe performance drops
+and visual tearing on vintage hardware.</p>
+<h3 id="the-line-compare-registers">The Line Compare Registers</h3>
+<p>The VGA hardware solves this through the Line Compare register. This
+10-bit register is split across three CRT Controller locations:</p>
+<ul>
+<li><strong>Bits 0–7:</strong> CRTC Register <code>0x18</code> (Line
+Compare Register)</li>
+<li><strong>Bit 8:</strong> CRTC Register <code>0x07</code> (Overflow
+Register, Bit 4)</li>
+<li><strong>Bit 9:</strong> CRTC Register <code>0x09</code> (Maximum
+Scan Line Register, Bit 6)</li>
+</ul>
+<p>Together, these bits represent a target scanline index (from 0 to
+1023) within the vertical refresh cycle.</p>
+<h3 id="operation-during-the-raster-scan">Operation During the Raster
+Scan</h3>
+<p>During active display generation, the electron beam scans
+horizontally across the screen, line by line, from top to bottom. The
+CRTC maintains an internal vertical line counter that increments at each
+horizontal blanking interval.</p>
+<p>On every scanline, the CRTC hardware compares the current vertical
+line counter to the 10-bit value stored in the Line Compare registers.
+Until a match occurs, the memory address counter continues fetching
+pixel data sequentially, offset by whatever values are loaded into the
+Start Address and Pel Panning registers.</p>
+<p>The moment the vertical line counter equals the value in the Line
+Compare register, the CRTC automatically triggers two events:</p>
+<ol type="1">
+<li>It resets the internal memory address counter to
+<code>0x0000</code>.</li>
+<li>It resets horizontal pixel panning back to zero (if enabled by bit 5
+of the Attribute Controller’s Pel Panning compatibility register).</li>
+</ol>
+<h3 id="memory-organization-and-hud-placement">Memory Organization and
+HUD Placement</h3>
+<p>Because the Line Compare event forces the memory fetch pointer to
+reset to address <code>0x0000</code>, developers organize VRAM
+strategically:</p>
+<ul>
+<li><strong>Static HUD Data:</strong> Placed at physical VRAM address
+<code>0x0000</code>. Because the fetch address resets to zero and
+panning is suppressed at the Line Compare trigger, the data located here
+is rendered completely stationary.</li>
+<li><strong>Scrolling Playfield:</strong> Placed at higher memory
+offsets (e.g., <code>0x4000</code> or higher). The CRTC Start Address
+registers point to the current camera coordinates within this
+region.</li>
+</ul>
+<p>In the standard hardware configuration, the scrolling viewport
+renders across the upper part of the screen, and the Line Compare splits
+the lower portion of the screen to draw a static bottom status bar.</p>
+<p>When a game requires the HUD to sit at the top of the screen above a
+scrolling viewport, developers invert this relationship. The Start
+Address is pinned to a fixed memory location to draw the static HUD at
+scanline zero. Developers then use an interrupt—such as a horizontal
+blank interrupt or a timed timer interrupt synchronized to the bottom
+scanline of the HUD—to update the Start Address registers mid-frame, or
+they combine the Line Compare with page-flipping tricks to display the
+viewport in the lower segment.</p>
+<h3 id="advantages-over-software-blitting">Advantages Over Software
+Blitting</h3>
+<p>Using the Line Compare register requires zero CPU intervention once
+programmed for a frame. The display splits cleanly on exact scanline
+boundaries without timing jitter or raster artifacts. This freed early
+PC game developers from having to clear and redraw static UI elements
+every tick, preserving precious CPU execution time for game physics,
+enemy artificial intelligence, and sprite composition.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

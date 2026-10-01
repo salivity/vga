@@ -1,0 +1,2894 @@
+[
+  [
+    482,
+    "The Legacy of 640x480 VGA in Modern Displays",
+    "Introduced by IBM in 1987 with the PS/2 computer line, the 640x480 Video Graphics Array (VGA) standard fundamentally reshaped visual computing. While long surpassed in sheer pixel density, VGA established architectural baselines that modern displays, gra",
+    false
+  ],
+  [
+    481,
+    "ISA VGA Cards and 1990s PC Gaming Dominance",
+    "During the late 1980s and early 1990s, the IBM PC transitioned from an office-oriented workstation into a premier gaming platform, largely driven by the open architecture of Industry Standard Architecture (ISA) Video Graphics Array (VGA) cards. By decoup",
+    false
+  ],
+  [
+    480,
+    "Why VGA Succeeded and IBM Micro Channel Failed",
+    "In 1987, IBM launched the Personal System/2 (PS/2) computer line, introducing two major hardware innovations: the Video Graphics Array (VGA) standard and the Micro Channel Architecture (MCA) expansion bus. While both were intended to re-establish IBM’s",
+    false
+  ],
+  [
+    479,
+    "How IBM VGA Hardware Was Reverse Engineered",
+    "When IBM introduced the Video Graphics Array (VGA) standard with its PS/2 line of computers in 1987, it integrated the graphics hardware directly onto the motherboard rather than on a discrete expansion card. To compete, third-party chipset manufacturers",
+    false
+  ],
+  [
+    478,
+    "Original Retail Price of the 1987 IBM VGA Card",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987, it fundamentally shifted the personal computing landscape by setting a new benchmark for visual fidelity and color depth. While VGA hardware came integrated into the motherboards of the",
+    false
+  ],
+  [
+    477,
+    "How CRT to LCD Changed Classic VGA Games",
+    "The transition from cathode-ray tube (CRT) monitors to modern flat-panel LCD displays fundamentally altered the visual presentation of classic Video Graphics Array (VGA) games. During the late 1980s and 1990s, game artists crafted graphics specifically t",
+    false
+  ],
+  [
+    476,
+    "CRT Scanline Filters for Classic VGA DOS Games",
+    "Scanline filters recreate the warm, textured visual presentation of 1990s cathode-ray tube (CRT) computer monitors for modern players running classic Video Graphics Array (VGA) DOS titles. By emulating the physical characteristics of analog displays—su",
+    false
+  ],
+  [
+    475,
+    "How Scanline Generators Work on 31 kHz VGA CRTs",
+    "An active scanline generator simulates the appearance of low-resolution retro displays on high-resolution 31 kHz CRT monitors by hardware-intercepting analog video signals and darkening alternate horizontal lines. This article explains how these devices",
+    false
+  ],
+  [
+    474,
+    "Why 31 kHz VGA Displays Show Scanlines on 240p Games",
+    "When line-doubled 240p video signals are sent to a native 31 kHz Video Graphics Array (VGA) cathode-ray tube (CRT) monitor, visible empty black lines often appear between the rendered image rows. This article explains why these gaps—commonly referred t",
+    false
+  ],
+  [
+    473,
+    "240p Scanlines: 15 kHz vs 31 kHz CRT Monitors",
+    "Understanding how a 240p video signal behaves across different cathode ray tube (CRT) displays is essential for retro gaming enthusiasts and display purists. This article examines the physical and electrical differences in scanline structure when a 240p",
+    false
+  ],
+  [
+    472,
+    "Why 240p VGA is Best for Retro Arcade Cabinets",
+    "Connecting a modern emulation PC to a vintage arcade cabinet is the ultimate way to access thousands of classic games on original hardware, but doing so properly requires outputting a 240p resolution over Video Graphics Array (VGA). Enthusiasts prize 240",
+    false
+  ],
+  [
+    471,
+    "Raspberry Pi 240p VGA Retro Gaming Guide",
+    "A Raspberry Pi can natively output an authentic 240p video signal over a Video Graphics Array (VGA) interface using its GPIO pins and passive or active digital-to-analog adapters. By utilizing the Raspberry Pi's internal Display Parallel Interface (DPI),",
+    false
+  ],
+  [
+    470,
+    "Enable VGA Output in Raspberry Pi config.txt",
+    "Enabling direct Video Graphics Array (VGA) output on a Raspberry Pi requires configuring the Display Parallel Interface (DPI) via the config.txt file, typically using a passive adapter board such as the Gert VGA 666. This article details the specific par",
+    false
+  ],
+  [
+    469,
+    "How the Gert VGA 666 18-Bit Resistor DAC Works",
+    "The Gert VGA 666 is an open-source hardware expansion board for the Raspberry Pi that outputs analog Video Graphics Array (VGA) video using only passive components. By configuring the Raspberry Pi’s digital general-purpose input/output (GPIO) pins into",
+    false
+  ],
+  [
+    468,
+    "What Is the Gert VGA 666 for Raspberry Pi?",
+    "The Gert VGA 666 is a breakout adapter board designed to give modern Raspberry Pi computers native analog VGA video output capabilities. This article details the hardware design of the Gert VGA 666, explains how it converts digital GPIO signals into an a",
+    false
+  ],
+  [
+    467,
+    "How Raspberry Pi Outputs Parallel VGA via GPIO",
+    "The Raspberry Pi can output raw parallel Video Graphics Array (VGA) signals through its 40-pin GPIO header by leveraging the Broadcom System on a Chip's (SoC) built-in Display Parallel Interface (DPI), configurable pin multiplexing, and precise hardware",
+    false
+  ],
+  [
+    466,
+    "How Parallax Propeller Generates VGA Video",
+    "The Parallax Propeller microcontroller generates Video Graphics Array (VGA) signals without dedicated external graphics chips by leveraging its unique multi-core architecture, built-in hardware video generators, and deterministic timing. Through a combin",
+    false
+  ],
+  [
+    465,
+    "Arduino VGAX Library Resolution Explained",
+    "The Arduino VGAX library is a lightweight video signal generation tool designed to output graphics from an ATmega328P microcontroller to a standard monitor. By aggressively downsampling the standard Video Graphics Array (VGA) frame, the library allows re",
+    false
+  ],
+  [
+    464,
+    "How VGAX Fits a Framebuffer in ATmega328P SRAM",
+    "The VGAX library allows an ATmega328P microcontroller—most commonly found on the Arduino Uno—to generate a live VGA video signal despite possessing only 2 KB (2,048 bytes) of SRAM. It accomplishes this feat through aggressive resolution scaling, low",
+    false
+  ],
+  [
+    463,
+    "Arduino VGAX Library for Low-Memory VGA Generation",
+    "The VGAX library is an open-source graphics library designed to generate a Video Graphics Array (VGA) video signal directly from an 8-bit AVR microcontroller, such as the ATmega328P found on the Arduino Uno and Nano. This article explains the primary pur",
+    false
+  ],
+  [
+    462,
+    "How to Generate VGA Video with Arduino",
+    "This article explains how an Arduino microcontroller can generate standard Video Graphics Array (VGA) video signals to display monochrome or 8-color patterns directly on a computer monitor. It covers the fundamental timing specifications required by the",
+    false
+  ],
+  [
+    461,
+    "Minimal Circuit for 640x480 VGA Sync Signal",
+    "Generating a stable 640x480 Video Graphics Array (VGA) synchronization signal requires producing precise horizontal (HSync) and vertical (VSync) timing pulses that conform to standard display timings. While discrete logic architectures require multiple c",
+    false
+  ],
+  [
+    460,
+    "Test a VGA Monitor with a 555 Timer and Logic Chips",
+    "This article explains how to build a hardware-based Video Graphics Array (VGA) signal generator using 555 timers and standard digital logic integrated circuits (ICs). By generating standard horizontal and vertical synchronization pulses alongside basic c",
+    false
+  ],
+  [
+    459,
+    "Why Monitors Show No Signal When VGA Sync Is Inactive",
+    "When a modern monitor is connected via a Video Graphics Array (VGA) cable, it relies on dedicated synchronization lines to detect and reconstruct incoming video data. If the horizontal or vertical sync lines are severed, loose, or inactive, the monitor c",
+    false
+  ],
+  [
+    458,
+    "Monitor Out of Range Error on VGA Explained",
+    "When a modern monitor displays an \"Out of Range\" (or \"Input Signal Out of Range\") warning while receiving a Video Graphics Array (VGA) feed, it means the video card is sending an analog signal whose resolution, horizontal frequency, or vertical refresh r",
+    false
+  ],
+  [
+    457,
+    "Multisync VGA Fail-Safe Circuits for Invalid Sync Rates",
+    "Later multisync Video Graphics Array (VGA) cathode-ray tube (CRT) monitors introduced active fail-safe circuits to prevent catastrophic hardware damage caused by invalid horizontal and vertical synchronization rates. Unlike early fixed-frequency displays",
+    false
+  ],
+  [
+    456,
+    "Why Wrong Scan Rates Damaged Early VGA CRT Monitors",
+    "Early analog CRT monitors were strictly tuned electro-mechanical systems that could be physically destroyed by receiving an unsupported horizontal scan rate from a computer's graphics card. This article explains the internal vulnerabilities of early Vide",
+    false
+  ],
+  [
+    455,
+    "Risks of Out of Range Frequencies on VGA Monitors",
+    "During the early eras of personal computing, fixed-frequency and early multisync Cathode Ray Tube (CRT) Video Graphics Array (VGA) monitors faced catastrophic risks when fed video signals outside their designed operating limits. Unlike modern digital dis",
+    false
+  ],
+  [
+    454,
+    "Adjust VGA Vertical Total to Change Refresh Rate",
+    "This article explains how low-level programmers can adjust the Video Graphics Array (VGA) Vertical Total register to alter a monitor's vertical refresh rate. By reprogramming the internal Cathode Ray Tube Controller (CRTC) registers directly through x86",
+    false
+  ],
+  [
+    453,
+    "VGA 400-Line Mode CRTC Register Timings",
+    "This article details the exact Cathode Ray Tube Controller (CRTC) register values and frame timings required to configure a standard 400-line Video Graphics Array (VGA) mode. It covers the vertical timing breakdown—including active display, overscan bo",
+    false
+  ],
+  [
+    452,
+    "How Demoscene Coders Achieved 360x480 VGA Modes",
+    "This article explores how early PC demoscene programmers manipulated IBM VGA hardware registers to bypass standard BIOS video limits and generate non-standard 360x480 resolution modes in 256 colors. By selecting alternative master dot clocks, disabling m",
+    false
+  ],
+  [
+    451,
+    "How the Amiga Copper Was Simulated on PC VGA",
+    "The Commodore Amiga achieved revolutionary visual effects in the 1980s largely due to the \"Copper,\" a dedicated hardware coprocessor synchronized with the monitor's display beam. While the Amiga manipulated display registers per-scanline with virtually z",
+    false
+  ],
+  [
+    450,
+    "How Demogroups Hacked VGA Beyond Its Limits",
+    "During the late 1980s and early 1990s, European demoscene groups turned the IBM PC from an office machine into a high-performance multimedia platform by bypassing standard BIOS calls and directly reprogramming the Video Graphics Array (VGA) hardware. By",
+    false
+  ],
+  [
+    449,
+    "How to Program VGA Raster Bars",
+    "This article explores the classic raster bar visual effect and provides a direct technical guide to implementing it on PC Video Graphics Array (VGA) hardware. You will learn what raster bars are, how they exploit CRT display timing, and how to program th",
+    false
+  ],
+  [
+    448,
+    "VGA Split Screens and Real-Time Palette Changes",
+    "During the peak of the PC demoscene, programmers sought to extract console- and Amiga-like visual effects from standard IBM Video Graphics Array (VGA) hardware without relying on dedicated coprocessors. By synchronizing raster split-screens with mid-fram",
+    false
+  ],
+  [
+    447,
+    "VGA Horizontal Pel Panning and Line Compare",
+    "This article examines how the Video Graphics Array (VGA) handles smooth horizontal scrolling during a split-screen configuration. It details the specific interaction between the Horizontal Pel Panning register and the CRT Controller Line Compare register",
+    false
+  ],
+  [
+    446,
+    "What Causes VGA Split Screen Shake on Late Updates",
+    "Split-screen shaking in Video Graphics Array (VGA) programming occurs when register modifications miss the critical timing window of the raster beam, specifically during horizontal blanking intervals. The VGA hardware relies on exact hardware counters an",
+    false
+  ],
+  [
+    445,
+    "How VGA Line Compare Enables Static Game HUDs",
+    "The Video Graphics Array (VGA) Line Compare register provides a hardware-level split-screen mechanism that allows game developers to display a fixed heads-up display (HUD) alongside a smoothly scrolling playfield without consuming CPU cycles. By commandi",
+    false
+  ],
+  [
+    444,
+    "VGA Feature Control Register Explained",
+    "The Video Graphics Array (VGA) Feature Control Register is a legacy hardware register used to manipulate and route display timing signals, primarily to interface with external video hardware through the VGA feature connector. This article explains the te",
+    false
+  ],
+  [
+    443,
+    "Why IBM VGA Switches Monochrome and Color Registers",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987, it implemented hardware register switching between monochrome and color modes to maintain strict backward compatibility with legacy display hardware. Early PC software frequently bypass",
+    false
+  ],
+  [
+    442,
+    "VGA Miscellaneous Output Register CRTC Address Bit",
+    "In standard VGA hardware, Bit 0 of the Miscellaneous Output Register controls whether the Cathode Ray Tube Controller (CRTC) I/O ports are mapped to color or monochrome addresses. Setting or clearing this specific bit toggles the CRTC index register betw",
+    false
+  ],
+  [
+    441,
+    "How VGA Memory Avoids 0xB0000 Legacy Conflicts",
+    "The Video Graphics Array (VGA) architecture prevents memory conflicts with legacy monochrome display adapters at address 0xB0000 through dynamic, programmable memory mapping controlled by internal hardware registers. By allowing the system to isolate gra",
+    false
+  ],
+  [
+    440,
+    "Why PC Debuggers Used Monochrome Monitors for VGA Games",
+    "During the DOS era of PC game development, programmers routinely utilized a dual-monitor setup consisting of a primary Video Graphics Array (VGA) display and a secondary Monochrome Display Adapter (MDA) screen. This setup was made possible by non-overlap",
+    false
+  ],
+  [
+    439,
+    "Running Monochrome and VGA Cards on Modern x86",
+    "While the x86 architecture historically supported running a legacy Monochrome Display Adapter (MDA) alongside a Video Graphics Array (VGA) card simultaneously, modern x86 computers cannot do so natively. In the early PC era, this dual-monitor configurati",
+    false
+  ],
+  [
+    438,
+    "The Hercules Graphics Card and VGA Compatibility",
+    "The Hercules Graphics Card (HGC) was a pioneering third-party video controller that defined high-resolution monochrome graphics for early personal computers, bridging the gap between business text processing and bitmapped display capabilities. While IBM",
+    false
+  ],
+  [
+    437,
+    "Why Early Trident VGA Cards Were Bad for PC Gaming",
+    "During the late 1980s and early 1990s, Trident Microsystems dominated the budget PC market by offering some of the most affordable VGA and Super VGA (SVGA) cards available, such as the TVGA 8800 and 8900 series. While these cards succeeded in bringing hi",
+    false
+  ],
+  [
+    436,
+    "How Trident Dominated the Budget VGA Market",
+    "During the early 1990s, Trident Microsystems became a household name in personal computing by capturing a massive share of the entry-level Super VGA (SVGA) adapter market. Through an aggressive strategy centered on ultra-low manufacturing costs, reliable",
+    false
+  ],
+  [
+    435,
+    "Oak Technology OEM VGA Graphics Card Innovations",
+    "During the late 1980s and early 1990s, Oak Technology fundamentally altered the personal computer landscape by democratizing Video Graphics Array (VGA) and Super VGA (SVGA) capabilities for the mass market. This article explores how Oak Technology levera",
+    false
+  ],
+  [
+    434,
+    "Paradise Systems and the Rise of VGA Clones",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987 alongside its PS/2 computer line, it threatened to lock third-party graphics manufacturers out of the market. Paradise Systems countered this shift by reverse-engineering the technology",
+    false
+  ],
+  [
+    433,
+    "IBM VGA BIOS Signature Identification",
+    "Identifying an authentic IBM Video Graphics Array (VGA) adapter requires inspecting the adapter's ROM BIOS for proprietary text signatures and specific memory offsets. This article explains the exact signature strings, memory locations, and byte structur",
+    false
+  ],
+  [
+    432,
+    "How Software Detected Genuine IBM VGA vs Clone Cards",
+    "During the late 1980s and early 1990s, the IBM Video Graphics Array (VGA) standard established the baseline for PC graphics, triggering an influx of reverse-engineered clone adapters from third-party manufacturers. To optimize graphics routines, handle p",
+    false
+  ],
+  [
+    431,
+    "Why VGA Clones Disabled Vertical Retrace Interrupts",
+    "When IBM introduced the Video Graphics Array (VGA) standard with the PS/2 line in 1987, the hardware included the capability to generate a CPU interrupt at the start of each vertical blanking interval. Despite this design specification, third-party manuf",
+    false
+  ],
+  [
+    430,
+    "VGA Vertical Retrace Interrupt Vector in x86",
+    "This article provides a technical overview of the Video Graphics Array (VGA) vertical retrace interrupt within the x86 hardware architecture. In standard IBM PC-compatible systems, the VGA vertical retrace interrupt is an event generated by the display h",
+    false
+  ],
+  [
+    429,
+    "Why Polling the VGA Retrace Bit Wastes CPU Cycles",
+    "In classic DOS game and graphics programming, developers frequently polled the Video Graphics Array (VGA) vertical retrace bit in a tight loop to synchronize frame updates and prevent visual tearing. While effective for synchronizing rendering with the c",
+    false
+  ],
+  [
+    428,
+    "How VGA Port 0x3DA Synchronizes Frame Updates",
+    "Polling the vertical retrace status through Video Graphics Array (VGA) port 0x3DA allows software to synchronize graphics rendering with the physical refresh cycle of a monitor. By reading bit 3 of this hardware register, software can detect the exact mo",
+    false
+  ],
+  [
+    427,
+    "What Is Vertical Tearing and What Causes It?",
+    "Vertical tearing, commonly known as screen tearing, is a visual artifact in video displays where a monitor simultaneously shows elements from multiple rendered frames, creating a visible horizontal split across the image. This phenomenon occurs when a gr",
+    false
+  ],
+  [
+    426,
+    "How Triple Buffering Eliminates VGA Screen Tearing",
+    "Triple buffering is a computer graphics rendering technique designed to eliminate visual artifacts known as frame tearing while minimizing the input lag and stuttering commonly introduced by standard double-buffered vertical synchronization (V-Sync). On",
+    false
+  ],
+  [
+    425,
+    "How VGA Mode X Enabled Game Triple Buffering",
+    "This article explains how custom, unchained Video Graphics Array (VGA) modes—most notably Mode X—allowed 1990s PC game developers to overcome hardware limitations and implement triple buffering. By bypassing the standard BIOS video modes to reconfigu",
+    false
+  ],
+  [
+    424,
+    "VGA Mode X: Smooth 2D Multi-Directional Scrolling",
+    "Mode X was an undocumented video mode for standard VGA hardware popularized by Michael Abrash in the early 1990s that revolutionized 2D PC gaming. By configuring the VGA controller into an unchained planar configuration at a resolution of 320x240, Mode X",
+    false
+  ],
+  [
+    423,
+    "Michael Abrash and Mode X VGA Programming",
+    "Michael Abrash fundamentally transformed PC game development in the early 1990s through his technical columns in Dr. Dobb's Journal, where he introduced and popularized \"Mode X.\" By providing clear explanations, assembly optimizations, and complete sourc",
+    false
+  ],
+  [
+    422,
+    "What Was VGA Mode Y in PC Graphics Programming?",
+    "VGA Mode Y was an undocumented, tweaked graphics mode for IBM-compatible PCs that provided an unchained 320x200 resolution with 256 colors, overcoming the memory and performance limitations of the standard BIOS Mode 13h. By disabling the VGA hardware's d",
+    false
+  ],
+  [
+    421,
+    "Syncing Doom's 35 Hz Game Loop to 70 Hz VGA",
+    "When id Software developed DOOM, they faced the challenge of aligning a fixed 35 Hz game logic simulation with the PC's standard 70 Hz Video Graphics Array (VGA) vertical refresh rate. Because 70 Hz is exactly double 35 Hz, id Software established an exa",
+    false
+  ],
+  [
+    420,
+    "Why Doom Runs at 35 FPS on 70 Hz VGA Displays",
+    "When id Software released Doom in 1993, the game's internal engine was capped at 35 frames per second (FPS), perfectly matching half of the standard 70 Hz vertical refresh rate of IBM PC VGA monitors. This design choice was an engineering compromise by l",
+    false
+  ],
+  [
+    419,
+    "Doom DOS VGA Mode 13h Screen Refresh Rate",
+    "When running natively in MS-DOS using Video Graphics Array (VGA) Mode 13h—or more specifically, its unchained planar variant often called Mode Y—Doom outputs a video signal with a screen refresh rate of approximately 70 Hz (70.087 Hz). However, the i",
+    false
+  ],
+  [
+    418,
+    "How Doom Achieved 320x200 3D Graphics on 486 PCs",
+    "When id Software released Doom in 1993, rendering smooth, full-screen pseudo-3D animation at 320x200 resolution on a 486-class personal computer was considered a massive technical hurdle. The game achieved this milestone by pairing deliberate structural",
+    false
+  ],
+  [
+    417,
+    "Why Wolfenstein 3D Used a Bordered Viewport",
+    "When id Software released Wolfenstein 3D in 1992, the game targeted standard 320x200 Video Graphics Array (VGA) displays, but the hardware of the era—specifically Intel 80286 and early 80386 systems—often struggled to maintain playable frame rates. T",
+    false
+  ],
+  [
+    416,
+    "How Wolfenstein 3D Popularized Mode 13h VGA Gaming",
+    "id Software's 1992 seminal release Wolfenstein 3D fundamentally transformed PC game development by demonstrating that fast-paced, pseudo-3D action could run smoothly on consumer-grade hardware. By utilizing IBM’s standard Video Graphics Array (VGA) Mod",
+    false
+  ],
+  [
+    415,
+    "Vector to Texture-Mapped VGA in Early Flight Simulators",
+    "The evolution of early flight simulators from wireframe vector displays to texture-mapped Video Graphics Array (VGA) environments represents one of the most critical technical leaps in computer graphics. During the late 1970s and early 1980s, flight simu",
+    false
+  ],
+  [
+    414,
+    "Vector Display vs Raster Scan: Key Differences",
+    "This article examines the core architectural and operational differences between vector display systems and the raster scanning method popularized by Video Graphics Array (VGA). While vector displays generate graphics by directly tracing continuous lines",
+    false
+  ],
+  [
+    413,
+    "Oscilloscope X-Y Mode vs VGA Raster Scanning",
+    "This article explores how an oscilloscope operating in X-Y mode generates vector graphics and contrasts this approach with the raster scanning technique used in Video Graphics Array (VGA) displays. While an oscilloscope manipulates an electron beam direc",
+    false
+  ],
+  [
+    412,
+    "Military Hardened VGA Monitor Shielding Measures",
+    "Military-hardened Video Graphics Array (VGA) monitors require specialized shielding to survive harsh operational environments and comply with strict electromagnetic compatibility (EMC) standards, such as MIL-STD-461 and TEMPEST. These systems utilize a d",
+    false
+  ],
+  [
+    411,
+    "TEMPEST Shielding: Protecting VGA Displays",
+    "This article examines how the United States government used TEMPEST standards to secure Video Graphics Array (VGA) displays against electromagnetic eavesdropping. During the late 20th century, analog computer monitors unintentionally broadcast their disp",
+    false
+  ],
+  [
+    410,
+    "Can Van Eck Phreaking Intercept Analog VGA Signals?",
+    "Analog Video Graphics Array (VGA) signals emit readable radio-frequency radiation that can be intercepted and reconstructed using Van Eck phreaking techniques. Because VGA relies on continuous, high-frequency analog voltage variations transmitted across",
+    false
+  ],
+  [
+    409,
+    "Fiber Optic Extenders for Secure Long-Range VGA",
+    "Optical fiber extenders were widely deployed for long-range, secure Video Graphics Array (VGA) installations because traditional copper cabling could not meet the combined demands of signal integrity, distance, and data protection. By converting analog R",
+    false
+  ],
+  [
+    408,
+    "Ground Loop Damage via VGA Cables Between Buildings",
+    "Connecting computers located in different buildings using an unisolated Video Graphics Array (VGA) cable can cause severe, permanent hardware damage. This risk arises from differences in electrical grounding systems between separate structures, which cre",
+    false
+  ],
+  [
+    407,
+    "What Is a VGA Ground Loop Isolator and Why Use It?",
+    "A ground loop isolator is a specialized hardware device designed to eliminate electrical interference between interconnected electronic devices by breaking the physical ground connection while allowing the video signal to pass through cleanly. In long-di",
+    false
+  ],
+  [
+    406,
+    "VGA Over Cat5 Color Skew and Twist Rates",
+    "Transmitting analog Video Graphics Array (VGA) signals over standard Category 5 (Cat5) twisted-pair cable often produces visible color separation, an artifact commonly referred to as \"skew.\" This problem occurs because each twisted pair inside a Cat5 cab",
+    false
+  ],
+  [
+    405,
+    "Why VGA Requires Skew Compensation on Twisted Pair",
+    "Transmitting analog Video Graphics Array (VGA) signals over Category-rated twisted-pair cabling (such as Cat5e or Cat6) frequently results in visible image distortion known as color fringing. This issue occurs because the internal physical wire pairs hav",
+    false
+  ],
+  [
+    404,
+    "How VGA to Cat5 Differential Drivers Work",
+    "Transmitting standard Video Graphics Array (VGA) video over long distances requires converting unbalanced, single-ended analog signals into balanced differential signals suitable for Category 5 (Cat5) twisted-pair cabling. Differential driver integrated",
+    false
+  ],
+  [
+    403,
+    "VGA Over UTP Maximum Transmission Distance",
+    "Transmitting Video Graphics Array (VGA) analog signals over unshielded twisted-pair (UTP) cable—such as Cat5e, Cat6, or Cat7—allows for significantly greater distances than traditional VGA cabling. The maximum achievable transmission distance general",
+    false
+  ],
+  [
+    402,
+    "Active VGA Balun: Transmit Video Over Cat5e Cable",
+    "An active Video Graphics Array (VGA) balun is a powered hardware device that converts standard, unbalanced VGA analog video signals into balanced signals, allowing high-resolution video transmission across cost-effective Cat5e twisted-pair network cablin",
+    false
+  ],
+  [
+    401,
+    "LED Backlights and VGA Monitor Energy Efficiency",
+    "The integration of Light Emitting Diode (LED) backlighting fundamentally transformed the energy efficiency of legacy Video Graphics Array (VGA) monitors. While the analog VGA standard remained unchanged, replacing traditional Cold Cathode Fluorescent Lam",
+    false
+  ],
+  [
+    400,
+    "CCFL Backlights in Early VGA Flat-Screen Monitors",
+    "Cold-cathode fluorescent lamps (CCFLs) served as the vital illumination technology that made the transition from bulky cathode-ray tube (CRT) monitors to flat-panel liquid crystal displays (LCDs) commercially viable. Because liquid crystals do not emit l",
+    false
+  ],
+  [
+    399,
+    "Early VGA LCD vs CRT Pixel Response Times",
+    "During the transition from cathode ray tube (CRT) monitors to early liquid crystal displays (LCDs) in the late 1980s and 1990s, the difference in pixel response time represented the most stark performance gap between the two technologies. While CRTs offe",
+    false
+  ],
+  [
+    398,
+    "Why Early VGA LCD Monitors Had Motion Blur and Ghosting",
+    "Early LCD monitors frequently exhibited noticeable motion blur and ghosting due to a combination of slow liquid crystal response times, the inherent \"sample-and-hold\" display method, and the limitations of transmitting analog signals over Video Graphics",
+    false
+  ],
+  [
+    397,
+    "Early VGA LCD Monitor Viewing Angle Limitations",
+    "The earliest desktop Video Graphics Array (VGA) LCD monitors revolutionized desktop setups by replacing bulky cathode-ray tubes (CRTs), but they were notorious for severe viewing angle limitations. Driven primarily by early Twisted Nematic (TN) and passi",
+    false
+  ],
+  [
+    396,
+    "CRT vs Early TN LCD: Color and Black Level Comparison",
+    "During the transition from cathode-ray tube (CRT) monitors to flat-panel liquid crystal displays (LCDs) in the late 1990s and early 2000s, high-end Video Graphics Array (VGA) CRTs significantly outperformed early Twisted Nematic (TN) LCDs in color accura",
+    false
+  ],
+  [
+    395,
+    "Why Graphic Designers Chose CRT Over Early LCDs",
+    "During the late 1990s and early 2000s, professional graphic designers steadfastly avoided early liquid crystal display (LCD) monitors, choosing instead to keep heavy, bulky flat-face cathode ray tube (CRT) displays on their desks. While early LCDs offere",
+    false
+  ],
+  [
+    394,
+    "Sony Trinitron Damper Wires Explained",
+    "The faint horizontal lines visible on Sony Trinitron VGA monitors are the shadows of internal damper wires, an intentional engineering solution rather than a screen defect. Sony utilized an aperture grille instead of a conventional shadow mask to produce",
+    false
+  ],
+  [
+    393,
+    "How Trinitron CRTs Fixed Vertical Focus Falloff",
+    "Traditional curved shadow mask Video Graphics Array (VGA) cathode ray tubes (CRTs) frequently suffered from vertical focus falloff, where text and imagery lost sharpness toward the top and bottom edges of the screen. Sony’s Trinitron aperture grille ar",
+    false
+  ],
+  [
+    392,
+    "Dynamic Focus Circuitry in Flat CRT Displays",
+    "Dynamic focus circuitry is an advanced electronic subsystem developed to maintain sharp, edge-to-edge image clarity on late-generation cathode ray tube (CRT) monitors featuring completely flat glass faces. In traditional curved displays, the distance fro",
+    false
+  ],
+  [
+    391,
+    "How Electron Beam Spot Size Affects VGA Sharpness",
+    "In high-resolution Cathode Ray Tube (CRT) monitors utilizing the Video Graphics Array (VGA) interface, image clarity is governed by the precision of the electron gun assembly. The electron beam spot size—the diameter of the focused stream of electrons",
+    false
+  ],
+  [
+    390,
+    "Why High-Persistence Phosphors Caused VGA Motion Trails",
+    "When fast-paced Video Graphics Array (VGA) games emerged, players on certain displays frequently noticed distracting motion trails—often called ghosting—behind moving objects. This visual smearing was directly caused by high-persistence phosphors, wh",
+    false
+  ],
+  [
+    389,
+    "Understanding VGA CRT Phosphor Persistence",
+    "Standard office-grade Video Graphics Array (VGA) cathode ray tube (CRT) monitors rely on medium-short persistence phosphors to balance image stability with motion clarity. Designed primarily for productivity tasks like document editing and basic graphic",
+    false
+  ],
+  [
+    388,
+    "How CRT Phosphors Blend Pixels on VGA Displays",
+    "Vintage Video Graphics Array (VGA) cathode-ray tube (CRT) monitors rendered imagery without the rigid, razor-sharp boundaries seen on modern flat-panel screens, delivering a soft, organic image. This natural blending of adjacent pixels was not a software",
+    false
+  ],
+  [
+    387,
+    "Why Nearest-Neighbor Scaling Preserves VGA Pixel Art",
+    "Vintage Video Graphics Array (VGA) art was meticulously crafted within strict resolution and color constraints, where every individual pixel was placed with deliberate purpose. When displayed on modern high-density screens, standard display scaling often",
+    false
+  ],
+  [
+    386,
+    "Hardware Scaling for 320x200 VGA to 4K Displays",
+    "Displaying legacy 320x200 Video Graphics Array (VGA) content on modern 3840x2160 (4K) monitors requires specialized hardware to bridge the massive gap in resolution, refresh rates, and signal types. Because 320x200 (commonly Mode 13h) relies on non-squar",
+    false
+  ],
+  [
+    385,
+    "Why Use 3.5-Inch 640x480 IPS LCDs for VGA DOS Games?",
+    "Modern 3.5-inch 640x480 In-Plane Switching (IPS) liquid-crystal displays have become the hardware standard for handheld emulation of vintage DOS games. This popularity stems from an ideal convergence of native aspect ratio matching, precise integer scali",
+    false
+  ],
+  [
+    384,
+    "Why Retro Handhelds Revived 640x480 VGA Displays",
+    "The surge in popularity of dedicated retro gaming handhelds has created an unexpected resurgence in demand for 640x480 Video Graphics Array (VGA) displays. While the broader consumer electronics industry moved toward ultra-high resolutions and ultrawide",
+    false
+  ],
+  [
+    383,
+    "iPhone 4 Retina Display Resolution and DVGA Explained",
+    "When Apple introduced the iPhone 4 in 2010, it debuted the \"Retina display,\" setting a new benchmark for mobile screen clarity. This article examines the technical specifications of the iPhone 4 display, explains its 960-by-640 resolution, and details ho",
+    false
+  ],
+  [
+    382,
+    "iPhone 3GS Screen Resolution and HVGA Explained",
+    "This article examines the mathematical relationship between the Apple iPhone 3GS display resolution and the Half Video Graphics Array (HVGA) standard. It breaks down the exact pixel counts, linear dimensions, and aspect ratio transformations that define",
+    false
+  ],
+  [
+    381,
+    "Why Early Android Phones Used HVGA 480x320 Screens",
+    "When the Android operating system launched in 2008, nearly all early devices adopted the Half Video Graphics Array (HVGA) standard with a resolution of 480x320 pixels. This initial standardization was primarily driven by existing supply chain economies e",
+    false
+  ],
+  [
+    380,
+    "How FWVGA Expands Resolution to 854 Pixels",
+    "This article explains how Full Wide Video Graphics Array (FWVGA) achieves an 854-pixel horizontal resolution, detailing the mathematical and technical shift from legacy display formats to widescreen standards. Readers will understand why display manufact",
+    false
+  ],
+  [
+    379,
+    "What Is WVGA Resolution: 800x480 vs VGA Explained",
+    "Wide Video Graphics Array (WVGA) is a widescreen display resolution standard defining an 800x480 pixel grid, developed as a direct evolution of the traditional 640x480 Video Graphics Array (VGA) format. This article breaks down the technical definition o",
+    false
+  ],
+  [
+    378,
+    "How 16:9 Displays Impacted the 4:3 VGA Standard",
+    "The transition from traditional 4:3 aspect ratios to modern 16:9 widescreen formats fundamentally transformed the computing landscape, exposing the architectural and visual limitations of the legacy Video Graphics Array (VGA) standard. Originally enginee",
+    false
+  ],
+  [
+    377,
+    "VGA Resolution Explained: 640x480 Pixel Calculation",
+    "The Video Graphics Array (VGA) standard defines a display resolution of 640 horizontal pixels by 480 vertical pixels, yielding a total display canvas of 307,200 pixels. This article outlines the mathematical principle behind this calculation, explains ho",
+    false
+  ],
+  [
+    376,
+    "Why 0.3 Megapixels Equals 640x480 VGA Resolution",
+    "A 0.3-megapixel camera sensor corresponds directly to the 640x480 Video Graphics Array (VGA) standard through elementary digital imaging mathematics. When a sensor captures an image measuring 640 pixels across its width and 480 pixels across its height,",
+    false
+  ],
+  [
+    375,
+    "Why Digital Cameras Use VGA for Low Quality",
+    "Early digital camera manufacturers adopted the term Video Graphics Array (VGA) for their lowest image quality setting because digital photography relied heavily on existing computer display standards. During the late 1990s and early 2000s, matching the e",
+    false
+  ],
+  [
+    374,
+    "What Is VGA Resolution in Cameras and Webcams?",
+    "In the context of camera sensors and mobile webcams, VGA resolution refers to an image or video capture size of 640 horizontal pixels by 480 vertical pixels, totaling roughly 0.3 megapixels. While it was once the industry standard for computer displays a",
+    false
+  ],
+  [
+    373,
+    "Why Early Webcams Were Limited to 640x480 Resolution",
+    "Early consumer webcams were ubiquitously restricted to a 640x480 capture resolution, commonly known as Video Graphics Array (VGA). This ceiling was not an arbitrary design choice, but rather a hard boundary dictated by the hardware, connectivity, and inf",
+    false
+  ],
+  [
+    372,
+    "VGA Capture Cards in Early Desktop Video Editing",
+    "In the late 1980s and early 1990s, the transition from traditional analog tape splicing to digital non-linear editing (NLE) transformed video production. Video Graphics Array (VGA) capture cards played a foundational role in this evolution by serving as",
+    false
+  ],
+  [
+    371,
+    "How Microsoft Encarta Showcased 256-Color VGA",
+    "During the early 1990s, multimedia reference suites like Microsoft Encarta revolutionized the personal computer industry by turning dry text databases into vibrant, interactive learning experiences. By maximizing the capabilities of the 256-color Video G",
+    false
+  ],
+  [
+    370,
+    "What Was the Sierra HiColor RAMDAC for VGA Cards?",
+    "The Sierra HiColor RAMDAC was a family of specialized digital-to-analog converter chips that revolutionized PC graphics in the early 1990s by expanding standard VGA displays beyond their traditional 256-color limit. Developed by Sierra Semiconductor, thi",
+    false
+  ],
+  [
+    369,
+    "How 8-Bit RAMDACs Achieved 16.7 Million Colors in VGA",
+    "In the transition from early graphics standards to high-end Video Graphics Array (VGA) and Super VGA (SVGA), the integration of an 8-bit per channel RAMDAC (Random Access Memory Digital-to-Analog Converter) allowed personal computers to display 16.7 mill",
+    false
+  ],
+  [
+    368,
+    "What Limits Color Gradations Over VGA?",
+    "The physical component on a graphics card that limits the discrete color gradations sent over a Video Graphics Array (VGA) connection is the Random Access Memory Digital-to-Analog Converter, commonly known as the RAMDAC. While modern digital displays rec",
+    false
+  ],
+  [
+    367,
+    "Why VGA Analog Color Resolution Is Continuous",
+    "The analog color resolution of a Video Graphics Array (VGA) monitor is theoretically continuous because its video signal is transmitted and rendered using varying voltage levels rather than discrete binary steps. While a computer's graphics hardware inte",
+    false
+  ],
+  [
+    366,
+    "Can an Analog VGA Monitor Detect Color Bit Depth?",
+    "An analog Video Graphics Array (VGA) monitor cannot physically distinguish between 16-bit, 24-bit, and 32-bit color data. Because VGA relies entirely on variable analog electrical voltages rather than digital bitstreams, the physical monitor has no aware",
+    false
+  ],
+  [
+    365,
+    "Visual Dithering Artifacts in 16-Bit VGA",
+    "Downsampling a 24-bit true-color image to a 16-bit Video Graphics Array (VGA) display mode forces a reduction from 16.7 million colors to just 65,536 colors. Because 16-bit High Color typically allocates 5 bits for red, 6 bits for green, and 5 bits for b",
+    false
+  ],
+  [
+    364,
+    "Why VGA Displays Allocate Extra Bits to Green",
+    "In 16-bit color systems commonly associated with Video Graphics Array (VGA) displays, digital color is typically represented using the RGB 565 format, which dedicates five bits to red, six bits to green, and five bits to blue. This asymmetrical allocatio",
+    false
+  ],
+  [
+    363,
+    "Why Green Gets 6 Bits in 16-Bit RGB565 Color",
+    "In 16-bit computer graphics modes, commonly known as High Color or RGB565, display systems allocate 5 bits to red, 6 bits to green, and 5 bits to blue. This design choice stems from a blend of hardware constraints and human biology: because 16 bits canno",
+    false
+  ],
+  [
+    362,
+    "16-Bit RGB 565 High Color Display Allocation",
+    "In a typical 16-bit High Color display mode, visual data is encoded using the RGB 565 format, which assigns 5 bits to red, 6 bits to green, and 5 bits to blue for every pixel. This layout fits exactly into a standard 16-bit word (two bytes), providing a",
+    false
+  ],
+  [
+    361,
+    "15-Bit vs 16-Bit vs 24-Bit Color in Extended VGA",
+    "Extended Video Graphics Array (often referred to as Super VGA or EVGA) dramatically expanded the capabilities of the original IBM VGA standard by supporting higher display resolutions and greater color depths. The fundamental difference between 15-bit, 1",
+    false
+  ],
+  [
+    360,
+    "How VGA Memory Bandwidth Enabled 32-Bit True Color",
+    "During the 1990s, the transition from banded, low-color displays to photorealistic 32-bit \"True Color\" at high resolutions was fundamentally constrained by memory throughput rather than raw processing power. As screen resolutions and color depths climbed",
+    false
+  ],
+  [
+    359,
+    "Memory Bus Width of 64-Bit and 128-Bit VGA Cards",
+    "During the mid-to-late 1990s, the transition to graphical user interfaces and 3D rendering made memory bandwidth a critical factor in display performance. Graphics cards from this era were frequently marketed as \"64-bit\" or \"128-bit\" accelerators. This a",
+    false
+  ],
+  [
+    358,
+    "How SGRAM Improved 1990s VGA Memory Bandwidth",
+    "In the late 1990s, the rapid adoption of 3D acceleration and high-resolution 2D desktop environments created severe memory bottlenecks for personal computer graphics cards. Synchronous Graphics RAM (SGRAM) solved this issue by modernizing traditional vid",
+    false
+  ],
+  [
+    357,
+    "Why Dual-Ported VRAM Was More Expensive Than DRAM",
+    "During the early era of PC graphics accelerators, dual-ported Video RAM (VRAM) commanded a massive price premium over standard dynamic RAM (DRAM). This article examines why dual-ported VRAM was substantially more expensive to produce and purchase for con",
+    false
+  ],
+  [
+    356,
+    "Purpose of Dual-Ported VRAM in VGA Accelerators",
+    "Dual-ported Video Random Access Memory (VRAM) was introduced on professional-grade Video Graphics Array (VGA) accelerators to eliminate memory bus contention between rendering and display output. By providing two separate access interfaces, dual-ported V",
+    false
+  ],
+  [
+    355,
+    "How Interleaved Memory Solved VGA Bus Contention",
+    "Interleaved memory architectures on advanced Video Graphics Array (VGA) and Super VGA (SVGA) cards resolved memory bus contention by dividing video memory into independent, alternating banks. In traditional unified architectures, the host CPU and the Cat",
+    false
+  ],
+  [
+    354,
+    "CPU and VGA CRTC Memory Contention Explained",
+    "This article examines the memory access conflict that occurs when a system's central processing unit (CPU) and a Video Graphics Array (VGA) Cathode Ray Tube Controller (CRTC) attempt to read or write video memory simultaneously. It explores the hardware",
+    false
+  ],
+  [
+    353,
+    "How VGA Cards Buffered DAC Writes to Stop Screen Noise",
+    "Early Video Graphics Array (VGA) adapters often suffered from visible screen artifacts, commonly referred to as \"snow\" or jitter, whenever the host processor updated the color palette during active display refresh cycles. To eliminate this distortion, hi",
+    false
+  ],
+  [
+    352,
+    "VGA Palette Glitches and Snow Artifacts Explained",
+    "During the late 1980s and early 1990s, the transition from IBM's proprietary graphics hardware to inexpensive, third-party Video Graphics Array (VGA) clones introduced subtle hardware quirks to the PC ecosystem. Among the most noticeable were visual flaw",
+    false
+  ],
+  [
+    351,
+    "VGA Palette Snow Artifact Explained",
+    "Modifying Video Graphics Array (VGA) palette registers outside the retrace blanking interval produces a distinct visual glitch commonly referred to as \"snow\" or \"palette snow.\" This artifact manifests as flickering speckles, noise, or short horizontal st",
+    false
+  ],
+  [
+    350,
+    "Seamless VGA Color Fades Using DAC Registers",
+    "Modifying the Video Graphics Array (VGA) Digital-to-Analog Converter (DAC) palette registers strictly during the vertical blanking interval (V-Blank) allows developers to achieve smooth, artifact-free color transitions across the entire screen. By timing",
+    false
+  ],
+  [
+    349,
+    "VGA Palette Fade In and Fade Out Effects",
+    "Custom Video Graphics Array (VGA) palettes can easily create smooth screen fade-in and fade-out visual effects, and doing so was a cornerstone technique of classic PC game development. By manipulating the digital-to-analog converter (DAC) color registers",
+    false
+  ],
+  [
+    348,
+    "How SimCity 2000 Used VGA Palette Cycling",
+    "In the early 1990s, hardware limitations required game developers to use innovative rendering tricks to produce dynamic visuals without exhausting system resources. This article explains how Maxis implemented Video Graphics Array (VGA) palette rotation",
+    false
+  ],
+  [
+    347,
+    "Why Palette Cycling Was Inexpensive on IBM VGA",
+    "Palette cycling, also known as color cycling, was a prominent graphical technique in late 1980s and 1990s computer games used to simulate animations like flowing water, flickering fire, and glowing lights without redrawing pixels. On original IBM Video G",
+    false
+  ],
+  [
+    346,
+    "VGA Palette Cycling Animation Explained",
+    "This article explores Video Graphics Array (VGA) palette cycling, a classic computer graphics technique used to create the illusion of movement without modifying pixel data in memory. By examining the architecture of indexed color systems, this overview",
+    false
+  ],
+  [
+    345,
+    "How Sierra Upgraded the SCI Engine for VGA",
+    "During the early 1990s, Sierra On-Line transitioned its flagship adventure game engine, the Sierra Creative Interpreter (SCI), from 16-color EGA to 256-color VGA to keep pace with rapid PC hardware advancements. This overhaul, which marked the evolution",
+    false
+  ],
+  [
+    344,
+    "Why Early PC Games Supported Both EGA and VGA",
+    "During the late 1980s and early 1990s, the personal computer gaming industry underwent a major visual revolution, transitioning from the 16-color Enhanced Graphics Adapter (EGA) to the 256-color Video Graphics Array (VGA). To navigate this shift, develop",
+    false
+  ],
+  [
+    343,
+    "From EGA to VGA: The PC Gaming Graphics Revolution",
+    "The transition from the Enhanced Graphics Adapter (EGA) to the Video Graphics Array (VGA) in the late 1980s and early 1990s represents one of the most dramatic graphical leaps in computer gaming history. Moving from a constrained palette of 16 colors to",
+    false
+  ],
+  [
+    342,
+    "How LucasArts VGA Art Transformed Game Storytelling",
+    "During the early 1990s, LucasArts revolutionized point-and-click adventures by leveraging the technical constraints of 320x200 resolution and 256-color Video Graphics Array (VGA) graphics to elevate video game narrative. By moving beyond functional graph",
+    false
+  ],
+  [
+    341,
+    "Classic 640x480 16-Color Strategy and Adventure Games",
+    "During the early 1990s, PC developers faced a choice between the rich color palette of standard 320x200 256-color VGA (Mode 13h) and the sharper fidelity of 640x480 16-color VGA (Mode 12h). While action games favored color depth, strategy and adventure g",
+    false
+  ],
+  [
+    340,
+    "Why Games Avoided 640x480 16-Color VGA Mode",
+    "The 640x480 16-color display mode, officially known as BIOS Mode 12h, was largely avoided for fast-paced action video games during the late 1980s and early 1990s. While it offered high visual clarity for operating systems and strategy titles, severe hard",
+    false
+  ],
+  [
+    339,
+    "Why VGA 16-Color Programming Was Harder Than Mode 13h",
+    "During the DOS gaming era, developers favored VGA Mode 13h because its linear, byte-per-pixel memory architecture made graphics routines fast and intuitive. In contrast, standard 16-color VGA modes (such as Mode 12h) relied on a planar memory layout that",
+    false
+  ],
+  [
+    338,
+    "Why Planar VGA Requires Multiple Memory Planes per Pixel",
+    "Drawing a single pixel in the classic 16-color planar Video Graphics Array (VGA) mode required interacting with multiple memory planes because the display adapter organized video memory by bit planes rather than contiguous pixel data. In standard 16-colo",
+    false
+  ],
+  [
+    337,
+    "How to Disable VGA Color Planes Using Map Mask",
+    "In Video Graphics Array (VGA) programming, rendering graphics efficiently in planar display modes requires controlling how CPU writes affect video memory. This guide explains how a programmer can selectively disable specific color planes using the VGA Se",
+    false
+  ],
+  [
+    336,
+    "VGA Map Mask Register in Memory Writes",
+    "The Video Graphics Array (VGA) Map Mask register plays a critical role in controlling how data is written to the display adapter’s video memory in planar graphics modes. Because VGA hardware arranges its video RAM into four parallel memory planes shari",
+    false
+  ],
+  [
+    335,
+    "VGA Planar Memory: Read Mode 0 vs Read Mode 1",
+    "In Video Graphics Array (VGA) planar graphics modes, video RAM is divided across four parallel memory planes (Planes 0 through 3), mapping multiple bits per pixel across the same physical address space. Because a standard 8-bit CPU bus cycle can only acc",
+    false
+  ],
+  [
+    334,
+    "VGA Color Don't Care Register Explained",
+    "The Video Graphics Array (VGA) Color Don't Care register is a hardware configuration register used during specific memory read operations to selectively ignore color planes during pixel comparisons. Located in the VGA Graphics Controller, this register w",
+    false
+  ],
+  [
+    333,
+    "VGA Color Compare Register in Pixel Collision Detection",
+    "This article examines how classic PC game developers utilized the Video Graphics Array (VGA) hardware Color Compare register to accelerate pixel-level collision detection. By offloading complex multi-plane bitwise evaluations directly to the VGA Graphics",
+    false
+  ],
+  [
+    332,
+    "VGA Logical Operations for CPU and Memory Latches",
+    "The IBM Video Graphics Array (VGA) architecture incorporates dedicated hardware within its Graphics Controller to perform bitwise logical operations between incoming CPU write data and data previously held in internal memory latches. This article explain",
+    false
+  ],
+  [
+    331,
+    "VGA Write Mode 3 and Bit Mask Color Painting",
+    "VGA Write Mode 3 streamlines color painting operations by repurposing the CPU data bus to deliver bit masks directly through memory writes rather than slow I/O port updates. In standard VGA operations, drawing complex shapes or text with specific colors",
+    false
+  ],
+  [
+    330,
+    "VGA Write Mode 2 for Fast Pixel Plotting",
+    "During the late 1980s and early 1990s, PC game developers faced severe performance bottlenecks when drawing graphics in planar Video Graphics Array (VGA) and Enhanced Graphics Adapter (EGA) 16-color display modes. VGA Write Mode 2 provided an architectur",
+    false
+  ],
+  [
+    329,
+    "VGA Write Mode 1 Memory Transfers Explained",
+    "VGA Write Mode 1 is a specialized hardware-level data transfer mechanism designed to copy planar video memory directly to another memory location without CPU intervention. By utilizing the Video Graphics Array's four internal 8-bit latches, Write Mode 1",
+    false
+  ],
+  [
+    328,
+    "VGA Write Mode 0 in Planar Memory Explained",
+    "VGA Write Mode 0 is the default and most versatile writing mechanism used in IBM-compatible VGA planar graphics modes, such as Mode 12h. This article breaks down the exact hardware pipeline that a byte sent by the CPU undergoes before it updates video RA",
+    false
+  ],
+  [
+    327,
+    "How VGA Write Modes 0 Through 3 Work",
+    "The Video Graphics Array (VGA) architecture relies on a specialized Graphics Controller to translate standard 8-bit CPU memory writes across four parallel 64 KB memory planes (Planes 0 through 3). Because a single CPU write addresses multiple planes simu",
+    false
+  ],
+  [
+    326,
+    "What Is the VGA Synchronous Reset Register Bit?",
+    "The Video Graphics Array (VGA) Synchronous Reset register bit is a hardware control mechanism designed to safely halt the internal sequencer of a VGA controller without corrupting dynamic RAM or video memory. This article explains the exact location and",
+    false
+  ],
+  [
+    325,
+    "Why VGA Display Blanks During Sequencer Timing",
+    "When reconfiguring the timing parameters of a Video Graphics Array (VGA) sequencer, the display must be temporarily blanked to protect hardware, maintain memory integrity, and prevent visual corruption. The sequencer manages the master clock distribution",
+    false
+  ],
+  [
+    324,
+    "Modifying VGA Sequencer Registers During Active Display",
+    "Modifying Video Graphics Array (VGA) Sequencer registers while the display is actively rendering pixels causes immediate visual corruption, loss of synchronization, and display instability. Because the VGA Sequencer governs fundamental hardware timing, m",
+    false
+  ],
+  [
+    323,
+    "How VGA Sequencer Toggles 8 and 9 Dot Characters",
+    "The Video Graphics Array (VGA) architecture toggles between 8-dot and 9-dot character widths using the Sequencer's Clocking Mode register. By altering a single control bit within this register, the VGA hardware changes the frequency division of the maste",
+    false
+  ],
+  [
+    322,
+    "Character Clock vs Pixel Clock in 9-Dot VGA Text",
+    "In standard 9-dot Video Graphics Array (VGA) text modes, the character clock and pixel clock share a direct, fixed frequency relationship determined by the width of the character cell. This article explains the architectural connection between these two",
+    false
+  ],
+  [
+    321,
+    "VGA Character Clock vs Pixel Clock in 8-Dot Mode",
+    "In standard 8-dot Video Graphics Array (VGA) modes, the relationship between the character clock and the pixel clock is defined by a fixed 1:8 frequency ratio. The pixel clock—also referred to as the dot clock—drives the emission of individual pixels",
+    false
+  ],
+  [
+    320,
+    "Why the VGA CRTC Uses Character Clock Timings",
+    "The Video Graphics Array (VGA) standard, introduced by IBM in 1987, relies on a Cathode Ray Tube Controller (CRTC) to dictate display framing, synchronization, and memory addressing. Instead of counting individual pixels (dot clocks) for horizontal timin",
+    false
+  ],
+  [
+    319,
+    "720x400 70Hz VGA Text Timing Line Count",
+    "In standard 720x400 @ 70Hz Video Graphics Array (VGA) text mode, the total horizontal line count per frame is 449 lines. While the active display region uses 400 visible scanlines, the full frame includes an additional 49 blanking lines composed of front",
+    false
+  ],
+  [
+    318,
+    "How 70 Hz VGA Text Mode Eliminated CRT Monitor Flicker",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987, it established a 70 Hz vertical refresh rate for its default 720x400 text mode, departing from the previous 60 Hz standard used by CGA and EGA. This change drastically reduced perceived",
+    false
+  ],
+  [
+    317,
+    "Why Early VGA 59.94 Hz Was Called 60 Hz",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987, the default 640x480 resolution ran at an actual vertical refresh rate of approximately 59.94 Hz rather than an even 60 Hz. This exact figure was a direct byproduct of IBM adapting exist",
+    false
+  ],
+  [
+    316,
+    "Why 31.468 kHz Divided by 525 Lines Equals 59.94 Hz VGA",
+    "The 59.94 Hz refresh rate in standard Video Graphics Array (VGA) displays is the mathematical result of dividing a 31.468 kHz horizontal line frequency by 525 total vertical lines. While standard 640x480 VGA is commonly referred to as a 60 Hz display for",
+    false
+  ],
+  [
+    315,
+    "How VGA Derives 31.468 kHz From a 25.175 MHz Clock",
+    "The classic 640x480 Video Graphics Array (VGA) standard relies on rigid electronic timing to draw images onto a display. At the core of this standard is the relationship between the pixel clock frequency and the horizontal scanline structure. By dividing",
+    false
+  ],
+  [
+    314,
+    "Exact Refresh Rate of 640x480 VGA at 25.175 MHz",
+    "While the standard 640x480 Video Graphics Array (VGA) resolution is commonly referred to as a 60 Hz display mode, its actual vertical refresh rate is not an even 60 Hz. Driven by an industry-standard 25.175 MHz pixel clock, the exact mathematical refresh",
+    false
+  ],
+  [
+    313,
+    "Total Lines in 640x480 60Hz VGA Frames",
+    "In a standard 640x480 60Hz Video Graphics Array (VGA) signal, a total of 525 lines are transmitted per frame. While only 480 of these lines contain visible video data, the remaining 45 lines form the vertical blanking interval. This article breaks down t",
+    false
+  ],
+  [
+    312,
+    "640x480 VGA Vertical Back Porch Duration",
+    "In standard 640x480 Video Graphics Array (VGA) timing at a 60 Hz refresh rate, the vertical back porch has a duration of 33 scan lines, which translates to approximately 1.049 milliseconds (1,048.66 microseconds). This period occurs immediately after the",
+    false
+  ],
+  [
+    311,
+    "VGA 640x480 Vertical Front Porch Timing",
+    "In standard 640x480 Video Graphics Array (VGA) timing at a 60 Hz refresh rate, the vertical front porch has a duration of exactly 10 horizontal lines, which equates to approximately 0.318 milliseconds (317.78 microseconds). This article details the speci",
+    false
+  ],
+  [
+    310,
+    "VGA Vertical Sync Pulse Timing and Duration",
+    "In the Video Graphics Array (VGA) standard, the duration of the vertical synchronization (VSync) pulse is defined in terms of complete horizontal scan lines rather than discrete units of absolute time. For the baseline 640x480 resolution running at 60 Hz",
+    false
+  ],
+  [
+    309,
+    "Why Blu-ray Players Removed Analog Video Outputs",
+    "Modern Blu-ray players no longer include analog outputs like component video or VGA primarily due to copyright protection regulations known as the \"Analog Sunset,\" combined with the universal adoption of HDMI and the need to reduce manufacturing costs. S",
+    false
+  ],
+  [
+    308,
+    "How AACS Mandated the Removal of Analog VGA",
+    "The Advanced Access Content System (AACS) licensing agreements enforced a phased policy known as the \"Analog Sunset\" to systematically eliminate unencrypted analog video outputs, including Video Graphics Array (VGA) connections. Designed by a consortium",
+    false
+  ],
+  [
+    307,
+    "VGA Output Limits for Copy Protected Content",
+    "When commercial high-definition media emerged, content protection standards imposed strict resolution caps on analog interfaces like Video Graphics Array (VGA) cables to prevent unauthorized copying. This article covers the specific resolution limits pla",
+    false
+  ],
+  [
+    306,
+    "Why Content Providers Feared the VGA Analog Hole",
+    "During the transition to high-definition digital media, content providers viewed the \"analog hole\" presented by high-resolution Video Graphics Array (VGA) outputs as an existential threat to intellectual property and revenue models. Because VGA interface",
+    false
+  ],
+  [
+    305,
+    "Why HDMI to VGA Converters Bypass HDCP Protection",
+    "Converting an HDMI signal to Video Graphics Array (VGA) often bypasses High-bandwidth Digital Content Protection (HDCP) because VGA is an inherently analog standard incapable of supporting digital encryption. When a digital-to-analog converter processes",
+    false
+  ],
+  [
+    304,
+    "Why HDMI to VGA Adapters Have a 3.5mm Audio Jack",
+    "HDMI to Video Graphics Array (VGA) adapters often include a separate 3.5mm audio jack because HDMI transmits both video and audio signals, whereas VGA only transmits video. When an HDMI source is converted to a VGA display, the audio stream is naturally",
+    false
+  ],
+  [
+    303,
+    "How Active HDMI to VGA Cables Are Powered",
+    "Active HDMI to VGA cables require electrical power to operate an integrated digital-to-analog converter (DAC), which transforms digital bitstreams into analog video signals. Under standard operating conditions, these cables draw their operating power dir",
+    false
+  ],
+  [
+    302,
+    "DisplayPort Alt Mode to VGA Conversion Explained",
+    "DisplayPort Alternate Mode (DP Alt Mode) enables a USB-C port to transmit native digital DisplayPort video streams directly from a host device's GPU to an external display adapter. Because DisplayPort is a packetized digital protocol and Video Graphics A",
+    false
+  ],
+  [
+    301,
+    "Components Inside a USB-C to VGA Adapter Cable",
+    "A USB-C to Video Graphics Array (VGA) adapter cable is an active hardware converter that bridges modern digital video signals with legacy analog display technology. Because USB-C transmits packetized digital data via DisplayPort Alternate Mode while VGA",
+    false
+  ],
+  [
+    300,
+    "USB-C to VGA: Can You Use a Passive Cable?",
+    "Connecting a modern USB Type-C port to a legacy Video Graphics Array (VGA) monitor requires bridging the gap between digital data and analog video signals. This article explains why a purely passive cable cannot bridge this gap, how active signal convers",
+    false
+  ],
+  [
+    299,
+    "How Removing VGA Simplifies Modern TV Circuit Boards",
+    "Modern televisions have phased out legacy analog interfaces like Video Graphics Array (VGA) in favor of all-digital standards such as HDMI and DisplayPort. Eliminating the hardware required to capture, filter, and convert analog video signals significant",
+    false
+  ],
+  [
+    298,
+    "Why Monitors Dropped VGA: The Cost Factors",
+    "Computer monitor manufacturers phased out the legacy analog Video Graphics Array (VGA) input stage primarily because supporting analog signals on modern flat panels introduced unnecessary production, component, and design expenses. Because modern liquid",
+    false
+  ],
+  [
+    297,
+    "Why Modern Monitors No Longer Have VGA Ports",
+    "Modern flat-screen monitors rarely feature native Video Graphics Array (VGA) inputs because display technology has transitioned entirely from analog to digital signals. While VGA was the computing standard for decades, modern monitors require higher band",
+    false
+  ],
+  [
+    296,
+    "How Speaker EMI Distorts Analog VGA Displays",
+    "Electromagnetic interference (EMI) generated by nearby audio speakers can severely degrade the quality of an analog Video Graphics Array (VGA) display. Because VGA relies on continuous voltage variations rather than resilient digital data packets, the st",
+    false
+  ],
+  [
+    295,
+    "VGA CRT Monitor Degaussing Coil Explained",
+    "A Video Graphics Array (VGA) Cathode Ray Tube (CRT) monitor relies on precise electron beam targeting to produce an accurate image. Over time, internal metal components can become magnetized by ambient magnetic fields, resulting in distorted colors and d",
+    false
+  ],
+  [
+    294,
+    "How CRT Purity Rings Correct Color on VGA Monitors",
+    "Color purity on a Video Graphics Array (VGA) Cathode Ray Tube (CRT) monitor depends on each electron beam striking only its designated colored phosphor dots without striking neighboring ones. Magnetic purity rings, mounted on the neck of the CRT, elimina",
+    false
+  ],
+  [
+    293,
+    "Causes of CRT Edge Color Convergence Errors",
+    "Color convergence errors on the edges of a high-resolution Video Graphics Array (VGA) Cathode Ray Tube (CRT) monitor occur when the red, green, and blue electron beams fail to intersect at the precise spot on the phosphor screen. While the center of the",
+    false
+  ],
+  [
+    292,
+    "Why Use a Crosshatch Pattern for CRT Convergence",
+    "Calibrating convergence on a Video Graphics Array (VGA) Cathode Ray Tube (CRT) ensures that the red, green, and blue electron beams strike the phosphor screen at precisely the same point to produce sharp, accurate images. A crosshatch grid pattern is the",
+    false
+  ],
+  [
+    291,
+    "Standard Color Bars for VGA Calibration",
+    "Calibrating color tracking on a Video Graphics Array (VGA) display ensures that color balance, saturation, and neutrality remain consistent across all luminance levels. The industry-standard reference for this calibration is the SMPTE color bar pattern,",
+    false
+  ],
+  [
+    290,
+    "Using an Analog VGA Test Generator to Calibrate Monitors",
+    "An analog Video Graphics Array (VGA) test generator is an indispensable diagnostic instrument that allows bench technicians to calibrate, align, and repair cathode-ray tube (CRT) and early-generation liquid-crystal display (LCD) monitors. By providing in",
+    false
+  ],
+  [
+    289,
+    "Understanding VGA ADC Pixel Clock Jitter",
+    "This article explains the concept of pixel clock jitter when digitizing Video Graphics Array (VGA) signals using an analog-to-digital converter (ADC). It covers how the pixel clock is synthesized from synchronization signals, the technical causes of timi",
+    false
+  ],
+  [
+    288,
+    "Why LCD Monitors Need Phase Lock for VGA Signals",
+    "Liquid Crystal Displays (LCDs) are inherently digital devices made of fixed pixel grids, whereas Video Graphics Array (VGA) transmits video as a continuous, uninterrupted analog voltage waveform. To render an analog VGA input, an LCD must convert this co",
+    false
+  ],
+  [
+    287,
+    "Adjusting VGA Horizontal Back Porch for Centering",
+    "Adjusting the horizontal back porch on an analog Video Graphics Array (VGA) source fixes display centering by altering the timing delay between the horizontal synchronization pulse and the start of the visible video signal. Because analog video signals r",
+    false
+  ],
+  [
+    286,
+    "Why VGA Screen Is Shifted to the Left or Right",
+    "An image shifted noticeably to the left or right over a Video Graphics Array (VGA) connection is primarily caused by a timing mismatch between the analog signal sent by the graphics card and the digitizing process of the display. Unlike modern digital in",
+    false
+  ],
+  [
+    285,
+    "How Graphics Cards Detect 75-Ohm VGA Monitors",
+    "Graphics processing units (GPUs) detect connected Video Graphics Array (VGA) monitors by measuring the electrical impedance on the analog color lines. Standard VGA displays incorporate 75-ohm termination resistors to ground on each of the Red, Green, and",
+    false
+  ],
+  [
+    284,
+    "What Is VGA DAC Load Detection on Graphics Cards?",
+    "VGA DAC load detection is an analog sensing mechanism built into graphics card digital-to-analog converters (RAMDACs) that determines whether a display is physically attached to an analog video port. This article explains how graphics hardware uses elect",
+    false
+  ],
+  [
+    283,
+    "How Modern OS Detects Analog VGA Displays",
+    "Modern operating systems detect physically connected analog Video Graphics Array (VGA) displays primarily through hardware-level polling managed by the graphics driver. Because the legacy 15-pin VGA standard lacks a dedicated Hot-Plug Detection (HPD) pin",
+    false
+  ],
+  [
+    282,
+    "Why Early VGA Hardware Lacked Hot-Plug Detection",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987, hot-plug detection was entirely absent from the hardware specifications. This omission was the result of a stationary computing culture, an analog unidirectional signaling architecture,",
+    false
+  ],
+  [
+    281,
+    "Can Hot-Plugging VGA Damage Your Graphics Card?",
+    "Hot-plugging a VGA (Video Graphics Array) monitor carries a small but genuine risk of damaging your graphics card’s Digital-to-Analog Converter (DAC) or the host motherboard. While millions of users connect and disconnect VGA cables while systems are p",
+    false
+  ],
+  [
+    280,
+    "VGA EDID I2C Communication Voltage",
+    "Reading Extended Display Identification Data (EDID) over a Video Graphics Array (VGA) interface relies on the I2C-based Display Data Channel (DDC), which operates at a nominal voltage of 5 volts (5V DC). This article details the specific operating voltag",
+    false
+  ],
+  [
+    279,
+    "VGA DDC Serial Communication Protocol Explained",
+    "This article explores the serial communication protocol that powers the Display Data Channel (DDC) standard implemented over Video Graphics Array (VGA) connectors. It covers how the Inter-Integrated Circuit (I²C) bus functions within the VGA pin archite",
+    false
+  ],
+  [
+    278,
+    "Why DDC Replaced VGA Hardware-Strap Monitor ID",
+    "The transition from early hardware-strap monitor identification to the Display Data Channel (DDC) standard was driven by the rapid evolution of PC display capabilities in the early 1990s. When IBM introduced the Video Graphics Array (VGA) standard in 198",
+    false
+  ],
+  [
+    277,
+    "How IBM VGA Monitor ID Pins 4, 11, and 12 Work",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987 with the PS/2 line of computers, it introduced an automated hardware detection system to determine the type of connected monitor. By utilizing pins 4, 11, and 12 of the 15-pin DE-15 conn",
+    false
+  ],
+  [
+    276,
+    "VGA Pin 11 Function in Early Monitor ID Schemes",
+    "In early Video Graphics Array (VGA) configurations, Pin 11 served as Monitor ID Bit 0 (ID0), a hardware-based detection mechanism that allowed the graphics adapter to automatically identify the type and capabilities of a connected display. Before the int",
+    false
+  ],
+  [
+    275,
+    "VGA Pin 10 Function and Purpose Explained",
+    "This article provides an overview of pin 10 on a standard 15-pin Video Graphics Array (VGA) connector. It details the pin's technical designation, its critical role as the dedicated synchronization ground, and why isolating this ground return path is ess",
+    false
+  ],
+  [
+    274,
+    "Function of Pin 5 on a Standard VGA Connector",
+    "This article provides an overview of pin 5 on a standard 15-pin Video Graphics Array (VGA) connector, detailing its technical role in video transmission. You will learn about its primary assignment as a ground connection, how modern graphics adapters uti",
+    false
+  ],
+  [
+    273,
+    "VGA Connector Color Ground Return Pins",
+    "The standard Video Graphics Array (VGA) DE-15 connector utilizes a high-density, three-row, 15-pin layout to transmit analog RGB video signals between computers and displays. This article identifies the exact row containing the dedicated ground return pi",
+    false
+  ],
+  [
+    272,
+    "Standard VGA Pinout and Pin Arrangement",
+    "This guide provides an overview of the pin configuration for a standard high-density Video Graphics Array (VGA) connector. Commonly designated as a DE-15 (or HD-15) connector, this analog display interface features 15 pins arranged in three staggered row",
+    false
+  ],
+  [
+    271,
+    "Why the DE-15 Connector Is Used for Retro Analog Video",
+    "The DE-15 connector, colloquially known as the standard VGA port, has become the dominant interface for multi-format analog video output in retro-gaming hardware and FPGA projects like MiSTer. Enthusiasts and hardware designers adopted this legacy PC sta",
+    false
+  ],
+  [
+    270,
+    "Outputting 15 kHz and 31 kHz Video from One FPGA Port",
+    "Field-Programmable Gate Arrays (FPGAs) can easily generate both 15 kHz arcade video and 31 kHz Video Graphics Array (VGA) video from the exact same physical connector. Because an FPGA provides fully customizable digital logic, it can alter video timing r",
+    false
+  ],
+  [
+    269,
+    "MiSTer FPGA Analog IO Board VGA Output Explained",
+    "This article provides an overview of how the MiSTer FPGA platform generates direct Video Graphics Array (VGA) video using its add-on Analog I/O board. It covers the hardware signal path from the Terasic DE10-Nano, the digital-to-analog conversion process",
+    false
+  ],
+  [
+    268,
+    "Open-Source FPGA Authentic VGA Cores",
+    "This article examines prominent open-source FPGA retro-computing projects that incorporate authentic, register-level Video Graphics Array (VGA) core implementations. Replicating the original IBM VGA standard requires precise hardware recreation of subsys",
+    false
+  ],
+  [
+    267,
+    "FPGA Emulation of IBM VGA Chip Registers",
+    "Emulating the full register set of an IBM Video Graphics Array (VGA) chip on an FPGA involves synthesizing the legacy indexed I/O architecture, enforcing hardware quirks and access protections, and bridging asynchronous CPU bus cycles with synchronous pi",
+    false
+  ],
+  [
+    266,
+    "Protecting Microcontroller GPIO in VGA with Buffer ICs",
+    "Buffer integrated circuits (ICs) serve as a crucial electrical barrier between sensitive microcontroller general-purpose input/output (GPIO) pins and the demanding physical characteristics of Video Graphics Array (VGA) lines. Driving a legacy analog stan",
+    false
+  ],
+  [
+    265,
+    "Why Resistor Tolerance Matters in VGA R-2R DACs",
+    "Building a discrete R-2R resistor ladder to generate Video Graphics Array (VGA) signals requires strict resistor tolerance to ensure accurate analog color reproduction. Because the R-2R network relies on exact binary-weighted voltage division, minute var",
+    false
+  ],
+  [
+    264,
+    "How Many Resistors for a 3-Bit VGA DAC?",
+    "A 3-bit, 8-color passive Video Graphics Array (VGA) digital-to-analog converter (DAC) circuit requires exactly three resistors. Because a 3-bit color configuration allocates one digital output pin to each of the three primary color channels—Red, Green,",
+    false
+  ],
+  [
+    263,
+    "How Resistor Ladder DACs Work in DIY VGA Circuits",
+    "This article explains how resistor ladder digital-to-analog converters (DACs) convert digital microcontroller pins into analog RGB signals for DIY Video Graphics Array (VGA) displays. You will learn the core operational principles of resistor ladders, ho",
+    false
+  ],
+  [
+    262,
+    "How to Drive VGA on Raspberry Pi Pico Using PIO",
+    "The Raspberry Pi Pico leverages its RP2040 microcontroller's unique Programmable I/O (PIO) state machines to generate precise Video Graphics Array (VGA) signals with minimal CPU intervention. By pairing hardware-timed PIO instructions with Direct Memory",
+    false
+  ],
+  [
+    261,
+    "How ESP32 and RP2040 Peripherals Generate VGA",
+    "Generating Video Graphics Array (VGA) video directly from modern microcontrollers requires high-frequency, jitter-free timing and sustained memory throughput. Rather than relying on standard CPU bit-banging, chips like the Raspberry Pi RP2040 and Espress",
+    false
+  ],
+  [
+    260,
+    "How to Bit-Bang VGA Video with a Microcontroller",
+    "Generating a bit-banged Video Graphics Array (VGA) color test pattern involves using a microcontroller's general-purpose input/output (GPIO) pins to manually produce precise synchronization signals and analog color voltages in real time. Because the micr",
+    false
+  ],
+  [
+    259,
+    "VGA 640x480 Horizontal Sync Pulse Duration",
+    "In standard 640x480 Video Graphics Array (VGA) timing at a 60 Hz refresh rate, the duration of the horizontal synchronization (H-sync) pulse is exactly 96 pixel clock cycles, which corresponds to approximately 3.813 microseconds. This article breaks down",
+    false
+  ],
+  [
+    258,
+    "640x480 VGA Active Display Line Duration",
+    "This article provides an analysis of the timing specifications for a standard 640x480 Video Graphics Array (VGA) signal operating at 60 Hz. It details the exact calculation used to determine the active display duration of a single horizontal scanline in",
+    false
+  ],
+  [
+    257,
+    "VGA 640x480 Horizontal Line Timing Duration",
+    "In standard 640x480 Video Graphics Array (VGA) timing running at a 60 Hz refresh rate, the duration of a single horizontal line is precisely 31.778 microseconds (µs). This measurement is derived from the standard 25.175 MHz pixel clock operating across",
+    false
+  ],
+  [
+    256,
+    "Total Scan Lines in a Standard 640x480 VGA Signal",
+    "A standard 640x480 Video Graphics Array (VGA) signal operating at 60 Hz contains exactly 525 total horizontal scan lines per frame when including the vertical blanking interval. While only 480 of these lines are utilized to render active picture data on",
+    false
+  ],
+  [
+    255,
+    "VGA Active Video vs Blanking Time Explained",
+    "In standard Video Graphics Array (VGA) architecture, video signals are transmitted line by line across a display. Every single horizontal line period is fundamentally split into two distinct operational phases: active video time and blanking time. Active",
+    false
+  ],
+  [
+    254,
+    "Role of Vertical Blanking in VGA CRT Displays",
+    "The Vertical Blanking Interval (VBI) is a fundamental timing mechanism in cathode-ray tube (CRT) Video Graphics Array (VGA) monitors that temporarily disables the electron gun, allowing the electron beam to physically reposition from the bottom-right cor",
+    false
+  ],
+  [
+    253,
+    "How CRT Electron Guns Sweep in VGA Displays",
+    "A Cathode Ray Tube (CRT) monitor running a Video Graphics Array (VGA) interface draws images by sweeping focused beams of electrons horizontally and vertically across a phosphor-coated glass faceplate. Controlled by electromagnetic coils known as the def",
+    false
+  ],
+  [
+    252,
+    "Why CRT Monitors Needed 75 Hz or 85 Hz Refresh Rates",
+    "During the era of cathode-ray tube (CRT) monitors and Video Graphics Array (VGA) standards, running a display at a 75 Hz or 85 Hz refresh rate was considered essential for daily computing. Unlike modern flat panels, CRTs used scanning electron beams that",
+    false
+  ],
+  [
+    251,
+    "Can 60 Hz on a CRT via VGA Cause Eye Strain?",
+    "Using a Cathode Ray Tube (CRT) monitor connected via a Video Graphics Array (VGA) cable at a 60 Hz refresh rate is a proven cause of significant eye strain, headaches, and visual fatigue. While the VGA connection delivers the analog video signal, the pri",
+    false
+  ],
+  [
+    250,
+    "VGA Line Reflection: Visual Artifacts Explained",
+    "When a line reflection occurs in a Video Graphics Array (VGA) connection, the most prominent visual artifact displayed on screen is \"ghosting,\" often accompanied by \"ringing\" or edge smearing. Because VGA is an analog interface that relies on precise ele",
+    false
+  ],
+  [
+    249,
+    "VGA Cable Impedance Mismatch and Standing Waves",
+    "Electrical impedance mismatching along a Video Graphics Array (VGA) cable causes high-frequency analog video signals to reflect off interfaces where impedance changes occur, such as poor cable terminations or degraded connectors. These reflected waves bo",
+    false
+  ],
+  [
+    248,
+    "Why Remove VGA Output Capacitors in the 1990s",
+    "In the late 1990s, PC enthusiasts discovered that physically desoldering or bypassing the analog low-pass filtering capacitors on budget Video Graphics Array (VGA) cards dramatically improved display sharpness on high-resolution CRT monitors. Manufacture",
+    false
+  ],
+  [
+    247,
+    "VGA Card LC Low-Pass Filter Function Explained",
+    "This article examines the purpose and operation of the passive low-pass inductor-capacitor (LC) filter installed on the analog output lines of a Video Graphics Array (VGA) graphics card. It covers how this filter functions as an anti-imaging reconstructi",
+    false
+  ],
+  [
+    246,
+    "Impact of GPU Output Filters on Analog VGA Visual Clarity",
+    "During the era of cathode-ray tube (CRT) monitors and analog display standards, the visual quality of a computer screen was determined not just by processing power, but by the physical circuit design of the graphics card. The Video Graphics Array (VGA) i",
+    false
+  ],
+  [
+    245,
+    "Why Matrox Millennium VGA Output Was So Sharp",
+    "During the 1990s and early 2000s, Matrox Millennium graphics cards earned an industry-wide reputation for delivering the cleanest, sharpest 2D analog Video Graphics Array (VGA) signal available. While rival cards produced blurry text and smudged colors a",
+    false
+  ],
+  [
+    244,
+    "What Determines High-Speed RAMDAC Slew Rate?",
+    "The slew rate of a high-speed Video Graphics Array (VGA) Random Access Memory Digital-to-Analog Converter (RAMDAC) dictates how rapidly the analog video output can transition between discrete voltage levels, directly impacting display sharpness and maxim",
+    false
+  ],
+  [
+    243,
+    "VGA Frequency Response and Horizontal Detail",
+    "In analog Video Graphics Array (VGA) displays, image clarity relies entirely on the precision and bandwidth of an continuous analog electrical signal. When a VGA video amplifier suffers from poor high-frequency response, it cannot process the rapid volta",
+    false
+  ],
+  [
+    242,
+    "Causes of Horizontal Streaking on VGA Displays",
+    "Horizontal streaking or smearing behind high-contrast text on an analog Video Graphics Array (VGA) display is typically caused by analog signal degradation along the transmission path. Because VGA transmits video as continuous electrical voltages rather",
+    false
+  ],
+  [
+    241,
+    "1920x1080 VGA Resolution Naming Standard",
+    "This article explains the naming standard for a 1920x1080 resolution signal transmitted across an analog Video Graphics Array (VGA) connection. While early computer display modes used specific \"...XGA\" extensions for different resolutions, the industry t",
+    false
+  ],
+  [
+    240,
+    "1600x1200 Resolution: UXGA Standard Explained",
+    "The 1600x1200 display resolution is formally designated as UXGA, which stands for Ultra Extended Graphics Array (or Ultra Video Graphics Array). This article details the UXGA naming standard, its technical relationship to the foundational Video Graphics",
+    false
+  ],
+  [
+    239,
+    "1280x1024 VGA Standard: Understanding SXGA",
+    "The 1280x1024 display resolution corresponds to the SXGA (Super Extended Graphics Array) standard. As computer display technologies progressed beyond the original Video Graphics Array (VGA) specifications, manufacturers created standard naming convention",
+    false
+  ],
+  [
+    238,
+    "800x600 Resolution Standard Explained",
+    "The 800x600 display resolution is formally designated as Super Video Graphics Array, commonly abbreviated as SVGA. This article covers the origins of the SVGA standard, how it improved upon the baseline Video Graphics Array (VGA) specification, its techn",
+    false
+  ],
+  [
+    237,
+    "Why 1024x768 Is Extended VGA Instead of Standard VGA",
+    "The 1024x768 screen resolution is classified as Extended Graphics Array (XGA) rather than standard Video Graphics Array (VGA) due to fundamental differences in pixel density, memory architecture, and hardware evolution. While standard VGA established the",
+    false
+  ],
+  [
+    236,
+    "Purpose of ASPEED AST Chipsets for Server VGA",
+    "This article explains the function and significance of ASPEED AST-series chipsets in server environments, focusing on their role in delivering Video Graphics Array (VGA) output. You will learn how these specialized chips combine Baseboard Management Cont",
+    false
+  ],
+  [
+    235,
+    "How BMCs Use Virtual VGA for Remote Consoles",
+    "Baseboard Management Controllers (BMCs) use integrated virtual Video Graphics Array (VGA) adapters to capture, encode, and transmit a physical server's visual output over the network to a remote administrator. By embedding a dedicated low-power 2D graphi",
+    false
+  ],
+  [
+    234,
+    "Why Industrial and Medical Machines Still Use VGA",
+    "Despite the prevalence of modern digital display standards like HDMI and DisplayPort, legacy industrial and medical machines continue to rely heavily on Video Graphics Array (VGA) interfaces. This article examines the core reasons behind this persistence",
+    false
+  ],
+  [
+    233,
+    "Capturing Non-Standard Refresh Rate VGA Signals",
+    "Modern video capture cards are engineered primarily for contemporary digital video standards, which rely on rigid timing protocols and fixed refresh rates. When tasked with capturing legacy Video Graphics Array (VGA) inputs—particularly those operating",
+    false
+  ],
+  [
+    232,
+    "How VGA Frame Grabbers Digitize Video for Streaming",
+    "A Video Graphics Array (VGA) frame grabber acts as a bridge between legacy analog visual systems and modern digital networks by capturing raw electrical video signals and translating them into standard digital data streams. The device samples the continu",
+    false
+  ],
+  [
+    231,
+    "Why Active DisplayPort to VGA Converters Cause Latency",
+    "Active DisplayPort to VGA converters inherently introduce measurable input latency because they must bridge two fundamentally incompatible display technologies. Unlike passive adapters that merely reroute pinouts, an active converter contains an integrat",
+    false
+  ],
+  [
+    230,
+    "What Is a Digital to Analog Converter for Modern GPUs?",
+    "A digital-to-analog converter (DAC) dongle is an active adapter that enables modern graphics processing units (GPUs) to send video signals to legacy monitors utilizing Video Graphics Array (VGA) inputs. Because contemporary graphics cards output purely d",
+    false
+  ],
+  [
+    229,
+    "Last GPUs with Native Analog VGA Support",
+    "For decades, analog Video Graphics Array (VGA) signals were the universal standard for connecting PCs to computer monitors. As display resolutions grew and refresh rates accelerated, the industry transitioned to pure digital interfaces, permanently retir",
+    false
+  ],
+  [
+    228,
+    "Why VGA Was Replaced by DisplayPort and HDMI",
+    "In December 2010, a coalition of leading technology companies—including Intel, AMD, Dell, Lenovo, Samsung, and LG—announced a coordinated plan to eliminate legacy analog video outputs like VGA from their product lineups by 2015. Dubbed by many as the",
+    false
+  ],
+  [
+    227,
+    "When Did GPUs Phase Out Native VGA Outputs?",
+    "This article examines the timeline and key milestones surrounding the retirement of native Video Graphics Array (VGA) outputs by major GPU and processor manufacturers. In December 2010, a leading coalition of technology companies formally announced plans",
+    false
+  ],
+  [
+    226,
+    "Intel Extreme Graphics and Legacy VGA Emulation",
+    "Intel Extreme Graphics was an integrated graphics solution introduced by Intel in the early 2000s to provide cost-effective display capabilities for mainstream desktop and mobile computers. This article explores the architecture of Intel Extreme Graphics",
+    false
+  ],
+  [
+    225,
+    "Early VGA Integration into Motherboard Chipsets",
+    "This article explores the architectural evolution of integrating Video Graphics Array (VGA) controllers directly into motherboard core-logic chipsets during the late 1990s. It details the transition from discrete expansion cards to unified Northbridge de",
+    false
+  ],
+  [
+    224,
+    "Why VGA Became the Standard Instead of 8514/A",
+    "In 1987, IBM introduced both the Video Graphics Array (VGA) and the 8514/A graphics adapter alongside its Personal System/2 (PS/2) computer line. Although 8514/A offered superior resolution and hardware acceleration designed for professional applications",
+    false
+  ],
+  [
+    223,
+    "IBM XGA vs VGA: Architecture and Evolution",
+    "IBM’s Extended Graphics Array (XGA) was introduced in 1990 as the direct architectural successor to the Video Graphics Array (VGA) standard established in 1987. While VGA became the universal baseline for PC display hardware, XGA was engineered to over",
+    false
+  ],
+  [
+    222,
+    "IBM 8514/A vs VGA: How It Complemented the Standard",
+    "Introduced alongside the Video Graphics Array (VGA) in 1987 as part of IBM’s Personal System/2 (PS/2) lineup, the IBM 8514/A was designed not to displace VGA, but to serve as an optional, high-performance companion. While VGA established a versatile, l",
+    false
+  ],
+  [
+    221,
+    "IBM 8514/A Display Adapter Resolution Explained",
+    "This article examines the IBM 8514/A graphics adapter, focusing on the specific display resolution that defined its place in computing history. Released in 1987 alongside the original Video Graphics Array (VGA) standard, the 8514/A was designed as a high",
+    false
+  ],
+  [
+    220,
+    "Why Early CAD Workstations Adopted SVGA",
+    "The rapid transition of early Computer-Aided Design (CAD) workstations from standard Video Graphics Array (VGA) to Super VGA (SVGA) was driven by the urgent need for greater screen real estate, visual precision, and workflow efficiency. Standard VGA’s",
+    false
+  ],
+  [
+    219,
+    "How to Move the VGA Hardware Cursor via Ports",
+    "This article explains how to reposition the Video Graphics Array (VGA) hardware cursor in standard text mode through direct I/O port manipulation. By interacting directly with the VGA CRT Controller (CRTC) registers, low-level software such as bootloader",
+    false
+  ],
+  [
+    218,
+    "VGA Maximum Scan Line Register and Vertical Resolution",
+    "The Video Graphics Array (VGA) Maximum Scan Line Register plays a critical role in managing how display data is drawn on a screen, particularly through its ability to control scan-line replication and vertical line counts. By manipulating this register",
+    false
+  ],
+  [
+    217,
+    "VGA Preset Row Scan and Smooth Vertical Scrolling",
+    "The Video Graphics Array (VGA) Preset Row Scan register provides the hardware-level mechanism required to scroll the display vertically by single-pixel scanlines rather than abrupt full-row increments. By specifying which internal scanline within a chara",
+    false
+  ],
+  [
+    216,
+    "VGA Horizontal Pel Panning Register Explained",
+    "The Video Graphics Array (VGA) Horizontal Pel Panning register is a critical hardware component used to achieve smooth, pixel-by-pixel horizontal scrolling in legacy PC graphics programming. While standard VGA registers only allow the display window to s",
+    false
+  ],
+  [
+    215,
+    "Why VGA Mode X Enabled Smooth Pixel Scrolling",
+    "Mode X, an undocumented 320x240 planar tweak of the standard IBM VGA architecture popularized by Michael Abrash, revolutionized PC gaming by unlocking hardware-level capabilities that were inaccessible in the standard linear Mode 13h. Achieving fluid, si",
+    false
+  ],
+  [
+    214,
+    "How VGA Mode X Enables 4-Pixel Parallel Writes",
+    "This article explores how IBM’s Video Graphics Array (VGA) architecture utilizes Mode X's planar memory arrangement to write four pixels concurrently. Mode X achieves this performance leap by \"unchaining\" VGA memory, mapping four separate 64 KB hardwar",
+    false
+  ],
+  [
+    213,
+    "Mode X vs Mode Y: Differences in VGA Programming",
+    "During the MS-DOS era of PC game development, programmers bypassed standard BIOS routines to extract maximum performance and flexibility from the Video Graphics Array (VGA) hardware. While the standard Mode 13h offered an easy-to-use 320x200 resolution w",
+    false
+  ],
+  [
+    212,
+    "How Doom Exploited VGA Mode Y for Fast Rendering",
+    "In 1993, id Software released Doom, setting a technical benchmark for real-time 3D graphics on IBM-compatible PCs. A pivotal factor in achieving smooth performance on machines constrained by the slow Industry Standard Architecture (ISA) bus was John Carm",
+    false
+  ],
+  [
+    211,
+    "Why Protected Mode DOS Games Used Linear Frame Buffers",
+    "During the mid-1990s, the transition to 32-bit protected-mode DOS extenders revolutionized PC gaming by unlocking gigabytes of addressable memory. However, graphical performance remained throttled by legacy video architectures until the adoption of the L",
+    false
+  ],
+  [
+    210,
+    "What Was the VESA VBE Linear Frame Buffer?",
+    "The VESA BIOS Extension (VBE) Linear Frame Buffer (LFB) revolutionized PC graphics programming by mapping a video adapter's entire memory into a single, contiguous address space. Introduced comprehensively in the VBE 2.0 specification in the mid-1990s, t",
+    false
+  ],
+  [
+    209,
+    "How VGA Bank Switching Bypassed the 64 KB Barrier",
+    "In early x86 PC architectures running in real mode, the processor was inherently constrained by a 16-bit addressing scheme that limited accessible memory segments to 64 KB. As graphics demands grew, standard Video Graphics Array (VGA) adapters shipped wi",
+    false
+  ],
+  [
+    208,
+    "Why VGA Memory Window at 0xA0000 Was Limited to 64 KB",
+    "The Video Graphics Array (VGA) memory window at physical address 0xA0000 was constrained to 64 KB due to a combination of Intel’s 16-bit real-mode segmentation architecture, the original IBM PC memory map, and backward compatibility with earlier displa",
+    false
+  ],
+  [
+    207,
+    "VGA Graphics Mode 13h Base Memory Address",
+    "This article explores the physical base memory address used by standard Video Graphics Array (VGA) graphics modes, with a primary focus on Mode 13h. It covers the specific memory mapping location within the x86 architecture, the structure of the frame bu",
+    false
+  ],
+  [
+    206,
+    "VGA Text Mode Memory Aperture Address in x86",
+    "This article details the exact memory aperture addresses assigned to standard Video Graphics Array (VGA) text mode within the classic x86 system architecture. It outlines the specific physical memory ranges mapped in the Upper Memory Area, the difference",
+    false
+  ],
+  [
+    205,
+    "How CRT Shaders Emulate VGA Bloom and Phosphor Decay",
+    "Modern emulators rely on advanced multi-pass fragment shaders to reproduce the physical characteristics of classic cathode-ray tube (CRT) monitors. When running retro Video Graphics Array (VGA) games, these shaders simulate hardware-level phenomena such",
+    false
+  ],
+  [
+    204,
+    "Aspect Ratio of 320x200 Graphics on 4:3 VGA",
+    "This article breaks down the mathematical relationship between the classic 320x200 resolution and a standard 4:3 Video Graphics Array (VGA) display. While a 320x200 pixel grid natively forms a 16:10 image, vintage cathode-ray tube (CRT) monitors physical",
+    false
+  ],
+  [
+    203,
+    "Why Non-Integer VGA Scaling Causes 1080p Artifacts",
+    "Displaying a standard Video Graphics Array (VGA) signal on a 1080p monitor produces uneven pixel artifacts because the source resolution cannot be divided evenly into the display's native resolution. Modern flat-panel monitors rely on fixed grids of phys",
+    false
+  ],
+  [
+    202,
+    "How Integer Scaling Preserves 320x200 VGA Games",
+    "Modern high-resolution displays often render retro 320x200 Video Graphics Array (VGA) games with unwanted blur and distortion due to standard interpolation algorithms. Integer scaling resolves this issue by magnifying each original pixel by a whole-numbe",
+    false
+  ],
+  [
+    201,
+    "Why Retro PC Hobbyists Prefer CRT Monitors for VGA",
+    "Retro computing enthusiasts consistently choose authentic cathode-ray tube (CRT) monitors over modern liquid-crystal displays (LCDs) when running native Video Graphics Array (VGA) hardware. While modern flat panels offer thin profiles and low power consu",
+    false
+  ],
+  [
+    200,
+    "Scanline Generators for Retro VGA Games on LCDs",
+    "A scanline generator plays a crucial role in modern retro gaming setups by recreating the visual characteristics of vintage cathode-ray tube (CRT) monitors on modern liquid crystal displays (LCDs). Video Graphics Array (VGA) games from the late 1980s and",
+    false
+  ],
+  [
+    199,
+    "How OSSC Upscalers Process 15 kHz RGB and 31 kHz VGA",
+    "Modern retro upscalers like the Open Source Scan Converter (OSSC) bridge the gap between legacy gaming systems and contemporary digital displays by handling both standard-definition 15 kHz signals and higher-resolution 31 kHz signals. Rather than using f",
+    false
+  ],
+  [
+    198,
+    "Did Sony PlayStation Support Native 31 kHz VGA?",
+    "The original Sony PlayStation (PS1) does not natively support a 31 kHz Video Graphics Array (VGA) output. Designed during the era of cathode-ray tube (CRT) televisions, the console’s video hardware strictly generates standard-definition 15 kHz signals.",
+    false
+  ],
+  [
+    197,
+    "Why Sega Dreamcast VGA Output Was Superior",
+    "The Sega Dreamcast was ahead of its time upon its 1998 launch, particularly due to its native support for Video Graphics Array (VGA) output. While most players connected the system to CRT televisions using standard composite cables or S-Video, the offici",
+    false
+  ],
+  [
+    196,
+    "How the Dreamcast Used Dedicated VGA Boxes",
+    "During the sixth generation of video game consoles, the Sega Dreamcast pioneered high-definition home gaming by offering native progressive scan support through specialized Video Graphics Array (VGA) boxes. This article examines how the Dreamcast hardwar",
+    false
+  ],
+  [
+    195,
+    "How Early ATI and Matrox Cards Output Component Video",
+    "During the late 1990s and early 2000s, select graphics cards from ATI and Matrox achieved native component (YPbPr) video output without requiring expensive external signal transcoders. This functionality was made possible by flexible, programmable Random",
+    false
+  ],
+  [
+    194,
+    "Can VGA Be Adapted to YPbPr Component Video?",
+    "A Video Graphics Array (VGA) port can be electrically adapted to transmit YPbPr component video, but whether it works with a simple passive adapter depends entirely on the hardware transmitting and receiving the signal. Because both VGA and YPbPr are ana",
+    false
+  ],
+  [
+    193,
+    "Why VGA Displays Green or Purple With Component Signals",
+    "When a Video Graphics Array (VGA) display is incorrectly fed an analog component video signal, the resulting image often suffers from an intense green or purple (magenta) color cast. This article explains the technical reasons behind this visual error, b",
+    false
+  ],
+  [
+    192,
+    "VGA Black Level Clamping During the Back Porch",
+    "This article explains how black level clamping is established during the back porch interval of an analog Video Graphics Array (VGA) signal. It details the necessity of DC restoration in AC-coupled video systems, the role of horizontal blanking timing, a",
+    false
+  ],
+  [
+    191,
+    "Oscilloscope Waveform of an Active VGA Channel",
+    "An active analog Video Graphics Array (VGA) color channel produces an oscilloscope waveform characterized by high-frequency voltage fluctuations bounded between 0.0 volts and 0.7 volts peak-to-peak across periodic horizontal line intervals. When probed a",
+    false
+  ],
+  [
+    190,
+    "Why VGA Sync Pulse Width Is Critical for CRT Monitors",
+    "Video Graphics Array (VGA) cathode-ray tube (CRT) monitors rely on analog deflection circuitry to steer an electron beam across a phosphor screen, creating an image through precise raster scanning. Because CRTs use physical magnetic deflection coils rath",
+    false
+  ],
+  [
+    189,
+    "What Is the VGA Back Porch in Video Timing?",
+    "This article provides an overview of the \"back porch\" in an analog Video Graphics Array (VGA) scanline waveform. It defines what the back porch is, details its position within the horizontal and vertical video timing cycles, and explains its critical tec",
+    false
+  ],
+  [
+    188,
+    "Understanding the VGA Horizontal Front Porch",
+    "In a Video Graphics Array (VGA) horizontal scanline cycle, the front porch is a brief period of blanking that occurs immediately after the active display of pixels and just before the horizontal synchronization pulse begins. This article explains the rol",
+    false
+  ],
+  [
+    187,
+    "How VGA Horizontal Blanking Works on CRT Monitors",
+    "This article explains how Video Graphics Array (VGA) horizontal blanking timing controls the electron beam inside a Cathode Ray Tube (CRT) display during horizontal retrace. It details the structural phases of the horizontal line cycle—including the ac",
+    false
+  ],
+  [
+    186,
+    "Horizontal Display Enable Skew in VGA Timing",
+    "The horizontal display enable skew in Video Graphics Array (VGA) timing generation is a programmable hardware delay mechanism that synchronizes the active video display timing with the internal pixel rendering pipeline. In VGA controllers, processing vid",
+    false
+  ],
+  [
+    185,
+    "How VGA Sequencer Divides the Dot Clock",
+    "The Video Graphics Array (VGA) internal timing sequencer controls the video timing pipeline by taking a master clock frequency and dividing it into the necessary timing pulses for rendering. This article details the hardware mechanisms behind this divisi",
+    false
+  ],
+  [
+    184,
+    "VGA Character Cell Width and Dot Clock Register",
+    "In Video Graphics Array (VGA) architecture, the Sequencer Clocking Mode Register is the primary register responsible for configuring character cell width and dot duplication behavior. This article explains how this specific hardware register operates, th",
+    false
+  ],
+  [
+    183,
+    "Why Box-Drawing Characters Connect in VGA Text Mode",
+    "In the classic 720x400 Video Graphics Array (VGA) text mode, box-drawing characters appear continuous because the graphics hardware automatically duplicates the eighth pixel column into the ninth pixel column for specific character codes. While the text",
+    false
+  ],
+  [
+    182,
+    "VGA 9th Dot Duplication in 720-Wide Text Mode",
+    "This article explores the 9th-dot character duplication mechanism used in 720-wide Video Graphics Array (VGA) text modes, an ingenious hardware feature designed to render legacy 8-pixel-wide font data within a 9-pixel-wide grid. You will learn why this m",
+    false
+  ],
+  [
+    181,
+    "VGA Hardware Font Table Capacity Explained",
+    "Standard Video Graphics Array (VGA) hardware can maintain up to eight 256-character font tables simultaneously in its dedicated font memory, while actively displaying glyphs from up to two of those tables concurrently on screen. This guide explains how V",
+    false
+  ],
+  [
+    180,
+    "How to Load Custom Fonts into VGA Plane 2",
+    "Loading custom font bit patterns into Video Graphics Array (VGA) plane 2 memory space requires reconfiguring the VGA hardware registers to expose plane 2 to CPU memory writes, copying the glyph bitmaps, and restoring the registers to standard text mode o",
+    false
+  ],
+  [
+    179,
+    "Where Are VGA Text-Mode Fonts Stored in ROM?",
+    "Default Video Graphics Array (VGA) text-mode font bitmaps are stored within the VGA adapter’s dedicated Video BIOS ROM, which is mapped into system memory starting at address C000:0000 (0xC0000). While original IBM architecture historically referenced",
+    false
+  ],
+  [
+    178,
+    "How VGA Hardware Generates Blinking Text",
+    "The Video Graphics Array (VGA) hardware generates the blinking text attribute using a combination of dedicated video memory attribute bytes, an internal frame counter derived from the vertical sync signal, and digital multiplexing within the Attribute Co",
+    false
+  ],
+  [
+    177,
+    "VGA 80x25 16-Color Text BIOS Mode Number",
+    "This article covers the standard BIOS mode number used for the default 80x25 16-color Video Graphics Array (VGA) text mode. It explains the specific mode designation, its technical specifications, memory organization, and how it is initialized via x86 in",
+    false
+  ],
+  [
+    176,
+    "640x480 16-Color VGA BIOS Mode Number",
+    "This article identifies the specific BIOS video mode number used to initialize the standard 640x480 16-color Video Graphics Array (VGA) display and explains how it is invoked in low-level programming. It details the interrupt routine used to activate the",
+    false
+  ],
+  [
+    175,
+    "VGA Mode 13h: 320x200 256-Color BIOS Graphics",
+    "This article examines BIOS Mode 13h, the foundational standard that brought 320x200 resolution and 256 simultaneous colors to IBM-compatible personal computers. It outlines the technical specifications of this video mode, explains how it is initialized v",
+    false
+  ],
+  [
+    174,
+    "How INT 10h AH=00h Initializes VGA Display Modes",
+    "The x86 real-mode interrupt INT 10h, AH=00h serves as the standard BIOS system call used to switch and initialize Video Graphics Array (VGA) display modes. This operation configures both the video adapter hardware and the system software environment by r",
+    false
+  ],
+  [
+    173,
+    "Why Windows Boot Screen Renders in 640x480 VGA",
+    "The Windows operating system renders its boot splash screen in low-resolution Video Graphics Array (VGA) modes, typically 640x480 or 320x200, primarily because full graphics drivers have not yet loaded during the early startup phase. To maintain universa",
+    false
+  ],
+  [
+    172,
+    "Why Windows 95 Safe Mode Used 640x480 VGA Mode",
+    "Windows 95 introduced Safe Mode as an essential diagnostic environment designed to boot the operating system when software conflicts, corrupted files, or hardware misconfigurations prevented normal operation. Whenever users entered Safe Mode, the system",
+    false
+  ],
+  [
+    171,
+    "Windows Standard VGA 640x480 16 Colors Driver Explained",
+    "This article explores the history, function, and legacy of the standard \"VGA 640x480 16 colors\" driver bundled with classic Microsoft Windows operating systems. It covers how this minimal display driver served as an essential universal fallback, the tech",
+    false
+  ],
+  [
+    170,
+    "Why Windows 3.1 Needed Drivers for VGA High Color",
+    "During the Windows 3.1 era, running graphical environments in high-color modes (15-bit or 16-bit color displaying 32,768 or 65,536 colors) required specialized, vendor-provided drivers rather than generic system software. This requirement stemmed from th",
+    false
+  ],
+  [
+    169,
+    "How Integrated RAMDACs Lowered VGA Card Costs",
+    "During the early era of PC graphics, Video Graphics Array (VGA) adapters relied on multiple discrete chips to process and display images, most notably a dedicated graphics controller and a separate Random Access Memory Digital-to-Analog Converter (RAMDAC",
+    false
+  ],
+  [
+    168,
+    "Brooktree RAMDAC in Third-Party VGA Design",
+    "The Brooktree RAMDAC chip family played a foundational role in the expansion and maturation of third-party Video Graphics Array (VGA) hardware during the late 1980s and early 1990s. When IBM introduced the VGA standard in 1987, clone manufacturers faced",
+    false
+  ],
+  [
+    167,
+    "How RAMDAC Speeds Limited Early VGA Refresh Rates",
+    "Early Video Graphics Array (VGA) adapters were fundamentally constrained by the speed of their Random Access Memory Digital-to-Analog Converter (RAMDAC). Because cathode-ray tube (CRT) displays required continuous analog signals to draw images line by li",
+    false
+  ],
+  [
+    166,
+    "Uncompressed 640x480 60Hz 24-Bit VGA Data Rate",
+    "This article breaks down the mathematical calculation required to determine the exact bandwidth and data rate for streaming raw, uncompressed 640x480 video at 60 frames per second with a 24-bit color depth. By analyzing the pixel count, color depth per p",
+    false
+  ],
+  [
+    165,
+    "Total Pixels in a 640x480 VGA Screen",
+    "A standard 640x480 Video Graphics Array (VGA) screen contains exactly 307,200 pixels. This article provides a clear breakdown of how that pixel count is calculated, details the specifications associated with the 640x480 display format, and explains the h",
+    false
+  ],
+  [
+    164,
+    "What Is Ultra Video Graphics Array (UVGA)?",
+    "Ultra Video Graphics Array, commonly abbreviated as UVGA, refers to a specific computer display resolution standard defined as 1280 × 960 pixels. Introduced as a true 4:3 aspect ratio display standard, UVGA was developed to scale the original Video Grap",
+    false
+  ],
+  [
+    163,
+    "WQVGA vs VGA: Pixel Dimensions Compared",
+    "This article provides a direct comparison between Wide Quarter Video Graphics Array (WQVGA) and standard Video Graphics Array (VGA) display resolutions. It breaks down their specific pixel dimensions, aspect ratios, and total pixel counts to illustrate h",
+    false
+  ],
+  [
+    162,
+    "Standard WVGA Resolution in Early Smartphones",
+    "The standard Wide Video Graphics Array (WVGA) display resolution on early mobile smartphones was 800 × 480 pixels. Serving as a crucial milestone in the evolution of mobile displays, WVGA bridged the gap between legacy low-resolution screens and modern",
+    false
+  ],
+  [
+    161,
+    "Mobile Devices That Popularized QVGA Displays",
+    "In the early 2000s, the mobile industry underwent a major visual transition from low-resolution monochrome and rudimentary color screens to Quarter Video Graphics Array (QVGA) displays. Offering a resolution of 320x240 pixels (or 240x320 in portrait orie",
+    false
+  ],
+  [
+    160,
+    "Difference Between VGA and QVGA in Handhelds",
+    "Understanding the distinction between Video Graphics Array (VGA) and Quarter Video Graphics Array (QVGA) comes down to resolution, display clarity, and power efficiency. While standard VGA was developed for full-sized computer monitors, QVGA was engineer",
+    false
+  ],
+  [
+    159,
+    "Mid-1990s Subnotebook VGA Display Resolution",
+    "During the mid-1990s, the portable computing market saw the rapid emergence of the subnotebook—a class of ultra-portable personal computers engineered for extreme mobility and compact sizing. This article examines the native display resolution that def",
+    false
+  ],
+  [
+    158,
+    "How Active Matrix TFT Improved Portable VGA Displays",
+    "Active-matrix Thin-Film Transistor (TFT) technology revolutionized portable Video Graphics Array (VGA) displays by solving the severe latency, ghosting, and contrast issues inherent in earlier passive-matrix screens. Before TFT implementation, portable c",
+    false
+  ],
+  [
+    157,
+    "Why Early Dual-Scan Laptop Displays Smeared",
+    "Early dual-scan passive matrix (DSTN) Video Graphics Array (VGA) laptop screens suffered from severe display smearing—often called ghosting or \"submarining\"—due to the physical limitations of passive matrix driving and slow liquid crystal response ti",
+    false
+  ],
+  [
+    156,
+    "FRC and Spatial Dithering in Passive-Matrix LCDs",
+    "Early passive-matrix Video Graphics Array (VGA) liquid crystal displays were severely constrained by hardware limitations that prevented them from rendering full-depth color and grayscale natively. To overcome these restrictions, display controllers reli",
+    false
+  ],
+  [
+    155,
+    "How Monochrome LCD Laptops Displayed Color VGA",
+    "In the early 1990s, high production costs made active-matrix color screens an expensive luxury, leaving many portable computers reliant on monochrome liquid crystal displays (LCDs). To run software built for the standard 256-color Video Graphics Array (V",
+    false
+  ],
+  [
+    154,
+    "Chips and Technologies FlatPanel VGA Controller",
+    "The Chips and Technologies (C&T) FlatPanel Video Graphics Array (VGA) controller was a pivotal innovation that accelerated the commercial viability of modern portable computers in the late 1980s and early 1990s. By acting as a dedicated hardware bridge b",
+    false
+  ],
+  [
+    153,
+    "Early Laptop VGA Flat Panel Display Interfaces",
+    "In the late 1980s and early 1990s, early laptop computers faced a fundamental hardware mismatch: the standard Video Graphics Array (VGA) architecture was designed to drive analog Cathode Ray Tube (CRT) monitors, whereas laptops required flat-panel liquid",
+    false
+  ],
+  [
+    152,
+    "What Was the 13W3 Connector and Its VGA Interface?",
+    "The 13W3 connector was a specialized high-performance analog video interface widely used on professional UNIX workstations during the late 1980s and 1990s. This article explores the design and purpose of the 13W3 connector, compares its technical charact",
+    false
+  ],
+  [
+    151,
+    "Apple Display Connector vs VGA Differences",
+    "The Apple Display Connector (ADC) and the standard Video Graphics Array (VGA) connection were both designed to transmit display signals from a computer to a monitor, but they differ fundamentally in design philosophy, signal technology, and functionality",
+    false
+  ],
+  [
+    150,
+    "Why Passive DVI to VGA Adapters Fail on DVI-D",
+    "A passive DVI-to-VGA adapter cannot work on a DVI-D output port because VGA requires an analog video signal, whereas DVI-D outputs exclusively digital signals. Passive adapters are simple physical pin-rerouters containing no electronic conversion hardwar",
+    false
+  ],
+  [
+    149,
+    "DVI-I Connector Pins for Analog VGA RGB",
+    "The Digital Visual Interface Integrated (DVI-I) connector is unique because it supports both digital and analog video transmissions within a single interface. To maintain backward compatibility with the Video Graphics Array (VGA) standard, DVI-I incorpor",
+    false
+  ],
+  [
+    148,
+    "How DVI-I Preserved VGA Compatibility on GPUs",
+    "The transition from analog displays to modern digital monitors created a compatibility dilemma for hardware manufacturers who needed to advance display technology without alienating users of legacy equipment. The introduction of the Digital Visual Interf",
+    false
+  ],
+  [
+    147,
+    "Active EDID Cloning in Modern VGA KVM Switches",
+    "This article provides an overview of active Extended Display Identification Data (EDID) cloning technology in modern Video Graphics Array (VGA) Keyboard, Video, and Mouse (KVM) switches. It explains the mechanics behind EDID communication between display",
+    false
+  ],
+  [
+    146,
+    "Why Early VGA KVM Switches Caused Monitor Sync Loss",
+    "Early mechanical Video Graphics Array (VGA) KVM switches caused operating systems to lose monitor synchronization because they physically disconnected the analog signal lines whenever a user toggled between computers. Unlike modern digital switches that",
+    false
+  ],
+  [
+    145,
+    "How VGA KVM Switches Manage Analog Video Signals",
+    "Hardware KVM (Keyboard, Video, Mouse) switches allow a single console to control multiple host computers by routing input and display signals. Managing an analog Video Graphics Array (VGA) signal presents unique engineering challenges compared to digital",
+    false
+  ],
+  [
+    144,
+    "VGA Dummy Plug for Headless Server Management",
+    "A Video Graphics Array (VGA) dummy plug—also known as a ghost display adapter or dummy load—is an inexpensive hardware tool used to trick a computer's graphics processing unit (GPU) into detecting an active physical monitor. In headless server manage",
+    false
+  ],
+  [
+    143,
+    "Why VGA Y-Splitters Cause Screen Dimming",
+    "Connecting two monitors to a single output using a passive Video Graphics Array (VGA) Y-cable causes noticeable screen dimming because the analog video signal is split across two loads without amplification. Unlike digital connections, VGA relies on prec",
+    false
+  ],
+  [
+    142,
+    "How Passive VGA Splitters Impact Brightness and Impedance",
+    "A passive Video Graphics Array (VGA) splitter duplicates an analog video signal from a single source to multiple displays without an external power source or active signal amplification. While convenient and inexpensive, passive splitting forces an analo",
+    false
+  ],
+  [
+    141,
+    "How VGA Matrix Switchers Route Video Signals",
+    "A Video Graphics Array (VGA) matrix switcher routes multiple analog video inputs to multiple outputs using an internal wideband crosspoint switch architecture. This article explains how the device isolates, switches, and distributes multi-channel analog",
+    false
+  ],
+  [
+    140,
+    "How Powered VGA Amplifiers Preserve Signal Integrity",
+    "This article explains how powered Video Graphics Array (VGA) distribution amplifiers maintain high-quality video transmission over extended cable runs. Unlike passive splitters that degrade analog signals, powered distribution amplifiers actively conditi",
+    false
+  ],
+  [
+    139,
+    "Max VGA Cable Length Before Signal Degradation",
+    "A standard Video Graphics Array (VGA) cable can typically transmit a signal up to 50 feet (approximately 15 meters) before noticeable video degradation occurs, though high-resolution video can begin deteriorating at just 15 to 25 feet (5 to 8 meters). Be",
+    false
+  ],
+  [
+    138,
+    "Why Premium VGA Cables Have Shielded Color Lines",
+    "Premium Video Graphics Array (VGA) cables feature dedicated shielding around individual color lines to protect delicate analog signals from electromagnetic interference (EMI) and internal crosstalk. Because VGA transmits visual data via variable voltage",
+    false
+  ],
+  [
+    137,
+    "Internal Coaxial Impedance for VGA Cables",
+    "This article covers the electrical standards governing Video Graphics Array (VGA) cables, specifically identifying the characteristic impedance required for their internal coaxial lines. It explains why a precise impedance value is critical for preservin",
+    false
+  ],
+  [
+    136,
+    "How VGA Cable Crosstalk Degrades Image Quality",
+    "Video Graphics Array (VGA) cables transmit video data through separate analog lines for red, green, and blue (RGB) color channels. In poorly constructed cables that lack adequate shielding, electromagnetic interference between these channels—known as c",
+    false
+  ],
+  [
+    135,
+    "Ferrite Chokes on VGA Cables and EMI Explained",
+    "Ferrite chokes, the small cylindrical bulges found near the ends of Video Graphics Array (VGA) cables, play a critical role in preserving signal quality. This article explores how these passive components function to suppress electromagnetic interference",
+    false
+  ],
+  [
+    134,
+    "How Ground Loops Affect VGA Signal Quality on Projectors",
+    "Connecting a PC to a projector using an analog Video Graphics Array (VGA) cable often introduces ground loops, which severely degrade video quality. A ground loop occurs when interconnected devices are plugged into separate electrical outlets that have d",
+    false
+  ],
+  [
+    133,
+    "Why a Bent VGA Ground Pin Causes Rolling Bars",
+    "A bent ground pin on a Video Graphics Array (VGA) cable disrupts the electrical reference between the video source and the display, commonly creating faint horizontal lines known as rolling bars, scrolling lines, or video hum. This visual artifact occurs",
+    false
+  ],
+  [
+    132,
+    "What Happens When VGA V-Sync Is Disconnected",
+    "When the vertical sync (V-sync) line of a Video Graphics Array (VGA) monitor is disconnected, the display loses the timing signal required to determine where a frame begins and ends vertically. On traditional analog CRT monitors, this disruption causes t",
+    false
+  ],
+  [
+    131,
+    "VGA Horizontal Sync Disconnected: What Happens?",
+    "Disconnecting the horizontal sync (H-sync) line on a Video Graphics Array (VGA) connection disrupts the timing signal that tells a display where each horizontal line of pixels begins. Depending on whether you are using an older cathode-ray tube (CRT) mon",
+    false
+  ],
+  [
+    130,
+    "Symptoms of a Lost Blue Pin on a VGA Cable",
+    "A missing or broken blue analog pin connection on a Video Graphics Array (VGA) cable causes the connected display to exhibit a distinct and pervasive yellow tint. Because VGA technology relies on separate channels for red, green, and blue analog color si",
+    false
+  ],
+  [
+    129,
+    "VGA Lost Green Pin Connection Symptoms",
+    "When a Video Graphics Array (VGA) cable suffers from a lost or damaged green analog pin connection, the display immediately exhibits a distinct color shift toward purple or magenta. This article explains the primary visual symptom of a missing green sign",
+    false
+  ],
+  [
+    128,
+    "Lost Red Pin VGA Cable Visual Symptoms",
+    "A faulty or missing red analog pin connection on a Video Graphics Array (VGA) cable causes an immediate and distinct color distortion on the display, most notably a severe cyan or blue-green tint across the entire screen. Because VGA relies on discrete a",
+    false
+  ],
+  [
+    127,
+    "Why Broken VGA EDID Pins Cause Low Resolution",
+    "When a Video Graphics Array (VGA) cable suffers from broken or severed Extended Display Identification Data (EDID) pins, the connected computer loses its ability to identify the display's native capabilities. Without this essential two-way communication",
+    false
+  ],
+  [
+    126,
+    "Understanding the 128-Byte VGA EDID Structure",
+    "Extended Display Identification Data (EDID) is a standardized 128-byte data structure that enables a computer monitor to communicate its specifications and display capabilities to a host graphics adapter. When using a Video Graphics Array (VGA) connectio",
+    false
+  ],
+  [
+    125,
+    "How VESA DDC Enabled Automatic VGA Monitor Detection",
+    "The VESA Display Data Channel (DDC) standard revolutionized personal computing by allowing graphics cards and operating systems to automatically detect connected monitor specifications, paving the way for true display \"Plug and Play.\" Before DDC, Video G",
+    false
+  ],
+  [
+    124,
+    "VGA CRT Monitor Radiation Safety Standards",
+    "During the peak and sunset of the cathode ray tube (CRT) era, the design of late-model Video Graphics Array (VGA) monitors was fundamentally reshaped by stringent international radiation safety guidelines. The most influential of these was the Swedish TC",
+    false
+  ],
+  [
+    123,
+    "Why 85 Hz Became the Ergonomic VGA Standard",
+    "During the era of Cathode Ray Tube (CRT) displays, the 85 Hz refresh rate was adopted as the definitive ergonomic standard to eliminate display flicker, reduce eye fatigue, and meet strict occupational health guidelines. Driven by European regulatory bod",
+    false
+  ],
+  [
+    122,
+    "How Interlaced VGA Modes Increased Resolution",
+    "Interlaced Video Graphics Array (VGA) and Super VGA (SVGA) modes allowed early computer monitors to render significantly higher resolutions than their hardware would normally support by dividing each frame into two alternating fields. Instead of drawing",
+    false
+  ],
+  [
+    121,
+    "Can Modern Graphics Cards Output Interlaced VGA?",
+    "Modern graphics cards cannot natively output an interlaced Video Graphics Array (VGA) signal. Contemporary GPUs from NVIDIA, AMD, and Intel have entirely phased out legacy analog circuitry (RAMDACs) and native support for interlaced timings. While active",
+    false
+  ],
+  [
+    120,
+    "CRT Emudriver: Low Pixel Clocks for Retro Arcade CRTs",
+    "This article examines CRT Emudriver, a specialized graphics driver suite designed to output native low-frequency video signals from standard PC hardware to vintage displays. It covers the fundamental hardware conflict between standard PC video output and",
+    false
+  ],
+  [
+    119,
+    "How to Connect PC VGA to a 15 kHz RGB Arcade Monitor",
+    "Driving a vintage 15 kHz standard-resolution arcade monitor from a PC VGA output requires modifying the video signal to match arcade hardware specifications. Standard PC VGA outputs operate at a minimum horizontal scan rate of 31.5 kHz with separate hori",
+    false
+  ],
+  [
+    118,
+    "What Is a Sync Stripper Circuit in VGA to SCART?",
+    "This article explains the function of a sync stripper circuit and why it is a critical component when adapting a Video Graphics Array (VGA) signal for use with an RGB SCART display. It breaks down the fundamental differences between VGA and SCART synchro",
+    false
+  ],
+  [
+    117,
+    "VGA to Composite Sync: How Sync Separation Works",
+    "Connecting a standard Video Graphics Array (VGA) source to a monitor requiring composite sync involves converting separate timing channels into a single unified stream, which the display must then interpret. This article explains the technical process of",
+    false
+  ],
+  [
+    116,
+    "Understanding 5-Cable BNC VGA Configuration",
+    "This article explains the standard 5-cable BNC configuration used to transmit high-bandwidth Video Graphics Array (VGA) signals. Known technically as RGBHV, this setup separates color and synchronization data into five discrete coaxial lines to maintain",
+    false
+  ],
+  [
+    115,
+    "Why BNC Was Preferred Over VGA DE-15 Connectors",
+    "During the peak of analog display technology, professional graphic designers, video editors, and CAD engineers required visual fidelity far beyond what standard consumer hardware could deliver. While the standard 15-pin DE-15 connector (commonly referred",
+    false
+  ],
+  [
+    114,
+    "Trinitron Aperture Grille vs Shadow Mask Monitors",
+    "Cathode Ray Tube (CRT) Video Graphics Array (VGA) monitors rely on an internal metal barrier to ensure electron beams strike the correct red, green, and blue phosphors on the screen. The two primary technologies used to achieve this are the traditional s",
+    false
+  ],
+  [
+    113,
+    "How CRT Shadow Mask Pitch Affects VGA Clarity",
+    "This article examines how the shadow mask pitch of a cathode-ray tube (CRT) monitor directly dictates the perceived sharpness, color purity, and legibility of standard Video Graphics Array (VGA) resolution. By breaking down the mechanical relationship be",
+    false
+  ],
+  [
+    112,
+    "Why Moiré Patterns Occur on High-Res VGA CRTs",
+    "Moiré patterns on a high-resolution Cathode Ray Tube (CRT) monitor driven by a Video Graphics Array (VGA) interface are optical interference artifacts caused by a spatial mismatch between the analog raster scanlines and the physical phosphor mask inside",
+    false
+  ],
+  [
+    111,
+    "How VGA Potentiometers Adjust Geometry and Convergence",
+    "Vintage Video Graphics Array (VGA) cathode-ray tube (CRT) monitors rely on analog potentiometers to fine-tune image geometry and beam convergence by directly manipulating electrical currents and magnetic fields. These variable resistors, located either o",
+    false
+  ],
+  [
+    110,
+    "Why VGA 70 Hz Affects CRT Vertical Frame Sizing",
+    "When switching a Video Graphics Array (VGA) display mode to a 70 Hz vertical refresh rate, older Cathode Ray Tube (CRT) monitors often exhibit a noticeable change in vertical frame size—frequently shrinking the image or introducing black bars. This beh",
+    false
+  ],
+  [
+    109,
+    "VGA CRT Pixel Aspect Ratio Hardware Calculation",
+    "This article explains the hardware-level calculations used to determine the Pixel Aspect Ratio (PAR) on an analog 4:3 Video Graphics Array (VGA) cathode-ray tube (CRT) monitor. It covers the mathematical relationship between physical screen geometry, dis",
+    false
+  ],
+  [
+    108,
+    "VGA 320x200 vs 320x240: Square Pixels and Mode X",
+    "This article examines the core technical and visual differences between the standard Video Graphics Array (VGA) 320x200 graphics mode and the customized 320x240 resolution, commonly known as \"Mode X.\" It covers how the shift to 320x240 delivers a 1:1 squ",
+    false
+  ],
+  [
+    107,
+    "VGA Tweak Modes in PC Programming Explained",
+    "VGA tweak modes are custom, non-standard display configurations on IBM PC-compatible systems achieved by directly manipulating the Video Graphics Array (VGA) hardware registers. By bypassing standard BIOS video routines, developers unlock hidden hardware",
+    false
+  ],
+  [
+    106,
+    "VGA CRTC Manipulation for Custom Refresh Rates",
+    "During the golden era of PC demoscene coding, programmers bypassed standard BIOS video interrupts to directly program the Video Graphics Array (VGA) hardware via its I/O ports. By modifying the internal registers of the Cathode Ray Tube Controller (CRTC)",
+    false
+  ],
+  [
+    105,
+    "Programming Copper Style Raster Bars on VGA Hardware",
+    "Copper-style color raster chasing—commonly known as \"raster bars\"—is a visual demoscene technique where the screen background or border dynamically shifts colors scanline by scanline to create glowing, undulating horizontal bands. Originating on the",
+    false
+  ],
+  [
+    104,
+    "How DOSBox Replicates VGA Timing for Demos",
+    "This article examines how the DOSBox emulator accurately reproduces internal Video Graphics Array (VGA) timing mechanisms to support complex PC demoscene effects. It explores the synchronization between CPU cycle counting, virtual cathode-ray tube (CRT)",
+    false
+  ],
+  [
+    103,
+    "Why VGA I/O Port Trapping Is Slow in Virtualization",
+    "Emulating legacy Video Graphics Array (VGA) hardware within virtual machines creates a severe performance bottleneck known as I/O port trapping overhead. This article explains why virtualizing VGA registers degrades system performance, exploring the CPU",
+    false
+  ],
+  [
+    102,
+    "How Hypervisors Emulate VGA Hardware",
+    "Hypervisors emulate standard Video Graphics Array (VGA) hardware to provide broad, out-of-the-box display compatibility for guest operating systems during early boot processes or when specialized display drivers are absent. To accomplish this, virtualiza",
+    false
+  ],
+  [
+    101,
+    "Linux vga16fb Framebuffer Driver Explained",
+    "The vga16fb driver is a generic Linux kernel framebuffer module designed to provide basic graphical display capabilities on standard VGA hardware. This article examines the primary role of vga16fb, detailing why it was built, its technical characteristic",
+    false
+  ],
+  [
+    100,
+    "Linux DRM Interaction With Legacy VGA Modes",
+    "This article explores how the modern Linux Direct Rendering Manager (DRM) subsystem interacts with, manages, and ultimately transitions away from legacy Video Graphics Array (VGA) hardware modes. It covers the fundamental shift from legacy hardware regis",
+    false
+  ],
+  [
+    99,
+    "UEFI Graphics Output Protocol vs BIOS INT 10h",
+    "This article explores the transition from legacy Video Graphics Array (VGA) BIOS INT 10h interrupts to the Unified Extensible Firmware Interface (UEFI) Graphics Output Protocol (GOP). It examines how both systems initialize display hardware during pre-bo",
+    false
+  ],
+  [
+    98,
+    "Why Modern UEFI Systems Emulate Legacy VGA",
+    "Modern x86 computers rely on Unified Extensible Firmware Interface (UEFI) firmware to initialize hardware, yet they frequently emulate legacy Video Graphics Array (VGA) hardware routines during the early stages of boot. While modern display outputs rely",
+    false
+  ],
+  [
+    97,
+    "Modern GPU Architecture in Legacy VGA Mode",
+    "Modern graphics processing units (GPUs) are complex, massively parallel computing engines designed to render photorealistic 3D graphics and accelerate compute workloads. Despite this advanced design, modern GPUs retain architectural components and firmwa",
+    false
+  ],
+  [
+    96,
+    "How 2D GUI Accelerators Offload VGA Framebuffers",
+    "This article explains how early 2D graphics accelerators solved the performance bottlenecks of standard Video Graphics Array (VGA) framebuffers. In a basic framebuffer architecture, the central processing unit (CPU) is forced to compute and draw every pi",
+    false
+  ],
+  [
+    95,
+    "S3 911 and the Evolution of Accelerated VGA",
+    "The release of the S3 911 chip in 1991 marked a fundamental shift in PC graphics by introducing dedicated hardware acceleration to mainstream graphical user interfaces. Prior to its debut, personal computers relied on dumb framebuffers where the host CPU",
+    false
+  ],
+  [
+    94,
+    "Why the Tseng Labs ET4000 Dominated Retail VGA",
+    "During the late 1980s and early 1990s, the Tseng Labs ET4000 chipset established itself as the premier Video Graphics Array (VGA) solution in the retail PC market by offering unmatched raw throughput, superior memory architecture, and high-performance Su",
+    false
+  ],
+  [
+    93,
+    "Cirrus Logic and Tseng Labs in High-Speed VGA History",
+    "During the late 1980s and early 1990s, the personal computer industry shifted from basic text displays to rich graphical user interfaces and fast-paced games. This transition demanded graphics hardware that could surpass the limitations of IBM's original",
+    false
+  ],
+  [
+    92,
+    "How VLB and PCI Solved VGA Bus Bottlenecks",
+    "In the early 1990s, the transition to graphical user interfaces (GUIs) and higher display resolutions created a massive data bottleneck for Video Graphics Array (VGA) controllers running on the legacy Industry Standard Architecture (ISA) bus. This articl",
+    false
+  ],
+  [
+    91,
+    "Why 8-Bit ISA VGA Cards Suffer Performance Penalties",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987, it significantly increased the graphical fidelity of personal computers, but it also placed unprecedented demands on the system bus. While many early VGA cards were designed to be backw",
+    false
+  ],
+  [
+    90,
+    "Original IBM PS/2 VGA Bus Width Explained",
+    "When IBM introduced the Video Graphics Array (VGA) standard alongside the Personal System/2 (PS/2) computer line in 1987, it fundamentally changed PC display standards. This article examines the hardware architecture of the original integrated VGA implem",
+    false
+  ],
+  [
+    89,
+    "How Early ISA Cards Matched PS/2 VGA Performance",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987 alongside the PS/2 family, it set a new visual benchmark by integrating graphics directly onto the motherboard using high-speed bus architectures. Third-party manufacturers faced the cha",
+    false
+  ],
+  [
+    88,
+    "Why IBM PS/2 Integrated VGA on the Planar",
+    "When IBM introduced the Personal System/2 (PS/2) in 1987, it radically altered PC hardware design by soldering the newly developed Video Graphics Array (VGA) directly onto the system planar (motherboard). This article examines the strategic, technical, a",
+    false
+  ],
+  [
+    87,
+    "VGA Split Screen with the CRTC Line Compare Register",
+    "This article explains the mechanics of implementing a hardware-level split screen on standard Video Graphics Array (VGA) hardware using the Cathode Ray Tube Controller (CRTC) Line Compare register. It details how the CRTC tracks scanlines, how matching t",
+    false
+  ],
+  [
+    86,
+    "Disable VGA Blinking to Unlock 16 Background Colors",
+    "In standard Video Graphics Array (VGA) text modes, each character on the screen is defined by a character byte and an attribute byte. By default, the most significant bit (bit 7) of the attribute byte is configured to trigger text blinking rather than ba",
+    false
+  ],
+  [
+    85,
+    "VGA CRTC Cursor Start and End Registers",
+    "In IBM VGA-compatible hardware, the vertical size, position, and visibility of the hardware text-mode cursor are determined by two dedicated registers within the Cathode Ray Tube Controller (CRTC): the Cursor Start Register (Index 0Ah) and the Cursor End",
+    false
+  ],
+  [
+    84,
+    "VGA Underline Location Register in Monochrome Display",
+    "The Video Graphics Array (VGA) Underline Location Register dictates the vertical positioning of the underline attribute within character cells during monochrome text operations. In monochrome text modes, such as the hardware-emulated MDA Mode 07h, standa",
+    false
+  ],
+  [
+    83,
+    "Spatial and Temporal Dithering in VGA Displays",
+    "The Video Graphics Array (VGA) standard revolutionized personal computer graphics in the late 1980s, but it was fundamentally constrained by video memory and digital-to-analog converter (DAC) capabilities, often limiting displays to just 16 or 256 simult",
+    false
+  ],
+  [
+    82,
+    "Causes of Color Banding in 256-Color VGA Gradients",
+    "Color banding in 256-color Video Graphics Array (VGA) gradients was caused by a combination of limited color depth, hardware constraints in digital-to-analog conversion, and human visual perception. Standard VGA modes, such as Mode 13h, could only displa",
+    false
+  ],
+  [
+    81,
+    "How TV Tuner Cards Used the VGA Feature Connector",
+    "In the late 1980s and early 1990s, personal computers lacked the bus bandwidth necessary to process and display full-motion video directly through the operating system. To circumvent this limitation, early TV tuner and video capture cards used the intern",
+    false
+  ],
+  [
+    80,
+    "Purpose of the VGA Feature Connector Explained",
+    "The Video Graphics Array (VGA) Feature Connector was an internal expansion interface found on early PC graphics adapters starting in the late 1980s. Designed to bypass the severe bandwidth limitations of early motherboard buses like ISA, the connector es",
+    false
+  ],
+  [
+    79,
+    "Why Early VGA Cards Had a Video Extension Connector",
+    "Early Video Graphics Array (VGA) graphics cards frequently included an auxiliary video extension connector—commonly known as the VGA Feature Connector—along the top edge of the circuit board. This specialized interface was designed to provide add-on",
+    false
+  ],
+  [
+    78,
+    "VGA Cable DDC Serial Data Pin Mapping",
+    "This article explains the pin mapping for the Display Data Channel (DDC) serial data line on a standard 15-pin Video Graphics Array (VGA) connector. It covers the specific pin designation required for bidirectional data transfer, the supplementary pins t",
+    false
+  ],
+  [
+    77,
+    "VGA Pinout: DDC Serial Clock Pin Mapping",
+    "On a modern 15-pin Video Graphics Array (VGA) connector, the Display Data Channel (DDC) serial clock line is mapped directly to Pin 15. This pin carries the Serial Clock (SCL) signal required for the I2C-based communication protocol that allows a display",
+    false
+  ],
+  [
+    76,
+    "Sync-on-Green in Professional Workstation VGA",
+    "Sync-on-green (SoG), often designated as RGsB, was a video signaling method widely utilized by high-end Unix workstations from manufacturers like Sun Microsystems, Silicon Graphics (SGI), Hewlett-Packard, and Digital Equipment Corporation (DEC). This art",
+    false
+  ],
+  [
+    75,
+    "Can VGA Carry Embedded Digital Audio Signals?",
+    "Standard Video Graphics Array (VGA) cannot transport embedded digital audio signals because it is strictly an analog video transmission interface. Introduced by IBM in 1987, VGA was engineered solely to transmit visual data from a computer to a monitor.",
+    false
+  ],
+  [
+    74,
+    "Max VGA Resolution and Refresh Rate Limits",
+    "While the analog Video Graphics Array (VGA) interface does not feature a fixed digital pixel limit, physical signal attenuation and hardware capabilities establish hard practical boundaries. This guide outlines the maximum practical resolution and refres",
+    false
+  ],
+  [
+    73,
+    "Why VGA Degrades on Modern High-Res Displays",
+    "Modern high-resolution displays exhibit noticeable visual degradation when connected via an analog Video Graphics Array (VGA) interface because of signal conversion loss, bandwidth limitations, and electronic interference. While older cathode-ray tube (C",
+    false
+  ],
+  [
+    72,
+    "How LCD Monitor Auto Adjust Optimizes VGA Connections",
+    "The \"Auto Adjust\" feature on an LCD monitor optimizes an analog Video Graphics Array (VGA) connection by automatically calibrating the monitor's internal Analog-to-Digital Converter (ADC) to match the incoming video signal. Because VGA transmits continuo",
+    false
+  ],
+  [
+    71,
+    "VGA Clock and Phase Artifacts on LCD Monitors Explained",
+    "Connecting an LCD monitor to a computer using an analog Video Graphics Array (VGA) cable often results in distracting visual noise, such as pixel shimmering, fuzzy text, and vertical banding. This phenomenon occurs because of the fundamental incompatibil",
+    false
+  ],
+  [
+    70,
+    "How an LCD Monitor ADC Digitizes a VGA Signal",
+    "Liquid Crystal Displays (LCDs) are inherently digital devices, yet legacy video interfaces like Video Graphics Array (VGA) transmit video as continuous analog waveforms. To display a VGA source on a modern panel, an LCD monitor uses a specialized analog-",
+    false
+  ],
+  [
+    69,
+    "Internal Circuitry of an Active HDMI to VGA Converter",
+    "An active HDMI to Video Graphics Array (VGA) converter bridges the technological gap between modern digital video sources and legacy analog displays. Because HDMI relies on encrypted, packetized digital streams while VGA requires high-frequency analog vo",
+    false
+  ],
+  [
+    68,
+    "Can a Passive Adapter Convert HDMI to VGA?",
+    "A passive adapter cannot convert a digital HDMI output to an analog Video Graphics Array (VGA) monitor. HDMI transmits uncompressed digital data, whereas VGA requires an analog waveform to display an image. Because a passive adapter merely reroutes elect",
+    false
+  ],
+  [
+    67,
+    "VGA vs DVI-D: Analog vs Digital Video Signals",
+    "This article examines the core technological differences between analog Video Graphics Array (VGA) and digital Digital Visual Interface (DVI-D) display standards. While both interfaces were designed to transmit visual data from a host computer to a displ",
+    false
+  ],
+  [
+    66,
+    "Purpose of the VGA Pel Mask Register",
+    "This article provides an overview of the Video Graphics Array (VGA) Pel Mask register, explaining its role within the graphics pipeline during color index lookups. It details how the register intercepts pixel data between video memory and the digital-to-",
+    false
+  ],
+  [
+    65,
+    "VGA DAC Palette Read and Write Index Handling",
+    "The Video Graphics Array (VGA) uses a dedicated color palette system managed by the Color Lookup Table (CLUT) inside the RAMDAC. This article explains how the VGA DACPEL registers coordinate palette read and write operations, detailing how internal addre",
+    false
+  ],
+  [
+    64,
+    "Why VGA Mode 13h Was Best for Fast 3D Texture Mapping",
+    "During the early 1990s, PC game developers faced severe hardware constraints while attempting to render real-time 3D worlds on Intel 386 and 486 processors. Video Graphics Array (VGA) Mode 13h emerged as the undisputed standard for groundbreaking titles",
+    false
+  ],
+  [
+    63,
+    "How VGA Planar Modes Achieve Quad-Pixel Writes",
+    "This article explains the hardware mechanism that allows planar Video Graphics Array (VGA) modes to draw four adjacent pixels in a single memory cycle. By configuring VGA memory into an unchained planar layout—commonly known as \"Mode X\"—and enabling",
+    false
+  ],
+  [
+    62,
+    "How VGA Page Flipping Works in 256 KB Memory",
+    "Page flipping on a standard 256 KB Video Graphics Array (VGA) adapter is a hardware-level double-buffering technique that eliminates visual tearing during animation. By partitioning the available 256 KB of video RAM into distinct display buffers, softwar",
+    false
+  ],
+  [
+    61,
+    "VGA Hardware Scrolling in Mode X vs Mode 13h",
+    "During the MS-DOS era of PC gaming, achieving smooth, full-screen scrolling was a major technical hurdle. While standard VGA Mode 13h was beloved for its simple, linear memory addressing, it severely restricted hardware-accelerated scrolling due to memor",
+    false
+  ],
+  [
+    60,
+    "Using VGA Vertical Retrace for Smooth Animation",
+    "Synchronizing software rendering with the display hardware is fundamental to achieving fluid visual motion on legacy systems. In Video Graphics Array (VGA) programming, software developers rely on the vertical retrace interrupt—also known as the Vertic",
+    false
+  ],
+  [
+    59,
+    "How VGA Blanking Intervals Prevent Screen Flicker",
+    "This article explains the critical role of the Video Graphics Array (VGA) blanking interval in maintaining visual stability on display devices. It examines how horizontal and vertical blanking periods originated in cathode-ray tube (CRT) technology, how",
+    false
+  ],
+  [
+    58,
+    "VGA Memory Banking: Accessing VRAM Beyond 256 KB",
+    "The original IBM Video Graphics Array (VGA) standard was fundamentally constrained by the IBM PC real-mode architecture to a maximum of 256 KB of video memory mapped across a small physical address space. To overcome this ceiling and deliver higher resol",
+    false
+  ],
+  [
+    57,
+    "High-Resolution Programming on Non-Standard VGA",
+    "Programming high resolutions on non-standardized Video Graphics Array (VGA) chipsets presented severe obstacles for early PC developers due to hardware fragmentation. Before industry standardization, graphics card manufacturers created proprietary Super",
+    false
+  ],
+  [
+    56,
+    "How VESA BIOS Extensions Unified Super VGA Programming",
+    "The introduction of the VESA BIOS Extensions (VBE) resolved severe fragmentation in the PC graphics market during the late 1980s and 1990s by providing a universal software interface for Super VGA (SVGA) hardware. As manufacturers released proprietary VG",
+    false
+  ],
+  [
+    55,
+    "Who Standardized Resolutions Beyond VGA?",
+    "The Video Electronics Standards Association (VESA) is the organization responsible for standardizing display resolutions beyond the original Video Graphics Array (VGA) specification. Established to resolve hardware incompatibilities that arose after IBM",
+    false
+  ],
+  [
+    54,
+    "SVGA vs VGA: Key Differences Explained",
+    "The transition from IBM's Video Graphics Array (VGA) to Super Video Graphics Array (SVGA) marked a critical evolution in PC display technology, significantly enhancing visual fidelity and performance. While VGA established the baseline for analog compute",
+    false
+  ],
+  [
+    53,
+    "How Multisync Monitors Handled VGA Frequencies",
+    "This article examines how multisync (multiscan) monitors adapted to the flexible timing requirements of the Video Graphics Array (VGA) standard. Before multisync technology, computer displays were hardwired to strict, singular scan rates. The introductio",
+    false
+  ],
+  [
+    52,
+    "VGA Sync Polarity for 350-Line Displays",
+    "Video Graphics Array (VGA) standards utilize the polarity of the horizontal and vertical synchronization signals to communicate the display's vertical resolution to the monitor. This article explains the specific synchronization polarity combination used",
+    false
+  ],
+  [
+    51,
+    "VGA Sync Polarity for 400-Line Display",
+    "In the standard Video Graphics Array (VGA) interface, monitors determine the active vertical resolution of an incoming analog signal by detecting the polarity of its synchronization signals. To signal a 400-line active display, the VGA standard utilizes",
+    false
+  ],
+  [
+    50,
+    "VGA Sync Polarity for 480-Line Displays",
+    "Standard Video Graphics Array (VGA) displays rely on the polarities of horizontal and vertical synchronization pulses to communicate resolution geometry to the monitor. For a standard 480-line active display, both the Horizontal Sync (H-Sync) and Vertica",
+    false
+  ],
+  [
+    49,
+    "How VGA Sync Polarity Sets Vertical Resolution",
+    "This article explains how the Video Graphics Array (VGA) standard communicates vertical resolution to analog monitors using the electrical polarity of synchronization signals. Before digital display communication standards like DDC and EDID were introduc",
+    false
+  ],
+  [
+    48,
+    "720x400 VGA Text Mode Refresh Rate Explained",
+    "This article explores the technical specifications of the classic Video Graphics Array (VGA) standard, focusing specifically on the vertical refresh rate used for its standard 720x400 text mode. It explains the exact refresh frequency, the engineering de",
+    false
+  ],
+  [
+    47,
+    "Why VGA Uses a 28.322 MHz Dot Clock for Text Mode",
+    "When IBM introduced the Video Graphics Array (VGA) in 1987, it established two primary hardware pixel clocks: 25.175 MHz for 640-pixel graphic modes and 28.322 MHz for 720-pixel text modes. The selection of the 28.322 MHz dot clock was the mathematical c",
+    false
+  ],
+  [
+    46,
+    "Why VGA Uses a 25.175 MHz Dot Clock",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987, it established 25.175 MHz as the dot clock frequency for standard 640-pixel wide modes. This article explains the technical reasons behind that choice, detailing how television broadcas",
+    false
+  ],
+  [
+    45,
+    "Original IBM VGA Hardware Pixel Clock Frequencies",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987 with the PS/2 line of computers, it established a foundational display specification that endured for decades. This article explores the internal timing architecture of the original IBM",
+    false
+  ],
+  [
+    44,
+    "VGA Misc Output Register Clock Selection",
+    "The Video Graphics Array (VGA) Miscellaneous Output Register serves as a fundamental hardware control register responsible for configuring core board-level settings, most notably the selection of the master dot clock frequency. By manipulating dedicated",
+    false
+  ],
+  [
+    43,
+    "Why VGA CRTC Port Address Changes in Mono and Color",
+    "The Video Graphics Array (VGA) Cathode Ray Tube Controller (CRTC) shifts its base I/O port addresses between 0x3B4 in monochrome mode and 0x3D4 in color mode to maintain strict hardware backward compatibility with the original IBM PC architecture. In the",
+    false
+  ],
+  [
+    42,
+    "VGA CRTC Register x86 I/O Port Ranges",
+    "In the x86 architecture, the Video Graphics Array (VGA) Cathode Ray Tube Controller (CRTC) registers are mapped to specific port address ranges within the processor's I/O space. This article details the primary port ranges used to communicate with the CR",
+    false
+  ],
+  [
+    41,
+    "How VGA Latch Registers Enable Fast 32-Bit Access",
+    "This article explains how the Video Graphics Array (VGA) architecture utilizes internal latch registers to overcome the bandwidth limitations of an 8-bit expansion bus. By loading and writing data across four parallel memory planes simultaneously, these",
+    false
+  ],
+  [
+    40,
+    "VGA Bit Mask Register in Read-Modify-Write Cycles",
+    "This article provides an overview of the Video Graphics Array (VGA) bit mask register and its essential function during CPU read-modify-write (RMW) cycles. It explains how planar memory architecture necessitates bit-level control and details the hardware",
+    false
+  ],
+  [
+    39,
+    "How VGA Planar Memory Operates in 16-Color Modes",
+    "Standard 16-color Video Graphics Array (VGA) modes utilize a planar memory architecture where 256 KB of video RAM is divided across four parallel 64 KB memory planes. This article explains how planar memory maps color data to screen coordinates, how the",
+    false
+  ],
+  [
+    38,
+    "Total Colors in the 18-Bit VGA Palette",
+    "The Video Graphics Array (VGA) display standard introduced by IBM in 1987 revolutionized PC visuals by implementing an 18-bit color palette. This article details the mathematical calculation behind the total number of colors that an 18-bit VGA system can",
+    false
+  ],
+  [
+    37,
+    "Bits Per Channel in the VGA 18-Bit DAC Palette",
+    "The Video Graphics Array (VGA) standard, introduced by IBM in 1987, relies on an 18-bit digital-to-analog converter (DAC) to produce color video output. This article details the specific bit allocation per color channel in the VGA DAC, explains how the h",
+    false
+  ],
+  [
+    36,
+    "Standard VGA Color Palette Lookup Table Size",
+    "This article examines the memory size and architecture of the color palette lookup table in standard Video Graphics Array (VGA) hardware. It outlines the specific bit depth allocated to color channels, calculates the total effective data capacity of the",
+    false
+  ],
+  [
+    35,
+    "VGA Mode 12h Simultaneous Colors Explained",
+    "VGA Mode 12h is one of the most iconic standard graphics modes introduced with the IBM Video Graphics Array standard in 1987. This article provides a clear overview of the color architecture of Mode 12h, specifically addressing how many colors can appear",
+    false
+  ],
+  [
+    34,
+    "Pixel Aspect Ratio of 320x200 on a 4:3 VGA Screen",
+    "Displaying a 320x200 graphic on a standard 4:3 Video Graphics Array (VGA) monitor results in a Pixel Aspect Ratio (PAR) of 5:6, or approximately 0.833:1. This article explains the mathematical formula used to calculate this aspect ratio, details why vint",
+    false
+  ],
+  [
+    33,
+    "Why Early VGA Double Scanned 320x200 Graphics",
+    "Early Video Graphics Array (VGA) hardware utilized scan line doubling for 320x200 display modes primarily to maintain electrical and timing compatibility with fixed-frequency analog monitors. When IBM introduced the VGA standard in 1987, it standardized",
+    false
+  ],
+  [
+    32,
+    "How VGA Emulates CGA Modes Using BIOS Interrupts",
+    "This article explains how the Video Graphics Array (VGA) maintains backward compatibility with the Color Graphics Adapter (CGA) through BIOS interrupts. When legacy software requests a CGA display mode, the VGA BIOS intervenes via Interrupt 10h (INT 10h)",
+    false
+  ],
+  [
+    31,
+    "VGA Backward Compatibility With EGA Display Modes",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987 with the PS/2 line of computers, ensuring backward compatibility with the Enhanced Graphics Adapter (EGA) was essential for user adoption. VGA maintained this compatibility through a com",
+    false
+  ],
+  [
+    30,
+    "DE-15 vs HD-15: VGA Connector Differences Explained",
+    "While the terms DE-15 and HD-15 are frequently used interchangeably to describe the standard 15-pin connector found on analog Video Graphics Array (VGA) cables, they refer to the exact same physical hardware. The primary difference lies in technical nome",
+    false
+  ],
+  [
+    29,
+    "How VGA Signal Attenuation Affects Image Sharpness",
+    "Video Graphics Array (VGA) transmits video as an analog waveform, making it inherently vulnerable to signal degradation over physical cable runs. At higher display resolutions, the transmission frequency increases dramatically, accelerating the effects o",
+    false
+  ],
+  [
+    28,
+    "What Causes VGA Cable Ghosting and Ringing?",
+    "Ghosting and ringing artifacts in long, unshielded Video Graphics Array (VGA) cables are primarily caused by impedance mismatches, signal reflections, cable capacitance, and external electromagnetic interference. Because VGA relies on high-frequency anal",
+    false
+  ],
+  [
+    27,
+    "How VGA Pin 9 Was Repurposed for 5V Power",
+    "Originally designed as a physical key to prevent improper cable insertion, Pin 9 on the standard DE-15 Video Graphics Array (VGA) connector was later repurposed to supply +5V DC power. This article examines the historical transition of Pin 9 from an omit",
+    false
+  ],
+  [
+    26,
+    "Which VGA Pin Was Originally Removed?",
+    "The standard Video Graphics Array (VGA) connector features a three-row, 15-pin layout known as the DE-15 connector, but Pin 9 was originally omitted or blocked to act as a physical key. This article explains which pin served as the VGA key pin, why it wa",
+    false
+  ],
+  [
+    25,
+    "Display Data Channel Operation Over Modern VGA Cables",
+    "The Display Data Channel (DDC) protocol enables digital communication between a computer's graphics card and a display monitor across an otherwise analog Video Graphics Array (VGA) interface. By leveraging a low-speed serial bus integrated into the stand",
+    false
+  ],
+  [
+    24,
+    "VGA Pin Assignment for Vertical Sync",
+    "This article provides an overview of the pin configuration on a standard Video Graphics Array (VGA) connector, identifying the exact pin designated for the vertical synchronization (V-Sync) signal and detailing its function in video transmission. On a st",
+    false
+  ],
+  [
+    23,
+    "VGA Horizontal Sync Pin Assignment",
+    "On a standard Video Graphics Array (VGA) connector, the horizontal sync signal is assigned specifically to Pin 13. This article outlines the exact pinout details for horizontal sync on the standard DE-15 connector, explains its electrical specifications,",
+    false
+  ],
+  [
+    22,
+    "VGA Pinout: Which Pin Carries the Blue Signal?",
+    "This guide identifies the specific pin responsible for the blue analog video signal on a standard 15-pin DE-15 Video Graphics Array (VGA) connector. In addition to pinpointing the exact signal line, this article covers its dedicated ground return pin, si",
+    false
+  ],
+  [
+    21,
+    "VGA Pinout: Which Pin Carries the Green Signal?",
+    "On a standard DE-15 Video Graphics Array (VGA) connector, pin 2 is dedicated to transmitting the green analog video signal. This guide outlines the exact pin location, the role of its associated ground return line, and the diagnostic implications when th",
+    false
+  ],
+  [
+    20,
+    "Which VGA Pin Carries the Red Analog Signal?",
+    "On a standard DE-15 Video Graphics Array (VGA) connector, Pin 1 is responsible for carrying the red analog video signal. This article explains the pinout configuration of the DE-15 connector, highlights the specific role of Pin 1, and details the associa",
+    false
+  ],
+  [
+    19,
+    "Why VGA Monitors Need 75-Ohm Termination Resistors",
+    "A standard Video Graphics Array (VGA) monitor requires 75-ohm termination resistors on its red, green, and blue (RGB) color lines to prevent signal reflections, maintain signal integrity, and establish standard voltage levels for accurate color display.",
+    false
+  ],
+  [
+    18,
+    "VGA Graphics Controller Registers During CPU Writes",
+    "During CPU write operations, the Video Graphics Array (VGA) Graphics Controller registers act as a hardware data pipeline that dictates how bytes sent from the processor are transformed, expanded, and merged into video memory (VRAM). Because the VGA arch",
+    false
+  ],
+  [
+    17,
+    "VGA Attribute Controller Palette Lookups Explained",
+    "The Video Graphics Array (VGA) Attribute Controller serves as the critical intermediary in the display pipeline, bridging the raw pixel data stored in video memory with the digital-to-analog converter (RAMDAC). By utilizing a set of internal palette regi",
+    false
+  ],
+  [
+    16,
+    "VGA Sequencer Role in Video Rendering",
+    "The Video Graphics Array (VGA) Sequencer register block is a foundational hardware component responsible for generating base timing signals, managing video memory access, and coordinating pixel data flow during the rendering process. This article explore",
+    false
+  ],
+  [
+    15,
+    "VGA Hardware Registers for Display Timing",
+    "In the standard Video Graphics Array (VGA) architecture, dedicated hardware register blocks manage everything from color palettes to memory mapping. This article identifies the specific register block responsible for horizontal and vertical timing, expla",
+    false
+  ],
+  [
+    14,
+    "Standard 80x25 VGA Text Mode Character Dimensions",
+    "This article examines the standard character cell dimensions utilized in the classic 80x25 Video Graphics Array (VGA) text mode. In its default hardware configuration, VGA text mode displays 80 columns by 25 rows of text using a cell size of 9x16 pixels,",
+    false
+  ],
+  [
+    13,
+    "Why VGA Text Mode Uses 720x400 Resolution",
+    "Standard Video Graphics Array (VGA) text mode operates at a resolution of 720x400 instead of 640x400 because it utilizes a 9x16 pixel character cell rather than an 8x16 cell. When displaying the standard 80 columns and 25 rows of text, an 80-column layou",
+    false
+  ],
+  [
+    12,
+    "VGA Mode X vs Mode 13h: Memory Organization",
+    "This article examines how IBM's standard VGA Mode 13h and the programmer-tweaked Mode X differ in their underlying video memory architectures. While standard Mode 13h offers a simple, linear framebuffer that limits the developer to a single 64 KB window,",
+    false
+  ],
+  [
+    11,
+    "What Is the Native Resolution of VGA Mode 13h?",
+    "This article examines the technical specifications of Video Graphics Array (VGA) Mode 13h, focusing on its native pixel resolution, color capabilities, memory architecture, and historical impact on PC game development. The native pixel resolution of VGA",
+    false
+  ],
+  [
+    10,
+    "How VGA Mode 13h Achieves 256 Colors",
+    "Mode 13h is a standard IBM Video Graphics Array (VGA) graphics mode introduced in 1987 that provides a resolution of 320x200 pixels with 256 simultaneous colors. It achieves its display capability by pairing a linear memory architecture—where exactly o",
+    false
+  ],
+  [
+    9,
+    "Original IBM VGA Card Video RAM Specifications",
+    "This article examines the hardware specifications of the original IBM Video Graphics Array (VGA), focusing specifically on the memory capacity included with its first release. It details the exact amount of video RAM integrated into the hardware, how thi",
+    false
+  ],
+  [
+    8,
+    "Why Was VGA Analog Instead of Digital Like EGA?",
+    "When IBM introduced the Video Graphics Array (VGA) standard in 1987 with the PS/2 line of computers, it marked a major shift away from the digital interfaces used by its predecessors, CGA and EGA. While modern displays rely almost entirely on digital sta",
+    false
+  ],
+  [
+    7,
+    "What Voltage Range Is Used for VGA RGB Color Signals?",
+    "Video Graphics Array (VGA) interfaces carry analog video via three dedicated color lines: red, green, and blue. In standard implementations, these color signals operate within a peak-to-peak voltage range of 0.0 V to 0.7 V into a standard 75-ohm terminat",
+    false
+  ],
+  [
+    6,
+    "How Does a VGA DAC Convert Color Indices to Analog?",
+    "The Video Graphics Array (VGA) Digital-to-Analog Converter (RAMDAC) translates indexed digital display data into continuous analog voltages that cathode-ray tube (CRT) monitors require to produce an image. Instead of storing discrete color intensities di",
+    false
+  ],
+  [
+    5,
+    "What Is the Horizontal Sync for 640x480 60Hz VGA?",
+    "The default horizontal synchronization (H-sync) frequency for an industry-standard 640x480 Video Graphics Array (VGA) signal running at 60 Hz is 31.469 kHz (commonly rounded to 31.5 kHz). This timing standard, established by IBM and formalized by VESA, d",
+    false
+  ],
+  [
+    4,
+    "How Many Color Planes Does VGA Hardware Use?",
+    "The classic Video Graphics Array (VGA) hardware architecture uses 4 color planes (Planes 0 through 3) in its native physical memory arrangement. Introduced by IBM in 1987 with the PS/2 series, the standard 256 KB VGA frame buffer is structured as four pa",
+    false
+  ],
+  [
+    3,
+    "How Many Pins Does a DE-15 VGA Connector Have?",
+    "A standard DE-15 Video Graphics Array (VGA) connector has 15 pins arranged in three horizontal rows of five pins each. First introduced by IBM in 1987 alongside the PS/2 line of personal computers, the connector served as the primary analog display stand",
+    false
+  ],
+  [
+    2,
+    "Which IBM PC First Featured Built-in VGA?",
+    "The IBM Personal System/2 (PS/2) family, launched in April 1987, was the first computer line to feature the Video Graphics Array (VGA) directly integrated onto the motherboard. Designed to replace the older PC, XT, and AT architectures, the PS/2 introduc",
+    false
+  ],
+  [
+    1,
+    "What Year Was IBM VGA Introduced?",
+    "IBM introduced the Video Graphics Array (VGA) display standard in 1987 alongside the launch of its Personal System/2 (PS/2) computer line. VGA marked a major leap forward in personal computer display technology, establishing a 640×480 pixel resolution b",
+    false
+  ]
+]

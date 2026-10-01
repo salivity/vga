@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How BMCs Use Virtual VGA for Remote Consoles - vga</title>
+    <meta name="description" content="Baseboard Management Controllers (BMCs) use integrated virtual Video Graphics Array (VGA) adapters to capture, encode, and transmit a physical server's visual output over the network to a remote administrator. By embedding a dedicated low-power 2D graphi">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-bm-cs-use-virtual-vga-for-remote-consoles">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How BMCs Use Virtual VGA for Remote Consoles - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-bm-cs-use-virtual-vga-for-remote-consoles" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Baseboard Management Controllers (BMCs) use integrated virtual Video Graphics Array (VGA) adapters to capture, encode, and transmit a physical server's visual output over the network to a remote administrator. By embedding a dedicated low-power 2D graphi" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-bmcs-use-virtual-vga-for-remote-consoles">How BMCs Use
+Virtual VGA for Remote Consoles</h1>
+<p>Baseboard Management Controllers (BMCs) use integrated virtual Video
+Graphics Array (VGA) adapters to capture, encode, and transmit a
+physical server's visual output over the network to a remote
+administrator. By embedding a dedicated low-power 2D graphics controller
+directly into the management processor, the BMC provides continuous
+access to the server’s display output from power-on through operating
+system execution. This out-of-band architecture enables full keyboard,
+video, and mouse (KVM) redirection even if the host operating system
+crashes or lacks network connectivity.</p>
+<h3 id="the-host-side-hardware-interface">The Host-Side Hardware
+Interface</h3>
+<p>At the physical hardware level, modern BMC system-on-chips
+(SoCs)—such as the ASPEED AST series—include an integrated 2D graphics
+controller alongside the management processor. This graphics controller
+exposes itself to the server's central processing unit (CPU) over the
+PCI Express (PCIe) bus as a standard VGA-compatible display adapter.</p>
+<p>Because the device presents standard PCI configuration registers, the
+host’s BIOS/UEFI firmware and operating systems (such as Linux or
+Windows Server) treat it as a native, local graphics card. The host
+loads standard display drivers and writes video data directly to the
+memory-mapped frame buffer allocated for this adapter, entirely unaware
+that the device is managed by an auxiliary controller.</p>
+<h3 id="frame-buffer-capture-and-differential-encoding">Frame Buffer
+Capture and Differential Encoding</h3>
+<p>The BMC’s internal silicon bridges the display output to the
+management environment through memory sharing:</p>
+<ol type="1">
+<li><strong>Shared Frame Buffer:</strong> When the host OS renders text
+or graphics, the display controller writes the raw pixel data to
+dedicated video RAM (VRAM) or shared system RAM managed by the BMC.</li>
+<li><strong>Video Capture Engine:</strong> The BMC features a built-in
+hardware capture engine that continuously scans the frame buffer for
+modifications.</li>
+<li><strong>Differential Compression:</strong> Rather than constantly
+encoding and transmitting the full display at 60 frames per second, the
+capture engine calculates differences between frames (dirty rectangles).
+It compresses only the regions of the screen that have changed using
+hardware-accelerated algorithms, such as modified JPEG, run-length
+encoding (RLE), or H.264 video compression. This minimizes both network
+bandwidth and BMC CPU utilization.</li>
+</ol>
+<h3 id="kvm-over-ip-transmission">KVM-over-IP Transmission</h3>
+<p>Once the display data is captured and compressed, the BMC’s internal
+operating system (typically an embedded Linux distribution like OpenBMC)
+packages the video frames into network payloads.</p>
+<p>The BMC streams this data across the dedicated out-of-band management
+network interface via secure protocols (such as WebSockets or
+TLS-encrypted TCP sockets). On the client side, modern BMC
+implementations render this stream directly inside a standard web
+browser using HTML5 Canvas and JavaScript APIs, eliminating the
+historical requirement for specialized client software or legacy Java
+applets.</p>
+<h3 id="bidirectional-input-redirection">Bidirectional Input
+Redirection</h3>
+<p>Display output represents only half of the remote console pipeline.
+To make the virtual VGA console interactive, the BMC simultaneously acts
+as a USB host controller to the main server. The BMC firmware emulates a
+standard USB composite device containing a keyboard and a mouse.</p>
+<p>When a user interacts with the remote console window:</p>
+<ul>
+<li>The web client captures mouse events and keystrokes.</li>
+<li>Input events are sent over the network to the BMC.</li>
+<li>The BMC translates these network packets into standard USB Human
+Interface Device (HID) reports.</li>
+<li>The host operating system receives these signals as native hardware
+inputs, creating a seamless, low-latency remote interaction model
+identical to standing directly in front of a local physical monitor and
+crash cart.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

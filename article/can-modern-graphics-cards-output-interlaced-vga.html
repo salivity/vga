@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can Modern Graphics Cards Output Interlaced VGA? - vga</title>
+    <meta name="description" content="Modern graphics cards cannot natively output an interlaced Video Graphics Array (VGA) signal. Contemporary GPUs from NVIDIA, AMD, and Intel have entirely phased out legacy analog circuitry (RAMDACs) and native support for interlaced timings. While active">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/can-modern-graphics-cards-output-interlaced-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Can Modern Graphics Cards Output Interlaced VGA? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/can-modern-graphics-cards-output-interlaced-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Modern graphics cards cannot natively output an interlaced Video Graphics Array (VGA) signal. Contemporary GPUs from NVIDIA, AMD, and Intel have entirely phased out legacy analog circuitry (RAMDACs) and native support for interlaced timings. While active" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="can-modern-graphics-cards-output-interlaced-vga">Can Modern
+Graphics Cards Output Interlaced VGA?</h1>
+<p>Modern graphics cards cannot natively output an interlaced Video
+Graphics Array (VGA) signal. Contemporary GPUs from NVIDIA, AMD, and
+Intel have entirely phased out legacy analog circuitry (RAMDACs) and
+native support for interlaced timings. While active digital-to-analog
+converters can translate modern digital signals to standard progressive
+VGA, generating a true interlaced analog signal (such as 480i or 1080i)
+directly from a modern graphics pipeline is effectively unsupported due
+to hardware, driver, and converter limitations.</p>
+<h3 id="the-elimination-of-native-analog-hardware">The Elimination of
+Native Analog Hardware</h3>
+<p>Native VGA output requires a Random Access Memory Digital-to-Analog
+Converter (RAMDAC), which converts digital pixel data into analog RGB
+voltage levels. For decades, GPUs included RAMDACs either directly on
+the silicon or via integrated DVI-I ports, which carried both digital
+and analog pins.</p>
+<p>Modern architectures (such as NVIDIA GeForce RTX, AMD Radeon RX, and
+Intel Arc) have completely stripped out RAMDAC hardware to save die
+space and reduce power consumption. Modern cards output purely digital
+signals using DisplayPort and HDMI protocols. Because there is no analog
+physical layer on the GPU, a modern card cannot generate any VGA
+signal—progressive or interlaced—without an external converter.</p>
+<h3 id="digital-protocols-dropped-interlaced-support">Digital Protocols
+Dropped Interlaced Support</h3>
+<p>Interlacing is a legacy display technique originally designed for CRT
+televisions, where an image is split into two alternating fields (odd
+and even lines) drawn sequentially. While early digital specifications
+like HDMI 1.3 and DisplayPort 1.1 allowed for certain interlaced modes
+(like 1080i), modern display pipelines are fundamentally designed around
+progressive scan.</p>
+<p>Modern GPU display controllers (the internal hardware blocks
+responsible for generating video timings) no longer include the timing
+generators required to alternate vertical sync intervals and split
+frames into odd and even fields. Consequently, modern operating systems
+and display drivers from NVIDIA and AMD have progressively deprecated
+the ability to set interlaced resolutions.</p>
+<h3 id="limitations-of-active-adapters">Limitations of Active
+Adapters</h3>
+<p>Because modern cards only output digital signals, users must rely on
+active DisplayPort-to-VGA or HDMI-to-VGA adapters to connect to analog
+displays. These adapters contain small microcontrollers that decode the
+digital video stream and synthesize an analog RGB signal.</p>
+<p>However, virtually all commercial active converters are designed
+exclusively for progressive signals. They expect standard progressive
+timings (such as 640x480p, 1920x1080p) and lack the logic required to
+parse or reconstruct an interlaced field sequence. If you attempt to
+feed an interlaced digital signal into a standard converter—even via
+custom resolution software—the adapter will typically fail to lock onto
+the signal, output a black screen, or cause synchronization errors.</p>
+<h3 id="software-workarounds-and-their-limits">Software Workarounds and
+Their Limits</h3>
+<p>Tools like Custom Resolution Utility (CRU) allow users to define
+custom display timings within Windows. While CRU theoretically allows
+users to tick an "Interlaced" flag on custom resolutions:</p>
+<ol type="1">
+<li>Modern GPU drivers usually reject or ignore the interlaced flag
+during the hardware handshake.</li>
+<li>Even if the driver accepts the timing, the physical DisplayPort or
+HDMI transmitter rarely serializes the data in a format a standard
+active VGA DAC can decode into alternating fields.</li>
+</ol>
+<h3 id="achieving-interlaced-vga-today">Achieving Interlaced VGA
+Today</h3>
+<p>To send an interlaced signal to a legacy display (such as a CRT
+monitor or broadcast monitor) from a modern system, you cannot rely on
+the modern GPU alone. You must use one of the following methods:</p>
+<ul>
+<li><strong>Downscalers and Scan Converters:</strong> Output a standard
+progressive resolution (like 480p or 1080p) from the modern GPU, then
+run the signal through an external hardware scan converter (such as a
+GBS-Control or an Extron digital-to-analog scaler) that actively buffers
+the progressive frames and re-encodes them into an interlaced analog
+output.</li>
+<li><strong>Secondary Legacy GPUs:</strong> Install an older secondary
+graphics card (such as an AMD Radeon HD 5000 or 6000 series with native
+analog DVI-I output) alongside custom drivers (like CRT Emudriver)
+specifically engineered to output low-frequency interlaced signals.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

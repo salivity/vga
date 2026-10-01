@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Palette Glitches and Snow Artifacts Explained - vga</title>
+    <meta name="description" content="During the late 1980s and early 1990s, the transition from IBM's proprietary graphics hardware to inexpensive, third-party Video Graphics Array (VGA) clones introduced subtle hardware quirks to the PC ecosystem. Among the most noticeable were visual flaw">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-palette-glitches-and-snow-artifacts-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Palette Glitches and Snow Artifacts Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-palette-glitches-and-snow-artifacts-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="During the late 1980s and early 1990s, the transition from IBM's proprietary graphics hardware to inexpensive, third-party Video Graphics Array (VGA) clones introduced subtle hardware quirks to the PC ecosystem. Among the most noticeable were visual flaw" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-palette-glitches-and-snow-artifacts-explained">VGA Palette
+Glitches and Snow Artifacts Explained</h1>
+<p>During the late 1980s and early 1990s, the transition from IBM's
+proprietary graphics hardware to inexpensive, third-party Video Graphics
+Array (VGA) clones introduced subtle hardware quirks to the PC
+ecosystem. Among the most noticeable were visual flaws commonly referred
+to as "snow" or "palette glitches." This article examines why these
+visual disturbances occurred on early, unbuffered clone cards, exploring
+the hardware architecture of video memory and the internal palette
+digital-to-analog converter (RAMDAC), the bus contention that caused
+pixel corruption, and the software techniques developers used to
+circumvent these limitations.</p>
+<h3 id="the-mechanics-of-early-vga-display-architecture">The Mechanics
+of Early VGA Display Architecture</h3>
+<p>An authentic IBM VGA adapter continuously reads video memory (VRAM)
+to generate a raster signal for an analog CRT monitor. The graphics
+controller fetches pixel indices from memory and routes them to the
+RAMDAC, which translates the indices into red, green, and blue voltage
+levels via an internal color lookup table (CLUT).</p>
+<p>To ensure clean output, the system must juggle two competing demands:
+the CPU modifying screen contents or palette values, and the RAMDAC
+constantly reading data to refresh the display in real time. IBM handled
+this through sophisticated wait-state generation, write buffers, and
+carefully timed arbitration circuits.</p>
+<h3 id="what-causes-snow-and-palette-glitches">What Causes "Snow" and
+Palette Glitches?</h3>
+<p>To produce affordable VGA cards, third-party manufacturers frequently
+eliminated costly components, opting for unbuffered architectures and
+single-ported dynamic RAM (DRAM). These cost-cutting measures led
+directly to two distinct visual defects:</p>
+<ol type="1">
+<li><p><strong>VRAM Memory Snow:</strong> When a graphics card lacks
+sufficient FIFO (First-In, First-Out) buffers or dual-ported VRAM, CPU
+writes to video memory take direct electrical priority over the
+controller's screen-refresh reads. If the CPU writes a byte to video
+memory while the display controller is actively reading the exact same
+address to draw a scanline, the read cycle is interrupted or corrupted.
+The monitor renders this corrupted data as fleeting white or
+multicolored specks across the screen, mimicking the look of static
+television "snow."</p></li>
+<li><p><strong>The Palette Glitch (RAMDAC Contention):</strong> The VGA
+palette allows software to redefine 256 colors by writing RGB triplets
+to I/O ports <code>0x3C8</code> and <code>0x3C9</code>. On fully
+buffered hardware, writes to these registers are staged so that the
+internal lookup table is not disturbed mid-scan. On unbuffered or poorly
+synchronized clone chipsets, writing to the palette registers while the
+RAMDAC is actively looking up pixel colors disrupts the internal DAC
+address bus. This collision causes the DAC to temporarily output
+incorrect voltage levels for several pixels, resulting in horizontal
+streaks, flashing bands, or flickering colors along the scanline
+currently being drawn.</p></li>
+</ol>
+<h3 id="software-workarounds-the-vertical-blanking-interval">Software
+Workarounds: The Vertical Blanking Interval</h3>
+<p>Because the underlying issue was a hardware race condition, software
+developers had to implement strict timing routines to avoid visual
+artifacts on budget hardware.</p>
+<p>The primary solution was synchronizing hardware writes with the
+monitor's <strong>Vertical Blanking Interval (VBLANK)</strong>:</p>
+<ul>
+<li><strong>Wait-for-Retrace Loops:</strong> Software repeatedly queried
+the VGA Status Register (port <code>0x3DA</code>) to detect when the
+CRT's electron beam finished drawing the frame and began moving back
+from the bottom of the screen to the top.</li>
+<li><strong>Timed Updating:</strong> Because the beam is turned off
+during VBLANK, the display controller does not require access to VRAM or
+the RAMDAC. Developers could safely burst memory changes and palette
+transitions during this small time window—typically roughly 1 to 1.4
+milliseconds—without producing visual noise.</li>
+<li><strong>Horizontal Blanking (HBLANK):</strong> For smaller updates,
+developers timed writes to the brief pause between individual scanlines,
+though this required cycle-accurate assembly code.</li>
+</ul>
+<h3 id="the-obsolescence-of-unbuffered-video-hardware">The Obsolescence
+of Unbuffered Video Hardware</h3>
+<p>As memory technology advanced into the early 1990s, manufacturers
+introduced faster dual-ported Video RAM (VRAM), multi-stage FIFOs, and
+integrated RAMDACs with internal write staging. These improvements
+enabled asynchronous access, allowing CPUs to read and write to display
+memory and palette registers freely without interrupting display
+generation, permanently eliminating snow and palette glitches from
+modern graphics hardware.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

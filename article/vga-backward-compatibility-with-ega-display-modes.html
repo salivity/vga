@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Backward Compatibility With EGA Display Modes - vga</title>
+    <meta name="description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987 with the PS/2 line of computers, ensuring backward compatibility with the Enhanced Graphics Adapter (EGA) was essential for user adoption. VGA maintained this compatibility through a com">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-backward-compatibility-with-ega-display-modes">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Backward Compatibility With EGA Display Modes - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-backward-compatibility-with-ega-display-modes" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987 with the PS/2 line of computers, ensuring backward compatibility with the Enhanced Graphics Adapter (EGA) was essential for user adoption. VGA maintained this compatibility through a com" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-backward-compatibility-with-ega-display-modes">VGA Backward
+Compatibility With EGA Display Modes</h1>
+<p>When IBM introduced the Video Graphics Array (VGA) standard in 1987
+with the PS/2 line of computers, ensuring backward compatibility with
+the Enhanced Graphics Adapter (EGA) was essential for user adoption. VGA
+maintained this compatibility through a combination of hardware-level
+register supersets, planar memory architecture, scan-line adjustments,
+digital-to-analog palette emulation, and extensive BIOS support. This
+allowed existing DOS software designed for EGA hardware to run
+seamlessly on newer VGA systems without modification.</p>
+<h3 id="register-level-architecture-and-superset-design">Register-Level
+Architecture and Superset Design</h3>
+<p>VGA achieved hardware compatibility primarily by implementing the EGA
+register architecture as a baseline. The VGA hardware featured the same
+four internal functional blocks found in EGA: the Sequencer, the Cathode
+Ray Tube Controller (CRTC), the Graphics Controller, and the Attribute
+Controller.</p>
+<p>Rather than replacing these components, IBM expanded them. VGA
+preserved the register addresses and bit definitions used by EGA,
+meaning software that bypassed the BIOS to write directly to hardware
+I/O ports (such as <code>0x3C0</code> to <code>0x3DF</code>) continued
+to function as expected. When an application configured these registers
+for an EGA mode, the VGA chip functioned in a strict EGA emulation
+state.</p>
+<h3 id="planar-memory-mapping">Planar Memory Mapping</h3>
+<p>EGA introduced a planar memory architecture, dividing its 256 KB
+memory into four distinct 64 KB memory banks (planes) accessible at
+memory segment <code>0xA000</code>. Each plane stored specific color bit
+information (red, green, blue, and intensity) for 16-color graphics
+modes.</p>
+<p>VGA retained this exact four-plane structure and supported the same
+memory write and read modes (Modes 0 through 3). Because memory
+addressing and bit-plane arrangements remained identical, EGA software
+that manipulated display memory directly could read and write pixel data
+on a VGA card without alteration.</p>
+<h3 id="video-timings-and-scan-line-handling">Video Timings and
+Scan-Line Handling</h3>
+<p>One major hardware difference between EGA and VGA was the monitor
+interface and horizontal scan rates. EGA monitors operated at horizontal
+sync frequencies of 15.7 kHz (for 200-line modes) and 21.8 kHz (for
+350-line modes). VGA monitors, by contrast, were fixed-frequency analog
+monitors operating at approximately 31.468 kHz, rendering vertical
+resolutions of 400 and 480 lines.</p>
+<p>To display EGA modes on 31.5 kHz analog displays, VGA adapted the
+video timings internally:</p>
+<ul>
+<li><strong>200-Line Modes:</strong> For legacy 200-line modes (such as
+320x200 or 640x200), VGA used hardware double-scanning. The hardware
+scanned each raster line twice, turning 200 lines of data into 400
+visible lines at 70 Hz.</li>
+<li><strong>350-Line Modes:</strong> For EGA’s native 640x350 mode (Mode
+10h), VGA altered the vertical sync and blanking parameters to center
+the 350 lines within a 400-line vertical timing framework, allowing it
+to sync properly with the 31.5 kHz monitor.</li>
+</ul>
+<h3 id="color-palette-translation">Color Palette Translation</h3>
+<p>EGA output a digital RGBI/6-bit signal capable of displaying 16
+simultaneous colors from a palette of 64 colors. VGA, conversely, output
+an analog RGB signal connected to a digital-to-analog converter (RAMDAC)
+with an 18-bit color space (262,144 colors).</p>
+<p>To preserve the appearance of EGA software, the VGA Attribute
+Controller maintained the original 16-entry palette register table. When
+an EGA mode was initialized, these registers were loaded with indices
+that pointed to specific RAMDAC color registers. The RAMDAC was
+pre-programmed with RGB values matching the exact intensities and hues
+of the 64 EGA colors, ensuring color fidelity on analog screens.</p>
+<h3 id="bios-interrupt-10h-support">BIOS Interrupt 10h Support</h3>
+<p>At the software layer, the VGA BIOS provided complete backward
+compatibility for BIOS Interrupt 10h calls. Standard EGA video
+modes—such as Mode 0Dh (320x200 16-color), Mode 0Eh (640x200 16-color),
+and Mode 10h (640x350 16-color)—were implemented directly in the VGA
+BIOS routines. When an application called <code>INT 10h, AH=00h</code>
+to request an EGA mode, the VGA BIOS automatically handled register
+setup, scan line parameters, and color palette assignment to replicate
+the target environment.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

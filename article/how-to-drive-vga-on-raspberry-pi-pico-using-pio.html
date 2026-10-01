@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Drive VGA on Raspberry Pi Pico Using PIO - vga</title>
+    <meta name="description" content="The Raspberry Pi Pico leverages its RP2040 microcontroller's unique Programmable I/O (PIO) state machines to generate precise Video Graphics Array (VGA) signals with minimal CPU intervention. By pairing hardware-timed PIO instructions with Direct Memory">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-to-drive-vga-on-raspberry-pi-pico-using-pio">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Drive VGA on Raspberry Pi Pico Using PIO - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-to-drive-vga-on-raspberry-pi-pico-using-pio" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Raspberry Pi Pico leverages its RP2040 microcontroller's unique Programmable I/O (PIO) state machines to generate precise Video Graphics Array (VGA) signals with minimal CPU intervention. By pairing hardware-timed PIO instructions with Direct Memory" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-drive-vga-on-raspberry-pi-pico-using-pio">How to Drive
+VGA on Raspberry Pi Pico Using PIO</h1>
+<p>The Raspberry Pi Pico leverages its RP2040 microcontroller's unique
+Programmable I/O (PIO) state machines to generate precise Video Graphics
+Array (VGA) signals with minimal CPU intervention. By pairing
+hardware-timed PIO instructions with Direct Memory Access (DMA) and an
+external resistor-ladder digital-to-analog converter (DAC), the Pico can
+output standard analog video signals without stalling its dual Arm
+Cortex-M0+ processing cores.</p>
+<h3 id="the-role-of-the-resistor-ladder-dac">The Role of the
+Resistor-Ladder DAC</h3>
+<p>A standard VGA monitor accepts analog color inputs for Red, Green,
+and Blue, expecting voltage levels between 0V (fully black) and 0.7V
+(fully saturated) into a 75-ohm termination load. Because the RP2040
+outputs digital 3.3V logic signals, it requires an external
+digital-to-analog conversion.</p>
+<p>A resistor ladder—often wired as an R-2R ladder or using
+binary-weighted resistors—bridges this gap. By assigning several GPIO
+pins to each color channel (such as 5 bits for Red, 6 for Green, and 5
+for Blue in a 16-bit RGB565 format, or 1 bit per channel for basic
+8-color output), the resistors divide the 3.3V output down to the target
+0V–0.7V range. The Horizontal Sync (HSYNC) and Vertical Sync (VSYNC)
+lines are strictly digital timing pulses and connect directly to the VGA
+connector through current-limiting resistors.</p>
+<h3 id="cycle-accurate-signal-generation-via-pio">Cycle-Accurate Signal
+Generation via PIO</h3>
+<p>VGA video transmission requires strict, cycle-accurate timing. If a
+signal shifts by even a few nanoseconds, the image will tear, jitter, or
+lose sync entirely. Traditional microcontrollers struggle with this
+because software interrupts and memory contention create timing
+jitter.</p>
+<p>The RP2040 solves this with its two PIO blocks, each containing four
+independent state machines:</p>
+<ol type="1">
+<li><strong>Independent Execution:</strong> Each PIO state machine runs
+dedicated microcode at the system clock rate. Instructions execute
+deterministically in a single cycle.</li>
+<li><strong>Synchronization Signals:</strong> A state machine is
+programmed to handle the video timing pulses: the front porch, sync
+pulse, back porch, and active display periods for both HSYNC and VSYNC.
+Using cycle counters and loop instructions, the PIO asserts and
+deasserts the sync pins at the exact microsecond intervals required by
+standards such as 640x480 at 60Hz.</li>
+<li><strong>Data Clocking:</strong> A second state machine (or a
+synchronized routine within the primary machine) handles active video
+data. It reads pixel data from its input FIFO buffer and outputs it to
+the GPIO pins connected to the resistor ladder precisely during the
+active video window, keeping the lines at 0V during the blanking
+intervals.</li>
+</ol>
+<h3 id="offloading-the-cpu-with-direct-memory-access-dma">Offloading the
+CPU with Direct Memory Access (DMA)</h3>
+<p>The true efficiency of the Pico's VGA architecture comes from linking
+the PIO state machines to DMA channels:</p>
+<ul>
+<li><strong>Buffer Transfer:</strong> Framebuffers or scanline buffers
+reside in the RP2040’s SRAM. Instead of the CPU pushing pixel bytes into
+the PIO, a DMA channel reads the buffer and streams it directly into the
+PIO state machine's FIFO queue.</li>
+<li><strong>Pacing by Request (DREQ):</strong> The PIO raises a Data
+Request (DREQ) flag whenever its FIFO has room for more pixel data. The
+DMA controller responds automatically, feeding the PIO at the exact rate
+pixels are displayed.</li>
+<li><strong>Chained Channels:</strong> Two DMA channels can be
+"ping-ponged" or chained together. One channel handles the active
+transfer of a scanline, while the other reconfigures the memory
+addresses for the subsequent line.</li>
+</ul>
+<p>Through this pipeline, the CPU only needs to render graphics into
+RAM. The DMA controller and PIO state machines handle memory fetching,
+line timing, sync pulses, and pixel serialization autonomously,
+presenting a clean, stable VGA image to the monitor.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

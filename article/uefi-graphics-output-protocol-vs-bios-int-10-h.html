@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UEFI Graphics Output Protocol vs BIOS INT 10h - vga</title>
+    <meta name="description" content="This article explores the transition from legacy Video Graphics Array (VGA) BIOS INT 10h interrupts to the Unified Extensible Firmware Interface (UEFI) Graphics Output Protocol (GOP). It examines how both systems initialize display hardware during pre-bo">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/uefi-graphics-output-protocol-vs-bios-int-10-h">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="UEFI Graphics Output Protocol vs BIOS INT 10h - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/uefi-graphics-output-protocol-vs-bios-int-10-h" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the transition from legacy Video Graphics Array (VGA) BIOS INT 10h interrupts to the Unified Extensible Firmware Interface (UEFI) Graphics Output Protocol (GOP). It examines how both systems initialize display hardware during pre-bo" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="uefi-graphics-output-protocol-vs-bios-int-10h">UEFI Graphics
+Output Protocol vs BIOS INT 10h</h1>
+<p>This article explores the transition from legacy Video Graphics Array
+(VGA) BIOS INT 10h interrupts to the Unified Extensible Firmware
+Interface (UEFI) Graphics Output Protocol (GOP). It examines how both
+systems initialize display hardware during pre-boot, compares their
+underlying architectures and memory models, and outlines why GOP has
+replaced INT 10h to support modern, high-resolution computing
+environments.</p>
+<h2 id="the-role-of-legacy-bios-int-10h">The Role of Legacy BIOS INT
+10h</h2>
+<p>In traditional PC architecture, the basic input/output system (BIOS)
+relied on interrupt vector <code>INT 10h</code> for video services. When
+a system powered on, the CPU operated in a 16-bit real-mode environment.
+The motherboard BIOS executed the video card's Video BIOS (VBIOS) option
+ROM, establishing <code>INT 10h</code> as the software interrupt
+interface for all screen output prior to the operating system
+loading.</p>
+<p>Key characteristics of <code>INT 10h</code> include:</p>
+<ul>
+<li><strong>16-Bit Real-Mode Dependency:</strong> All calls required the
+processor to be in 16-bit real mode or required an x86 emulator if
+accessed from protected or long mode.</li>
+<li><strong>Hardware Text Modes:</strong> It provided native
+hardware-rendered text modes (such as standard 80x25 character mode) and
+basic raster modes (such as VGA 320x200 with 256 colors).</li>
+<li><strong>Segmented Memory and Bank Switching:</strong> Because real
+mode addresses only up to 1 MB of memory, video memory was mapped to a
+tiny 64 KB or 128 KB window (typically starting at segment
+<code>A000h</code> or <code>B800h</code>). Higher resolutions introduced
+by VESA BIOS Extensions (VBE) required complicated bank switching to
+update the display.</li>
+<li><strong>x86 Architecture Lock-in:</strong> The 16-bit x86 machine
+code in the VBIOS meant that non-x86 architectures could not natively
+initialize standard PC graphics cards.</li>
+</ul>
+<h2 id="the-role-of-uefi-graphics-output-protocol-gop">The Role of UEFI
+Graphics Output Protocol (GOP)</h2>
+<p>The Graphics Output Protocol (GOP) is the standard display mechanism
+defined by the UEFI specification. GOP replaces the legacy VBIOS and
+<code>INT 10h</code> routines with a modern, C-callable protocol that
+acts as an abstraction layer between pre-boot software and the graphics
+hardware.</p>
+<p>Key characteristics of GOP include:</p>
+<ul>
+<li><strong>32-Bit and 64-Bit Native Execution:</strong> GOP drivers run
+directly in protected mode or 64-bit long mode. The CPU never drops down
+to 16-bit real mode to draw pixels.</li>
+<li><strong>Architecture Agnostic:</strong> Written in standard
+UEFI-compliant C, GOP drivers work across diverse CPU architectures,
+including x86-64, ARM, and RISC-V, without platform-specific machine
+code constraints.</li>
+<li><strong>Linear Framebuffer:</strong> GOP provides a flat, linearly
+mapped memory space. The operating system bootloader or firmware writes
+directly to 32-bit pixel buffers (typically RGB or BGR format) without
+memory segmentation or bank switching.</li>
+<li><strong>No Native Text Mode:</strong> GOP does not provide an
+integrated text terminal. All console output is rendered by drawing
+glyphs onto the graphical framebuffer via software font engines.</li>
+</ul>
+<h2 id="functional-comparison-gop-vs-int-10h">Functional Comparison: GOP
+vs. INT 10h</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Legacy BIOS (INT 10h / VBE)</th>
+<th style="text-align: left;">UEFI GOP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Execution
+Environment</strong></td>
+<td style="text-align: left;">16-bit Real Mode</td>
+<td style="text-align: left;">32-bit / 64-bit Flat Mode</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Interface Style</strong></td>
+<td style="text-align: left;">Software interrupts
+(<code>INT 10h</code>)</td>
+<td style="text-align: left;">Function pointers via protocol
+interface</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Memory Addressing</strong></td>
+<td style="text-align: left;">Segmented memory, banked access</td>
+<td style="text-align: left;">Flat, direct linear framebuffer</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Native Text Mode</strong></td>
+<td style="text-align: left;">Supported via hardware character maps</td>
+<td style="text-align: left;">None; software-rendered bitmapped
+fonts</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Maximum Display
+Capabilities</strong></td>
+<td style="text-align: left;">Limited; high resolutions require VBE</td>
+<td style="text-align: left;">Native support for high resolutions (e.g.,
+4K, 8K, ultrawide)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>OS Graphics Handoff</strong></td>
+<td style="text-align: left;">Screen flicker during mode switches</td>
+<td style="text-align: left;">Seamless, flicker-free transitions</td>
+</tr>
+</tbody>
+</table>
+<h2 id="why-gop-replaced-int-10h">Why GOP Replaced INT 10h</h2>
+<p>The transition to GOP eliminated major performance bottlenecks and
+architectural constraints. Because INT 10h relied on 16-bit interrupts,
+early boot processes suffered from slow video drawing and were incapable
+of driving modern ultra-high-definition monitors efficiently during
+boot.</p>
+<p>GOP enables seamless boot routines. Instead of resetting the video
+adapter and causing the screen to flash black when transitioning from
+the firmware to the operating system kernel, GOP provides the OS with
+the physical base address of the active framebuffer. The operating
+system can continue drawing on the existing canvas until its dedicated,
+high-performance GPU drivers take control.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Horizontal Pel Panning and Line Compare - vga</title>
+    <meta name="description" content="This article examines how the Video Graphics Array (VGA) handles smooth horizontal scrolling during a split-screen configuration. It details the specific interaction between the Horizontal Pel Panning register and the CRT Controller Line Compare register">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-horizontal-pel-panning-and-line-compare">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Horizontal Pel Panning and Line Compare - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-horizontal-pel-panning-and-line-compare" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines how the Video Graphics Array (VGA) handles smooth horizontal scrolling during a split-screen configuration. It details the specific interaction between the Horizontal Pel Panning register and the CRT Controller Line Compare register" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-horizontal-pel-panning-and-line-compare">VGA Horizontal Pel
+Panning and Line Compare</h1>
+<p>This article examines how the Video Graphics Array (VGA) handles
+smooth horizontal scrolling during a split-screen configuration. It
+details the specific interaction between the Horizontal Pel Panning
+register and the CRT Controller Line Compare register, explaining how
+the VGA hardware prevents lower split screens from unintentionally
+inheriting horizontal pixel offsets intended only for the top
+screen.</p>
+<h2 id="the-roles-of-the-registers">The Roles of the Registers</h2>
+<p>In standard VGA architecture, smooth scrolling and screen splitting
+rely on separate hardware registers:</p>
+<ul>
+<li><strong>CRT Controller Start Address Registers
+(<code>CR0C</code>/<code>CR0D</code>):</strong> Define the starting byte
+offset in video memory for scanning the frame.</li>
+<li><strong>Horizontal Pel Panning Register
+(<code>AR13</code>):</strong> Located in the Attribute Controller, this
+register shifts the screen display horizontally by 0 to 7 pixels (or 0
+to 8 in 9-dot text modes). This fine-tunes scrolling beyond the standard
+byte boundaries.</li>
+<li><strong>Line Compare Register (<code>CR18</code>, extended by bits
+in <code>CR07</code> and <code>CR09</code>):</strong> Defines a specific
+scanline counter value. When the internal vertical raster counter
+reaches this value, the internal memory address counter automatically
+resets to zero, generating a split-screen area commonly used for static
+heads-up displays (HUDs) or status bars.</li>
+</ul>
+<h2 id="the-horizontal-panning-conflict">The Horizontal Panning
+Conflict</h2>
+<p>When the memory address counter resets upon a Line Compare match, the
+display hardware begins reading from the start of video memory
+(<code>0x0000</code>) to draw the bottom partition of the screen.</p>
+<p>However, byte-level address resetting only solves vertical offset and
+coarse horizontal alignment. The Horizontal Pel Panning register
+operates within the Attribute Controller at the pixel output stage,
+downstream from memory address generation. If left unchecked, any
+horizontal sub-byte shift applied to scroll the upper window will
+persist into the lower split screen, causing a static status bar to
+jitter horizontally by up to 7 pixels.</p>
+<h2 id="hardware-resolution-via-attribute-mode-control">Hardware
+Resolution via Attribute Mode Control</h2>
+<p>To prevent this jitter, the VGA hardware provides a dedicated
+arbitration bit inside the <strong>Attribute Mode Control Register
+(<code>AR10</code>)</strong>:</p>
+<ul>
+<li><strong>Bit 5: Pixel Panning Compatibility (PPC)</strong></li>
+</ul>
+<p>The state of Bit 5 dictates how the Line Compare signal interacts
+with the Horizontal Pel Panning register:</p>
+<ul>
+<li><strong>Bit 5 = 0 (Disabled):</strong> The horizontal pel panning
+value applies uniformly across all scanlines from top to bottom. The
+Line Compare match resets the video memory address to zero, but the
+horizontal pixel offset defined in <code>AR13</code> remains active for
+the lower split screen.</li>
+<li><strong>Bit 5 = 1 (Enabled):</strong> When the vertical scanline
+counter matches the Line Compare register, an internal hardware signal
+forces the effective horizontal pel panning value to <code>0</code> for
+the remainder of the display frame.</li>
+</ul>
+<h2 id="scanline-execution-cycle">Scanline Execution Cycle</h2>
+<p>When Bit 5 of <code>AR10</code> is set to <code>1</code>, the display
+cycle executes as follows:</p>
+<ol type="1">
+<li><strong>Top Screen Rendering:</strong> The frame begins. The VGA
+applies both coarse byte offsets (<code>CR0C</code>/<code>CR0D</code>)
+and the fine pixel panning value (<code>AR13</code>). Smooth horizontal
+scrolling functions normally.</li>
+<li><strong>Line Compare Match:</strong> The raster beam reaches the
+scanline specified in the Line Compare register.</li>
+<li><strong>Address &amp; Shift Reset:</strong> The CRT Controller
+resets its memory address counter to zero, and the Attribute Controller
+suppresses the horizontal pel panning value, snapping pixel alignment
+back to the standard byte boundary.</li>
+<li><strong>Bottom Screen Rendering:</strong> The lower partition
+renders stably without horizontal jitter, regardless of the active value
+inside <code>AR13</code>.</li>
+<li><strong>Vertical Retrace:</strong> Upon reaching vertical blanking,
+the suppression clears, restoring the stored <code>AR13</code> panning
+value in preparation for the top of the next frame.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

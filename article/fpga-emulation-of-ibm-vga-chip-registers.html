@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPGA Emulation of IBM VGA Chip Registers - vga</title>
+    <meta name="description" content="Emulating the full register set of an IBM Video Graphics Array (VGA) chip on an FPGA involves synthesizing the legacy indexed I/O architecture, enforcing hardware quirks and access protections, and bridging asynchronous CPU bus cycles with synchronous pi">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/fpga-emulation-of-ibm-vga-chip-registers">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="FPGA Emulation of IBM VGA Chip Registers - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/fpga-emulation-of-ibm-vga-chip-registers" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Emulating the full register set of an IBM Video Graphics Array (VGA) chip on an FPGA involves synthesizing the legacy indexed I/O architecture, enforcing hardware quirks and access protections, and bridging asynchronous CPU bus cycles with synchronous pi" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="fpga-emulation-of-ibm-vga-chip-registers">FPGA Emulation of IBM
+VGA Chip Registers</h1>
+<p>Emulating the full register set of an IBM Video Graphics Array (VGA)
+chip on an FPGA involves synthesizing the legacy indexed I/O
+architecture, enforcing hardware quirks and access protections, and
+bridging asynchronous CPU bus cycles with synchronous pixel generation
+pipelines. Because the original VGA standard relied heavily on
+multiplexed I/O ports and shared state machines across distinct
+functional sub-units, the FPGA must capture exact hardware
+behaviors—including indexed addressing, write-protection masks, toggle
+states, and clock-domain crossing—using custom hardware description
+language (HDL) logic blocks and internal register arrays.</p>
+<h3 id="io-port-decoding-and-bus-interfacing">I/O Port Decoding and Bus
+Interfacing</h3>
+<p>The original IBM VGA exposes its configuration via a limited range of
+x86 I/O space addresses, primarily within the <code>0x3B0</code> to
+<code>0x3DF</code> ranges (varying between monochrome and color
+emulation modes). An FPGA interface block continuously samples the host
+bus (such as ISA, PCI, or an internal SoC bus like AXI or Wishbone).
+Address decoding logic monitors chip-select, read/write strobes, and the
+address lines to identify accesses targeting VGA space.</p>
+<p>When a transaction is detected, the FPGA determines whether the
+operation targets an external register (such as the Miscellaneous Output
+Register at <code>0x3C2</code>) or an indexed register file. Because CPU
+bus operations run asynchronously to the internal video clocks, incoming
+control signals and data are latched through synchronizers or processed
+using handshaking logic to prevent metastability.</p>
+<h3 id="implementing-the-five-core-indexed-register-blocks">Implementing
+the Five Core Indexed Register Blocks</h3>
+<p>The core functionality of a VGA chip is divided into five main
+sub-controllers, four of which use an "Index/Data" pair scheme to
+conserve host I/O space:</p>
+<ol type="1">
+<li><strong>Sequencer Registers (SR):</strong> Accessed via index port
+<code>0x3C4</code> and data port <code>0x3C5</code>. The Sequencer
+controls clock dividers, character map selections, and memory plane
+masking. In HDL, this is implemented as an array of registers addressed
+by a 3-bit internal index pointer register.</li>
+<li><strong>CRT Controller Registers (CRTC):</strong> Mapped to
+<code>0x3D4</code>/<code>0x3D5</code> (color mode) or
+<code>0x3B4</code>/<code>0x3B5</code> (mono mode). The CRTC dictates
+raster timings, blanking intervals, cursor placement, and
+vertical/horizontal synchronization.</li>
+<li><strong>Graphics Controller Registers (GR):</strong> Accessed at
+<code>0x3CE</code>/<code>0x3CF</code>. These registers govern
+bit-masking, read/write modes (Modes 0–3), rotation, and planar data
+latches between the CPU and video memory.</li>
+<li><strong>Color Palette / DAC Registers:</strong> Accessed through
+ports <code>0x3C6</code> (PEL Mask), <code>0x3C7</code> (Read Index /
+State), <code>0x3C8</code> (Write Index), and <code>0x3C9</code> (Data).
+Because palette values consist of 18-bit RGB values (6 bits per channel)
+written across three consecutive cycles to <code>0x3C9</code>, the FPGA
+implements a 2-bit state machine (Red, Green, Blue) that increments the
+internal DAC SRAM address only after the third byte is transferred.</li>
+<li><strong>Attribute Controller Registers (AR):</strong> Handled
+distinctly due to its shared dual-mode port.</li>
+</ol>
+<h3 id="replicating-vga-hardware-quirks-and-state-machines">Replicating
+VGA Hardware Quirks and State Machines</h3>
+<p>A compliant VGA implementation requires emulating behaviors that
+differ from modern standard bus interfaces:</p>
+<ul>
+<li><strong>The Attribute Controller Flip-Flop:</strong> The AR uses
+port <code>0x3C0</code> for both the index register and the data
+register. The FPGA models this using a 1-bit state flip-flop. Reading
+the Input Status 1 register (<code>0x3DA</code> or <code>0x3BA</code>)
+clears this flip-flop to <code>0</code>. When cleared, the next write to
+<code>0x3C0</code> is treated as an index. Once written, the flip-flop
+toggles to <code>1</code>, meaning the subsequent write is routed as
+data.</li>
+<li><strong>Write Protection Bitfields:</strong> Register
+<code>0x11</code> of the CRTC contains a write-protect bit (bit 7). When
+asserted, writes to CRTC registers <code>0x00</code> through
+<code>0x07</code> must be ignored by the FPGA logic to prevent software
+from altering critical CRT sync parameters. The FPGA enforces this via
+conditional write-enable logic on those specific register array
+elements.</li>
+<li><strong>Read-Only and Write-Only Asymmetries:</strong> Some VGA
+registers share an I/O port address but represent entirely different
+internal entities depending on the operation. For example, writing to
+<code>0x3C2</code> modifies the Miscellaneous Output Register, whereas
+reading from <code>0x3C2</code> accesses the Input Status 0 Register.
+The FPGA HDL directly separates read multiplexers from write-latch
+decoders according to the bus read/write strobes.</li>
+</ul>
+<h3 id="cross-clock-domain-synchronization">Cross-Clock Domain
+Synchronization</h3>
+<p>The register file lives primarily in the host CPU bus clock domain,
+but the values it contains directly drive raster timing counters and
+video data generation, which run on distinct pixel clock domains
+(typically 25.175 MHz for standard VGA or 28.322 MHz for 720-pixel text
+modes).</p>
+<p>To ensure stability, the FPGA holds the current register values in
+flip-flops or distributed RAM. Registers that affect screen
+geometry—such as start addresses, line compares, and horizontal/vertical
+retrace boundaries—are often shadowed. The FPGA latches these parameters
+into shadow registers exclusively during horizontal or vertical blanking
+intervals to prevent visual tearing or timing collapse mid-frame.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

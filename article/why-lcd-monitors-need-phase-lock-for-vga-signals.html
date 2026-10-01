@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why LCD Monitors Need Phase Lock for VGA Signals - vga</title>
+    <meta name="description" content="Liquid Crystal Displays (LCDs) are inherently digital devices made of fixed pixel grids, whereas Video Graphics Array (VGA) transmits video as a continuous, uninterrupted analog voltage waveform. To render an analog VGA input, an LCD must convert this co">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-lcd-monitors-need-phase-lock-for-vga-signals">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why LCD Monitors Need Phase Lock for VGA Signals - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-lcd-monitors-need-phase-lock-for-vga-signals" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Liquid Crystal Displays (LCDs) are inherently digital devices made of fixed pixel grids, whereas Video Graphics Array (VGA) transmits video as a continuous, uninterrupted analog voltage waveform. To render an analog VGA input, an LCD must convert this co" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-lcd-monitors-need-phase-lock-for-vga-signals">Why LCD
+Monitors Need Phase Lock for VGA Signals</h1>
+<p>Liquid Crystal Displays (LCDs) are inherently digital devices made of
+fixed pixel grids, whereas Video Graphics Array (VGA) transmits video as
+a continuous, uninterrupted analog voltage waveform. To render an analog
+VGA input, an LCD must convert this continuous signal into discrete
+digital values using an Analog-to-Digital Converter (ADC). An explicit
+clock phase lock is essential to synchronize the sampling point of the
+ADC precisely with the center of each incoming analog pixel, preventing
+visual artifacts such as image jitter, horizontal noise bands, and text
+blurriness.</p>
+<h3
+id="the-fundamental-mismatch-discrete-pixels-vs-continuous-waveforms">The
+Fundamental Mismatch: Discrete Pixels vs. Continuous Waveforms</h3>
+<p>Cathode Ray Tube (CRT) monitors, for which VGA was originally
+designed, do not have discrete physical pixels across horizontal
+scanlines. A CRT sweeps an electron beam continuously across the
+phosphor surface, naturally modulating its intensity based on the
+varying voltage of the analog RGB lines.</p>
+<p>In contrast, an LCD has a fixed native resolution composed of
+individual subpixels. When receiving an analog VGA signal, the monitor's
+internal scaler and ADC must chop the continuous horizontal signal into
+exact, distinct digital samples—one for each physical pixel.</p>
+<h3 id="the-missing-pixel-clock-in-vga">The Missing Pixel Clock in
+VGA</h3>
+<p>The VGA standard provides four primary synchronization elements:</p>
+<ul>
+<li>Red, Green, and Blue analog lines (voltage levels representing
+brightness)</li>
+<li>Horizontal Synchronization (HSync) pulses</li>
+<li>Vertical Synchronization (VSync) pulses</li>
+</ul>
+<p>Notably absent from VGA is a pixel clock line. The video source
+transmits the start of a horizontal line (HSync) and the start of a
+frame (VSync), but it does not transmit a timing signal indicating when
+individual pixels begin and end. Modern digital interfaces like DVI,
+HDMI, and DisplayPort embed digital clock data directly into the stream,
+eliminating this issue entirely.</p>
+<p>To bridge this gap, an LCD monitor must generate its own internal
+pixel clock using a Phase-Locked Loop (PLL) referenced to the incoming
+HSync pulse.</p>
+<h3 id="clock-frequency-vs-clock-phase">Clock Frequency vs. Clock
+Phase</h3>
+<p>Reconstructing the original image requires the monitor to accurately
+establish two independent parameters:</p>
+<ol type="1">
+<li><strong>Clock Frequency (Pixel Clock):</strong> This dictates the
+total number of samples taken per horizontal line. If the frequency is
+incorrect, the image will stretch or compress, creating vertical bars of
+distortion (moire patterns) across the screen because the monitor takes
+too few or too many samples per line.</li>
+<li><strong>Clock Phase:</strong> Even when the frequency is exact, the
+timing offset—the phase—determines precisely <em>when</em> within that
+clock period the ADC takes its voltage reading.</li>
+</ol>
+<h3 id="why-the-phase-must-be-explicitly-locked">Why the Phase Must Be
+Explicitly Locked</h3>
+<p>Analog signals do not change voltage states instantaneously; they
+require a finite amount of time to transition from one voltage level to
+another (rise time and fall time). Because of this, the electrical
+waveform of a pixel resembles a trapezoid rather than a perfect square
+wave:</p>
+<ul>
+<li><strong>Edges:</strong> The transition zones where the signal is
+actively rising or falling between colors.</li>
+<li><strong>Center ("Eye Opening"):</strong> The stable plateau where
+the voltage accurately represents the intended color value.</li>
+</ul>
+<p>If the LCD samples the signal during a transition edge, it reads an
+indeterminate or fluctuating voltage. This results in "phase
+noise"—visible as fine pixel shimmer, flickering vertical lines, or
+ghosted, blurry text.</p>
+<p>Explicit phase locking shifts the ADC's sampling strobe along the
+timeline until it hits the stable center of the waveform. Because
+factors such as cable length, signal degradation, graphics card DAC
+characteristics, and temperature alter the exact arrival time of the
+waveform, the monitor cannot automatically assume where the center lies
+without a phase calibration process (often labeled "Auto Adjust" on the
+monitor's menu). Locking the phase ensures every pixel is measured at
+its point of maximum stability, yielding a sharp, artifact-free image on
+a fixed-pixel display.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

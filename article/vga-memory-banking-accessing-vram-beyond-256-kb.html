@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Memory Banking: Accessing VRAM Beyond 256 KB - vga</title>
+    <meta name="description" content="The original IBM Video Graphics Array (VGA) standard was fundamentally constrained by the IBM PC real-mode architecture to a maximum of 256 KB of video memory mapped across a small physical address space. To overcome this ceiling and deliver higher resol">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-memory-banking-accessing-vram-beyond-256-kb">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Memory Banking: Accessing VRAM Beyond 256 KB - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-memory-banking-accessing-vram-beyond-256-kb" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The original IBM Video Graphics Array (VGA) standard was fundamentally constrained by the IBM PC real-mode architecture to a maximum of 256 KB of video memory mapped across a small physical address space. To overcome this ceiling and deliver higher resol" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-memory-banking-accessing-vram-beyond-256-kb">VGA Memory
+Banking: Accessing VRAM Beyond 256 KB</h1>
+<p>The original IBM Video Graphics Array (VGA) standard was
+fundamentally constrained by the IBM PC real-mode architecture to a
+maximum of 256 KB of video memory mapped across a small physical address
+space. To overcome this ceiling and deliver higher resolutions and
+deeper color depths, third-party Super VGA (SVGA) clone manufacturers
+introduced memory banking mechanisms. Memory banking—also referred to as
+bank switching or paging—allowed the graphics card to map a small,
+movable aperture of a much larger physical video buffer into the
+conventional memory space accessible to the central processing unit
+(CPU).</p>
+<h3 id="the-real-mode-memory-barrier">The Real-Mode Memory Barrier</h3>
+<p>The IBM PC real-mode memory architecture allocated only a 128 KB
+block between addresses <code>A0000h</code> and <code>BFFFFh</code> for
+video hardware. Standard VGA typically used a 64 KB window spanning
+<code>A0000h</code> to <code>AFFFFh</code> for graphics modes.</p>
+<p>Standard VGA achieved 256 KB capacity within this 64 KB aperture by
+dividing memory into four parallel 64 KB planes (Planes 0 through 3).
+The CPU addressed all four planes at the same memory location
+simultaneously, relying on internal VGA hardware registers—such as the
+Sequencer and Graphics Controller—to dictate which planes were read from
+or written to. While this allowed 16-color modes to leverage all 256 KB
+efficiently, it reached an absolute limit when displaying linear,
+high-color graphics. A mode requiring 256 colors (8 bits per pixel) or
+true color (24 bits per pixel) at resolutions like 800x600 or 1024x768
+quickly exceeded both the 256 KB physical limit and the 64 KB CPU access
+window.</p>
+<h3 id="how-memory-banking-operated">How Memory Banking Operated</h3>
+<p>Memory banking solved this issue by decoupling the CPU's accessible
+address window from the physical layout of the video RAM (VRAM).</p>
+<p>Instead of requiring the CPU to map the entire video frame buffer
+into system memory simultaneously, the SVGA card divided its total VRAM
+(such as 512 KB, 1 MB, or more) into smaller segments, or "banks,"
+typically 64 KB in size. The graphics controller acted as an
+intermediary translation layer:</p>
+<ol type="1">
+<li><strong>Window Mapping:</strong> The graphics card exposed a 64 KB
+aperture at <code>A0000h</code> to the system bus.</li>
+<li><strong>Bank Selection:</strong> The software communicated with the
+graphics chipset via extended I/O ports or internal registers to specify
+which 64 KB slice of physical VRAM should be routed to that
+aperture.</li>
+<li><strong>Offset Translation:</strong> When the CPU issued a read or
+write operation to an address within
+<code>A0000h</code>–<code>AFFFFh</code>, hardware logic on the graphics
+board added an offset corresponding to the selected bank's base address
+in physical VRAM before performing the memory access.</li>
+</ol>
+<p>For example, on a card with 1 MB of VRAM, the memory was divided into
+sixteen 64 KB banks (Banks 0 through 15). To write a pixel located at
+physical VRAM offset <code>12000h</code> (within the second 64 KB
+block), the software would switch the active bank register to Bank 1,
+and then write to the corresponding address inside the
+<code>A0000h</code> window.</p>
+<h3 id="advanced-banking-features-split-and-dual-banking">Advanced
+Banking Features: Split and Dual Banking</h3>
+<p>Early banking implementations mapped a single bank for both read and
+write operations. This caused performance bottlenecks during
+memory-to-memory block transfers, such as moving a sprite from an
+off-screen buffer to the active display area in a different bank. The
+CPU had to repeatedly toggle the bank register back and forth for every
+read and write cycle.</p>
+<p>To eliminate this overhead, advanced SVGA chipsets (such as those
+from Tseng Labs, Cirrus Logic, and Trident) implemented dual-banking or
+split-banking architectures:</p>
+<ul>
+<li><strong>Read and Write Banks:</strong> Chipsets provided separate
+bank registers for read and write cycles. The CPU could read source data
+mapped to Bank 2 and write target data to Bank 5 without intervening
+register adjustments.</li>
+<li><strong>Dual 32 KB Windows:</strong> Some implementations split the
+64 KB aperture into two separate 32 KB windows (e.g., Window A at
+<code>A0000h</code>–<code>A7FFFh</code> and Window B at
+<code>A8000h</code>–<code>AFFFFh</code>), with each window pointed to an
+arbitrary 32 KB region anywhere in the total VRAM space.</li>
+<li><strong>Granular Stepping:</strong> Certain controllers allowed
+banking in finer granularities (such as 4 KB or 16 KB boundaries) rather
+than coarse 64 KB steps, providing smoother access alignment for
+scanlines.</li>
+</ul>
+<h3 id="standardization-via-vesa">Standardization via VESA</h3>
+<p>Because early SVGA manufacturers implemented proprietary I/O
+registers and access routines for their bank-switching mechanisms,
+software developers faced severe compatibility issues. A game or
+graphical application required unique drivers for Tseng Labs
+ET3000/ET4000, Western Digital/Paradise, Oak Technology, Trident, and
+Cirrus Logic chipsets simply to handle memory paging.</p>
+<p>This fragmentation led to the establishment of the Video Electronics
+Standards Association (VESA) and the creation of the VESA BIOS
+Extensions (VBE). The VBE standard abstracted hardware-specific bank
+switching behind a uniform software interrupt interface:
+<code>INT 10h, AX=4F05h</code> (VBE Function 05h: CPU Video Memory
+Control). Software could switch banks reliably across any VESA-compliant
+graphics card without needing direct knowledge of the underlying
+proprietary registers, solidifying memory banking as the industry
+standard method for operating beyond the original 256 KB VGA boundary
+until the advent of protected mode and linear frame buffer
+architectures.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

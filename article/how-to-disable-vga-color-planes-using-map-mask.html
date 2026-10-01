@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Disable VGA Color Planes Using Map Mask - vga</title>
+    <meta name="description" content="In Video Graphics Array (VGA) programming, rendering graphics efficiently in planar display modes requires controlling how CPU writes affect video memory. This guide explains how a programmer can selectively disable specific color planes using the VGA Se">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-to-disable-vga-color-planes-using-map-mask">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Disable VGA Color Planes Using Map Mask - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-to-disable-vga-color-planes-using-map-mask" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In Video Graphics Array (VGA) programming, rendering graphics efficiently in planar display modes requires controlling how CPU writes affect video memory. This guide explains how a programmer can selectively disable specific color planes using the VGA Se" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-disable-vga-color-planes-using-map-mask">How to Disable
+VGA Color Planes Using Map Mask</h1>
+<p>In Video Graphics Array (VGA) programming, rendering graphics
+efficiently in planar display modes requires controlling how CPU writes
+affect video memory. This guide explains how a programmer can
+selectively disable specific color planes using the VGA Sequencer's Map
+Mask register, detailing the register architecture, bit definitions, and
+practical I/O port programming techniques in C and x86 Assembly.</p>
+<h3 id="vga-planar-architecture-overview">VGA Planar Architecture
+Overview</h3>
+<p>In standard 16-color planar modes (such as Mode 12h: 640×480) and
+unchained 256-color modes (such as Mode X: 320×240), VGA video memory at
+address <code>0xA0000</code> is divided into four parallel 64 KB memory
+banks known as planes (Planes 0 through 3). In typical 16-color modes,
+these planes correspond to the primary color components:</p>
+<ul>
+<li><strong>Plane 0:</strong> Blue</li>
+<li><strong>Plane 1:</strong> Green</li>
+<li><strong>Plane 2:</strong> Red</li>
+<li><strong>Plane 3:</strong> Intensity</li>
+</ul>
+<p>When the CPU writes a single byte to an address in the
+<code>0xA0000</code> memory segment, the hardware can simultaneously
+write that data across all four planes. To isolate or disable writes to
+specific color planes, you must configure the Map Mask register located
+inside the VGA Sequencer.</p>
+<h3 id="the-sequencer-registers">The Sequencer Registers</h3>
+<p>Access to the Map Mask register is mediated by two I/O ports
+associated with the VGA Sequencer:</p>
+<ul>
+<li><strong>Sequencer Address Register (Index Port):</strong>
+<code>0x03C4</code></li>
+<li><strong>Sequencer Data Register:</strong> <code>0x03C5</code></li>
+<li><strong>Map Mask Index:</strong> <code>0x02</code></li>
+</ul>
+<p>The Map Mask register is designated as Sequencer Index
+<code>0x02</code>. Writing to this register modifies which memory planes
+accept CPU write operations.</p>
+<h3 id="map-mask-register-bit-layout">Map Mask Register Bit Layout</h3>
+<p>The Map Mask register uses the lower four bits of an 8-bit value to
+control write access. Setting a bit to <code>1</code> enables writes to
+that plane, while setting a bit to <code>0</code> disables (masks) the
+plane, leaving its existing data preserved during memory writes.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Bit</th>
+<th style="text-align: left;">Target Plane</th>
+<th style="text-align: left;">Default Mapping</th>
+<th style="text-align: left;">Value = 1</th>
+<th style="text-align: left;">Value = 0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Bit 0</td>
+<td style="text-align: left;">Plane 0</td>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: left;">Write Enabled</td>
+<td style="text-align: left;">Write Disabled</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bit 1</td>
+<td style="text-align: left;">Plane 1</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">Write Enabled</td>
+<td style="text-align: left;">Write Disabled</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bit 2</td>
+<td style="text-align: left;">Plane 2</td>
+<td style="text-align: left;">Red</td>
+<td style="text-align: left;">Write Enabled</td>
+<td style="text-align: left;">Write Disabled</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bit 3</td>
+<td style="text-align: left;">Plane 3</td>
+<td style="text-align: left;">Intensity</td>
+<td style="text-align: left;">Write Enabled</td>
+<td style="text-align: left;">Write Disabled</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bits 4–7</td>
+<td style="text-align: left;">Reserved</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">Ignored</td>
+<td style="text-align: left;">Ignored</td>
+</tr>
+</tbody>
+</table>
+<h3 id="programming-the-register">Programming the Register</h3>
+<p>To disable color planes, follow this process:</p>
+<ol type="1">
+<li>Identify the planes to retain and construct the bitmask (e.g., to
+disable the Red and Intensity planes, leave Bits 0 and 1 active: binary
+<code>00000011</code> or <code>0x03</code>).</li>
+<li>Select the Map Mask register by writing index <code>0x02</code> to
+port <code>0x03C4</code>.</li>
+<li>Send the plane mask value to port <code>0x03C5</code>.</li>
+</ol>
+<h4 id="example-in-c-using-8-bit-port-io">Example in C (Using 8-bit Port
+I/O)</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;dos.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> set_active_planes<span class="op">(</span><span class="dt">unsigned</span> <span class="dt">char</span> mask<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Select Sequencer Register 0x02 (Map Mask) */</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    outp<span class="op">(</span><span class="bn">0x03C4</span><span class="op">,</span> <span class="bn">0x02</span><span class="op">);</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Write the plane mask (Bits 0-3 correspond to Planes 0-3) */</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    outp<span class="op">(</span><span class="bn">0x03C5</span><span class="op">,</span> mask <span class="op">&amp;</span> <span class="bn">0x0F</span><span class="op">);</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> disable_red_and_intensity<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Enable Plane 0 (Blue) and Plane 1 (Green); Disable Planes 2 and 3 */</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    set_active_planes<span class="op">(</span><span class="bn">0x03</span><span class="op">);</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="optimized-16-bit-word-write">Optimized 16-Bit Word Write</h4>
+<p>Because the Sequencer Address port (<code>0x03C4</code>) and Data
+port (<code>0x03C5</code>) are adjacent byte registers, modern x86 CPU
+architectures permit combining both operations into a single 16-bit word
+write to port <code>0x03C4</code>. The index occupies the lower byte,
+and the mask data occupies the upper byte:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> set_active_planes_fast<span class="op">(</span><span class="dt">unsigned</span> <span class="dt">char</span> mask<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* (mask &lt;&lt; 8) places the data at 0x03C5, 0x02 directs to 0x03C4 */</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    outpw<span class="op">(</span><span class="bn">0x03C4</span><span class="op">,</span> <span class="op">((</span>mask <span class="op">&amp;</span> <span class="bn">0x0F</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="dv">8</span><span class="op">)</span> <span class="op">|</span> <span class="bn">0x02</span><span class="op">);</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="example-in-x86-assembly">Example in x86 Assembly</h4>
+<pre class="assembly"><code>; Function: set_map_mask
+; Input: AL = Bitmask of planes to enable (Bits 0-3)
+set_map_mask:
+    mov     dx, 0x03C4      ; DX = Sequencer Index Register
+    mov     ah, al          ; AH = Plane mask
+    mov     al, 0x02        ; AL = Register 0x02 (Map Mask)
+    out     dx, ax          ; Send AL to 0x03C4 and AH to 0x03C5 simultaneously
+    ret</code></pre>
+<h3 id="writing-to-video-memory">Writing to Video Memory</h3>
+<p>Once the Map Mask register is updated, all subsequent standard writes
+to the VGA memory buffer (<code>0xA0000</code> to <code>0xAFFFF</code>)
+will modify only the enabled planes. Disabled planes remain unaltered,
+regardless of the data values sent across the CPU bus. When finished
+with targeted plane modifications, restore the register to
+<code>0x0F</code> to re-enable write operations across all four
+planes.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

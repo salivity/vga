@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA Uses a 25.175 MHz Dot Clock - vga</title>
+    <meta name="description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987, it established 25.175 MHz as the dot clock frequency for standard 640-pixel wide modes. This article explains the technical reasons behind that choice, detailing how television broadcas">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-uses-a-25-175-m-hz-dot-clock">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA Uses a 25.175 MHz Dot Clock - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-uses-a-25-175-m-hz-dot-clock" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987, it established 25.175 MHz as the dot clock frequency for standard 640-pixel wide modes. This article explains the technical reasons behind that choice, detailing how television broadcas" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-uses-a-25175-mhz-dot-clock">Why VGA Uses a 25.175 MHz
+Dot Clock</h1>
+<p>When IBM introduced the Video Graphics Array (VGA) standard in 1987,
+it established 25.175 MHz as the dot clock frequency for standard
+640-pixel wide modes. This article explains the technical reasons behind
+that choice, detailing how television broadcast heritage, cathode-ray
+tube (CRT) beam deflection physics, and horizontal line counts dictated
+the exact pixel clock required to deliver a stable, flicker-free 640x480
+resolution at 60 Hz.</p>
+<h3 id="the-crt-blanking-requirement">The CRT Blanking Requirement</h3>
+<p>To understand the dot clock, one must understand how analog CRT
+monitors function. A CRT uses an electron beam that sweeps across the
+screen horizontally from left to right, line by line, before returning
+to the top. The beam cannot jump instantly:</p>
+<ul>
+<li><strong>Horizontal Blanking:</strong> Time required for the beam to
+turn off, reposition from the right edge to the left edge (horizontal
+flyback), and settle before drawing the next line.</li>
+<li><strong>Vertical Blanking:</strong> Time required for the beam to
+turn off and travel from the bottom-right corner back to the top-left
+corner (vertical flyback).</li>
+</ul>
+<p>Because the pixel clock keeps ticking during these invisible blanking
+intervals, the hardware processes more "clock cycles" per line and per
+frame than the visible pixel dimensions indicate.</p>
+<h3 id="the-frame-geometry">The Frame Geometry</h3>
+<p>In standard VGA mode (640x480), the visible display is 640 pixels
+wide by 480 lines tall. However, the total timings include the front
+porch, sync pulse, and back porch:</p>
+<ul>
+<li><p><strong>Horizontal Active:</strong> 640 pixels</p></li>
+<li><p><strong>Horizontal Blanking:</strong> 160 pixels (16 front porch
++ 96 sync pulse + 48 back porch)</p></li>
+<li><p><strong>Total Horizontal Pixels per Line:</strong> 800
+pixels</p></li>
+<li><p><strong>Vertical Active:</strong> 480 lines</p></li>
+<li><p><strong>Vertical Blanking:</strong> 45 lines (10 front porch + 2
+sync pulse + 33 back porch)</p></li>
+<li><p><strong>Total Vertical Lines per Frame:</strong> 525
+lines</p></li>
+</ul>
+<h3 id="the-legacy-of-ntsc-and-315-khz">The Legacy of NTSC and 31.5
+kHz</h3>
+<p>The choice of 525 total lines was not arbitrary. It was inherited
+directly from the NTSC broadcast television standard, which defines a
+full frame as 525 lines.</p>
+<p>Standard NTSC television used interlacing to display 525 lines at an
+alternating field rate of roughly 59.94 Hz (commonly referred to as 60
+Hz), yielding a horizontal scan rate of roughly 15.734 kHz.</p>
+<p>For computer monitors, interlaced text caused noticeable and
+fatiguing eye flicker. IBM designed VGA to be progressive
+(non-interlaced), drawing all 480 active lines in a single pass at ~60
+Hz. To draw 525 total lines progressively at 59.94 frames per second,
+the monitor had to double the horizontal line frequency:</p>
+<p><span class="math display">\[\text{Horizontal Scan Rate} = 525 \text{
+lines} \times 59.94 \text{ Hz} \approx 31.469 \text{ kHz}\]</span></p>
+<p>This horizontal frequency is commonly referred to in monitor
+specifications as the standard 31.5 kHz scan rate.</p>
+<h3 id="calculating-the-25175-mhz-dot-clock">Calculating the 25.175 MHz
+Dot Clock</h3>
+<p>With 800 total clock cycles per horizontal line and a horizontal
+frequency of roughly 31.469 kHz, calculating the total pixel clock rate
+requires multiplying the horizontal line cycles by the total lines and
+refresh rate:</p>
+<p><span class="math display">\[\text{Dot Clock} = 800 \text{
+cycles/line} \times 525 \text{ lines/frame} \times 59.94 \text{
+frames/second}\]</span> <span class="math display">\[\text{Dot Clock} =
+420,000 \text{ cycles/frame} \times 59.94 \text{ frames/second} \approx
+25,174,800 \text{ Hz}\]</span></p>
+<p>Rounding this target frequency to match standard, mass-produced
+quartz crystal oscillators produced the finalized standard of
+<strong>25.175 MHz</strong>.</p>
+<p>At an exact 25.175 MHz dot clock:</p>
+<ul>
+<li>The horizontal frequency is: <span class="math inline">\(25,175,000
+/ 800 = 31,468.75 \text{ Hz}\)</span></li>
+<li>The refresh rate is: <span class="math inline">\(31,468.75 / 525
+\approx 59.9405 \text{ Hz}\)</span></li>
+</ul>
+<p>By selecting 25.175 MHz, IBM paired the visible demand for a 4:3
+square-pixel 640x480 resolution with the established electronic
+characteristics of 525-line CRT deflection components, creating an
+industry baseline that endured for decades.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

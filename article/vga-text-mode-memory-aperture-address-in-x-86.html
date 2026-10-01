@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Text Mode Memory Aperture Address in x86 - vga</title>
+    <meta name="description" content="This article details the exact memory aperture addresses assigned to standard Video Graphics Array (VGA) text mode within the classic x86 system architecture. It outlines the specific physical memory ranges mapped in the Upper Memory Area, the difference">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-text-mode-memory-aperture-address-in-x-86">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Text Mode Memory Aperture Address in x86 - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-text-mode-memory-aperture-address-in-x-86" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article details the exact memory aperture addresses assigned to standard Video Graphics Array (VGA) text mode within the classic x86 system architecture. It outlines the specific physical memory ranges mapped in the Upper Memory Area, the difference" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-text-mode-memory-aperture-address-in-x86">VGA Text Mode
+Memory Aperture Address in x86</h1>
+<p>This article details the exact memory aperture addresses assigned to
+standard Video Graphics Array (VGA) text mode within the classic x86
+system architecture. It outlines the specific physical memory ranges
+mapped in the Upper Memory Area, the differences between color and
+monochrome configurations, and how software directly manipulated video
+memory to display text on screen.</p>
+<p>In the classic x86 real-mode memory map, the standard color VGA text
+mode (specifically BIOS Mode 03h, the standard 80x25 character display)
+is mapped to physical address <strong>0xB8000</strong>. In real-mode
+segmented addressing notation, this corresponds to segment
+<code>0xB800:0000</code>. The aperture spans a 32 KB block from
+<code>0xB8000</code> to <code>0xBFFFF</code>.</p>
+<p>For backward compatibility with the Monochrome Display Adapter (MDA),
+standard VGA also supported a monochrome text mode (BIOS Mode 07h). When
+operating in this mode, the hardware remapped the video memory aperture
+to physical address <strong>0xB0000</strong> (segment
+<code>0xB000:0000</code>), covering the range from <code>0xB0000</code>
+to <code>0xB7FFF</code>.</p>
+<p>These ranges formed part of the Upper Memory Area (UMA), a 384 KB
+region spanning <code>0xA0000</code> to <code>0xFFFFF</code> reserved
+for hardware devices and system BIOS. Within this layout, VGA graphics
+modes occupied <code>0xA0000</code> to <code>0xAFFFF</code>, leaving the
+<code>0xB0000</code> to <code>0xBFFFF</code> window exclusively for text
+framebuffers.</p>
+<p>In standard 80x25 color text mode, each on-screen character cell
+consumed two consecutive bytes in memory:</p>
+<ol type="1">
+<li><strong>Character Code (Offset +0):</strong> An 8-bit ASCII or
+extended ASCII code representing the character glyph stored in the VGA
+font ROM/RAM.</li>
+<li><strong>Attribute Byte (Offset +1):</strong> An 8-bit field defining
+the foreground color (bits 0–3), background color (bits 4–6), and an
+optional blinking or high-intensity background flag (bit 7).</li>
+</ol>
+<p>Because an 80x25 text screen requires 2,000 character cells, a single
+display page uses exactly 4,000 bytes. The 32 KB aperture at
+<code>0xB8000</code> allowed the VGA card to store up to eight distinct
+display pages simultaneously, enabling applications to perform instant
+page-flipping by adjusting the start address registers on the VGA
+controller without needing to retransmit screen data.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

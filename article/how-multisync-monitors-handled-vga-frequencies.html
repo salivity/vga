@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Multisync Monitors Handled VGA Frequencies - vga</title>
+    <meta name="description" content="This article examines how multisync (multiscan) monitors adapted to the flexible timing requirements of the Video Graphics Array (VGA) standard. Before multisync technology, computer displays were hardwired to strict, singular scan rates. The introductio">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-multisync-monitors-handled-vga-frequencies">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Multisync Monitors Handled VGA Frequencies - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-multisync-monitors-handled-vga-frequencies" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines how multisync (multiscan) monitors adapted to the flexible timing requirements of the Video Graphics Array (VGA) standard. Before multisync technology, computer displays were hardwired to strict, singular scan rates. The introductio" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-multisync-monitors-handled-vga-frequencies">How Multisync
+Monitors Handled VGA Frequencies</h1>
+<p>This article examines how multisync (multiscan) monitors adapted to
+the flexible timing requirements of the Video Graphics Array (VGA)
+standard. Before multisync technology, computer displays were hardwired
+to strict, singular scan rates. The introduction of VGA and its
+higher-resolution successors required displays to actively detect, lock
+onto, and scale across a wide range of horizontal and vertical scan
+frequencies without burning out internal components. Below is an
+explanation of the technical mechanisms—from signal detection and
+phase-locked loops to dynamic deflection circuitry and microprocessor
+memory—that made this adaptability possible.</p>
+<h3 id="the-challenge-of-variable-vga-timings">The Challenge of Variable
+VGA Timings</h3>
+<p>Early personal computer display standards, such as IBM’s MDA, CGA,
+and EGA, operated at fixed horizontal frequencies (roughly 18.43 kHz,
+15.75 kHz, and 21.8 kHz, respectively). Cathode Ray Tube (CRT) monitors
+designed for these standards utilized rigid deflection circuits tuned to
+resonate at a single frequency.</p>
+<p>In 1987, IBM introduced the VGA standard, which required a baseline
+horizontal frequency of 31.469 kHz and supported multiple refresh rates,
+such as 60 Hz for 640x480 graphics and 70 Hz for 720x400 text mode. As
+Super VGA (SVGA) emerged, horizontal frequencies soared anywhere from 31
+kHz to beyond 100 kHz, with vertical refresh rates varying between 56 Hz
+and 120 Hz. Feeding these changing frequencies into a fixed-frequency
+monitor caused deflection failure and permanent hardware damage,
+necessitating a dynamic solution: the multisync monitor.</p>
+<h3 id="sync-pulse-detection-and-separation">Sync Pulse Detection and
+Separation</h3>
+<p>Multisync monitors adapted to diverse signals beginning at the input
+stage. Unlike earlier standards that often mixed synchronization
+information into the video line (composite sync), the standard 15-pin
+VGA connector provided dedicated lines for Horizontal Sync (H-Sync) and
+Vertical Sync (V-Sync).</p>
+<p>Inside the monitor, a sync processing circuit monitored these
+incoming TTL (transistor-transistor logic) pulses:</p>
+<ol type="1">
+<li><strong>Polarity Detection:</strong> VGA used the polarity of H-Sync
+and V-Sync pulses (positive or negative) to signal the intended vertical
+resolution (e.g., 350, 400, or 480 lines). Multisync circuitry read
+these polarities to anticipate deflection needs.</li>
+<li><strong>Frequency Counting:</strong> An internal frequency counter
+measured the duration between pulses to determine the exact horizontal
+line rate and vertical frame rate.</li>
+</ol>
+<h3 id="phase-locked-loops-pll-and-horizontal-oscillators">Phase-Locked
+Loops (PLL) and Horizontal Oscillators</h3>
+<p>Once the monitor detected the incoming sync rates, it relied on
+Phase-Locked Loops (PLLs) to synchronize its internal scan generation
+with the graphics card.</p>
+<p>The incoming horizontal sync pulse acted as the reference frequency
+for the PLL. The PLL compared the phase and frequency of the input
+signal to a feedback signal generated by the monitor’s internal
+horizontal oscillator. Any difference generated an error voltage that
+adjusted the internal oscillator until it perfectly matched the incoming
+signal. This continuous feedback loop allowed multisync monitors to
+track smooth variations or entirely switch between different horizontal
+frequencies on the fly.</p>
+<h3
+id="relay-switched-and-wide-range-deflection-circuits">Relay-Switched
+and Wide-Range Deflection Circuits</h3>
+<p>Driving a CRT requires pushing high electrical currents through the
+horizontal and vertical deflection yokes to steer the electron beam
+across the screen. The horizontal deflection circuit is particularly
+sensitive, as the energy required scales directly with frequency.
+Multisync monitors accommodated wide frequency spans using two primary
+methods:</p>
+<ul>
+<li><strong>Switched Capacitance and B+ Voltage Regulation:</strong>
+Early multisync monitors divided frequencies into discrete ranges. When
+the monitor detected a jump from standard VGA (31.5 kHz) to SVGA (38 kHz
+or 48 kHz), relays or solid-state MOSFET switches would swap in
+different tuning capacitors and adjust the "B+" supply voltage fed to
+the flyback transformer and horizontal output transistor (HOT). This
+prevented the horizontal output stage from overheating or
+under-driving.</li>
+<li><strong>Continuous Resonant Tracking:</strong> Later, fully variable
+designs used sophisticated switched-mode power supplies that scaled the
+rail voltage continuously to match the calculated horizontal frequency,
+eliminating the need for mechanical relays.</li>
+</ul>
+<h3 id="dynamic-geometric-correction-and-digital-control">Dynamic
+Geometric Correction and Digital Control</h3>
+<p>As scan rates change, the magnetic forces required to maintain an
+undistorted raster image also shift. Increasing the horizontal frequency
+without adjusting the vertical sweep leads to stretched, squashed, or
+geometrically distorted images (such as pincushioning, trapezoid errors,
+and barrel distortion).</p>
+<p>Analog multisync designs used dynamic correction circuits that tapped
+into the horizontal and vertical deflection feedback to modulate yoke
+current in real time.</p>
+<p>By the early 1990s, monitors integrated onboard microcontrollers
+paired with non-volatile EEPROM memory. When a user adjusted the screen
+size, centering, and geometry for an uncommon resolution, the
+microcontroller mapped these settings to the specific H-Sync and V-Sync
+signature. When that frequency combination was detected again, the
+monitor automatically recalled the stored calibration values, allowing
+seamless transitions between DOS text prompts, standard VGA gaming, and
+high-resolution desktop environments.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

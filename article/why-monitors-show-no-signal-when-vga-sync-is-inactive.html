@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Monitors Show No Signal When VGA Sync Is Inactive - vga</title>
+    <meta name="description" content="When a modern monitor is connected via a Video Graphics Array (VGA) cable, it relies on dedicated synchronization lines to detect and reconstruct incoming video data. If the horizontal or vertical sync lines are severed, loose, or inactive, the monitor c">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-monitors-show-no-signal-when-vga-sync-is-inactive">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Monitors Show No Signal When VGA Sync Is Inactive - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-monitors-show-no-signal-when-vga-sync-is-inactive" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When a modern monitor is connected via a Video Graphics Array (VGA) cable, it relies on dedicated synchronization lines to detect and reconstruct incoming video data. If the horizontal or vertical sync lines are severed, loose, or inactive, the monitor c" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-monitors-show-no-signal-when-vga-sync-is-inactive">Why
+Monitors Show No Signal When VGA Sync Is Inactive</h1>
+<p>When a modern monitor is connected via a Video Graphics Array (VGA)
+cable, it relies on dedicated synchronization lines to detect and
+reconstruct incoming video data. If the horizontal or vertical sync
+lines are severed, loose, or inactive, the monitor cannot determine the
+timing, resolution, or frame boundaries of the analog color information.
+Lacking this essential timing data, the monitor's internal processing
+circuitry cannot render an image, prompting its firmware to immediately
+declare that there is no valid input and display a "No Signal"
+message.</p>
+<h3 id="the-role-of-vga-sync-signals">The Role of VGA Sync Signals</h3>
+<p>A standard VGA interface separates video data into five primary
+channels: three analog color signals (Red, Green, and Blue) and two
+digital timing signals—Horizontal Sync (H-Sync) and Vertical Sync
+(V-Sync).</p>
+<ul>
+<li><strong>H-Sync (Pin 13):</strong> Dictates when a single horizontal
+line of pixels begins and ends.</li>
+<li><strong>V-Sync (Pin 14):</strong> Dictates when a complete frame or
+refresh cycle begins and ends.</li>
+</ul>
+<p>While the RGB pins carry variable analog voltages between 0V and 0.7V
+to define pixel color and brightness, they carry zero structural
+information. The sync lines carry digital Transistor-Transistor Logic
+(TTL) pulses that tell the display exactly when to draw each pixel line
+and when to advance to the next frame.</p>
+<h3 id="why-rgb-data-alone-is-insufficient">Why RGB Data Alone Is
+Insufficient</h3>
+<p>Unlike modern purely digital interfaces (such as HDMI or DisplayPort)
+that transmit serialized data packets containing pixel and metadata
+together, VGA is an analog raster-scan standard.</p>
+<p>If the sync lines are missing while RGB voltages remain active, the
+monitor receives nothing more than raw, unstructured electrical
+fluctuations. The monitor's internal analog-to-digital converter (ADC)
+and scalar processor cannot extrapolate pixel clocks, horizontal
+frequencies, or vertical refresh rates from color pins alone. Without
+sync pulses, the monitor cannot determine whether an incoming voltage
+corresponds to the first pixel in the top-left corner, the middle of the
+screen, or simple background electrical noise.</p>
+<h3 id="hardware-detection-and-power-management">Hardware Detection and
+Power Management</h3>
+<p>Modern flat-panel monitors feature an internal scalar microprocessor
+responsible for monitoring input health. This controller specifically
+monitors Pins 13 and 14 for consistent, periodic frequency pulses:</p>
+<ol type="1">
+<li><strong>Pulse Detection:</strong> The controller continuously
+samples the sync lines. A typical 1080p VGA connection, for example,
+expects an H-Sync frequency of around 67.5 kHz and a V-Sync frequency of
+60 Hz.</li>
+<li><strong>Failure State:</strong> If the sync signals fall outside
+supported frequency bounds, drop to 0V (ground), or float unconnected,
+the scalar determines that no functional host device is transmitting
+data.</li>
+<li><strong>Display Power Management Signaling (DPMS):</strong> The
+missing sync triggers the VESA DPMS protocol. The monitor halts its ADC
+sampling, displays the "No Signal" on-screen warning to notify the user,
+and initiates a countdown timer to enter a low-power standby mode to
+protect its internal circuitry and backlight.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

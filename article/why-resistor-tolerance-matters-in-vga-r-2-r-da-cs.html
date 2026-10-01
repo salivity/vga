@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Resistor Tolerance Matters in VGA R-2R DACs - vga</title>
+    <meta name="description" content="Building a discrete R-2R resistor ladder to generate Video Graphics Array (VGA) signals requires strict resistor tolerance to ensure accurate analog color reproduction. Because the R-2R network relies on exact binary-weighted voltage division, minute var">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-resistor-tolerance-matters-in-vga-r-2-r-da-cs">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Resistor Tolerance Matters in VGA R-2R DACs - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-resistor-tolerance-matters-in-vga-r-2-r-da-cs" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Building a discrete R-2R resistor ladder to generate Video Graphics Array (VGA) signals requires strict resistor tolerance to ensure accurate analog color reproduction. Because the R-2R network relies on exact binary-weighted voltage division, minute var" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-resistor-tolerance-matters-in-vga-r-2r-dacs">Why Resistor
+Tolerance Matters in VGA R-2R DACs</h1>
+<p>Building a discrete R-2R resistor ladder to generate Video Graphics
+Array (VGA) signals requires strict resistor tolerance to ensure
+accurate analog color reproduction. Because the R-2R network relies on
+exact binary-weighted voltage division, minute variations in resistance
+create non-linear output voltages. In video applications, these errors
+manifest visibly as color banding, incorrect brightness levels,
+unnatural color tints, and non-monotonic artifacts that degrade the
+final display image.</p>
+<h3 id="the-function-of-an-r-2r-ladder-in-vga">The Function of an R-2R
+Ladder in VGA</h3>
+<p>VGA operates on an analog RGB standard requiring three independent
+voltage channels (Red, Green, and Blue). Each channel expects a signal
+ranging from 0V (fully off) to 0.7V (fully saturated) terminated into a
+75-ohm load. A discrete R-2R ladder functions as a passive
+Digital-to-Analog Converter (DAC) that translates digital color bits
+from a microcontroller or FPGA into these precise analog voltages.</p>
+<p>The circuit's operation depends on a repeating geometric ratio: every
+successive bit stage must divide the input voltage precisely in half. If
+the physical components deviate from their theoretical ratios, the
+voltage division fails.</p>
+<h3 id="bit-weighting-and-the-msb-problem">Bit Weighting and the MSB
+Problem</h3>
+<p>In an R-2R ladder, the Most Significant Bit (MSB) controls 50% of the
+full-scale output voltage. The next bit controls 25%, followed by 12.5%,
+and so on down to the Least Significant Bit (LSB).</p>
+<p>Because the MSB carries the largest current, an error in the MSB
+resistor produces a voltage deviation that can easily exceed the entire
+value of the LSB. For example, in an 8-bit DAC:</p>
+<ul>
+<li>The LSB represents only 1/256th (approximately 0.39%) of the dynamic
+range.</li>
+<li>Standard 5% or even 1% tolerance resistors can introduce resistance
+shifts far larger than the 0.39% step size.</li>
+<li>If the tolerance error of the MSB exceeds the value of the lower
+bits, the DAC loses resolution, rendering the lower bits completely
+ineffective.</li>
+</ul>
+<h3 id="visual-consequences-on-vga-output">Visual Consequences on VGA
+Output</h3>
+<p>When resistor tolerances are too loose, the analog video output
+suffers from specific, noticeable visual distortions:</p>
+<ul>
+<li><strong>Differential Non-Linearity (DNL) and Missing Codes:</strong>
+When step sizes between adjacent values are uneven, smooth color
+gradients appear jagged with abrupt jumps in brightness.</li>
+<li><strong>Non-Monotonicity:</strong> A severe tolerance mismatch can
+cause a digital value increase to yield an analog voltage decrease
+(e.g., code <code>10000000</code> producing a lower voltage than code
+<code>01111111</code>). On a monitor, this turns smooth gradients into
+dark bands or inverse outlines around shaded objects.</li>
+<li><strong>Color Tint and White Balance Shift:</strong> VGA uses three
+separate R-2R networks for Red, Green, and Blue. If the tolerance errors
+vary between these three networks, the color channels will track
+unevenly. A neutral gray ramp will exhibit shifting color casts,
+appearing slightly pink at mid-tones and greenish at higher
+intensities.</li>
+</ul>
+<h3 id="recommended-tolerances-for-discrete-vga-dacs">Recommended
+Tolerances for Discrete VGA DACs</h3>
+<p>The acceptable tolerance depends directly on the color depth of the
+VGA implementation:</p>
+<ul>
+<li><strong>3-bit or 4-bit per channel (e.g., 512 or 4,096
+colors):</strong> Resistors with 1% tolerance are typically sufficient
+to avoid non-monotonic steps and maintain acceptable visual
+linearity.</li>
+<li><strong>5-bit to 6-bit per channel:</strong> Resistors with 0.5% or
+0.1% tolerance are required to prevent visible banding and preserve the
+distinction of lower-order bits.</li>
+<li><strong>8-bit per channel (True Color):</strong> Achieving true
+8-bit monotonicity requires 0.1% tolerance resistors or lower. At this
+density, temperature coefficients and trace resistance on the printed
+circuit board also become critical factors.</li>
+</ul>
+<p>Using tight-tolerance thin-film resistors—or integrated resistor
+network arrays where resistors are matched on a single silicon
+substrate—ensures the consistent voltage division necessary to produce
+clean, artifact-free analog VGA video.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

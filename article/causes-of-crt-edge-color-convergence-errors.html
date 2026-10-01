@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Causes of CRT Edge Color Convergence Errors - vga</title>
+    <meta name="description" content="Color convergence errors on the edges of a high-resolution Video Graphics Array (VGA) Cathode Ray Tube (CRT) monitor occur when the red, green, and blue electron beams fail to intersect at the precise spot on the phosphor screen. While the center of the">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/causes-of-crt-edge-color-convergence-errors">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Causes of CRT Edge Color Convergence Errors - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/causes-of-crt-edge-color-convergence-errors" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Color convergence errors on the edges of a high-resolution Video Graphics Array (VGA) Cathode Ray Tube (CRT) monitor occur when the red, green, and blue electron beams fail to intersect at the precise spot on the phosphor screen. While the center of the" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="causes-of-crt-edge-color-convergence-errors">Causes of CRT Edge
+Color Convergence Errors</h1>
+<p>Color convergence errors on the edges of a high-resolution Video
+Graphics Array (VGA) Cathode Ray Tube (CRT) monitor occur when the red,
+green, and blue electron beams fail to intersect at the precise spot on
+the phosphor screen. While the center of the display often remains
+sharp, the periphery is vulnerable to color fringing, blurring, and
+chromatic separation. This issue is primarily driven by geometric
+deflection angles, limitations in dynamic magnetic correction,
+deflection yoke tolerances, and external magnetic interference.</p>
+<h3 id="the-physics-of-crt-convergence">The Physics of CRT
+Convergence</h3>
+<p>A color CRT screen utilizes three separate electron guns—one each for
+red, green, and blue. For a clear image to appear, all three beams must
+pass through the exact same aperture in the shadow mask or aperture
+grille simultaneously before striking their respective phosphor dots or
+stripes. Convergence refers to this precise alignment.</p>
+<p>When convergence fails, the individual primary colors become visible
+along the outlines of displayed objects. While static convergence aligns
+the beams at the center of the screen, maintaining this alignment across
+the entire surface requires dynamic convergence.</p>
+<h3 id="increased-deflection-distance-and-angles">Increased Deflection
+Distance and Angles</h3>
+<p>The primary reason convergence errors cluster around the edges is the
+geometry of the tube itself.</p>
+<ul>
+<li><strong>Variable Travel Distance:</strong> The distance from the
+electron gun to the center of the screen is significantly shorter than
+the distance from the gun to the outer edges and corners.</li>
+<li><strong>Extreme Angles:</strong> To reach the edges, the electron
+beams must be bent at sharp angles by the deflection yoke. A minute
+angular error that causes an imperceptible misalignment at the center of
+the screen becomes magnified dramatically by the time the beam travels
+the extended distance to the perimeter.</li>
+<li><strong>Flat-Screen Geometry:</strong> In later high-resolution flat
+CRT monitors, this problem became worse. Bending an electron beam to hit
+a flat glass perimeter instead of a naturally curved radius requires
+extreme mathematical compensation, making edge convergence inherently
+difficult to maintain.</li>
+</ul>
+<h3 id="dynamic-convergence-limitations">Dynamic Convergence
+Limitations</h3>
+<p>To compensate for the changing distance between the gun and the
+screen, CRT monitors use dynamic convergence circuits. These circuits
+adjust the magnetic fields in the deflection yoke based on the current
+position of the electron beam as it scans across the raster.</p>
+<p>In high-resolution VGA modes (such as 1024x768, 1600x1200, or
+higher), the pixel pitch is exceptionally fine. Even minor imperfections
+in the analog dynamic convergence waveforms will produce visible color
+fringing. Producing a perfectly linear, non-uniform magnetic field that
+corrects for every coordinate on the screen edge is electronically
+complex, and consumer-grade hardware inevitably features small
+compromises at the outer boundaries.</p>
+<h3 id="deflection-yoke-imperfections">Deflection Yoke
+Imperfections</h3>
+<p>The deflection yoke sits on the neck of the tube and uses magnetic
+coils to steer the electron beams vertically and horizontally.</p>
+<ul>
+<li><strong>Winding Tolerances:</strong> Physical imperfections in the
+copper windings of the yoke create non-uniformities in the magnetic
+flux. These variations have minimal effect at low deflection angles (the
+center) but introduce severe field distortion at maximum deflection (the
+edges).</li>
+<li><strong>Physical Alignment:</strong> The yoke is physically
+positioned, tilted, and glued into place at the factory. Minor physical
+misalignments that cannot be corrected with onboard potentiometers or
+digital controls frequently manifest as corner or edge convergence
+issues.</li>
+</ul>
+<h3 id="external-and-terrestrial-magnetic-fields">External and
+Terrestrial Magnetic Fields</h3>
+<p>Electron beams are highly susceptible to magnetic fields outside the
+monitor:</p>
+<ul>
+<li><strong>Earth’s Magnetic Field:</strong> The Earth's natural
+magnetic field exerts an uneven force on the electron beams depending on
+the orientation of the monitor (facing North vs. East). Because the
+beams are traveling at their longest path when directed toward the
+edges, they are exposed to this ambient field for a longer duration,
+resulting in visible edge drift.</li>
+<li><strong>Electromagnetic Interference (EMI):</strong> Unshielded
+speakers, power transformers, and nearby electronic devices produce
+stray magnetic fields that disproportionately warp the beams at the
+screen margins, where the deflection field is already strained.</li>
+</ul>
+<h3 id="component-aging-and-thermal-drift">Component Aging and Thermal
+Drift</h3>
+<p>As a CRT monitor operates, internal components heat up. Resistors,
+capacitors, and the deflection coils themselves change electrical
+characteristics slightly with elevated temperatures. This thermal drift
+causes the dynamic convergence circuits to shift over time, often
+degrading the edge alignment after the monitor has been running for an
+extended period. Additionally, aging capacitors in the deflection
+circuitry lose their ability to deliver stable correction waveforms,
+leading to permanent edge convergence degradation.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

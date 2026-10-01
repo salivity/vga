@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Color Don't Care Register Explained - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) Color Don't Care register is a hardware configuration register used during specific memory read operations to selectively ignore color planes during pixel comparisons. Located in the VGA Graphics Controller, this register w">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-color-don-t-care-register-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Color Don't Care Register Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-color-don-t-care-register-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) Color Don't Care register is a hardware configuration register used during specific memory read operations to selectively ignore color planes during pixel comparisons. Located in the VGA Graphics Controller, this register w" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-color-dont-care-register-explained">VGA Color Don't Care
+Register Explained</h1>
+<p>The Video Graphics Array (VGA) Color Don't Care register is a
+hardware configuration register used during specific memory read
+operations to selectively ignore color planes during pixel comparisons.
+Located in the VGA Graphics Controller, this register works in tandem
+with the Color Compare register when the display hardware is set to Read
+Mode 1. By defining which of the four memory planes are evaluated and
+which are disregarded, it enables software to quickly search display
+memory for specific color combinations, patterns, or boundaries without
+manually reading and masking all four planes in software.</p>
+<h3 id="the-role-of-read-mode-1">The Role of Read Mode 1</h3>
+<p>To understand the Color Don't Care register, it is necessary to
+examine how VGA organizes memory. VGA graphics memory is arranged into
+four parallel 64 KB memory planes (Planes 0 through 3). In standard
+16-color planar modes, a single byte read from the host CPU cannot
+retrieve the complete color data for eight pixels simultaneously because
+the color bits for each pixel are distributed across these four separate
+planes.</p>
+<p>The VGA hardware provides two primary read modes to handle this
+architecture:</p>
+<ul>
+<li><strong>Read Mode 0:</strong> The CPU reads a raw byte directly from
+a single plane, chosen by the Read Map Select register.</li>
+<li><strong>Read Mode 1:</strong> The CPU performs a hardware-level
+color comparison across all four planes simultaneously.</li>
+</ul>
+<p>The Color Don't Care register is exclusively utilized during Read
+Mode 1 operations.</p>
+<h3 id="how-the-color-dont-care-register-works">How the Color Don't Care
+Register Works</h3>
+<p>The Color Don't Care register is accessed via the Graphics Controller
+index register (port <code>0x3CE</code>, index <code>0x07</code>). Only
+the lower four bits of this register are active, corresponding directly
+to the four VGA memory planes:</p>
+<ul>
+<li><strong>Bit 0:</strong> Plane 0 enable/disable</li>
+<li><strong>Bit 1:</strong> Plane 1 enable/disable</li>
+<li><strong>Bit 2:</strong> Plane 2 enable/disable</li>
+<li><strong>Bit 3:</strong> Plane 3 enable/disable</li>
+<li><strong>Bits 4–7:</strong> Unused</li>
+</ul>
+<p>When the CPU reads a byte of video memory in Read Mode 1, the VGA
+hardware evaluates each of the eight horizontal pixels represented by
+that byte address. For each pixel, the hardware compares the bits across
+the memory planes against the values programmed into the <strong>Color
+Compare register</strong> (index <code>0x02</code>).</p>
+<p>The Color Don't Care register acts as a mask for this operation:</p>
+<ul>
+<li>Setting a plane's bit to <strong>1</strong> instructs the hardware
+to include that plane in the comparison. The bit in that plane must
+match the corresponding bit in the Color Compare register.</li>
+<li>Setting a plane's bit to <strong>0</strong> marks that plane as a
+"don't care." The hardware treats the plane as an automatic match,
+regardless of whether its contents match the Color Compare
+register.</li>
+</ul>
+<h3 id="result-of-the-read-operation">Result of the Read Operation</h3>
+<p>After the comparison occurs across the selected planes, the VGA
+hardware returns a single 8-bit value to the CPU. Each bit in the
+returned byte represents one of the eight pixels:</p>
+<ul>
+<li>A bit is set to <strong>1</strong> if the corresponding pixel
+matched the criteria across all active (care) planes.</li>
+<li>A bit is set to <strong>0</strong> if the pixel differed from the
+Color Compare register in any of the active planes.</li>
+</ul>
+<h3 id="practical-applications">Practical Applications</h3>
+<p>By utilizing the Color Don't Care register, software can offload
+complex bitwise masking operations directly to the VGA hardware. Common
+use cases include:</p>
+<ul>
+<li><strong>Collision Detection:</strong> Determining if a moving sprite
+has collided with specific background elements of a particular color,
+regardless of attributes stored in ignored planes.</li>
+<li><strong>Fast Boundary Searches:</strong> Finding edges in graphics
+or text modes by checking only the planes that define foreground or
+background contrast.</li>
+<li><strong>Color Subsetting:</strong> Searching for families of colors
+(such as any shade of blue) by caring only about the blue plane and
+ignoring the red and green planes.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

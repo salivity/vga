@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA 320x200 vs 320x240: Square Pixels and Mode X - vga</title>
+    <meta name="description" content="This article examines the core technical and visual differences between the standard Video Graphics Array (VGA) 320x200 graphics mode and the customized 320x240 resolution, commonly known as "Mode X." It covers how the shift to 320x240 delivers a 1:1 squ">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-320-x-200-vs-320-x-240-square-pixels-and-mode-x">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA 320x200 vs 320x240: Square Pixels and Mode X - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-320-x-200-vs-320-x-240-square-pixels-and-mode-x" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines the core technical and visual differences between the standard Video Graphics Array (VGA) 320x200 graphics mode and the customized 320x240 resolution, commonly known as "Mode X." It covers how the shift to 320x240 delivers a 1:1 squ" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-320x200-vs-320x240-square-pixels-and-mode-x">VGA 320x200 vs
+320x240: Square Pixels and Mode X</h1>
+<p>This article examines the core technical and visual differences
+between the standard Video Graphics Array (VGA) 320x200 graphics mode
+and the customized 320x240 resolution, commonly known as "Mode X." It
+covers how the shift to 320x240 delivers a 1:1 square pixel aspect ratio
+on standard 4:3 monitors, alters the underlying video memory layout from
+linear to planar architecture, and unlocks advanced hardware
+capabilities such as multi-page double buffering and smooth scrolling at
+the cost of programming complexity.</p>
+<h3 id="pixel-aspect-ratio-and-geometry">Pixel Aspect Ratio and
+Geometry</h3>
+<p>The standard VGA 256-color mode (BIOS Mode 13h) produces a resolution
+of 320x200 pixels. When displayed on a standard 4:3 cathode-ray tube
+(CRT) monitor, 320x200 does not match the physical screen proportions.
+This mismatch results in non-square pixels with an aspect ratio of
+roughly 1:1.2, meaning individual pixels are taller than they are wide.
+Consequently, software must mathematically compensate when drawing
+geometric shapes; otherwise, circles appear as vertical ellipses, and
+diagonal lines render with uneven angles.</p>
+<p>In contrast, 320x240 has an inherent 4:3 mathematical ratio (<span
+class="math inline">\(320 / 240 = 4 / 3\)</span>). Displayed on a 4:3
+monitor, this mode yields a true 1:1 square pixel aspect ratio. Square
+pixels eliminate the need for aspect-ratio correction in software
+rendering pipelines, simplifying 2D sprite rotations, circle
+calculations, and 3D projection mathematics.</p>
+<h3 id="memory-architecture-linear-vs-planar">Memory Architecture:
+Linear vs. Planar</h3>
+<p>The most significant architectural divergence between the two modes
+is how VGA memory is organized:</p>
+<ul>
+<li><strong>Standard 320x200 (Chained / Mode 13h):</strong> Operates in
+a "chained" mode where hardware logic maps four internal 64 KB memory
+planes into a single contiguous linear address space at memory segment
+<code>0xA000</code>. Each screen byte corresponds directly to one pixel.
+Plotting a pixel requires a straightforward calculation:
+<code>Memory Offset = (Y * 320) + X</code>. This simplicity made Mode
+13h the default choice for early PC game developers.</li>
+<li><strong>320x240 (Unchained / Mode X):</strong> Achieved by
+reprogramming the VGA sequencer and cathode-ray tube controller (CRTC)
+registers to disable chain-4 mode. This exposes VGA video memory in an
+"unchained" planar structure. Instead of a linear sequence, four
+consecutive horizontal pixels reside at the same memory address across
+four distinct hardware planes (Plane 0, Plane 1, Plane 2, and Plane 3).
+Drawing a specific pixel requires selecting the target plane using the
+VGA Map Mask register before writing the byte.</li>
+</ul>
+<h3 id="video-ram-utilization-and-page-flipping">Video RAM Utilization
+and Page Flipping</h3>
+<p>A single 320x200 frame requires 64,000 bytes (<span
+class="math inline">\(320 \times 200\)</span>), which roughly fills the
+64 KB address window exposed by Mode 13h. Because standard Mode 13h
+addresses memory as a single 64 KB block, the remaining 192 KB of a
+standard 256 KB VGA adapter is left inaccessible without complex
+register hacking. This restricts developers to a single frame buffer in
+video RAM; creating smooth animation generally requires drawing to a
+buffer in system RAM and copying the entire screen during the vertical
+retrace interval.</p>
+<p>A 320x240 frame requires 76,800 bytes (<span
+class="math inline">\(320 \times 240\)</span>). Because unchained planar
+mode exposes all 256 KB of video memory, the developer can fit up to
+three complete 76,800-byte video pages directly inside video RAM. This
+allows true hardware page flipping (double or triple buffering). The
+application can render to an off-screen page while the display
+controller outputs the current page, switching the active display
+pointer instantly during the vertical blanking interval to completely
+eliminate visual tearing without high-bandwidth system-to-video RAM
+copies.</p>
+<h3 id="performance-and-implementation-trade-offs">Performance and
+Implementation Trade-offs</h3>
+<p>The planar layout of 320x240 introduces both performance costs and
+optimization opportunities:</p>
+<ul>
+<li><strong>Pixel Plotting Overhead:</strong> Setting single, random
+pixels is slower in 320x240 than in 320x200 because the CPU must execute
+I/O port writes to select the appropriate plane before each memory
+write.</li>
+<li><strong>Parallel Write Speeds:</strong> When manipulating four
+adjacent pixels that share the same color or when copying graphic blocks
+aligned to 4-pixel boundaries, the CPU can configure the VGA Map Mask to
+write to all four planes simultaneously with a single memory write. This
+enables block-fill and sprite-rendering operations that can run up to
+four times faster than identical operations in linear Mode 13h.</li>
+<li><strong>Hardware Scrolling:</strong> The planar structure and
+surplus video memory in 320x240 allow developers to use the VGA's
+built-in start address and horizontal panning registers to achieve
+multi-directional, sub-pixel smooth scrolling entirely in hardware.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

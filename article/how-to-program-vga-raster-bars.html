@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Program VGA Raster Bars - vga</title>
+    <meta name="description" content="This article explores the classic raster bar visual effect and provides a direct technical guide to implementing it on PC Video Graphics Array (VGA) hardware. You will learn what raster bars are, how they exploit CRT display timing, and how to program th">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-to-program-vga-raster-bars">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Program VGA Raster Bars - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-to-program-vga-raster-bars" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the classic raster bar visual effect and provides a direct technical guide to implementing it on PC Video Graphics Array (VGA) hardware. You will learn what raster bars are, how they exploit CRT display timing, and how to program th" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-program-vga-raster-bars">How to Program VGA Raster
+Bars</h1>
+<p>This article explores the classic raster bar visual effect and
+provides a direct technical guide to implementing it on PC Video
+Graphics Array (VGA) hardware. You will learn what raster bars are, how
+they exploit CRT display timing, and how to program them directly by
+polling VGA I/O ports and modifying the hardware color palette on a
+scanline-by-scanline basis without redrawing the frame buffer.</p>
+<h3 id="what-is-a-raster-bar-effect">What Is a Raster Bar Effect?</h3>
+<p>A raster bar (often called a raster beam or copper bar) is a classic
+computer graphics effect popularized in the 1980s and 1990s demoscene on
+platforms like the Commodore Amiga, Atari ST, and IBM PC. Visually, it
+consists of horizontal, shaded color bands that bounce, wave, or stretch
+smoothly across the screen.</p>
+<p>Unlike traditional 2D computer graphics, raster bars are generally
+not drawn into the video frame buffer memory. Instead, they are
+generated dynamically by altering hardware color registers in real time
+as the monitor's electron beam scans across the screen line by line. By
+changing the RGB value of a specific palette index (typically color
+index 0, the background) right before a scanline begins drawing, the
+entire horizontal line takes on that new color with zero pixel-drawing
+overhead.</p>
+<h3 id="vga-timing-and-the-video-beam">VGA Timing and the Video
+Beam</h3>
+<p>To display an image, an analog CRT monitor uses an electron beam that
+sweeps left-to-right to draw horizontal scanlines, and top-to-bottom to
+draw the full frame. VGA hardware exposes specific hardware status flags
+that indicate the position of this sweep:</p>
+<ol type="1">
+<li><strong>Horizontal Blank (HBlank):</strong> The brief period when
+the electron gun finishes a line, turns off, and returns to the left
+edge of the screen to begin the next line.</li>
+<li><strong>Vertical Blank (VBlank):</strong> The longer period when the
+gun reaches the bottom of the screen, turns off, and resets back to the
+top left to start a new frame.</li>
+</ol>
+<p>On a PC VGA adapter, the CPU reads the state of these blanking
+intervals via <strong>Input Status Register 1</strong>, located at I/O
+port address <code>0x03DA</code>.</p>
+<ul>
+<li><strong>Bit 3 (0x08):</strong> Vertical Retrace (1 = VBlank active,
+0 = display area active).</li>
+<li><strong>Bit 0 (0x01):</strong> Display Disable / Horizontal Retrace
+(1 = beam is blanked/retrace, 0 = beam is actively drawing pixels).</li>
+</ul>
+<h3 id="the-vga-color-palette-dac-registers">The VGA Color Palette (DAC)
+Registers</h3>
+<p>VGA color graphics (such as standard Mode 13h: 320x200 at 256 colors)
+use a palette lookup table managed by the Digital-to-Analog Converter
+(DAC). The DAC allows 256 colors to be selected from an 18-bit color
+space (6 bits each for Red, Green, and Blue, ranging from 0 to 63).</p>
+<p>The palette is programmed using two primary ports:</p>
+<ul>
+<li><strong>Port <code>0x03C8</code> (PEL Address Write Mode):</strong>
+Specifies which palette index (0–255) to alter.</li>
+<li><strong>Port <code>0x03C9</code> (PEL Data Register):</strong>
+Accepts three sequential byte writes representing Red, Green, and Blue
+values (0 to 63 each).</li>
+</ul>
+<h3 id="step-by-step-programming-process">Step-by-Step Programming
+Process</h3>
+<p>To generate a stable raster bar on a VGA card in standard C and x86
+Assembly, execute the following loop every frame:</p>
+<h4 id="1-disable-interrupts">1. Disable Interrupts</h4>
+<p>Because the effect relies on microsecond-accurate hardware timing,
+background software interrupts (such as the system timer or keyboard
+poll) will cause visible tearing, jitter, or shaking. Disable interrupts
+before the timing loop begins using the <code>CLI</code> assembly
+instruction, and re-enable them after the frame completes using
+<code>STI</code>.</p>
+<h4 id="2-synchronize-to-the-vertical-retrace">2. Synchronize to the
+Vertical Retrace</h4>
+<p>Wait for the start of a new frame to prevent tearing and keep the
+bars anchored to the same vertical position:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Wait for any existing VBlank to end</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>inportb<span class="op">(</span><span class="bn">0x03DA</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x08</span><span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Wait for the new VBlank to begin</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(!(</span>inportb<span class="op">(</span><span class="bn">0x03DA</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x08</span><span class="op">));</span></span></code></pre></div>
+<h4 id="3-count-scanlines-to-the-bar-position">3. Count Scanlines to the
+Bar Position</h4>
+<p>After VBlank finishes, determine where on the screen the bar should
+start. You can count horizontal retrace cycles by repeatedly waiting for
+Bit 0 of <code>0x03DA</code> to toggle.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> wait_hblank<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Wait until the beam is drawing</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>inportb<span class="op">(</span><span class="bn">0x03DA</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x01</span><span class="op">);</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Wait until the beam enters HBlank</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(!(</span>inportb<span class="op">(</span><span class="bn">0x03DA</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x01</span><span class="op">));</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>By calling this function in a loop <span
+class="math inline">\(N\)</span> times, you position the execution at
+scanline <span class="math inline">\(N\)</span>.</p>
+<h4 id="4-update-the-palette-during-hblank">4. Update the Palette During
+HBlank</h4>
+<p>A gradient table containing predefined RGB values for each line of
+the bar is applied consecutively. To prevent visual artifacts known as
+"snow" or mid-line palette artifacts, write to the DAC registers only
+during the HBlank window:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Array containing the color gradient (Red component example)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">char</span> bar_gradient<span class="op">[</span><span class="dv">16</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">15</span><span class="op">,</span> <span class="dv">23</span><span class="op">,</span> <span class="dv">32</span><span class="op">,</span> <span class="dv">45</span><span class="op">,</span> <span class="dv">63</span><span class="op">,</span> <span class="dv">63</span><span class="op">,</span> <span class="dv">45</span><span class="op">,</span> <span class="dv">32</span><span class="op">,</span> <span class="dv">23</span><span class="op">,</span> <span class="dv">15</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">1</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Set DAC to write Color 0 (background)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>outportb<span class="op">(</span><span class="bn">0x03C8</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">16</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    wait_hblank<span class="op">();</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Write RGB to Color 0</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    outportb<span class="op">(</span><span class="bn">0x03C9</span><span class="op">,</span> bar_gradient<span class="op">[</span>i<span class="op">]);</span> <span class="co">// Red</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    outportb<span class="op">(</span><span class="bn">0x03C9</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span>               <span class="co">// Green</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    outportb<span class="op">(</span><span class="bn">0x03C9</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span>               <span class="co">// Blue</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">// Reset background color to black after the bar finishes</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>wait_hblank<span class="op">();</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>outportb<span class="op">(</span><span class="bn">0x03C8</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>outportb<span class="op">(</span><span class="bn">0x03C9</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>outportb<span class="op">(</span><span class="bn">0x03C9</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>outportb<span class="op">(</span><span class="bn">0x03C9</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span></code></pre></div>
+<h4 id="5-animate-movement">5. Animate Movement</h4>
+<p>To move the raster bar up and down the screen across frames, adjust
+the starting scanline offset over time using a precomputed sine lookup
+table. By layering multiple offsets and blending palettes across
+separate tables, developers create the illusion of multiple
+independently floating, translucent bars.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

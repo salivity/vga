@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Voltage Range Is Used for VGA RGB Color Signals? - vga</title>
+    <meta name="description" content="Video Graphics Array (VGA) interfaces carry analog video via three dedicated color lines: red, green, and blue. In standard implementations, these color signals operate within a peak-to-peak voltage range of 0.0 V to 0.7 V into a standard 75-ohm terminat">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/what-voltage-range-is-used-for-vga-rgb-color-signals">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Voltage Range Is Used for VGA RGB Color Signals? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/what-voltage-range-is-used-for-vga-rgb-color-signals" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Video Graphics Array (VGA) interfaces carry analog video via three dedicated color lines: red, green, and blue. In standard implementations, these color signals operate within a peak-to-peak voltage range of 0.0 V to 0.7 V into a standard 75-ohm terminat" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-voltage-range-is-used-for-vga-rgb-color-signals">What
+Voltage Range Is Used for VGA RGB Color Signals?</h1>
+<p>Video Graphics Array (VGA) interfaces carry analog video via three
+dedicated color lines: red, green, and blue. In standard
+implementations, these color signals operate within a peak-to-peak
+voltage range of 0.0 V to 0.7 V into a standard 75-ohm termination load.
+A voltage of 0.0 V represents full black (blanking level), while 0.7 V
+corresponds to maximum color saturation. Understanding this voltage
+specification is essential for video hardware design, analog-to-digital
+conversion, and troubleshooting display signal degradation.</p>
+<h2 id="standard-signal-levels-and-impedance">Standard Signal Levels and
+Impedance</h2>
+<p>The VGA electrical specification defines an analog transmission line
+designed to drive a 75-ohm load at the display end, matched by a 75-ohm
+source impedance at the graphics card output:</p>
+<ul>
+<li><strong>Black Level (Zero Intensity):</strong> 0.0 V</li>
+<li><strong>Maximum Intensity (Full Saturation):</strong> 0.7 V</li>
+<li><strong>Peak-to-Peak Amplitude:</strong> 0.7 Vp-p</li>
+<li><strong>Nominal Impedance:</strong> 75 ohms</li>
+</ul>
+<p>When no active display data is being transmitted during the
+horizontal and vertical blanking intervals, the RGB lines remain held at
+0.0 V. Any voltage measured significantly above 0.7 V under a proper
+load typically indicates an impedance mismatch or an incorrectly
+configured DAC (Digital-to-Analog Converter).</p>
+<h2 id="unloaded-vs-terminated-measurements">Unloaded vs. Terminated
+Measurements</h2>
+<p>Because the transmission circuit forms a voltage divider between the
+source impedance and the monitor load, termination directly impacts
+measured voltages:</p>
+<ul>
+<li><strong>Terminated (Connected to Monitor):</strong> When connected
+to a standard display terminating each RGB line with a 75-ohm resistor
+to ground, the voltage ranges from 0.0 V to 0.7 V.</li>
+<li><strong>Unloaded (Open Circuit):</strong> If measured with an
+oscilloscope or high-impedance multimeter without a 75-ohm termination
+load in place, the output voltages float to roughly double the nominal
+values, showing a swing from 0.0 V to approximately 1.4 V.</li>
+</ul>
+<h2 id="synchronization-signal-differences">Synchronization Signal
+Differences</h2>
+<p>A common point of confusion involves the synchronization signals
+running alongside the RGB color lines. While the red, green, and blue
+lines carry high-frequency analog signals capped at 0.7 V, the
+horizontal sync (HSYNC) and vertical sync (VSYNC) lines operate under
+standard digital logic levels. HSYNC and VSYNC typically utilize 5.0 V
+or 3.3 V TTL (Transistor-Transistor Logic) square waves rather than
+low-voltage analog signals.</p>
+<h2 id="signal-integrity-and-color-accuracy">Signal Integrity and Color
+Accuracy</h2>
+<p>Because the color data is purely analog, even millivolt variations in
+the 0.0 V to 0.7 V window directly affect color rendition. Voltage drop
+over long cable runs, poor cable shielding, or resistance drift can
+compress the dynamic range, resulting in dimmer images, washed-out
+whites, or color tint shifts across the screen. Maintaining strict
+adherence to the 0.7 V standard ensures accurate gamma and color
+reproduction across all VGA-compliant displays.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

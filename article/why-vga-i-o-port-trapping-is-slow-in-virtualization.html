@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA I/O Port Trapping Is Slow in Virtualization - vga</title>
+    <meta name="description" content="Emulating legacy Video Graphics Array (VGA) hardware within virtual machines creates a severe performance bottleneck known as I/O port trapping overhead. This article explains why virtualizing VGA registers degrades system performance, exploring the CPU">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-i-o-port-trapping-is-slow-in-virtualization">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA I/O Port Trapping Is Slow in Virtualization - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-i-o-port-trapping-is-slow-in-virtualization" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Emulating legacy Video Graphics Array (VGA) hardware within virtual machines creates a severe performance bottleneck known as I/O port trapping overhead. This article explains why virtualizing VGA registers degrades system performance, exploring the CPU" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-io-port-trapping-is-slow-in-virtualization">Why VGA I/O
+Port Trapping Is Slow in Virtualization</h1>
+<p>Emulating legacy Video Graphics Array (VGA) hardware within virtual
+machines creates a severe performance bottleneck known as I/O port
+trapping overhead. This article explains why virtualizing VGA registers
+degrades system performance, exploring the CPU penalties associated with
+hardware-assisted virtualization exits, the chatty nature of legacy
+graphics protocols, the intricacies of planar state tracking, and the
+architectural shifts used by modern hypervisors to circumvent the
+issue.</p>
+<h2 id="the-mechanism-of-vm-exits">The Mechanism of VM Exits</h2>
+<p>Modern x86 virtualization relies on hardware extensions like Intel
+VT-x and AMD-V. Under these architectures, the guest operating system
+runs in a restricted execution mode (guest mode/non-root operation).
+When the guest attempts to interact directly with hardware through
+input/output instructions such as <code>IN</code> and <code>OUT</code>,
+the CPU cannot allow direct physical hardware execution.</p>
+<p>Instead, the processor halts guest execution and triggers a VM exit,
+transferring control back to the hypervisor (root operation). A single
+VM exit forces the CPU to save the entire guest architectural state,
+switch execution contexts, parse the instruction that caused the exit,
+emulate the requested hardware behavior in software, update the virtual
+state, and restore the guest context via a <code>VMRESUME</code>
+instruction. This context-switching sequence costs hundreds to thousands
+of CPU cycles per trapped instruction, turning an operation that
+natively takes a fraction of a microsecond into a resource-intensive
+event.</p>
+<h2 id="high-frequency-and-register-indirection">High Frequency and
+Register Indirection</h2>
+<p>The original IBM VGA specification relies heavily on I/O ports mapped
+between <code>0x3C0</code> and <code>0x3DF</code>. Rather than mapping
+every function to an individual address, VGA hardware uses an indexed
+addressing architecture to conserve port space. Changing a single
+display parameter typically requires an indirect, multi-step
+sequence:</p>
+<ol type="1">
+<li>Writing an index to an Address Register (e.g., port
+<code>0x3CE</code> for the Graphics Controller).</li>
+<li>Writing or reading the target parameter at a corresponding Data
+Register (e.g., port <code>0x3CF</code>).</li>
+</ol>
+<p>Because of this design, writing a single logical value requires at
+least two separate I/O instructions. For operations involving the
+Attribute Controller (<code>0x3C0</code>), the process is even more
+demanding: software must first read the Input Status 1 register
+(<code>0x3DA</code>) to clear an internal flip-flop before alternating
+writes between index and data to the same port.</p>
+<p>When a guest system relies on legacy VGA modes for drawing,
+animation, or palette alterations, it generates tens of thousands of I/O
+instructions per second. If every <code>IN</code> and <code>OUT</code>
+instruction causes a VM exit, the CPU spends the vast majority of its
+compute cycles processing context transitions rather than executing
+application code.</p>
+<h2 id="planar-memory-and-state-synchronization">Planar Memory and State
+Synchronization</h2>
+<p>The computational burden extends beyond simple register reading and
+writing. VGA standard display modes (such as Mode 12h) utilize a planar
+memory layout where video RAM is divided into four distinct 64 KB planes
+occupying the same physical address space (<code>0xA0000</code> to
+<code>0xAFFFF</code>).</p>
+<p>Which plane is read or written depends entirely on values configured
+inside the Sequencer and Graphics Controller I/O registers.
+Additionally, VGA features hardware latches that automatically load 32
+bits across all four planes during read operations to assist with
+bit-masking and write operations.</p>
+<p>Whenever a guest OS modifies an I/O port related to memory planes,
+write modes, or banking, the hypervisor must reconstruct and synchronize
+the internal emulated VGA state. In many cases, changing these registers
+requires the hypervisor to invalidate or alter guest page tables to
+track subsequent memory writes to the video memory buffer. Interleaving
+continuous I/O traps with memory faults (EPT/NPT violations) amplifies
+the virtualization overhead, compounding CPU latency.</p>
+<h2 id="architectural-workarounds">Architectural Workarounds</h2>
+<p>Because pure VGA emulation through I/O trapping is computationally
+inefficient, modern virtualization platforms avoid it wherever possible.
+Emulated VGA is typically limited to early system boot phases, firmware
+setup screens (BIOS/UEFI), or legacy operating systems.</p>
+<p>Modern virtualized environments eliminate the I/O trapping bottleneck
+by employing paravirtualized graphics drivers (such as VirtIO-GPU or
+VMware SVGA). These drivers bypass legacy ports entirely, exchanging
+bulk rendering commands and frame updates via shared memory queues
+(DMA), which minimizes context switches and ensures modern graphical
+performance inside virtual machines.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

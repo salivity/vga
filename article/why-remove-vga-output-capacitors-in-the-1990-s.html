@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Remove VGA Output Capacitors in the 1990s - vga</title>
+    <meta name="description" content="In the late 1990s, PC enthusiasts discovered that physically desoldering or bypassing the analog low-pass filtering capacitors on budget Video Graphics Array (VGA) cards dramatically improved display sharpness on high-resolution CRT monitors. Manufacture">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-remove-vga-output-capacitors-in-the-1990-s">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Remove VGA Output Capacitors in the 1990s - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-remove-vga-output-capacitors-in-the-1990-s" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the late 1990s, PC enthusiasts discovered that physically desoldering or bypassing the analog low-pass filtering capacitors on budget Video Graphics Array (VGA) cards dramatically improved display sharpness on high-resolution CRT monitors. Manufacture" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-remove-vga-output-capacitors-in-the-1990s">Why Remove VGA
+Output Capacitors in the 1990s</h1>
+<p>In the late 1990s, PC enthusiasts discovered that physically
+desoldering or bypassing the analog low-pass filtering capacitors on
+budget Video Graphics Array (VGA) cards dramatically improved display
+sharpness on high-resolution CRT monitors. Manufacturers routinely added
+these capacitive filters directly before the VGA output to comply with
+international electromagnetic interference (EMI) regulations. However,
+on cheaper cards with low-grade components, these filters were overly
+aggressive, unintentionally rounding off high-frequency video signals
+and producing blurry, smeared images at higher resolutions and refresh
+rates. Removing the capacitors restored signal bandwidth, providing
+workstation-level visual clarity at no monetary cost.</p>
+<h3 id="the-rise-of-high-resolution-crt-displays">The Rise of
+High-Resolution CRT Displays</h3>
+<p>During the late 1990s, the computing world transitioned rapidly from
+basic SVGA resolutions like 800x600 to high-resolution display standards
+like 1024x768, 1280x1024, and 1600x1200. Concurrently, users moved
+toward higher vertical refresh rates (typically 75 Hz to 85 Hz or
+higher) to eliminate visible CRT flicker and reduce eye strain.</p>
+<p>Rendering pixels at these resolutions and refresh rates pushed the
+required pixel clock speeds beyond 100 to 150 MHz. Unlike modern digital
+interfaces like HDMI or DisplayPort, VGA is purely analog. The card's
+RAMDAC (Random Access Memory Digital-to-Analog Converter) converts
+digital frame data into continuous red, green, and blue (RGB) voltage
+signals. Displaying crisp text and sharp edges requires the signal
+voltage to transition nearly instantaneously between adjacent pixels,
+essentially demanding high-frequency bandwidth.</p>
+<h3 id="aggressive-filtering-and-emi-regulations">Aggressive Filtering
+and EMI Regulations</h3>
+<p>To legally sell graphics adapters worldwide, manufacturers had to
+pass strict government electromagnetic radiation tests, such as United
+States FCC Class B and European CE standards. High-frequency analog
+signals running through circuit board traces and VGA cables naturally
+emit radio frequency noise, which can interfere with nearby household
+electronics, radios, and televisions.</p>
+<p>To prevent this, budget hardware makers used passive
+resistor-capacitor (RC) or inductor-capacitor (LC) low-pass filter
+networks placed across the RGB signal lines right next to the 15-pin
+D-sub VGA connector. Because precision components were expensive,
+budget-friendly cards—such as various Nvidia GeForce 256, GeForce2 GTS,
+and GeForce4 MX clones—relied on inexpensive capacitors with wide
+tolerances.</p>
+<p>To guarantee that every batch passed emissions testing regardless of
+component variance, manufacturers tuned these low-pass filters far too
+conservatively. The cutoff frequency was often set too low,
+unintentionally blocking the very frequencies required to cleanly
+transition between high-resolution pixels.</p>
+<h3 id="the-visual-problem-the-vaseline-effect">The Visual Problem: The
+"Vaseline Effect"</h3>
+<p>When a low-pass filter operates with an overly aggressive cutoff:</p>
+<ul>
+<li><strong>Rounded Signal Waves:</strong> Instead of sharp, square-like
+transitions between dark and light pixels, the signal curves and
+slopes.</li>
+<li><strong>Pixel Smearing:</strong> The voltage cannot rise or fall
+fast enough before the CRT's electron gun moves to the next pixel,
+causing colors to bleed to the right.</li>
+<li><strong>Loss of Legibility:</strong> Black text on a white
+background becomes soft, grayed, and fuzzy—an issue often described in
+enthusiast communities as looking through a layer of "Vaseline."</li>
+</ul>
+<p>While premium manufacturers like Matrox designed elaborate,
+multi-stage analog filters with flat frequency responses to avoid this
+issue, budget brands simply cut off high-frequency fidelity to hit price
+and compliance targets.</p>
+<h3 id="the-modification-process">The Modification Process</h3>
+<p>Hardware modders and overclockers realized that the filtering circuit
+was essentially a series of shunt capacitors bridging each primary color
+line (Red, Green, Blue) to ground.</p>
+<p>By identifying these surface-mount device (SMD) capacitors near the
+VGA port, users could:</p>
+<ol type="1">
+<li><strong>Desolder the Components:</strong> Using a fine-tipped
+soldering iron or hot air rework tool to cleanly lift the shunt
+capacitors off the board.</li>
+<li><strong>Physically Remove Them:</strong> Carefully breaking or
+twisting the small surface-mount capacitors off the traces using fine
+tweezers or needle-nose pliers (a crude but common method at the
+time).</li>
+</ol>
+<p>Removing the path to ground eliminated the low-pass filtering effect.
+The RGB signals flowed directly from the DAC and amplification stages to
+the monitor cable pins without the capacitive drag slowing down rise and
+fall times.</p>
+<h3 id="results-and-trade-offs">Results and Trade-offs</h3>
+<p>The results of this modification were immediate and noticeable:</p>
+<ul>
+<li><strong>Restored Sharpness:</strong> Small fonts, terminal windows,
+and fine desktop elements became razor-sharp even at 1280x1024 and
+1600x1200 at 85 Hz.</li>
+<li><strong>Higher EMI Emissions:</strong> The card emitted more radio
+frequency interference, potentially disrupting nearby AM/FM radios or
+other analog receivers.</li>
+<li><strong>Signal Ringing:</strong> In some instances, eliminating all
+capacitance led to impedance mismatches or minor "ghosting" artifacts
+(ringing) if the VGA cable was of poor quality or improperly
+terminated.</li>
+</ul>
+<p>Despite the risks of voiding warranties or permanently damaging the
+circuit board, the filter removal mod remained one of the most popular
+free hardware enhancements among PC enthusiasts until digital interfaces
+like DVI eliminated analog signal degradation altogether.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How 70 Hz VGA Text Mode Eliminated CRT Monitor Flicker - vga</title>
+    <meta name="description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987, it established a 70 Hz vertical refresh rate for its default 720x400 text mode, departing from the previous 60 Hz standard used by CGA and EGA. This change drastically reduced perceived">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-70-hz-vga-text-mode-eliminated-crt-monitor-flicker">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How 70 Hz VGA Text Mode Eliminated CRT Monitor Flicker - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-70-hz-vga-text-mode-eliminated-crt-monitor-flicker" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987, it established a 70 Hz vertical refresh rate for its default 720x400 text mode, departing from the previous 60 Hz standard used by CGA and EGA. This change drastically reduced perceived" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-70-hz-vga-text-mode-eliminated-crt-monitor-flicker">How 70
+Hz VGA Text Mode Eliminated CRT Monitor Flicker</h1>
+<p>When IBM introduced the Video Graphics Array (VGA) standard in 1987,
+it established a 70 Hz vertical refresh rate for its default 720x400
+text mode, departing from the previous 60 Hz standard used by CGA and
+EGA. This change drastically reduced perceived screen flicker for office
+workers by pushing the display refresh rate beyond the human visual
+system's critical flicker frequency, combating phosphor decay rates, and
+eliminating visual interference caused by typical office fluorescent
+lighting.</p>
+<h3 id="the-problem-with-60-hz-on-cathode-ray-tubes">The Problem with 60
+Hz on Cathode Ray Tubes</h3>
+<p>Cathode Ray Tube (CRT) monitors create images by sweeping an electron
+beam across a phosphor-coated glass surface line by line. The phosphors
+emit light upon impact and begin to decay immediately afterward. For an
+image to appear solid, the beam must return and re-excite the phosphors
+before the eye registers the drop in luminance.</p>
+<p>Earlier standards like CGA and EGA operated at a 60 Hz vertical
+refresh rate. While 60 Hz was often sufficient for lower-brightness
+television screens, it was inadequate for desktop computer monitors
+displaying high-contrast, static text. The phosphors used in typical
+computer monitors (often fast-decay P22 phosphors) lost their brightness
+rapidly between sweeps. This rapid cycle of illumination and decay
+created a pulsating effect that caused severe eyestrain, fatigue, and
+headaches during extended computing sessions.</p>
+<h3 id="critical-flicker-fusion-and-human-biology">Critical Flicker
+Fusion and Human Biology</h3>
+<p>The human visual system interprets flashing light as continuous
+illumination based on the Critical Flicker Fusion (CFF) threshold. For
+most individuals viewing a bright display, the CFF sits between 50 Hz
+and 60 Hz under direct central (foveal) vision.</p>
+<p>However, peripheral vision is far more sensitive to motion and rapid
+changes in light. Office workers glancing around their desks, looking
+down at paperwork, or shifting their gaze across a 12-to-14-inch monitor
+regularly caught the screen in their peripheral field of view, where the
+CFF threshold can exceed 65 Hz. At 60 Hz, the display noticeably pulsed
+in their periphery.</p>
+<p>By raising the refresh rate to 70 Hz (specifically ~70.087 Hz), the
+VGA standard moved the entire refresh cycle safely above the human eye's
+peripheral flicker threshold. The electron beam re-illuminated the
+screen every 14.2 milliseconds—instead of every 16.6 milliseconds at 60
+Hz—meaning the phosphors never dropped to a luminance level where the
+human eye could discern the decay.</p>
+<h3 id="eliminating-fluorescent-light-interference">Eliminating
+Fluorescent Light Interference</h3>
+<p>The 70 Hz refresh rate also addressed an environmental issue common
+to corporate settings: fluorescent lighting. Standard magnetic ballasts
+in office fluorescent lights cycled at twice the AC power line
+frequency, producing a subtle flicker at 100 Hz (in 50 Hz regions) or
+120 Hz (in 60 Hz regions).</p>
+<p>A monitor running at 60 Hz under 120 Hz lighting generated visual
+beat frequencies. The minor phase shifts between the monitor's beam
+sweeps and the ambient room lighting created secondary, low-frequency
+strobe artifacts in the user's field of vision. Moving the display rate
+to 70 Hz broke this harmonic resonance with the power grid, eliminating
+the secondary flicker patterns that plagued 60 Hz displays.</p>
+<h3 id="the-mechanics-of-720x400-at-70-hz">The Mechanics of 720x400 at
+70 Hz</h3>
+<p>IBM achieved this visual improvement without requiring overly
+expensive high-frequency monitor components by balancing the horizontal
+scan rate and pixel clock:</p>
+<ul>
+<li><strong>Pixel Clock:</strong> IBM incorporated a 28.322 MHz crystal
+oscillator on the VGA board specifically for text mode.</li>
+<li><strong>Horizontal Scan Rate:</strong> By combining 900 total
+horizontal pixel clocks per line (720 active pixels plus blanking
+intervals) with the 28.322 MHz clock, the monitor achieved a horizontal
+scan frequency of roughly 31.47 kHz.</li>
+<li><strong>Vertical Lines:</strong> The 720x400 text mode allocated 400
+active scanlines, but with vertical blanking and front/back porches
+included, the frame comprised 449 total vertical lines.</li>
+</ul>
+<p>Dividing the 31.46875 kHz horizontal line rate by 449 total lines
+yielded an exact vertical refresh rate of 70.086 Hz. This allowed IBM to
+render text characters in a sharp 9x16 pixel matrix—producing vastly
+superior character legibility compared to the 8x8 or 8x14 cells of
+earlier standards—while ensuring the entire image remained completely
+stable and comfortable to read throughout the workday.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Planar Memory Operates in 16-Color Modes - vga</title>
+    <meta name="description" content="Standard 16-color Video Graphics Array (VGA) modes utilize a planar memory architecture where 256 KB of video RAM is divided across four parallel 64 KB memory planes. This article explains how planar memory maps color data to screen coordinates, how the">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-planar-memory-operates-in-16-color-modes">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Planar Memory Operates in 16-Color Modes - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-planar-memory-operates-in-16-color-modes" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Standard 16-color Video Graphics Array (VGA) modes utilize a planar memory architecture where 256 KB of video RAM is divided across four parallel 64 KB memory planes. This article explains how planar memory maps color data to screen coordinates, how the" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-planar-memory-operates-in-16-color-modes">How VGA Planar
+Memory Operates in 16-Color Modes</h1>
+<p>Standard 16-color Video Graphics Array (VGA) modes utilize a planar
+memory architecture where 256 KB of video RAM is divided across four
+parallel 64 KB memory planes. This article explains how planar memory
+maps color data to screen coordinates, how the CPU interfaces with
+multiple memory banks sharing a single address space, and how
+specialized hardware registers and write modes manipulate individual
+pixels efficiently.</p>
+<h3 id="the-four-plane-structure">The Four-Plane Structure</h3>
+<p>In standard 16-color modes (such as 640x480 Mode 12h or 320x200 Mode
+0Dh), each pixel is represented by a 4-bit index, allowing for a palette
+of 16 simultaneous colors. Rather than storing these 4 bits sequentially
+in a contiguous byte (packed-pixel format), the VGA hardware splits the
+bits across four distinct hardware memory banks known as planes:</p>
+<ul>
+<li><strong>Plane 0:</strong> Bit 0 (typically Blue)</li>
+<li><strong>Plane 1:</strong> Bit 1 (typically Green)</li>
+<li><strong>Plane 2:</strong> Bit 2 (typically Red)</li>
+<li><strong>Plane 3:</strong> Bit 3 (typically Intensity)</li>
+</ul>
+<p>Each plane contains 64 KB of memory, but all four planes occupy the
+exact same CPU address space, typically mapped from <code>0xA0000</code>
+to <code>0xAFFFF</code> (a 64 KB window).</p>
+<h3 id="pixel-mapping-and-bit-organization">Pixel Mapping and Bit
+Organization</h3>
+<p>Because each plane provides exactly one bit toward a pixel's color
+value, a single byte at a given memory address contains 1 bit for 8
+horizontal pixels.</p>
+<p>When the VGA display controller renders a scanline:</p>
+<ol type="1">
+<li>It reads the byte at a specific offset simultaneously from all four
+planes.</li>
+<li>Bit 7 of Plane 0, Plane 1, Plane 2, and Plane 3 are assembled to
+form the 4-bit color index for the first pixel.</li>
+<li>Bit 6 from each of the four planes forms the color index for the
+second pixel, continuing down to Bit 0 for the eighth pixel.</li>
+<li>The resulting 4-bit index is sent to the digital-to-analog converter
+(DAC) palette registers to output the corresponding color to the
+monitor.</li>
+</ol>
+<h3 id="cpu-memory-access-and-internal-latches">CPU Memory Access and
+Internal Latches</h3>
+<p>Because all four planes exist at the identical CPU address range, a
+standard CPU read or write operation cannot access all planes
+independently without hardware arbitration. The VGA Graphics Controller
+resolves this using an internal 32-bit latch composed of four 8-bit
+registers (one for each plane).</p>
+<p>Whenever the CPU executes a read operation at an address in the video
+segment (<code>0xA0000</code>–<code>0xAFFFF</code>), the VGA hardware
+simultaneously reads 1 byte from that address across all four planes
+into these internal latches. The CPU only receives 1 byte from a single
+plane (determined by the Read Map Select register), but the remaining
+planes are captured in the latches for subsequent write operations.</p>
+<h3 id="read-and-write-modes">Read and Write Modes</h3>
+<p>To manipulate pixels without requiring slow read-modify-write cycles
+over the system bus for every plane, the VGA hardware incorporates
+dedicated read and write modes configured via the Graphics Controller
+registers.</p>
+<h4 id="read-modes">Read Modes</h4>
+<ul>
+<li><strong>Read Mode 0:</strong> The CPU reads a byte directly from the
+plane designated by the Read Map Select Register.</li>
+<li><strong>Read Mode 1:</strong> The CPU performs a color comparison.
+The hardware checks all four planes against a predefined Color Compare
+Register and returns an 8-bit mask indicating which of the 8 pixels
+match the target color.</li>
+</ul>
+<h4 id="write-modes">Write Modes</h4>
+<ul>
+<li><strong>Write Mode 0:</strong> The default mode. The CPU writes data
+through the VGA's internal logic, which can apply rotation, logical
+operations (AND, OR, XOR), and combine the incoming CPU data with data
+stored in the internal latches.</li>
+<li><strong>Write Mode 1:</strong> Used for rapid memory copying. A CPU
+write to a destination address automatically copies the contents of all
+four internal latches directly to all four planes at that address,
+transferring 32 bits (8 pixels) in a single CPU cycle.</li>
+<li><strong>Write Mode 2:</strong> The lower 4 bits of the CPU data byte
+represent a single 4-bit color value. The hardware automatically
+replicates this color across all 8 pixels defined by the Bit Mask
+Register, significantly speeding up solid color drawing.</li>
+<li><strong>Write Mode 3:</strong> Optimized for font rendering and
+pattern fills. The CPU byte acts as an 8-bit mask combined with a
+background color specified in the Set/Reset Register.</li>
+</ul>
+<h3 id="masking-operations">Masking Operations</h3>
+<p>Manipulating individual pixels within an 8-pixel byte boundary
+requires the coordination of two primary mask registers:</p>
+<ul>
+<li><strong>Map Mask Register (Sequencer):</strong> Controls which of
+the four planes are enabled for writing. Bits 0 through 3 correspond to
+Planes 0 through 3. Disabling a plane protects its data from being
+modified during a write.</li>
+<li><strong>Bit Mask Register (Graphics Controller):</strong> Controls
+which individual pixel positions (bits 0 through 7) are written. If a
+bit in this register is set to <code>0</code>, the data for that pixel
+is preserved from the internal 32-bit latches rather than overwritten by
+the CPU data.</li>
+</ul>
+<p>By utilizing internal latches alongside the Bit Mask and Map Mask
+registers, planar VGA memory allows software to update individual pixels
+and perform bulk graphical operations across 16 colors within a
+constrained 64 KB memory window.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

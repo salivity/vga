@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA Screen Is Shifted to the Left or Right - vga</title>
+    <meta name="description" content="An image shifted noticeably to the left or right over a Video Graphics Array (VGA) connection is primarily caused by a timing mismatch between the analog signal sent by the graphics card and the digitizing process of the display. Unlike modern digital in">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-screen-is-shifted-to-the-left-or-right">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA Screen Is Shifted to the Left or Right - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-screen-is-shifted-to-the-left-or-right" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="An image shifted noticeably to the left or right over a Video Graphics Array (VGA) connection is primarily caused by a timing mismatch between the analog signal sent by the graphics card and the digitizing process of the display. Unlike modern digital in" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-screen-is-shifted-to-the-left-or-right">Why VGA Screen
+Is Shifted to the Left or Right</h1>
+<p>An image shifted noticeably to the left or right over a Video
+Graphics Array (VGA) connection is primarily caused by a timing mismatch
+between the analog signal sent by the graphics card and the digitizing
+process of the display. Unlike modern digital interfaces like HDMI or
+DisplayPort, VGA relies on continuous analog waveforms that a modern LCD
+monitor must manually sample and align. When the monitor fails to
+correctly detect the signal's horizontal synchronization pulses, the
+resulting image appears displaced along the horizontal axis.</p>
+<h3 id="the-nature-of-the-analog-signal">The Nature of the Analog
+Signal</h3>
+<p>VGA delivers image data across analog RGB lines accompanied by
+separate Horizontal Sync (H-Sync) and Vertical Sync (V-Sync) pulses. The
+H-Sync pulse signals the monitor when a scanline ends and where the next
+one begins. In modern digital displays (such as LCDs or LEDs), an
+internal analog-to-digital converter (ADC) samples this continuous
+stream to reconstruct individual pixels. If the monitor misinterprets
+exactly when the active video portion of the signal begins, it assigns
+the pixel data to the wrong horizontal coordinates, shifting the entire
+picture left or right.</p>
+<h3 id="front-porch-and-back-porch-timing-discrepancies">Front Porch and
+Back Porch Timing Discrepancies</h3>
+<p>Video standards define specific blanking intervals around the sync
+pulse, known as the "front porch" (the blank interval before the sync
+pulse) and the "back porch" (the blank interval after the sync pulse).
+Graphics cards generate these porches based on specific display modes
+and timing standards (such as VESA DMT or CVT). If the graphics card
+sends non-standard timings, or if the monitor’s firmware defaults to a
+slightly different timing profile for the selected resolution, the
+monitor will align the visible frame either too early or too late
+relative to the H-Sync pulse.</p>
+<h3 id="clock-and-phase-mismatch">Clock and Phase Mismatch</h3>
+<p>For a monitor to render an analog VGA input sharply and centrally,
+its internal pixel clock must match the exact frequency and phase of the
+incoming signal.</p>
+<ul>
+<li><strong>Clock (Pixel Clock):</strong> Determines the total number of
+horizontal pixels sampled per line. A mismatch stretches or shrinks the
+image horizontally.</li>
+<li><strong>Phase:</strong> Determines the precise moment within a clock
+cycle that the signal is sampled. A phase misalignment disrupts the edge
+detection of the signal, causing visual jitter and horizontal
+drift.</li>
+</ul>
+<h3 id="non-native-resolutions-and-refresh-rates">Non-Native Resolutions
+and Refresh Rates</h3>
+<p>Running a display at non-standard or non-native resolutions and
+refresh rates increases the likelihood of horizontal displacement. Older
+VGA controllers or generic display drivers may send a 60 Hz or 75 Hz
+timing format that conflicts with the monitor's internal EDID (Extended
+Display Identification Data) table, preventing the display from locking
+onto the correct horizontal origin.</p>
+<h3 id="physical-signal-degradation">Physical Signal Degradation</h3>
+<p>A damaged, poorly shielded, or overly long VGA cable can distort the
+sharpness of the H-Sync pulse. If the voltage transition of the sync
+pulse becomes rounded or degraded, the monitor’s detection circuitry
+triggers late, shifting the active display area horizontally. Missing
+ground pins or bent pins inside the connector can cause similar timing
+and sync detection failures.</p>
+<h3 id="how-to-correct-the-shift">How to Correct the Shift</h3>
+<ul>
+<li><strong>Use the Monitor’s Auto-Adjust Feature:</strong> Most
+VGA-equipped monitors feature an "Auto" button or menu setting. This
+forces the display's internal scaler to re-evaluate the sync pulses,
+recalculate the back porch, and center the frame.</li>
+<li><strong>Adjust Horizontal Position and Clock/Phase
+Manually:</strong> In the monitor’s On-Screen Display (OSD), navigate to
+the "Image" or "Geometry" settings to manually shift the H-Position or
+calibrate the Phase and Clock.</li>
+<li><strong>Match Native Display Settings:</strong> Ensure the operating
+system outputs the display's exact native resolution and supported
+refresh rate (typically 60 Hz).</li>
+<li><strong>Inspect the Hardware:</strong> Verify that the VGA cable is
+firmly seated and free of bent pins, or replace it with a shorter,
+higher-quality shielded cable.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

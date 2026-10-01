@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA Mode X Enabled Smooth Pixel Scrolling - vga</title>
+    <meta name="description" content="Mode X, an undocumented 320x240 planar tweak of the standard IBM VGA architecture popularized by Michael Abrash, revolutionized PC gaming by unlocking hardware-level capabilities that were inaccessible in the standard linear Mode 13h. Achieving fluid, si">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-mode-x-enabled-smooth-pixel-scrolling">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA Mode X Enabled Smooth Pixel Scrolling - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-mode-x-enabled-smooth-pixel-scrolling" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Mode X, an undocumented 320x240 planar tweak of the standard IBM VGA architecture popularized by Michael Abrash, revolutionized PC gaming by unlocking hardware-level capabilities that were inaccessible in the standard linear Mode 13h. Achieving fluid, si" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-mode-x-enabled-smooth-pixel-scrolling">Why VGA Mode X
+Enabled Smooth Pixel Scrolling</h1>
+<p>Mode X, an undocumented 320x240 planar tweak of the standard IBM VGA
+architecture popularized by Michael Abrash, revolutionized PC gaming by
+unlocking hardware-level capabilities that were inaccessible in the
+standard linear Mode 13h. Achieving fluid, single-pixel horizontal
+scrolling had historically been a significant performance bottleneck
+because copying large blocks of video memory strained early PC
+processors. Mode X overcame this limitation by combining the VGA’s 256
+KB planar memory layout with two distinct hardware display controls: the
+CRT Controller Start Address registers for coarse scrolling and the
+Attribute Controller's Horizontal Pixel Panning Register for sub-byte,
+single-pixel precision.</p>
+<p>In standard Mode 13h (320x200 linear), each byte represents a single
+pixel directly mapped to memory sequentially, and only 64 KB of the
+VGA's 256 KB memory is exposed. Scrolling in this mode required the CPU
+to manually redraw or copy large buffers in RAM, a costly operation that
+made full-screen scrolling sluggish. Furthermore, Mode 13h locked the
+VGA hardware into chained addressing, disabling many of the controller's
+built-in panning and multi-page features.</p>
+<p>Mode X restored the VGA hardware to its native "unchained" planar
+state while keeping the 256-color palette. In this mode, the display
+memory is divided across four parallel 64 KB memory planes. Because
+every horizontal byte written across the planes addresses four
+consecutive screen pixels (Plane 0 holds pixels 0, 4, 8; Plane 1 holds
+1, 5, 9, and so on), an entire 320x240 screen requires only 19,200 bytes
+of addressing space. This drastic reduction in address footprint
+unlocked the full 256 KB of video RAM, allowing developers to allocate
+off-screen surfaces, virtual playfields, and multiple visual pages for
+double buffering.</p>
+<p>To scroll the screen, developers did not rewrite the frame buffer;
+instead, they manipulated where the VGA hardware began reading its
+display data during the vertical retrace interval. Coarse horizontal
+scrolling was achieved using the CRT Controller (CRTC) Start Address
+High and Low registers (ports 0x3D4 with indexes 0x0C and 0x0D).
+Incrementing or decrementing this start address offset shifted the
+visible viewport across video RAM in four-pixel increments per byte.
+Because this was handled entirely by the video controller's address
+counters, shifting the screen four pixels cost virtually zero CPU
+cycles.</p>
+<p>The remaining challenge—scrolling within those four-pixel
+boundaries—was solved by the Horizontal Pixel Panning Register, located
+within the VGA's Attribute Controller (port 0x3C0, index 0x33). This
+hardware register instructed the internal shift registers to delay or
+advance pixel output by zero to three pixels before transmitting the
+digital color signals to the Digital-to-Analog Converter (DAC).</p>
+<p>By synchronizing the CRTC Start Address register and the Horizontal
+Pixel Panning register, developers achieved uninterrupted, single-pixel
+movement. Moving right by one pixel merely required setting the panning
+register to 1, then 2, then 3. On the fourth pixel, the panning register
+was reset to 0 while the CRTC Start Address was incremented by one byte.
+Because the hardware automatically read from the designated memory
+offset on the subsequent vertical blank, the viewport scrolled smoothly
+down to the individual pixel without tearing, flickering, or wasting
+processor cycles on memory copying.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

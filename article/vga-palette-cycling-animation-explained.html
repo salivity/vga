@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Palette Cycling Animation Explained - vga</title>
+    <meta name="description" content="This article explores Video Graphics Array (VGA) palette cycling, a classic computer graphics technique used to create the illusion of movement without modifying pixel data in memory. By examining the architecture of indexed color systems, this overview">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-palette-cycling-animation-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Palette Cycling Animation Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-palette-cycling-animation-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores Video Graphics Array (VGA) palette cycling, a classic computer graphics technique used to create the illusion of movement without modifying pixel data in memory. By examining the architecture of indexed color systems, this overview" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-palette-cycling-animation-explained">VGA Palette Cycling
+Animation Explained</h1>
+<p>This article explores Video Graphics Array (VGA) palette cycling, a
+classic computer graphics technique used to create the illusion of
+movement without modifying pixel data in memory. By examining the
+architecture of indexed color systems, this overview details the
+mechanics of palette shifting and demonstrates how developers utilized
+gradient color loops to simulate natural fluid dynamics, such as flowing
+water and flickering fire, within severe hardware constraints.</p>
+<h3 id="the-architecture-of-indexed-color">The Architecture of Indexed
+Color</h3>
+<p>During the late 1980s and early 1990s, the standard PC display mode
+was VGA Mode 13h, offering a resolution of 320x200 pixels with 256
+simultaneous colors. Rather than storing full 18-bit or 24-bit RGB
+values for every individual pixel—which would have required more memory
+and bandwidth than standard hardware could provide—VGA utilized an
+indexed color model.</p>
+<p>In this system, video memory held an 8-bit index (from 0 to 255) for
+each pixel. These indices pointed to a Color Look-Up Table (CLUT), also
+known as the palette, managed by the video Digital-to-Analog Converter
+(DAC). The DAC mapped each index to a specific Red, Green, and Blue
+value. When rendering the screen, the display hardware referenced the
+palette to determine the exact color output for each pixel index.</p>
+<h3 id="the-mechanism-of-palette-cycling">The Mechanism of Palette
+Cycling</h3>
+<p>Traditional frame-by-frame animation required the CPU to overwrite
+thousands of bytes in video memory every second. With limited bus speeds
+and processing power, full-screen updates caused significant lag.</p>
+<p>Palette cycling bypassed this bottleneck entirely. Instead of
+updating the pixel indices stored in the video buffer, developers
+altered the RGB definitions inside the DAC palette registers. By
+shifting the RGB values of a sequential group of palette entries by one
+position each frame, every pixel on the screen assigned to those indices
+instantly changed its displayed color simultaneously. Updating a few
+dozen bytes in the hardware palette required virtually zero CPU
+overhead, enabling smooth 60-frame-per-second animations.</p>
+<h3 id="simulating-water-movement">Simulating Water Movement</h3>
+<p>To simulate water, an artist drew a static scene using a reserved
+range of sequential palette indices (for example, indices 32 through
+40). These indices were arranged spatially to represent wave crests,
+currents, or the downward path of a waterfall:</p>
+<ol type="1">
+<li><strong>Gradients and Contours:</strong> The artist painted ripples
+or flow paths as continuous gradients from index 32 to 40.</li>
+<li><strong>Palette Shifting:</strong> During the game loop, the
+software rotated the colors within that range: index 32 took the RGB
+value of 33, 33 took 34, and the final index wrapped back to the
+start.</li>
+<li><strong>The Result:</strong> The static pixels appeared to move
+continuously in the direction of the gradient. By drawing concentric
+rings with sequential indices, pools of water appeared to ripple
+outward. By drawing linear bands down a cliffside, a static image
+transformed into a roaring, seamlessly looping waterfall.</li>
+</ol>
+<h3 id="simulating-flame-and-smoke">Simulating Flame and Smoke</h3>
+<p>Simulating fire followed a similar logic but often combined palette
+shifting with dynamic index manipulation:</p>
+<ol type="1">
+<li><strong>Thermal Gradients:</strong> Artists used a palette range
+spanning black, dark red, bright orange, yellow, and white.</li>
+<li><strong>Noise and Dissipation:</strong> Fire was drawn with hot
+colors (yellows and whites) at the base, tapering into cooler colors
+(reds and grays) toward the top.</li>
+<li><strong>Dynamic Cycling:</strong> By cycling the palette upward
+while occasionally injecting slight procedural noise into the lowest
+rows of indices, the flames appeared to lick, flicker, and rise
+continuously.</li>
+</ol>
+<p>Through clever layout of indices and rapid color register rotation,
+palette cycling turned completely static image data into organic, living
+environments on legacy PC hardware.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

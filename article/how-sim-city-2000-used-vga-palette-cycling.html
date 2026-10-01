@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How SimCity 2000 Used VGA Palette Cycling - vga</title>
+    <meta name="description" content="In the early 1990s, hardware limitations required game developers to use innovative rendering tricks to produce dynamic visuals without exhausting system resources. This article explains how Maxis implemented Video Graphics Array (VGA) palette rotation">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-sim-city-2000-used-vga-palette-cycling">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How SimCity 2000 Used VGA Palette Cycling - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-sim-city-2000-used-vga-palette-cycling" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the early 1990s, hardware limitations required game developers to use innovative rendering tricks to produce dynamic visuals without exhausting system resources. This article explains how Maxis implemented Video Graphics Array (VGA) palette rotation" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-simcity-2000-used-vga-palette-cycling">How SimCity 2000 Used
+VGA Palette Cycling</h1>
+<p>In the early 1990s, hardware limitations required game developers to
+use innovative rendering tricks to produce dynamic visuals without
+exhausting system resources. This article explains how Maxis implemented
+Video Graphics Array (VGA) palette rotation—also known as palette
+cycling—in <em>SimCity 2000</em> to animate environmental elements like
+flowing water and hazards, shifting color look-up tables rather than
+redrawing screen pixels to achieve smooth, real-time animation.</p>
+<h3 id="the-mechanics-of-256-color-indexed-vga">The Mechanics of
+256-Color Indexed VGA</h3>
+<p>Standard 256-color VGA modes (such as Mode 13h) allocate 8 bits of
+memory per pixel. Instead of storing direct red, green, and blue (RGB)
+color values for every pixel on the screen, each pixel stores an index
+number ranging from 0 to 255.</p>
+<p>These index numbers point to a color look-up table (CLUT) housed in
+the graphics hardware's Digital-to-Analog Converter (DAC). The DAC maps
+each index to an 18-bit RGB color (6 bits per channel). When the monitor
+scans across the screen, it reads the pixel's index number and outputs
+the RGB value currently assigned to that index in the palette table.</p>
+<h3 id="how-palette-rotation-works">How Palette Rotation Works</h3>
+<p>Palette rotation exploits the disconnect between pixel memory and the
+color table. Under standard rendering, animating a scene requires the
+CPU to write new pixel values into Video RAM (VRAM) for every frame—a
+process limited by the slow bus bandwidth of early PC architectures like
+ISA.</p>
+<p>With palette rotation, the pixel data in VRAM never changes. Instead,
+the game shifts the RGB values assigned to a specific subset of palette
+indexes:</p>
+<ol type="1">
+<li>A block of consecutive palette indexes is reserved for animation
+(for example, indexes 240 through 247).</li>
+<li>The RGB value of index 247 moves to a temporary buffer.</li>
+<li>Indexes 240 through 246 shift their RGB definitions up by one
+slot.</li>
+<li>The buffered color is assigned to index 240.</li>
+<li>On the next display refresh, every pixel on the screen referencing
+those indexes automatically displays the shifted color.</li>
+</ol>
+<h3 id="environmental-effects-in-simcity-2000">Environmental Effects in
+SimCity 2000</h3>
+<p><em>SimCity 2000</em> features dense isometric views containing
+thousands of individual tiles. Re-rendering large bodies of water or
+environmental disruptions on a 386 or 486 processor would have caused
+severe framerate drops. Maxis used palette cycling to power several key
+environmental effects:</p>
+<ul>
+<li><strong>Flowing Water and Waterfalls:</strong> Maxis painted water
+tiles using a sequential set of blue, cyan, and white indexed colors
+arranged in directional gradients. When the game rotated the RGB values
+across these indexes, the water tiles appeared to ripple, crest, and
+flow. Waterfalls appeared to cascade rapidly by cycling high-contrast
+blues and whites down the slope.</li>
+<li><strong>Shorelines and Waves:</strong> Coastlines featured gradients
+mapped to the cycling color set, giving the visual illusion of waves
+perpetually breaking against the shore without updating any shoreline
+tile data.</li>
+<li><strong>Lava and Volcanic Disasters:</strong> When a volcano
+disaster occurs, the molten rock utilizes palette rotation across a
+range of reds, oranges, and yellows. The cycling colors made the lava
+appear to bubble, churn, and radiate heat.</li>
+<li><strong>Emergency and Industrial Indicators:</strong> Nuclear power
+plants, emergency vehicles, and specific industrial tiles used targeted
+cycling registers to produce flashing indicator lights and glowing
+hazards without dedicated sprite frames.</li>
+</ul>
+<h3 id="performance-and-visual-benefits">Performance and Visual
+Benefits</h3>
+<p>Because palette rotation operates entirely within the VGA DAC
+registers, the CPU only needs to update a few dozen bytes per frame
+during the vertical blank interval (VBLANK). This technique completely
+bypassed the system bus bottleneck, prevented visual tearing, and
+allowed <em>SimCity 2000</em> to maintain vibrant, moving landscapes
+across massive city grids on modest hardware.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

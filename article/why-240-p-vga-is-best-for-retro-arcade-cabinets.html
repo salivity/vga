@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why 240p VGA is Best for Retro Arcade Cabinets - vga</title>
+    <meta name="description" content="Connecting a modern emulation PC to a vintage arcade cabinet is the ultimate way to access thousands of classic games on original hardware, but doing so properly requires outputting a 240p resolution over Video Graphics Array (VGA). Enthusiasts prize 240">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-240-p-vga-is-best-for-retro-arcade-cabinets">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why 240p VGA is Best for Retro Arcade Cabinets - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-240-p-vga-is-best-for-retro-arcade-cabinets" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Connecting a modern emulation PC to a vintage arcade cabinet is the ultimate way to access thousands of classic games on original hardware, but doing so properly requires outputting a 240p resolution over Video Graphics Array (VGA). Enthusiasts prize 240" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-240p-vga-is-best-for-retro-arcade-cabinets">Why 240p VGA is
+Best for Retro Arcade Cabinets</h1>
+<p>Connecting a modern emulation PC to a vintage arcade cabinet is the
+ultimate way to access thousands of classic games on original hardware,
+but doing so properly requires outputting a 240p resolution over Video
+Graphics Array (VGA). Enthusiasts prize 240p over VGA because it
+preserves the authentic visual presentation, scanline structure, and
+motion clarity of original arcade hardware while sending an analog
+signal that arcade cathode-ray tube (CRT) chassis can safely display
+without lag or distortion.</p>
+<h2 id="matching-the-15-khz-native-standard">Matching the 15 kHz Native
+Standard</h2>
+<p>Vintage arcade monitors operate at a 15 kHz horizontal refresh rate,
+which corresponds to low-resolution video signals around 240p
+(progressive) or 480i (interlaced). Modern PC graphics cards and
+flat-panel displays, by contrast, output a minimum of 31 kHz (typically
+480p and higher).</p>
+<p>Plugging a standard modern PC output into a 15 kHz arcade monitor can
+physically damage the chassis flyback transformer and deflection
+circuits. Outputting a 240p signal via customized PC drivers (such as
+CRT Emudriver) forces the graphics card to drop to a 15 kHz broadcast
+standard, making the signal electronically compatible with original
+arcade CRT hardware.</p>
+<h2 id="pure-analog-rgb-signal-path">Pure Analog RGB Signal Path</h2>
+<p>Arcade chassis require an analog RGB video signal alongside
+synchronization lines (often combined into composite sync, or C-Sync).
+VGA is fundamentally an analog RGBHV format (Red, Green, Blue,
+Horizontal sync, Vertical sync).</p>
+<p>Because VGA carries analog video natively, it eliminates the need for
+active digital-to-analog converters (DACs) that introduce input latency,
+color compression, or scaling artifacts. A 15 kHz VGA output can be
+piped directly into an arcade monitor through simple, passive breakout
+boards or dedicated interfaces (such as a J-PAC) that simply combine the
+H/V sync lines into C-Sync and amplify the signal levels to match arcade
+voltages.</p>
+<h2 id="true-progressive-scanlines">True Progressive Scanlines</h2>
+<p>Most classic arcade games—from the Golden Age classics to 1990s
+fighting games like <em>Street Fighter II</em>—rendered at low
+progressive resolutions, commonly ranging between 224p and 256p.</p>
+<p>When displayed on a 15 kHz CRT:</p>
+<ul>
+<li>Every active scanline is drawn with blank space between it,
+producing natural, hardware-generated scanlines.</li>
+<li>Interlacing flicker is eliminated, producing a sharp, rock-solid
+image.</li>
+<li>Software shaders and simulated scanlines are unnecessary, saving GPU
+resources and delivering authentic light bloom from the physical
+phosphor grid.</li>
+</ul>
+<h2 id="dynamic-refresh-rates-and-native-timing">Dynamic Refresh Rates
+and Native Timing</h2>
+<p>Original arcade printed circuit boards (PCBs) rarely ran at a flat
+60.00 Hz. For example, <em>Mortal Kombat</em> runs at 54.7 Hz, while
+<em>R-Type</em> runs at 55.0 Hz.</p>
+<p>When a PC outputs 240p over VGA paired with arcade-focused emulation
+software like GroovyMAME, it can dynamically change both the pixel
+resolution and the exact refresh rate to match the original game board.
+The arcade monitor syncs directly to these custom timings, resulting in
+tear-free, stutter-free, zero-lag scrolling that is indistinguishable
+from running an original arcade PCB.</p>
+<h2 id="uncompromised-motion-clarity">Uncompromised Motion Clarity</h2>
+<p>Modern flat panels rely on sample-and-hold display technology, which
+creates motion blur during fast action. Vintage arcade CRTs illuminate
+phosphors nearly instantaneously with an electron beam. Running 240p
+over VGA into an authentic arcade chassis retains this zero-motion-blur
+characteristic, ensuring fast-moving sprites and scrolling backgrounds
+remain crystal clear during high-speed gameplay.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

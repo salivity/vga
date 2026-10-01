@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding the 128-Byte VGA EDID Structure - vga</title>
+    <meta name="description" content="Extended Display Identification Data (EDID) is a standardized 128-byte data structure that enables a computer monitor to communicate its specifications and display capabilities to a host graphics adapter. When using a Video Graphics Array (VGA) connectio">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/understanding-the-128-byte-vga-edid-structure">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Understanding the 128-Byte VGA EDID Structure - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/understanding-the-128-byte-vga-edid-structure" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Extended Display Identification Data (EDID) is a standardized 128-byte data structure that enables a computer monitor to communicate its specifications and display capabilities to a host graphics adapter. When using a Video Graphics Array (VGA) connectio" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="understanding-the-128-byte-vga-edid-structure">Understanding the
+128-Byte VGA EDID Structure</h1>
+<p>Extended Display Identification Data (EDID) is a standardized
+128-byte data structure that enables a computer monitor to communicate
+its specifications and display capabilities to a host graphics adapter.
+When using a Video Graphics Array (VGA) connection, this data is stored
+in an onboard EEPROM chip and retrieved using the I2C-based Display Data
+Channel (DDC2B) protocol over VGA pins 12 (SDA) and 15 (SCL). This
+article provides a direct breakdown of the 128-byte memory map,
+detailing the exact layout and purpose of each data block defined by the
+VESA EDID standard.</p>
+<h3 id="the-vga-hardware-interface">The VGA Hardware Interface</h3>
+<p>The host system communicates with the monitor's EEPROM (commonly
+mapped at I2C address <code>0x50</code>) using two dedicated lines on
+the standard 15-pin D-sub VGA connector:</p>
+<ul>
+<li><strong>Pin 12 (SDA):</strong> Serial Data line for bidirectional
+I2C data transfer.</li>
+<li><strong>Pin 15 (SCL):</strong> Serial Clock line driving the I2C bus
+timing.</li>
+<li><strong>Pin 9 (+5V DC):</strong> Provides power to the EEPROM even
+when the monitor is turned off.</li>
+<li><strong>Pin 5/10 (Ground):</strong> Provides common return paths for
+signaling.</li>
+</ul>
+<h3 id="the-128-byte-base-edid-structure">The 128-Byte Base EDID
+Structure</h3>
+<p>The 128-byte base structure defined in EDID 1.3 and 1.4 is divided
+into ten functional blocks:</p>
+<h4 id="1-header-bytes-07">1. Header (Bytes 0–7)</h4>
+<p>The first 8 bytes contain a fixed synchronization pattern used by the
+host to confirm a valid EDID block. The byte sequence is always:
+<code>00 FF FF FF FF FF FF 00</code></p>
+<h4 id="2-vendor-and-product-identification-bytes-817">2. Vendor and
+Product Identification (Bytes 8–17)</h4>
+<p>This 10-byte block uniquely identifies the monitor:</p>
+<ul>
+<li><strong>Bytes 8–9:</strong> Manufacturer ID (A compressed
+3-character uppercase ASCII code, formatted as three 5-bit values).</li>
+<li><strong>Bytes 10–11:</strong> Product ID code (16-bit integer,
+little-endian).</li>
+<li><strong>Bytes 12–15:</strong> 32-bit serial number (Optional; set to
+zero if the serial number is stored as a text descriptor).</li>
+<li><strong>Byte 16:</strong> Week of manufacture (1–54) or model year
+flag.</li>
+<li><strong>Byte 17:</strong> Year of manufacture (Value plus
+1990).</li>
+</ul>
+<h4 id="3-edid-version-and-revision-bytes-1819">3. EDID Version and
+Revision (Bytes 18–19)</h4>
+<p>These bytes indicate the specific standard version the structure
+conforms to:</p>
+<ul>
+<li><strong>Byte 18:</strong> Version number (Typically
+<code>0x01</code> for EDID 1.x).</li>
+<li><strong>Byte 19:</strong> Revision number (e.g., <code>0x03</code>
+for EDID 1.3, <code>0x04</code> for EDID 1.4).</li>
+</ul>
+<h4 id="4-basic-display-parameters-and-features-bytes-2024">4. Basic
+Display Parameters and Features (Bytes 20–24)</h4>
+<p>These 5 bytes define hardware characteristics:</p>
+<ul>
+<li><strong>Byte 20 (Video Input Definition):</strong> Bit 7 specifies
+analog (set to 0 for VGA), with remaining bits defining signal voltage
+levels, sync types (separate, composite, sync-on-green), and setup
+levels.</li>
+<li><strong>Byte 21:</strong> Maximum horizontal image size in
+centimeters (or aspect ratio in EDID 1.4).</li>
+<li><strong>Byte 22:</strong> Maximum vertical image size in centimeters
+(or aspect ratio in EDID 1.4).</li>
+<li><strong>Byte 23:</strong> Display gamma (Calculated as
+<code>(Value + 100) / 100</code>, typically yielding 2.2).</li>
+<li><strong>Byte 24 (Feature Support):</strong> Bitmask indicating power
+management modes (Standby, Suspend, Active Off), color encoding formats
+(RGB, YCbCr), and preferred timing mode flags.</li>
+</ul>
+<h4 id="5-color-characteristics-bytes-2534">5. Color Characteristics
+(Bytes 25–34)</h4>
+<p>A 10-byte block containing 10-bit CIE 1931 xy coordinates for the
+display's color space:</p>
+<ul>
+<li><strong>Bytes 25–28:</strong> Low-order fractional bits for Red,
+Green, Blue, and White points.</li>
+<li><strong>Bytes 29–34:</strong> High-order 8 bits for Red X/Y, Green
+X/Y, Blue X/Y, and White X/Y.</li>
+</ul>
+<h4 id="6-established-timings-bytes-3537">6. Established Timings (Bytes
+35–37)</h4>
+<p>A 3-byte bitfield representing legacy standard display resolutions
+supported by the monitor, such as 640×480 @ 60Hz, 800×600 @ 60Hz, and
+1024×768 @ 60Hz.</p>
+<h4 id="7-standard-timings-bytes-3853">7. Standard Timings (Bytes
+38–53)</h4>
+<p>Eight 2-byte descriptors (16 bytes total) that specify up to eight
+non-legacy standard display modes:</p>
+<ul>
+<li><strong>Byte 1:</strong> Horizontal active pixel count divided by 8,
+minus 31 (e.g., <code>(Width / 8) - 31</code>).</li>
+<li><strong>Byte 2:</strong> Image aspect ratio (16:10, 4:3, 5:4, 16:9)
+and vertical refresh rate (field value plus 60 Hz).</li>
+<li>Unused fields are padded with <code>0x01 0x01</code>.</li>
+</ul>
+<h4 id="8-detailed-timing-descriptors-bytes-54125">8. Detailed Timing
+Descriptors (Bytes 54–125)</h4>
+<p>This section consists of four 18-byte blocks (72 bytes total).</p>
+<ul>
+<li><strong>First Block (Bytes 54–71):</strong> Almost always the
+Preferred Timing Mode (native resolution). It defines the pixel clock
+(in 10 kHz units), horizontal/vertical active pixels, blanking
+intervals, sync offsets, sync pulse widths, and sync polarity.</li>
+<li><strong>Remaining Blocks (Bytes 72–125):</strong> Can specify
+additional detailed timings or display descriptor data. When used as
+descriptors, the first two bytes are <code>0x00 0x00</code>, followed by
+a descriptor type byte such as:
+<ul>
+<li><code>0xFF</code>: Display Serial Number (ASCII text).</li>
+<li><code>0xFC</code>: Display Product Name / Model String (ASCII
+text).</li>
+<li><code>0xFD</code>: Display Range Limits (Minimum and maximum
+vertical/horizontal frequencies and maximum pixel clock).</li>
+<li><code>0xFB</code>: Color Point Data.</li>
+</ul></li>
+</ul>
+<h4 id="9-extension-block-count-byte-126">9. Extension Block Count (Byte
+126)</h4>
+<p>Indicates the number of additional 128-byte extension blocks (such as
+CEA-861 for HDMI/audio extensions or VESA DisplayID) that follow this
+base block. For pure legacy VGA displays, this is typically
+<code>0x00</code>.</p>
+<h4 id="10-checksum-byte-127">10. Checksum (Byte 127)</h4>
+<p>A 1-byte checksum calculated such that the arithmetic sum of all 128
+bytes in the EDID block modulo 256 equals <code>0x00</code>. If the sum
+does not equal zero, the host treats the EDID block as corrupted.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

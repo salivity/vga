@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA 9th Dot Duplication in 720-Wide Text Mode - vga</title>
+    <meta name="description" content="This article explores the 9th-dot character duplication mechanism used in 720-wide Video Graphics Array (VGA) text modes, an ingenious hardware feature designed to render legacy 8-pixel-wide font data within a 9-pixel-wide grid. You will learn why this m">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-9-th-dot-duplication-in-720-wide-text-mode">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA 9th Dot Duplication in 720-Wide Text Mode - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-9-th-dot-duplication-in-720-wide-text-mode" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the 9th-dot character duplication mechanism used in 720-wide Video Graphics Array (VGA) text modes, an ingenious hardware feature designed to render legacy 8-pixel-wide font data within a 9-pixel-wide grid. You will learn why this m" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-9th-dot-duplication-in-720-wide-text-mode">VGA 9th Dot
+Duplication in 720-Wide Text Mode</h1>
+<p>This article explores the 9th-dot character duplication mechanism
+used in 720-wide Video Graphics Array (VGA) text modes, an ingenious
+hardware feature designed to render legacy 8-pixel-wide font data within
+a 9-pixel-wide grid. You will learn why this mechanism was necessary,
+how the VGA hardware differentiates between standard text and
+pseudographics, and the specific registers and character ranges that
+govern the replication of the eighth pixel to ensure unbroken
+line-drawing borders.</p>
+<h3 id="the-720-pixel-architecture-and-the-8-bit-font-problem">The
+720-Pixel Architecture and the 8-Bit Font Problem</h3>
+<p>The standard monochrome and color text modes introduced with the IBM
+VGA standard—most notably Mode 03h running at a 70 Hz refresh
+rate—produce a resolution of 720×400 pixels across 80 columns and 25
+rows. Dividing 720 horizontal pixels by 80 text columns yields a
+character cell width of 9 pixels.</p>
+<p>However, IBM's font data stored in the VGA BIOS ROM (and in font
+buffers within video memory) is stored in standard byte-aligned formats:
+8 pixels wide by 16 scanlines tall. Each byte in the font table
+represents one row of 8 horizontal pixels, where a set bit
+(<code>1</code>) denotes a foreground pixel and a cleared bit
+(<code>0</code>) denotes a background pixel. To display an 8-pixel glyph
+within a 9-pixel-wide cell, the video hardware must dynamically generate
+a 9th pixel for every scanline of every character displayed.</p>
+<h3 id="the-default-behavior-the-9th-dot-as-spacing">The Default
+Behavior: The 9th Dot as Spacing</h3>
+<p>In normal operation, the VGA Sequencer hardware is set to 9-dot
+character mode via the Clocking Mode Register (Sequencer Index
+<code>01h</code>, Bit 0 set to <code>0</code>). For the vast majority of
+alphanumeric characters, the sequencer inserts a 9th dot that is forced
+to the background color.</p>
+<p>This automatic padding provides a built-in 1-pixel horizontal space
+between adjacent characters, preventing letters from touching and
+maintaining legibility without requiring font designers to waste one of
+their 8 available pixel columns on blank space.</p>
+<h3 id="the-line-drawing-exception-codes-c0h-through-dfh">The
+Line-Drawing Exception: Codes C0h Through DFh</h3>
+<p>While inserting a blank 9th pixel works well for text, it causes a
+noticeable visual defect with box-drawing and pseudographic characters.
+In IBM Code Page 437, horizontal lines and window borders must span
+seamlessly from one character cell to the next. If the 9th pixel were
+always rendered as background space, all horizontal borders would suffer
+from an ugly 1-pixel gap at every character boundary.</p>
+<p>To resolve this, the VGA hardware implements an automatic replication
+rule:</p>
+<ul>
+<li>If a character's ASCII/extended code falls outside the range
+<code>C0h</code> through <code>DFh</code> (192 to 223 in decimal), the
+9th dot defaults to the background color.</li>
+<li>If a character's code falls <strong>within</strong> the range
+<code>C0h</code> to <code>DFh</code>, the hardware duplicates the state
+of the 8th pixel into the 9th pixel position.</li>
+</ul>
+<p>If the 8th pixel of a scanline is active (foreground), the 9th pixel
+is also rendered as foreground. If the 8th pixel is inactive
+(background), the 9th pixel remains background. Because the box-drawing
+characters in Code Page 437 are intentionally designed so that
+horizontal lines extend through the 8th column, this hardware
+replication creates continuous, uninterrupted lines across the
+display.</p>
+<h3 id="hardware-control-the-attribute-controller">Hardware Control: The
+Attribute Controller</h3>
+<p>This duplication mechanism is not permanently hardwired; it can be
+toggled by software via the VGA Attribute Controller.</p>
+<p>The feature is controlled by <strong>Bit 2 (Enable Line Graphics
+Character Codes)</strong> of the <strong>Attribute Mode Control
+Register</strong> (Index <code>10h</code> within the Attribute
+Controller):</p>
+<ul>
+<li><strong>Bit 2 = 1 (Default in standard text modes):</strong> Enables
+the automatic duplication logic for character codes <code>C0h</code>
+through <code>DFh</code>.</li>
+<li><strong>Bit 2 = 0:</strong> Disables the duplication logic. All
+characters, including <code>C0h</code> through <code>DFh</code>, have
+their 9th pixel set unconditionally to the background color.</li>
+</ul>
+<p>Disabling Bit 2 is common when an application or operating system
+loads a custom 9-dot font or a non-standard character set where the
+<code>C0h</code> to <code>DFh</code> range contains alphanumeric
+characters rather than line-drawing glyphs, ensuring that letters in
+that range do not suffer from distorted, widened right edges.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

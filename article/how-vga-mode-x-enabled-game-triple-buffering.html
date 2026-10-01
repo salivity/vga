@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Mode X Enabled Game Triple Buffering - vga</title>
+    <meta name="description" content="This article explains how custom, unchained Video Graphics Array (VGA) modes—most notably Mode X—allowed 1990s PC game developers to overcome hardware limitations and implement triple buffering. By bypassing the standard BIOS video modes to reconfigu">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-mode-x-enabled-game-triple-buffering">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Mode X Enabled Game Triple Buffering - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-mode-x-enabled-game-triple-buffering" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how custom, unchained Video Graphics Array (VGA) modes—most notably Mode X—allowed 1990s PC game developers to overcome hardware limitations and implement triple buffering. By bypassing the standard BIOS video modes to reconfigu" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-mode-x-enabled-game-triple-buffering">How VGA Mode X
+Enabled Game Triple Buffering</h1>
+<p>This article explains how custom, unchained Video Graphics Array
+(VGA) modes—most notably Mode X—allowed 1990s PC game developers to
+overcome hardware limitations and implement triple buffering. By
+bypassing the standard BIOS video modes to reconfigure VGA memory
+controllers, programmers gained direct access to the full 256 kilobytes
+of on-board video RAM. This architectural shift allowed multiple
+distinct framebuffers to reside in video memory at the same time,
+enabling tear-free animations and smooth frame pacing through
+instantaneous hardware page flipping.</p>
+<h2 id="the-limitations-of-standard-vga-mode-13h">The Limitations of
+Standard VGA Mode 13h</h2>
+<p>In standard DOS game development, the default choice for 256-color
+graphics was VGA Mode 13h. Mode 13h offered a 320x200 pixel resolution
+with an easy-to-use linear memory layout: byte 0 in video memory
+directly corresponded to the top-left pixel on screen.</p>
+<p>However, Mode 13h operated in what IBM called "Chain 4" mode. In this
+mode, the hardware automatically distributed successive pixels across
+four physical 64 KB memory planes to present a single, contiguous 64 KB
+address space to the CPU. Because a 320x200 screen requires 64,000 bytes
+(roughly 62.5 KB), Mode 13h consumed almost the entire addressable space
+in that memory segment.</p>
+<p>This left no room in video memory for secondary display surfaces.
+Developers either had to draw directly to the visible screen—causing
+visible tearing and flickering—or render frames into system RAM and copy
+them to VRAM during the vertical blanking interval (VBLANK), a process
+that placed heavy demands on the system bus and processor.</p>
+<h2 id="unchaining-the-vga-mode-x-and-planar-memory">Unchaining the VGA:
+Mode X and Planar Memory</h2>
+<p>Standard VGA cards were physically equipped with 256 KB of video RAM,
+divided into four 64 KB planes. To unlock this unused capacity,
+developers bypassed the standard PC BIOS and wrote directly to VGA
+registers, creating custom "tweaked" or "unchained" modes, popularized
+by developer Michael Abrash as Mode X.</p>
+<p>By clearing the Chain 4 bit in the VGA Sequencer Memory Mode register
+(<code>0x3C4</code>, index <code>0x04</code>) and disabling odd/even
+addressing, the video hardware exposed all four memory planes at the
+standard memory address segment <code>0xA000</code>.</p>
+<p>In an unchained planar layout, four consecutive horizontal pixels
+share the same memory address, with each pixel residing in a different
+plane:</p>
+<ul>
+<li>Pixel 0 resides in Plane 0</li>
+<li>Pixel 1 resides in Plane 1</li>
+<li>Pixel 2 resides in Plane 2</li>
+<li>Pixel 3 resides in Plane 3</li>
+</ul>
+<p>By selecting the target plane using the Map Mask register
+(<code>0x3C4</code>, index <code>0x02</code>), the CPU could access the
+entire 256 KB of VRAM across the four planes.</p>
+<h2 id="vram-capacity-and-frame-dimensions">VRAM Capacity and Frame
+Dimensions</h2>
+<p>Unchaining the memory made the entire 262,144 bytes of VRAM available
+for frame storage.</p>
+<p>When developers configured custom resolutions, they calculated how
+many complete display pages could fit within this space:</p>
+<ul>
+<li><strong>Unchained 320x200:</strong> A 320x200 resolution requires
+64,000 bytes per frame. Dividing 262,144 by 64,000 yields room for
+<strong>4 full video pages</strong>.</li>
+<li><strong>Mode X (320x240):</strong> Mode X typically adjusted the CRT
+Controller (CRTC) timing registers to produce a 320x240 resolution with
+square (1:1) pixels. A 320x240 frame requires 76,800 bytes. Dividing
+262,144 by 76,800 yields room for <strong>3 full video pages</strong>,
+with 31,744 bytes left over for off-screen sprite or pattern
+storage.</li>
+</ul>
+<p>With at least three full-resolution framebuffers fitting into video
+memory at once, the physical prerequisite for hardware triple-buffering
+was established.</p>
+<h2 id="mechanics-of-hardware-page-flipping">Mechanics of Hardware Page
+Flipping</h2>
+<p>Rather than copying heavy graphic blocks across the system bus,
+unchained modes relied on hardware-level display offset modification.
+The VGA CRT Controller has two 8-bit registers that define where in
+video memory the video generator begins reading display data:</p>
+<ol type="1">
+<li><strong>Start Address High Register</strong> (<code>CRTC</code>
+index <code>0x0C</code>)</li>
+<li><strong>Start Address Low Register</strong> (<code>CRTC</code> index
+<code>0x0D</code>)</li>
+</ol>
+<p>Combined, these registers form a 16-bit offset representing the start
+address of the current visual frame. By modifying these registers, the
+programmer instantly moves the monitor's display window to point to
+another region of VRAM without altering pixel data.</p>
+<h2 id="implementing-the-triple-buffering-scheme">Implementing the
+Triple-Buffering Scheme</h2>
+<p>Standard double-buffering introduces a synchronization bottleneck: if
+the CPU finishes rendering the back buffer before the monitor finishes
+scanning the current frame, it must pause and wait for the vertical
+retrace interrupt to swap buffers, leaving CPU cycles unused. If it does
+not wait, updating the start address mid-scan produces screen
+tearing.</p>
+<p>Custom unchained modes solved this by allocating three buffers across
+VRAM:</p>
+<ol type="1">
+<li><strong>Front Buffer (Display):</strong> Currently scanned by the
+CRT electron beam and visible on the monitor.</li>
+<li><strong>Back Buffer (Queued):</strong> A completed frame waiting for
+the next VBLANK to be promoted to the display.</li>
+<li><strong>Third Buffer (Drawing):</strong> The off-screen buffer where
+the CPU actively renders the next frame.</li>
+</ol>
+<p>The game engine cycled through these three buffers independently of
+the monitor refresh cycle:</p>
+<ol type="1">
+<li>The game logic rendered directly into the <strong>Drawing
+Buffer</strong> using planar write modes and the VGA's internal write
+latches for fast drawing.</li>
+<li>Once rendering finished, the Drawing Buffer was tagged as the
+<strong>Queued Buffer</strong>, and the previous Queued Buffer became
+available for drawing the subsequent frame.</li>
+<li>The display routine polled the VGA Input Status 1 Register
+(<code>0x3DA</code>) or used an interrupt handler to detect the start of
+the Vertical Retrace interval.</li>
+<li>During vertical blanking, the CRT Controller's Start Address
+registers were updated to the base address of the Queued Buffer, making
+it the <strong>Display Buffer</strong> without any tearing.</li>
+</ol>
+<p>This approach decoupled the game's internal frame rendering rate from
+the physical monitor refresh rate. The CPU was never forced to idle
+waiting for an electron beam to finish drawing, maximizing framerates
+while eliminating visual screen artifacts.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

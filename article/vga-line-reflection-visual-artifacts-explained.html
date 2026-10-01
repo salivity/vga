@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Line Reflection: Visual Artifacts Explained - vga</title>
+    <meta name="description" content="When a line reflection occurs in a Video Graphics Array (VGA) connection, the most prominent visual artifact displayed on screen is "ghosting," often accompanied by "ringing" or edge smearing. Because VGA is an analog interface that relies on precise ele">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-line-reflection-visual-artifacts-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Line Reflection: Visual Artifacts Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-line-reflection-visual-artifacts-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When a line reflection occurs in a Video Graphics Array (VGA) connection, the most prominent visual artifact displayed on screen is "ghosting," often accompanied by "ringing" or edge smearing. Because VGA is an analog interface that relies on precise ele" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-line-reflection-visual-artifacts-explained">VGA Line
+Reflection: Visual Artifacts Explained</h1>
+<p>When a line reflection occurs in a Video Graphics Array (VGA)
+connection, the most prominent visual artifact displayed on screen is
+"ghosting," often accompanied by "ringing" or edge smearing. Because VGA
+is an analog interface that relies on precise electrical impedance,
+signal reflections caused by impedance mismatches bounce back and forth
+along the cable. This delayed signal arrival produces a faint, duplicate
+shadow or halo offset to the right of high-contrast edges. Understanding
+why this happens and recognizing these visual symptoms can help quickly
+diagnose and resolve cable and termination issues in analog video
+setups.</p>
+<h3 id="the-primary-artifact-ghosting-and-ringing">The Primary Artifact:
+Ghosting and Ringing</h3>
+<p>The defining visual symptom of a VGA line reflection is ghosting. On
+screen, this appears as a duplicate, semi-transparent silhouette of
+text, icons, or high-contrast borders shifted horizontally—typically to
+the right of the original image.</p>
+<p>In addition to ghosting, line reflections frequently cause ringing.
+Ringing manifests as rapidly decaying, alternating light and dark bands
+or halos immediately trailing high-contrast vertical transitions. If the
+reflection is severe or the cable run is short, the artifact might not
+look like a distinct second image, but rather an unnatural softening,
+horizontal smudging, or blurriness around sharp edges.</p>
+<h3 id="why-reflections-cause-visual-artifacts">Why Reflections Cause
+Visual Artifacts</h3>
+<p>VGA transmits video as high-frequency analog voltage signals across
+separate lines for red, green, blue, horizontal sync, and vertical sync.
+In a properly designed transmission line, both the video source
+(graphics card), the transmission medium (cable), and the receiver
+(monitor) are matched to a characteristic impedance of 75 ohms.</p>
+<p>When an electrical signal travels down a conductor and encounters a
+change in impedance, not all of the signal energy is absorbed by the
+load. Instead, a portion of the wave reflects backward toward the
+source. If the source end also lacks proper termination, the signal
+reflects once more toward the display.</p>
+<p>Because analog displays draw frames sequentially from left to
+right:</p>
+<ol type="1">
+<li>The primary signal arrives and draws the original pixel on the
+screen.</li>
+<li>The reflected signal travels back along the cable, bounces, and
+arrives at the display a fraction of a microsecond later.</li>
+<li>The display renders this delayed voltage, placing the secondary,
+lower-amplitude signal slightly to the right of the original
+element.</li>
+</ol>
+<p>The greater the cable length, the further the ghost image appears
+from the original source element. Conversely, short cables cause the
+reflected signal to arrive almost immediately, producing tight ringing
+or fuzzy, smeared edges rather than an isolated second image.</p>
+<h3 id="common-causes-of-vga-line-reflections">Common Causes of VGA Line
+Reflections</h3>
+<p>Line reflections stem from any factor that disrupts the 75-ohm
+impedance path:</p>
+<ul>
+<li><strong>Poor-Quality Cabling:</strong> Cheap VGA cables often use
+unshielded twisted pairs instead of individually shielded 75-ohm coaxial
+lines for the RGB channels, leading to severe impedance variations and
+internal cross-talk.</li>
+<li><strong>Improper Termination:</strong> If the display or capture
+device lacks a proper 75-ohm termination resistor to ground on each
+color line, the entire incoming signal reflects back.</li>
+<li><strong>Passive Splitters and Adapters:</strong> Unpowered VGA
+"Y-splitters" place two 75-ohm loads in parallel, cutting the net
+impedance to 37.5 ohms and creating severe signal reflections.</li>
+<li><strong>Physical Damage and Excessive Length:</strong> Kinked
+cables, bent connector pins, cold solder joints, or unamplified runs
+extending beyond standard limits increase capacitance and signal
+degradation.</li>
+</ul>
+<h3 id="how-to-eliminate-vga-artifacts">How to Eliminate VGA
+Artifacts</h3>
+<p>To resolve ghosting and ringing caused by line reflections:</p>
+<ol type="1">
+<li><strong>Replace the Cable:</strong> Upgrade to a double- or
+triple-shielded cable featuring true 75-ohm miniature coaxial lines for
+the red, green, and blue conductors, along with integrated ferrite cores
+to suppress high-frequency noise.</li>
+<li><strong>Remove Passive Splitters:</strong> Replace passive adapters
+with active video distribution amplifiers that maintain matched
+impedance across all outputs.</li>
+<li><strong>Verify Display Settings:</strong> On LCD monitors using VGA
+inputs, run the "Auto Adjust" function or manually adjust the "Phase"
+and "Clock" settings to ensure the analog-to-digital converter samples
+the incoming signal cleanly.</li>
+<li><strong>Transition to Digital:</strong> Where possible, migrate to
+digital video standards such as DVI, HDMI, or DisplayPort, which
+eliminate analog transmission line issues entirely through packetized
+data transmission and error correction.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

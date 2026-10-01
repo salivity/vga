@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Signal Attenuation Affects Image Sharpness - vga</title>
+    <meta name="description" content="Video Graphics Array (VGA) transmits video as an analog waveform, making it inherently vulnerable to signal degradation over physical cable runs. At higher display resolutions, the transmission frequency increases dramatically, accelerating the effects o">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-signal-attenuation-affects-image-sharpness">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Signal Attenuation Affects Image Sharpness - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-signal-attenuation-affects-image-sharpness" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Video Graphics Array (VGA) transmits video as an analog waveform, making it inherently vulnerable to signal degradation over physical cable runs. At higher display resolutions, the transmission frequency increases dramatically, accelerating the effects o" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-signal-attenuation-affects-image-sharpness">How VGA
+Signal Attenuation Affects Image Sharpness</h1>
+<p>Video Graphics Array (VGA) transmits video as an analog waveform,
+making it inherently vulnerable to signal degradation over physical
+cable runs. At higher display resolutions, the transmission frequency
+increases dramatically, accelerating the effects of signal
+attenuation—the progressive loss of electrical amplitude across a
+medium. This article explains the technical mechanics of analog signal
+attenuation, why high display resolutions exacerbate this loss, and how
+the resulting degradation directly diminishes visual sharpness,
+contrast, and edge definition on screen.</p>
+<h3 id="the-analog-nature-of-vga-transmission">The Analog Nature of VGA
+Transmission</h3>
+<p>Unlike modern digital interfaces such as HDMI or DisplayPort, which
+transfer discrete binary packets (ones and zeroes), VGA conveys visual
+data using continuous analog voltage levels. The red, green, and blue
+color channels are sent as separate voltages ranging from 0 volts
+(complete black) to 0.7 volts (full saturation). To render a sharp
+visual transition—such as a black character on a crisp white
+background—the cable must support nearly instantaneous voltage
+transitions between 0V and 0.7V. In electrical terms, these rapid
+transitions represent high-frequency square waves.</p>
+<h3 id="why-high-resolutions-demand-higher-frequencies">Why High
+Resolutions Demand Higher Frequencies</h3>
+<p>As screen resolution and refresh rates rise, the video source must
+output vastly more pixels per second. For example, a standard 640x480
+resolution at 60 Hz requires a pixel clock of approximately 25 MHz,
+whereas a resolution of 1920x1080 at 60 Hz demands a pixel clock of
+roughly 148.5 MHz.</p>
+<p>Because each pixel corresponds to an analog voltage state, higher
+pixel clock rates force the signal to cycle at substantially higher
+frequencies. The higher the frequency, the less time the signal has to
+transition from one voltage state to the next before the display samples
+the pixel.</p>
+<h3 id="the-low-pass-filter-effect-and-rise-time-degradation">The
+Low-Pass Filter Effect and Rise Time Degradation</h3>
+<p>Every analog cable possesses internal resistance, inductance, and
+capacitance. Together, these physical characteristics cause the cable to
+function as a passive low-pass filter. A low-pass filter permits lower
+frequencies to pass relatively unimpeded while progressively attenuating
+(reducing the strength of) higher frequencies.</p>
+<p>This high-frequency attenuation directly rounds off the sharp corners
+of the voltage waveform:</p>
+<ul>
+<li><strong>Increased Rise and Fall Times:</strong> Instead of jumping
+instantly from 0V to 0.7V, the voltage slopes upward and downward
+gradually.</li>
+<li><strong>Incomplete Voltage Swings:</strong> At high pixel
+frequencies, the signal may never reach its target peak or trough before
+the electron beam (or digital sampler in an LCD) moves to the next
+pixel.</li>
+</ul>
+<h3 id="visual-manifestations-of-attenuation-on-image-sharpness">Visual
+Manifestations of Attenuation on Image Sharpness</h3>
+<p>When high frequencies are attenuated, the display cannot receive
+accurate edge data. This produces several observable visual defects:</p>
+<ol type="1">
+<li><strong>Blurry Text and Soft Edges:</strong> Because the voltage
+transitions are rounded off, the boundary between adjacent contrasting
+pixels becomes a gradient rather than a distinct line. Single-pixel
+details, such as fine lines or thin fonts, lose their contrast and
+appear smudged.</li>
+<li><strong>Ghosting and Smearing:</strong> Severe attenuation combined
+with cable capacitance causes energy to discharge slowly from the line.
+A bright pixel bleeds horizontally to the right across subsequent
+pixels, creating a "shadow" or trailing smear.</li>
+<li><strong>Loss of Micro-Contrast:</strong> Fine textures and
+high-frequency visual patterns (such as checkerboards or mesh textures)
+collapse into flat, muddy mid-tones because the alternating voltage
+peaks and valleys are flattened toward an average midpoint.</li>
+<li><strong>Color Fringing:</strong> VGA uses distinct physical coaxial
+lines for red, green, and blue signals. If these conductors vary
+slightly in impedance, length, or dielectric quality, each channel
+attenuates at a different rate. This discrepancy misaligns the color
+boundaries, resulting in chromatic aberration along sharp borders.</li>
+</ol>
+<h3 id="summary">Summary</h3>
+<p>Because VGA depends on precise analog voltages, high resolutions
+stress the physical limits of copper cabling. Signal attenuation
+disproportionately strips away the high-frequency components essential
+for sharp transitions, turning sharp edges into gradual slopes.
+Consequently, running high resolutions over VGA inevitably leads to
+reduced sharpness, noticeable horizontal smearing, and lower perceived
+image quality unless cable lengths are kept exceptionally short and
+constructed with high-grade shielding and low-capacitance
+dielectrics.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

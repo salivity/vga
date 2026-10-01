@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Memory Bandwidth Enabled 32-Bit True Color - vga</title>
+    <meta name="description" content="During the 1990s, the transition from banded, low-color displays to photorealistic 32-bit "True Color" at high resolutions was fundamentally constrained by memory throughput rather than raw processing power. As screen resolutions and color depths climbed">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-memory-bandwidth-enabled-32-bit-true-color">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Memory Bandwidth Enabled 32-Bit True Color - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-memory-bandwidth-enabled-32-bit-true-color" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="During the 1990s, the transition from banded, low-color displays to photorealistic 32-bit "True Color" at high resolutions was fundamentally constrained by memory throughput rather than raw processing power. As screen resolutions and color depths climbed" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-memory-bandwidth-enabled-32-bit-true-color">How VGA
+Memory Bandwidth Enabled 32-Bit True Color</h1>
+<p>During the 1990s, the transition from banded, low-color displays to
+photorealistic 32-bit "True Color" at high resolutions was fundamentally
+constrained by memory throughput rather than raw processing power. As
+screen resolutions and color depths climbed, early Video Graphics Array
+(VGA) architectures hit a performance ceiling where traditional dynamic
+RAM (DRAM) could not supply display data fast enough to sustain high
+refresh rates. The development of dual-ported video RAM, wider memory
+bus interfaces, and synchronous graphics memory provided the exponential
+leap in memory bandwidth required to read and write multi-megabyte
+framebuffers in real time, finally making high-resolution 32-bit color
+viable for everyday computing.</p>
+<p>The limitation of early graphics hardware was defined by the
+mathematical relationship between resolution, color depth, and refresh
+rate. Generating an image requires the digital-to-analog converter
+(RAMDAC) to read the framebuffer continuously to output an analog signal
+to the CRT monitor. At standard VGA resolution (640x480) with 8-bit
+color (256 colors) at 60 Hz, the RAMDAC required approximately 18
+megabytes per second (MB/s) of continuous read bandwidth. However,
+moving to high resolutions such as 1024x768 or 1280x1024 at 75 Hz with
+32-bit color (4 bytes per pixel) increased this requirement
+dramatically, demanding over 230 to 390 MB/s simply to keep the screen
+refreshed—leaving zero bandwidth for the graphics processor or host CPU
+to actually draw or update the contents of the screen.</p>
+<p>Early VGA cards relied on standard single-ported DRAM connected
+through narrow 16-bit or 32-bit memory buses. Single-ported memory
+created severe bus contention: while the RAMDAC was accessing the memory
+to draw scanlines on the monitor, the graphics processor was blocked
+from updating pixels. If the card attempted to run high color depths or
+higher resolutions, this contention caused visible visual artifacts,
+severe flickering, or dropped frames. Packed 24-bit color (8 bits each
+for red, green, and blue) was often avoided because its awkward 3-byte
+boundary misalignment complicated memory addressing on 32-bit
+processors, making 32-bit color (24-bit color plus an 8-bit pad or alpha
+channel) preferable despite requiring 33% more data per pixel.</p>
+<p>To overcome this bottleneck, memory manufacturers first developed
+Video RAM (VRAM) and Window RAM (WRAM). These were dual-ported
+architectures featuring an internal shift register that allowed the
+RAMDAC to read sequential scanline data through a dedicated serial port
+while the graphics controller simultaneously wrote new pixel data via a
+parallel port. This separation effectively eliminated bus contention
+during active display periods, instantly doubling the usable bandwidth
+of the frame buffer.</p>
+<p>Subsequent advancements focused on bus width and memory timing.
+Graphics card manufacturers expanded the memory bus from 32 bits to 64
+bits and eventually 128 bits, allowing the card to transfer multiple
+pixels per clock cycle. The transition from asynchronous fast-page mode
+(FPM) and extended data out (EDO) memory to synchronous graphics RAM
+(SGRAM) and early double data rate (DDR) memory dramatically raised
+clock frequencies. Coupled with higher-clocked, integrated RAMDACs
+capable of operating at 250 MHz to 350 MHz, these architectural
+improvements delivered gigabytes per second of raw throughput.</p>
+<p>By providing the necessary headroom to read multi-megabyte
+framebuffers without starving the drawing engine, this surge in memory
+bandwidth eliminated the trade-off between color depth and resolution.
+Users were no longer forced to choose between a high-resolution
+workspace in 256 colors or a low-resolution view in True Color,
+permanently establishing 32-bit color as the standard display
+format.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

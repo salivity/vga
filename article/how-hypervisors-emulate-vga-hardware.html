@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Hypervisors Emulate VGA Hardware - vga</title>
+    <meta name="description" content="Hypervisors emulate standard Video Graphics Array (VGA) hardware to provide broad, out-of-the-box display compatibility for guest operating systems during early boot processes or when specialized display drivers are absent. To accomplish this, virtualiza">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-hypervisors-emulate-vga-hardware">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Hypervisors Emulate VGA Hardware - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-hypervisors-emulate-vga-hardware" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Hypervisors emulate standard Video Graphics Array (VGA) hardware to provide broad, out-of-the-box display compatibility for guest operating systems during early boot processes or when specialized display drivers are absent. To accomplish this, virtualiza" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-hypervisors-emulate-vga-hardware">How Hypervisors Emulate
+VGA Hardware</h1>
+<p>Hypervisors emulate standard Video Graphics Array (VGA) hardware to
+provide broad, out-of-the-box display compatibility for guest operating
+systems during early boot processes or when specialized display drivers
+are absent. To accomplish this, virtualization platforms trap legacy
+memory-mapped I/O and port-based commands, replicate VGA internal
+registers and video memory structures in host software, and continuously
+translate legacy video modes into framebuffers that the host system can
+render.</p>
+<h3 id="the-role-of-legacy-vga-in-virtualization">The Role of Legacy VGA
+in Virtualization</h3>
+<p>Legacy VGA emulation acts as a universal fallback. Modern virtual
+machines often rely on paravirtualized display drivers (such as
+VirtIO-GPU or VMware SVGA) for hardware-accelerated 2D and 3D graphics.
+However, an operating system cannot utilize these advanced drivers
+during initial installation, BIOS/UEFI POST routines, or safe mode.
+Standard VGA provides a well-defined, backward-compatible specification
+dating back to 1987 that nearly every operating system natively supports
+without requiring external drivers.</p>
+<h3 id="trapping-io-and-memory-access">Trapping I/O and Memory
+Access</h3>
+<p>Physical VGA cards interface with the CPU via designated I/O ports
+(typically <code>0x3C0</code> through <code>0x3DF</code>) and specific
+memory addresses in the real-mode address space:</p>
+<ul>
+<li><code>0xA0000</code> to <code>0xAFFFF</code> for graphical modes
+(e.g., standard 320x200 or 640x480).</li>
+<li><code>0xB0000</code> to <code>0xB7FFF</code> for monochrome text
+mode.</li>
+<li><code>0xB8000</code> to <code>0xBFFFF</code> for color text
+mode.</li>
+</ul>
+<p>Hypervisors utilize hardware-assisted virtualization extensions
+(Intel VT-x and AMD-V) to capture access to these resources. The
+hypervisor configures the Virtual Machine Control Structure (VMCS) or
+Virtual Machine Control Block (VMCB) to trigger a "VM-exit" whenever the
+guest CPU attempts to read from or write to these port ranges or
+physical memory locations. When a VM-exit occurs, execution drops back
+to the hypervisor's virtual device model (such as the VGA device
+emulation in QEMU), which processes the instruction and updates the
+virtualized hardware state.</p>
+<h3 id="emulating-internal-controllers-and-video-memory">Emulating
+Internal Controllers and Video Memory</h3>
+<p>Standard VGA is not merely a linear framebuffer; it relies on complex
+internal state machines composed of multiple functional
+sub-controllers:</p>
+<ul>
+<li><strong>Sequencer Registers:</strong> Control clocking and mask
+planes.</li>
+<li><strong>Cathode Ray Tube Controller (CRTC):</strong> Generates
+timing signals, horizontal/vertical sync, and cursor locations.</li>
+<li><strong>Graphics Controller:</strong> Manages how the CPU interacts
+with the planar memory.</li>
+<li><strong>Attribute Controller:</strong> Governs color palette lookups
+and attribute combinations.</li>
+</ul>
+<p>The hypervisor maintains software data structures representing each
+of these registers. In complex planar modes (such as standard VGA
+16-color Mode 12h), 256 KB of video RAM is divided across four distinct
+64 KB memory planes. Because writes to planar memory can involve
+bit-masking, rotation, and logical operations dictated by the Graphics
+Controller, the hypervisor's software device model parses the active
+register state to compute the correct pixel updates across these virtual
+memory banks.</p>
+<h3 id="framebuffer-generation-and-host-presentation">Framebuffer
+Generation and Host Presentation</h3>
+<p>The guest OS expects the VGA adapter to send a video signal to a
+physical monitor. The hypervisor achieves this by parsing its internal
+virtual video memory and generating a linear 32-bit RGB buffer:</p>
+<ol type="1">
+<li><strong>Text Modes (Mode 03h):</strong> The hypervisor reads the
+character codes and attribute bytes from the virtual
+<code>0xB8000</code> buffer, matches the character to an internal font
+bitmap (often stored in the virtual ROM or Plane 2), and renders the
+individual glyph pixels into the host-side buffer.</li>
+<li><strong>Standard Graphical Modes (e.g., Mode 13h):</strong> In
+packed-pixel 256-color modes, each byte maps to a color palette register
+(DAC). The hypervisor maps the single-byte indices to 24-bit or 32-bit
+true-color pixels based on the emulated DAC registers.</li>
+</ol>
+<p>To preserve performance, hypervisors employ dirty-page tracking.
+Instead of parsing and rendering the entire display on every guest
+write, the hypervisor marks the memory pages backing the virtual VRAM as
+write-protected. When the guest writes to VRAM, a page fault triggers,
+marking that specific memory page or scanline as "dirty." The hypervisor
+schedules periodic display flushes, processing only the modified regions
+and updating the output window via host graphical interfaces like SDL,
+GTK, VNC, or SPICE.</p>
+<h3 id="handover-to-secondary-display-engines">Handover to Secondary
+Display Engines</h3>
+<p>Because software-emulated VGA requires frequent VM-exits and complex
+planar calculation, it incurs high CPU overhead and provides low
+resolutions. As soon as the guest operating system finishes loading its
+kernel and base services, it detects any available virtualization-aware
+graphics adapters. The guest loads the corresponding paravirtualized or
+synthetic driver, which swaps legacy port I/O trapping for shared-memory
+command queues, effectively idling the legacy VGA emulator.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

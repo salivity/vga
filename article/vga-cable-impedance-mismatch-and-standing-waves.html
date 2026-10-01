@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Cable Impedance Mismatch and Standing Waves - vga</title>
+    <meta name="description" content="Electrical impedance mismatching along a Video Graphics Array (VGA) cable causes high-frequency analog video signals to reflect off interfaces where impedance changes occur, such as poor cable terminations or degraded connectors. These reflected waves bo">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-cable-impedance-mismatch-and-standing-waves">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Cable Impedance Mismatch and Standing Waves - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-cable-impedance-mismatch-and-standing-waves" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Electrical impedance mismatching along a Video Graphics Array (VGA) cable causes high-frequency analog video signals to reflect off interfaces where impedance changes occur, such as poor cable terminations or degraded connectors. These reflected waves bo" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-cable-impedance-mismatch-and-standing-waves">VGA Cable
+Impedance Mismatch and Standing Waves</h1>
+<p>Electrical impedance mismatching along a Video Graphics Array (VGA)
+cable causes high-frequency analog video signals to reflect off
+interfaces where impedance changes occur, such as poor cable
+terminations or degraded connectors. These reflected waves bounce back
+and forth, interacting with the original incoming signals to generate
+standing waves, which visibly degrade the display output by introducing
+artifacts such as ghosting, ringing, and color smearing.</p>
+<p>A standard VGA transmission system is designed around a continuous
+characteristic impedance of 75 ohms (<span
+class="math inline">\(\Omega\)</span>). This standard applies uniformly
+across the signal source (the graphics processing unit's
+digital-to-analog converter), the internal coaxial conductors of the VGA
+cable, and the termination load inside the monitor. When all components
+share this exact 75-ohm impedance, the electrical load absorbs the
+entirety of the incident signal energy, allowing the analog color
+information (Red, Green, and Blue channels) to be accurately translated
+into screen pixels without distortion.</p>
+<p>An impedance mismatch occurs when the characteristic impedance of the
+cable (<span class="math inline">\(Z_0\)</span>) differs from the
+termination impedance of the load (<span
+class="math inline">\(Z_L\)</span>) or the source. This discrepancy
+commonly arises from low-quality cables with irregular wire geometries,
+damaged shielding, sharp bends, or uncalibrated input terminations on
+the display. According to transmission line theory, the voltage
+reflection coefficient (<span class="math inline">\(\Gamma\)</span>)
+governs the behavior at any boundary where impedance changes:</p>
+<p><span class="math display">\[\Gamma = \frac{Z_L - Z_0}{Z_L +
+Z_0}\]</span></p>
+<p>If <span class="math inline">\(Z_L\)</span> equals <span
+class="math inline">\(Z_0\)</span>, the reflection coefficient is zero,
+meaning no energy is reflected. However, if a mismatch exists—for
+instance, if <span class="math inline">\(Z_L\)</span> is higher or lower
+than 75 ohms—<span class="math inline">\(\Gamma\)</span> becomes a
+non-zero value. Instead of being completely absorbed by the monitor, a
+fraction of the electrical signal's energy reflects off the load
+interface and travels backward toward the source.</p>
+<p>As the reflected wave propagates backward, it encounters the source
+end of the cable. If the source impedance is not perfectly matched to
+absorb incoming reverse currents, the wave reflects again, rebounding
+back toward the display. The simultaneous presence of forward-traveling
+(incident) waves and reverse-traveling (reflected) waves produces
+constructive and destructive interference along the cable. This
+interference pattern forms a standing wave, characterized by stationary
+points of minimum voltage (nodes) and maximum voltage (antinodes) at
+fixed intervals dictated by the signal's frequency and propagation
+velocity.</p>
+<p>Because VGA signals carry high-frequency analog data—often exceeding
+100 MHz for higher resolutions and refresh rates—these reflections
+arrive at the display shifted in time relative to the original signal.
+The delayed voltage spikes superimpose onto subsequent pixel data,
+directly altering the intended voltage levels of the RGB channels. On
+screen, this manifests as double images, faint duplicate outlines to the
+right of high-contrast edges (ghosting), and oscillating edge halos
+(ringing).</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

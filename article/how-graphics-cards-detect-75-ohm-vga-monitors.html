@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Graphics Cards Detect 75-Ohm VGA Monitors - vga</title>
+    <meta name="description" content="Graphics processing units (GPUs) detect connected Video Graphics Array (VGA) monitors by measuring the electrical impedance on the analog color lines. Standard VGA displays incorporate 75-ohm termination resistors to ground on each of the Red, Green, and">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-graphics-cards-detect-75-ohm-vga-monitors">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Graphics Cards Detect 75-Ohm VGA Monitors - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-graphics-cards-detect-75-ohm-vga-monitors" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Graphics processing units (GPUs) detect connected Video Graphics Array (VGA) monitors by measuring the electrical impedance on the analog color lines. Standard VGA displays incorporate 75-ohm termination resistors to ground on each of the Red, Green, and" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-graphics-cards-detect-75-ohm-vga-monitors">How Graphics
+Cards Detect 75-Ohm VGA Monitors</h1>
+<p>Graphics processing units (GPUs) detect connected Video Graphics
+Array (VGA) monitors by measuring the electrical impedance on the analog
+color lines. Standard VGA displays incorporate 75-ohm termination
+resistors to ground on each of the Red, Green, and Blue (RGB) video
+channels to prevent signal reflection. By pulsing a small test current
+through these lines and measuring the resulting voltage drop using
+integrated analog comparators, the graphics card’s Digital-to-Analog
+Converter (DAC) can reliably confirm whether a monitor is physically
+plugged in.</p>
+<h3 id="the-role-of-75-ohm-termination">The Role of 75-Ohm
+Termination</h3>
+<p>The VGA standard relies on analog video transmission across coaxial
+lines with a characteristic impedance of 75 ohms. To maintain signal
+integrity and eliminate signal reflections that cause visual artifacts
+like ghosting, both the transmitter (the graphics card) and the receiver
+(the monitor) must match this impedance.</p>
+<p>Inside the monitor, each RGB input pin is connected to a 75-ohm
+resistor tied directly to ground. When no monitor is attached, the VGA
+connector pins sit as an open circuit (infinite impedance). When a
+monitor is connected, the line impedance drops to 75 ohms.</p>
+<h3 id="dac-current-injection-and-voltage-sensing">DAC Current Injection
+and Voltage Sensing</h3>
+<p>Most graphics cards utilize current-output video DACs (historically
+known as RAMDACs). Rather than directly outputting a static voltage,
+these DACs drive a controlled current across the video line.</p>
+<p>To test for monitor presence, the GPU initiates a detection
+routine:</p>
+<ol type="1">
+<li><strong>Current Injection:</strong> The DAC drives a known,
+calibrated current into the RGB output channels.</li>
+<li><strong>Voltage Development:</strong> According to Ohm's Law (<span
+class="math inline">\(V = I \times R\)</span>), this current produces a
+voltage across whatever load is attached to the pin.
+<ul>
+<li><strong>Terminated Line (Monitor Connected):</strong> The injected
+current flows through the monitor's 75-ohm resistor to ground, pulling
+the line to a nominal voltage level (typically around 0.7 volts for full
+white scale, or a lower test threshold depending on the DAC
+implementation).</li>
+<li><strong>Unterminated Line (No Monitor):</strong> Because the pin is
+an open circuit, the current has no return path to ground through a
+75-ohm load. This causes the line voltage to float upward toward the
+DAC’s internal power supply rail (often 3.3V or 5V in older
+hardware).</li>
+</ul></li>
+</ol>
+<h3 id="analog-comparators-and-detection-logic">Analog Comparators and
+Detection Logic</h3>
+<p>Inside the display engine of the GPU, each analog video pin is wired
+to an internal analog comparator circuit.</p>
+<p>The comparator compares the real-time line voltage against a
+predetermined reference threshold voltage (commonly set slightly higher
+than the standard 0.7V peak video signal, such as 1.0V to 1.2V).</p>
+<ul>
+<li>If the sensed voltage remains <strong>below</strong> the threshold,
+the circuit registers that the 75-ohm load is present, successfully
+sinking the current. The GPU sets an internal status bit indicating that
+a display device is detected on that channel.</li>
+<li>If the sensed voltage rises <strong>above</strong> the threshold,
+the circuit identifies an open circuit. The GPU determines that no
+display is connected.</li>
+</ul>
+<h3 id="detection-timing-and-display-data-channel-ddc">Detection Timing
+and Display Data Channel (DDC)</h3>
+<p>Load detection is primarily used during boot-up, driver
+initialization, or hot-plug polling routines. Because driving DC current
+onto the RGB lines can cause brief flashes on an active display, modern
+drivers execute this check during the vertical blanking interval or when
+no active digital communication exists.</p>
+<p>While modern setups also query the monitor’s Extended Display
+Identification Data (EDID) via the I2C-based Display Data Channel (DDC),
+75-ohm load sensing remains the foundational low-level hardware method
+used by GPUs to verify physical analog connectivity, especially for
+legacy monitors that lack DDC support.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

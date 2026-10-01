@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA to Composite Sync: How Sync Separation Works - vga</title>
+    <meta name="description" content="Connecting a standard Video Graphics Array (VGA) source to a monitor requiring composite sync involves converting separate timing channels into a single unified stream, which the display must then interpret. This article explains the technical process of">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-to-composite-sync-how-sync-separation-works">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA to Composite Sync: How Sync Separation Works - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-to-composite-sync-how-sync-separation-works" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Connecting a standard Video Graphics Array (VGA) source to a monitor requiring composite sync involves converting separate timing channels into a single unified stream, which the display must then interpret. This article explains the technical process of" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-to-composite-sync-how-sync-separation-works">VGA to
+Composite Sync: How Sync Separation Works</h1>
+<p>Connecting a standard Video Graphics Array (VGA) source to a monitor
+requiring composite sync involves converting separate timing channels
+into a single unified stream, which the display must then interpret.
+This article explains the technical process of adapting VGA's separate
+horizontal and vertical sync signals for a composite sync display,
+detailing how sync combining occurs at the interface and how internal
+sync separation circuitry decodes the pulses to construct a stable
+picture.</p>
+<h3 id="sync-format-differences">Sync Format Differences</h3>
+<p>Standard VGA outputs video in the RGBHV format. In this arrangement,
+Red, Green, and Blue color data are transmitted alongside two dedicated,
+independent timing lines: Horizontal Sync (H-Sync) and Vertical Sync
+(V-Sync). Both signals typically operate at Transistor-Transistor Logic
+(TTL) voltage levels (around 5V peak-to-peak).</p>
+<p>In contrast, displays requiring Composite Sync (RGBS or CSync)—common
+in arcade monitors, broadcast equipment, and specialized CRT
+displays—expect all timing information delivered over a single
+conductor.</p>
+<h3 id="sync-combining-preparing-the-vga-signal">Sync Combining:
+Preparing the VGA Signal</h3>
+<p>Because VGA provides two separate sync outputs, they must first be
+combined before reaching a composite sync input. This is typically
+achieved using an active logic circuit, such as an Exclusive OR (XOR)
+gate:</p>
+<ol type="1">
+<li><strong>Pulse Preservation:</strong> An XOR gate combines the
+high-frequency H-Sync pulses (which control line-by-line drawing) and
+the low-frequency V-Sync pulses (which reset the beam to the top of the
+screen).</li>
+<li><strong>Inversion Handling:</strong> An XOR circuit properly handles
+sync polarities. Whether the VGA source outputs positive or negative
+sync pulses, the gate ensures the combined waveform retains correct
+pulse widths and timing edges without phase cancellation.</li>
+</ol>
+<p>Once combined, this single CSync stream travels to the display
+alongside the RGB video channels.</p>
+<h3 id="the-role-of-sync-separation-in-the-display">The Role of Sync
+Separation in the Display</h3>
+<p>Once the combined signal enters the display, the monitor's deflection
+circuits cannot directly use the multiplexed line. The display requires
+separate control voltages to drive its horizontal sweep (line
+deflection) and vertical sweep (field deflection). An internal sync
+separator—implemented via dedicated ICs (such as the LM1881) or discrete
+analog filtering—splits the composite stream back into independent
+triggers.</p>
+<p>Sync separation relies on the significant difference in duration
+between horizontal and vertical pulses:</p>
+<ul>
+<li><strong>Horizontal Sync Extraction (High-Pass /
+Differentiating):</strong> Horizontal pulses occur rapidly (e.g., 31.5
+kHz for standard VGA or 15.7 kHz for standard-definition CRT) and have a
+very short duration, usually around a few microseconds. The sync
+separator uses a differentiator network (high-pass filter) to detect the
+sharp, leading edges of these pulses, generating immediate timing spikes
+to trigger the horizontal sweep oscillator.</li>
+<li><strong>Vertical Sync Extraction (Low-Pass / Integrating):</strong>
+Vertical sync pulses last much longer than horizontal pulses. The
+separator routes the composite signal through an integrator network
+(low-pass filter). Because standard horizontal pulses are too short to
+charge the circuit's capacitor significantly, they are ignored. When the
+longer vertical sync pulse arrives, the capacitor accumulates enough
+charge to cross a voltage threshold, firing the vertical reset
+trigger.</li>
+</ul>
+<h3 id="maintaining-lock-with-serration-pulses">Maintaining Lock with
+Serration Pulses</h3>
+<p>A critical challenge during sync separation is keeping the display's
+horizontal oscillator synchronized while the vertical pulse is active.
+If the horizontal pulses stopped during the vertical blanking interval,
+the horizontal deflection would lose timing lock, causing image
+distortion or tearing at the top of the screen.</p>
+<p>To solve this, composite sync uses <strong>serration pulses</strong>
+and <strong>equalization pulses</strong>. These are narrow slots cut
+directly into the broad vertical sync block. They allow the integrator
+to remain charged for vertical sync detection while simultaneously
+providing continuous falling edges to keep the horizontal differentiator
+engaged throughout the entire vertical refresh cycle.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

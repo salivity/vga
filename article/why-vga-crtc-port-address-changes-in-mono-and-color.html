@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA CRTC Port Address Changes in Mono and Color - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) Cathode Ray Tube Controller (CRTC) shifts its base I/O port addresses between 0x3B4 in monochrome mode and 0x3D4 in color mode to maintain strict hardware backward compatibility with the original IBM PC architecture. In the">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-crtc-port-address-changes-in-mono-and-color">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA CRTC Port Address Changes in Mono and Color - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-crtc-port-address-changes-in-mono-and-color" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) Cathode Ray Tube Controller (CRTC) shifts its base I/O port addresses between 0x3B4 in monochrome mode and 0x3D4 in color mode to maintain strict hardware backward compatibility with the original IBM PC architecture. In the" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-crtc-port-address-changes-in-mono-and-color">Why VGA
+CRTC Port Address Changes in Mono and Color</h1>
+<p>The Video Graphics Array (VGA) Cathode Ray Tube Controller (CRTC)
+shifts its base I/O port addresses between <code>0x3B4</code> in
+monochrome mode and <code>0x3D4</code> in color mode to maintain strict
+hardware backward compatibility with the original IBM PC architecture.
+In the early days of personal computing, IBM designed systems so
+monochrome and color video cards could coexist without resource
+conflicts. When IBM introduced the VGA standard in 1987, it preserved
+this address splitting to ensure legacy software that bypassed the BIOS
+and wrote directly to hardware registers could continue running
+seamlessly.</p>
+<h3 id="the-origins-mda-and-cga-coexistence">The Origins: MDA and CGA
+Coexistence</h3>
+<p>In 1981, IBM released two distinct display adapters for the IBM PC
+5150:</p>
+<ul>
+<li><strong>Monochrome Display Adapter (MDA):</strong> Positioned for
+text-heavy business tasks, the MDA mapped its video buffer to memory
+address <code>0xB0000</code>–<code>0xB7FFF</code> and assigned its
+Motorola 6845 CRTC registers to I/O ports <code>0x3B4</code> (index
+register) and <code>0x3B5</code> (data register).</li>
+<li><strong>Color Graphics Adapter (CGA):</strong> Geared toward color
+visuals and graphics, the CGA mapped its video memory to
+<code>0xB8000</code>–<code>0xBFFFF</code> and assigned its 6845 CRTC to
+I/O ports <code>0x3D4</code> and <code>0x3D5</code>.</li>
+</ul>
+<p>Because the I/O port assignments and memory addresses did not
+overlap, a single system could host both an MDA card and a CGA card at
+the same time. Power users often took advantage of this setup to run
+dual monitors—displaying high-resolution monochrome text on one screen
+and color charts or graphics on the other.</p>
+<h3 id="the-legacy-problem-for-vga">The Legacy Problem for VGA</h3>
+<p>When IBM designed the Enhanced Graphics Adapter (EGA) and later the
+Video Graphics Array (VGA), the goal was to replace both MDA and CGA
+with a single unified card. However, a significant portion of DOS
+software—such as Lotus 1-2-3, WordPerfect, and early PC games—ignored
+system BIOS interrupts for the sake of speed. Instead, these programs
+directly read from and wrote to the hardcoded I/O port addresses
+<code>0x3B4</code>/<code>0x3B5</code> or
+<code>0x3D4</code>/<code>0x3D5</code>.</p>
+<p>If the VGA standard had locked the CRTC to a single base address, any
+legacy software expecting the other address would fail to display video,
+produce corrupted output, or crash.</p>
+<h3 id="how-vga-manages-the-port-switch">How VGA Manages the Port
+Switch</h3>
+<p>To resolve this conflict, VGA incorporates a hardware-level steering
+mechanism controlled by the <strong>Miscellaneous Output
+Register</strong>:</p>
+<ul>
+<li><strong>Port Location:</strong> Written via I/O port
+<code>0x3C2</code> and read via <code>0x3CC</code>.</li>
+<li><strong>Bit 0 (I/O Address Select):</strong>
+<ul>
+<li>When set to <code>0</code>, the card configures itself for
+<strong>monochrome emulation</strong>. The CRTC index and data registers
+map to <code>0x3B4</code> and <code>0x3B5</code>, and the Input Status
+Register 1 maps to <code>0x3BA</code>.</li>
+<li>When set to <code>1</code>, the card configures itself for
+<strong>color emulation</strong>. The CRTC index and data registers map
+to <code>0x3D4</code> and <code>0x3D5</code>, and the Input Status
+Register 1 maps to <code>0x3DA</code>.</li>
+</ul></li>
+</ul>
+<p>When an application or the system BIOS requests a monochrome mode
+(such as BIOS video mode 7), the display system clears Bit 0, relocating
+the CRTC controls to the <code>0x3Bx</code> range. When switching to a
+standard color text or graphics mode (such as BIOS modes 3, 12h, or
+13h), the bit is set to <code>1</code>, shifting the registers back to
+the <code>0x3Dx</code> space.</p>
+<p>By dynamically relocating the CRTC I/O base address based on the
+active display mode, VGA guaranteed seamless compatibility with the vast
+ecosystem of software written for both the MDA and CGA standards.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

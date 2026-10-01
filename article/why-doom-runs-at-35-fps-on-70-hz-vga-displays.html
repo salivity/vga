@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Doom Runs at 35 FPS on 70 Hz VGA Displays - vga</title>
+    <meta name="description" content="When id Software released Doom in 1993, the game's internal engine was capped at 35 frames per second (FPS), perfectly matching half of the standard 70 Hz vertical refresh rate of IBM PC VGA monitors. This design choice was an engineering compromise by l">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-doom-runs-at-35-fps-on-70-hz-vga-displays">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Doom Runs at 35 FPS on 70 Hz VGA Displays - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-doom-runs-at-35-fps-on-70-hz-vga-displays" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When id Software released Doom in 1993, the game's internal engine was capped at 35 frames per second (FPS), perfectly matching half of the standard 70 Hz vertical refresh rate of IBM PC VGA monitors. This design choice was an engineering compromise by l" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-doom-runs-at-35-fps-on-70-hz-vga-displays">Why Doom Runs at
+35 FPS on 70 Hz VGA Displays</h1>
+<p>When id Software released <em>Doom</em> in 1993, the game's internal
+engine was capped at 35 frames per second (FPS), perfectly matching half
+of the standard 70 Hz vertical refresh rate of IBM PC VGA monitors. This
+design choice was an engineering compromise by lead programmer John
+Carmack, balancing the heavy computational load of the game's pseudo-3D
+engine against the hardware limitations of the era, while ensuring
+tear-free display synchronization and deterministic gameplay.</p>
+<h3 id="the-vga-mode-13h-standard">The VGA Mode 13h Standard</h3>
+<p>During the early 1990s, PC games predominantly used Mode 13h, a
+standard Video Graphics Array (VGA) display mode. Mode 13h provided a
+resolution of 320×200 pixels with a 256-color palette. The cathode-ray
+tube (CRT) monitors of the time displayed this mode at a vertical
+refresh rate of approximately 70.086 Hz (commonly referred to as 70 Hz).
+This meant the electron gun scanned the screen from top to bottom
+roughly 70 times per second.</p>
+<h3 id="hardware-limitations-in-1993">Hardware Limitations in 1993</h3>
+<p>Rendering real-time 3D environments with texture mapping, dynamic
+sector lighting, and variable heights was revolutionary for 1993, but it
+was exceptionally demanding on contemporary hardware. The primary target
+processors—Intel 80386 and early 80486 CPUs—did not possess enough
+computing power to render <em>Doom</em> at a full 70 frames per second.
+Targeting 70 FPS would have resulted in severe performance drops,
+inconsistent frame times, and unplayable slowdowns on the vast majority
+of consumer hardware.</p>
+<h3 id="vertical-synchronization-vsync-and-frame-pacing">Vertical
+Synchronization (VSync) and Frame Pacing</h3>
+<p>To deliver a smooth visual experience, Carmack needed a target frame
+rate that synchronized cleanly with the 70 Hz refresh cycle of the
+monitor. If a game pushes frames at an arbitrary rate that does not
+evenly divide into the monitor's refresh rate, it produces visual
+artifacts:</p>
+<ul>
+<li><strong>Tearing:</strong> Occurs when the video buffer flips to a
+new frame while the monitor is mid-scan, resulting in a disjointed
+horizontal split across the image.</li>
+<li><strong>Judder:</strong> Occurs when frames are repeated unevenly
+(for example, alternating between displaying a frame for one refresh
+cycle and then two), making movement appear jerky.</li>
+</ul>
+<p>By dividing the 70 Hz refresh rate by an integer factor of two,
+Carmack arrived at exactly 35 FPS. Displaying each rendered frame for
+precisely two vertical blanking intervals (VBLs) eliminated screen
+tearing and provided perfectly consistent frame pacing.</p>
+<h3 id="the-35-hz-ticrate-and-determinism">The 35 Hz Ticrate and
+Determinism</h3>
+<p>The 35 FPS limitation went beyond rendering; it was hardcoded into
+the core architecture of the game engine through the
+<code>TICRATE</code> constant, defined as 35 in the source code. The
+game logic, enemy AI, player movement, and physics calculations all
+update in discrete time slices called "tics," occurring every 1/35th of
+a second.</p>
+<p>To maintain this rate, <em>Doom</em> reprogrammed the PC's 8253/8254
+Programmable Interval Timer (PIT) chip to trigger an interrupt at
+approximately 35 Hz instead of the default DOS timer rate of 18.2 Hz.
+This guaranteed that the game logic ran at the exact same speed
+regardless of whether the player had a low-end 386 or a high-end 486
+processor. Locking the engine to this rate also made gameplay fully
+deterministic, which was essential for small multiplayer network packets
+and the recorded demo system (<code>.lmp</code> files), where tiny
+timing deviations would cause playback to desynchronize completely.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

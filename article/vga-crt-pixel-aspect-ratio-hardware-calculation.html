@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA CRT Pixel Aspect Ratio Hardware Calculation - vga</title>
+    <meta name="description" content="This article explains the hardware-level calculations used to determine the Pixel Aspect Ratio (PAR) on an analog 4:3 Video Graphics Array (VGA) cathode-ray tube (CRT) monitor. It covers the mathematical relationship between physical screen geometry, dis">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-crt-pixel-aspect-ratio-hardware-calculation">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA CRT Pixel Aspect Ratio Hardware Calculation - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-crt-pixel-aspect-ratio-hardware-calculation" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the hardware-level calculations used to determine the Pixel Aspect Ratio (PAR) on an analog 4:3 Video Graphics Array (VGA) cathode-ray tube (CRT) monitor. It covers the mathematical relationship between physical screen geometry, dis" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-crt-pixel-aspect-ratio-hardware-calculation">VGA CRT Pixel
+Aspect Ratio Hardware Calculation</h1>
+<p>This article explains the hardware-level calculations used to
+determine the Pixel Aspect Ratio (PAR) on an analog 4:3 Video Graphics
+Array (VGA) cathode-ray tube (CRT) monitor. It covers the mathematical
+relationship between physical screen geometry, display timings, dot
+clock frequency, and active raster dimensions, demonstrating how video
+hardware maps digital pixel buffers onto continuous analog
+scanlines.</p>
+<h2 id="the-underlying-physics-of-crt-displays">The Underlying Physics
+of CRT Displays</h2>
+<p>Unlike modern LCDs with fixed physical pixel grids, a CRT draws
+images using continuous analog electron beams deflected across a
+phosphor-coated screen. Vertically, the display is divided into discrete
+scanlines dictated by the horizontal sweep frequency. Horizontally,
+there are no physical hardware pixels; horizontal pixels are defined
+purely by time intervals during which the video digital-to-analog
+converter (RAMDAC) outputs a voltage level.</p>
+<p>Because deflection coils are calibrated to sweep the active raster
+across a physical faceplate with a standard 4:3 Display Aspect Ratio
+(DAR), the physical width-to-height ratio of the visible screen area
+is:</p>
+<p><span class="math display">\[\text{DAR} =
+\frac{W_{\text{physical}}}{H_{\text{physical}}} = \frac{4}{3} \approx
+1.333\]</span></p>
+<h2 id="the-fundamental-par-calculation">The Fundamental PAR
+Calculation</h2>
+<p>The Pixel Aspect Ratio (PAR) represents the ratio of the physical
+width (<span class="math inline">\(W_p\)</span>) to the physical height
+(<span class="math inline">\(H_p\)</span>) of an individual displayed
+pixel:</p>
+<p><span class="math display">\[\text{PAR} =
+\frac{W_p}{H_p}\]</span></p>
+<p>Given that the total active physical width is divided by the number
+of active horizontal pixels (<span
+class="math inline">\(H_{\text{pixels}}\)</span>), and the total active
+physical height is divided by the number of active vertical lines (<span
+class="math inline">\(V_{\text{lines}}\)</span>):</p>
+<p><span class="math display">\[W_p =
+\frac{W_{\text{physical}}}{H_{\text{pixels}}}\]</span></p>
+<p><span class="math display">\[H_p =
+\frac{H_{\text{physical}}}{V_{\text{lines}}}\]</span></p>
+<p>Substituting these into the PAR equation gives the standard
+calculation:</p>
+<p><span class="math display">\[\text{PAR} =
+\left(\frac{W_{\text{physical}}}{H_{\text{physical}}}\right) \times
+\left(\frac{V_{\text{lines}}}{H_{\text{pixels}}}\right) = \frac{4}{3}
+\times \frac{V_{\text{lines}}}{H_{\text{pixels}}}\]</span></p>
+<h2 id="derivation-via-video-timing-hardware">Derivation via Video
+Timing Hardware</h2>
+<p>At the hardware level, active resolution is controlled by the Cathode
+Ray Tube Controller (CRTC) and the pixel clock (dot clock).</p>
+<h3 id="1-horizontal-pixel-width-calculation">1. Horizontal Pixel Width
+Calculation</h3>
+<p>The horizontal dimension of a pixel depends on the dot clock
+frequency (<span class="math inline">\(f_{\text{dot}}\)</span>) and the
+horizontal sweep velocity (<span
+class="math inline">\(v_h\)</span>).</p>
+<ul>
+<li><strong>Dot Clock Period (<span
+class="math inline">\(t_{\text{pixel}}\)</span>):</strong> <span
+class="math inline">\(t_{\text{pixel}} =
+\frac{1}{f_{\text{dot}}}\)</span></li>
+<li><strong>Active Line Time (<span
+class="math inline">\(T_{\text{active\_h}}\)</span>):</strong> <span
+class="math inline">\(T_{\text{active\_h}} = H_{\text{pixels}} \times
+t_{\text{pixel}} =
+\frac{H_{\text{pixels}}}{f_{\text{dot}}}\)</span></li>
+<li><strong>Physical Beam Speed (<span
+class="math inline">\(v_h\)</span>):</strong> <span
+class="math inline">\(v_h =
+\frac{W_{\text{physical}}}{T_{\text{active\_h}}}\)</span></li>
+</ul>
+<p>Thus, physical pixel width is determined directly by:</p>
+<p><span class="math display">\[W_p = v_h \times t_{\text{pixel}} =
+\frac{W_{\text{physical}}}{H_{\text{pixels}}}\]</span></p>
+<h3 id="2-vertical-pixel-height-calculation">2. Vertical Pixel Height
+Calculation</h3>
+<p>The vertical height depends on the number of discrete scanlines drawn
+during the vertical refresh period:</p>
+<p><span class="math display">\[H_p =
+\frac{H_{\text{physical}}}{V_{\text{lines}}}\]</span></p>
+<p>Where <span class="math inline">\(V_{\text{lines}}\)</span>
+represents the active scanlines programmed into the CRTC vertical
+registers (excluding vertical blanking intervals).</p>
+<h2 id="standard-vga-mode-examples">Standard VGA Mode Examples</h2>
+<h3 id="standard-640x480-mode-square-pixels">Standard 640x480 Mode
+(Square Pixels)</h3>
+<p>In classic VGA 640×480 @ 60 Hz mode:</p>
+<ul>
+<li><span class="math inline">\(H_{\text{pixels}} = 640\)</span></li>
+<li><span class="math inline">\(V_{\text{lines}} = 480\)</span></li>
+<li><span class="math inline">\(f_{\text{dot}} \approx 25.175\text{
+MHz}\)</span></li>
+</ul>
+<p><span class="math display">\[\text{PAR} = \frac{4}{3} \times
+\frac{480}{640} = \frac{4}{3} \times \frac{3}{4} = 1.0\]</span></p>
+<p>The result is a <span class="math inline">\(1:1\)</span> ratio,
+meaning pixels are perfectly square.</p>
+<h3 id="mode-13h-320x200-mode-non-square-pixels">Mode 13h: 320x200 Mode
+(Non-Square Pixels)</h3>
+<p>In standard 320×200 gaming modes:</p>
+<ul>
+<li><span class="math inline">\(H_{\text{pixels}} = 320\)</span></li>
+<li><span class="math inline">\(V_{\text{lines}} = 200\)</span></li>
+</ul>
+<p><span class="math display">\[\text{PAR} = \frac{4}{3} \times
+\frac{200}{320} = \frac{4}{3} \times \frac{5}{8} = \frac{5}{6} \approx
+0.833\]</span></p>
+<p>In this hardware configuration, the pixels are vertically elongated
+(taller than they are wide) with a width-to-height ratio of <span
+class="math inline">\(5:6\)</span>.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

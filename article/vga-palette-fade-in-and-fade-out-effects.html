@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Palette Fade In and Fade Out Effects - vga</title>
+    <meta name="description" content="Custom Video Graphics Array (VGA) palettes can easily create smooth screen fade-in and fade-out visual effects, and doing so was a cornerstone technique of classic PC game development. By manipulating the digital-to-analog converter (DAC) color registers">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-palette-fade-in-and-fade-out-effects">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Palette Fade In and Fade Out Effects - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-palette-fade-in-and-fade-out-effects" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Custom Video Graphics Array (VGA) palettes can easily create smooth screen fade-in and fade-out visual effects, and doing so was a cornerstone technique of classic PC game development. By manipulating the digital-to-analog converter (DAC) color registers" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-palette-fade-in-and-fade-out-effects">VGA Palette Fade In
+and Fade Out Effects</h1>
+<p>Custom Video Graphics Array (VGA) palettes can easily create smooth
+screen fade-in and fade-out visual effects, and doing so was a
+cornerstone technique of classic PC game development. By manipulating
+the digital-to-analog converter (DAC) color registers rather than
+modifying individual pixels in the video memory, developers can smoothly
+transition entire screens to black, white, or any target tone with
+virtually zero computational overhead. This article explains how the VGA
+hardware architecture facilitates palette-based fading, the underlying
+mechanics of palette manipulation, and the standard implementation
+practices used to achieve seamless transitions.</p>
+<h3 id="the-mechanics-of-the-vga-palette">The Mechanics of the VGA
+Palette</h3>
+<p>Standard VGA 256-color modes, most notably Mode 13h (320x200
+resolution), rely on an indexed color system. Each pixel in the video
+buffer does not store direct red, green, and blue (RGB) values; instead,
+it holds an 8-bit index pointing to one of 256 color registers within
+the VGA DAC.</p>
+<p>Each DAC register consists of three color channels: Red, Green, and
+Blue. VGA uses 6 bits per channel, meaning each primary color has an
+intensity value ranging from 0 to 63, yielding an 18-bit color space
+with 262,144 possible colors. Because the display hardware references
+these 256 registers on the fly to render colors on the monitor,
+modifying the DAC values instantly updates the visual representation of
+every pixel referencing that palette index.</p>
+<h3 id="how-palette-fading-works">How Palette Fading Works</h3>
+<p>A fade effect involves gradually interpolating the active palette
+between a starting state and a target state over a specified number of
+frames.</p>
+<ul>
+<li><strong>Fade-to-Black:</strong> The RGB components of all 256
+palette entries are scaled downward toward zero.</li>
+<li><strong>Fade-in:</strong> Starting from complete darkness (where
+every RGB value is set to 0), the components are scaled upward over
+multiple steps until they match their original, intended color
+values.</li>
+<li><strong>Fade-to-Color (e.g., White or Red):</strong> The values are
+shifted toward their maximum capacity (63 for pure white) to simulate
+visual events like flashes or explosions.</li>
+</ul>
+<p>To maintain precision during a fade, developers keep an unaltered
+copy of the original palette in system RAM. Calculating each frame's
+intermediate values directly from the original master palette prevents
+rounding errors and color degradation that would otherwise occur if
+values were repeatedly modified in place.</p>
+<h3 id="why-the-technique-is-extremely-efficient">Why the Technique is
+Extremely Efficient</h3>
+<p>In modern graphics architectures, applying a whole-screen fade
+typically involves drawing a full-screen alpha-blended quad over the
+frame. In the era of the 8086, 286, and 386 processors, modifying all
+64,000 pixels in Mode 13h was too slow to maintain a high framerate.</p>
+<p>Palette manipulation circumvents the framebuffer entirely:</p>
+<ol type="1">
+<li><strong>Minimal Data Transfer:</strong> Instead of writing to 64,000
+bytes of video RAM, the CPU only needs to update 768 bytes (256 colors ×
+3 channels).</li>
+<li><strong>Instant Screen Updates:</strong> Once the DAC registers are
+updated, every corresponding pixel across the entire screen reflects the
+change during the very next electron beam sweep.</li>
+<li><strong>No Framebuffer Pollution:</strong> The original scene
+remains intact in memory throughout the transition. When fading out and
+back in to the same scene, the image does not need to be redrawn.</li>
+</ol>
+<h3 id="avoiding-visual-artifacts">Avoiding Visual Artifacts</h3>
+<p>Updating the palette mid-frame can produce a visual artifact known as
+"snow" or horizontal screen tearing, where the color change visibly
+snaps midway across the screen.</p>
+<p>To achieve a smooth visual effect, palette updates must be
+synchronized with the monitor's vertical blanking interval (VBLANK). By
+polling the VGA status register (port <code>0x3DA</code>) for the
+vertical retrace signal, code can delay palette writes until the
+electron beam has finished drawing the visible screen and is resetting
+to the top-left corner. Updating the I/O ports (<code>0x3C8</code> for
+the index and <code>0x3C9</code> for the data) during this brief window
+ensures flicker-free, fluid color transitions.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

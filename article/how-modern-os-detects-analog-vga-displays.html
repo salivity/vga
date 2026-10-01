@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Modern OS Detects Analog VGA Displays - vga</title>
+    <meta name="description" content="Modern operating systems detect physically connected analog Video Graphics Array (VGA) displays primarily through hardware-level polling managed by the graphics driver. Because the legacy 15-pin VGA standard lacks a dedicated Hot-Plug Detection (HPD) pin">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-modern-os-detects-analog-vga-displays">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Modern OS Detects Analog VGA Displays - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-modern-os-detects-analog-vga-displays" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Modern operating systems detect physically connected analog Video Graphics Array (VGA) displays primarily through hardware-level polling managed by the graphics driver. Because the legacy 15-pin VGA standard lacks a dedicated Hot-Plug Detection (HPD) pin" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-modern-os-detects-analog-vga-displays">How Modern OS Detects
+Analog VGA Displays</h1>
+<p>Modern operating systems detect physically connected analog Video
+Graphics Array (VGA) displays primarily through hardware-level polling
+managed by the graphics driver. Because the legacy 15-pin VGA standard
+lacks a dedicated Hot-Plug Detection (HPD) pin found in modern digital
+interfaces like HDMI or DisplayPort, detection relies on two primary
+techniques: querying the Display Data Channel (DDC) via an I2C bus and
+measuring analog load impedance across color signal lines.</p>
+<h3 id="the-absence-of-dedicated-hot-plug-detection">The Absence of
+Dedicated Hot-Plug Detection</h3>
+<p>Modern display connectors feature a dedicated Hot-Plug Detect (HPD)
+physical pin that immediately triggers a hardware interrupt when a cable
+is plugged in. VGA, introduced in 1987, has no such dedicated interrupt
+line. As a result, an operating system cannot passively wait for a
+connection event; it must rely on graphics hardware to periodically poll
+or manually probe the interface on demand, such as during system boot or
+when a user clicks "Detect" in display settings.</p>
+<h3 id="method-1-ddc-and-edid-interrogation">Method 1: DDC and EDID
+Interrogation</h3>
+<p>The most common software-driven method relies on the VESA Display
+Data Channel (DDC2B standard). Pins 12 (SDA/Data) and 15 (SCL/Clock) on
+a standard 15-pin VGA connector form an I2C communication bus, powered
+via Pin 9 (+5V DC).</p>
+<p>When probing the port, the graphics driver instructs the GPU to send
+an I2C read request to the standard address <code>0x50</code>. If a
+powered monitor is connected, an internal EEPROM chip in the monitor
+acknowledges the signal and transmits its Extended Display
+Identification Data (EDID). The EDID contains supported resolutions,
+refresh rates, and the monitor's manufacturer details. If the driver
+receives a valid EDID checksum, the operating system registers the
+display as connected and active.</p>
+<h3 id="method-2-dac-load-sensing">Method 2: DAC Load Sensing</h3>
+<p>If a monitor does not support DDC, is powered off, or uses an older
+cable lacking I2C wires, the hardware uses analog load detection.</p>
+<p>Analog VGA operates using standard 75-ohm termination resistors
+inside the monitor on the Red, Green, and Blue video lines (Pins 1, 2,
+and 3). Modern graphics processing units (GPUs) and integrated
+Digital-to-Analog Converters (DACs) feature built-in load-sensing
+circuitry. To test for a monitor:</p>
+<ol type="1">
+<li>The GPU briefly outputs a small test current through the RGB color
+channels.</li>
+<li>If a monitor is connected, the 75-ohm termination resistors pull the
+voltage down to expected operational levels (approximately 0.7V
+peak).</li>
+<li>If no monitor is attached, the open circuit causes the voltage to
+jump to the DAC's maximum rail voltage.</li>
+</ol>
+<p>By measuring this voltage differential, the graphics card senses
+whether an analog load is present on the lines, allowing the driver to
+report an active physical link to the operating system even without
+receiving EDID metadata.</p>
+<h3 id="the-operating-system-and-driver-layer">The Operating System and
+Driver Layer</h3>
+<p>The operating system itself does not communicate with the physical
+VGA pins directly. Instead, OS display subsystems—such as the Windows
+Display Driver Model (WDDM) on Windows or Direct Rendering Manager /
+Kernel Mode Setting (DRM/KMS) on Linux—issue probe requests to the GPU
+driver.</p>
+<p>Because continuous polling via DDC and load sensing consumes power
+and can cause screen flickering on active displays, modern operating
+systems typically poll VGA lines only during startup, system wake-up
+events, or when explicitly requested by user interaction within display
+management panels.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

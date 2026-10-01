@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Was VGA Mode Y in PC Graphics Programming? - vga</title>
+    <meta name="description" content="VGA Mode Y was an undocumented, tweaked graphics mode for IBM-compatible PCs that provided an unchained 320x200 resolution with 256 colors, overcoming the memory and performance limitations of the standard BIOS Mode 13h. By disabling the VGA hardware's d">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/what-was-vga-mode-y-in-pc-graphics-programming">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Was VGA Mode Y in PC Graphics Programming? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/what-was-vga-mode-y-in-pc-graphics-programming" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="VGA Mode Y was an undocumented, tweaked graphics mode for IBM-compatible PCs that provided an unchained 320x200 resolution with 256 colors, overcoming the memory and performance limitations of the standard BIOS Mode 13h. By disabling the VGA hardware's d" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-was-vga-mode-y-in-pc-graphics-programming">What Was VGA
+Mode Y in PC Graphics Programming?</h1>
+<p>VGA Mode Y was an undocumented, tweaked graphics mode for
+IBM-compatible PCs that provided an unchained 320x200 resolution with
+256 colors, overcoming the memory and performance limitations of the
+standard BIOS Mode 13h. By disabling the VGA hardware's default memory
+chaining, Mode Y unlocked the full 256 KB of onboard video RAM to allow
+hardware page flipping, seamless scrolling, and faster parallel writes.
+The underlying technique of unchaining 320x200 was pioneered in the late
+1980s by software developer John Bridges, while the specific moniker
+"Mode Y" was coined by the PC game development and demoscene community
+as a back-formation following Michael Abrash’s famous introduction of
+"Mode X."</p>
+<h3 id="the-limitations-of-standard-mode-13h">The Limitations of
+Standard Mode 13h</h3>
+<p>When IBM introduced the Video Graphics Array (VGA) standard in 1987,
+the easiest way for developers to display 256 colors was BIOS Mode 13h.
+Mode 13h offered a resolution of 320x200 pixels where each byte in video
+memory directly corresponded to one pixel on the screen.</p>
+<p>To achieve this simple linear memory model, IBM configured the
+hardware in "Chain-4" mode. The VGA's 256 KB of video memory was
+physically divided into four 64 KB memory banks called planes. In
+Chain-4 mode, hardware logic automatically directed consecutive bytes to
+consecutive planes (pixel 0 to plane 0, pixel 1 to plane 1, and so
+on).</p>
+<p>While linear addressing made drawing routines simple, it had severe
+drawbacks:</p>
+<ul>
+<li><strong>Wasted Memory:</strong> The CPU could only access a single
+64 KB memory window (<code>0xA000:0000</code> to
+<code>0xA000:FFFF</code>). Because a 320x200 screen consumes 64,000
+bytes, virtually the entire accessible window was consumed by a single
+frame. The remaining 192 KB of VGA RAM sat idle and unreachable.</li>
+<li><strong>No Page Flipping:</strong> Because developers could not
+store multiple frames in video memory simultaneously, animation suffered
+from severe screen tearing unless rendering was artificially delayed to
+wait for the monitor’s vertical retrace.</li>
+</ul>
+<h3 id="how-mode-y-worked">How Mode Y Worked</h3>
+<p>Mode Y was created by taking standard Mode 13h and directly modifying
+VGA register settings to turn off Chain-4 addressing, switching the
+memory architecture into "planar" or "unchained" mode while keeping the
+320x200 display timing intact.</p>
+<p>In Mode Y, memory addresses no longer mapped linearly. Instead, four
+pixels shared the exact same memory address across the four distinct
+hardware planes:</p>
+<ul>
+<li>Address 0 in Plane 0 controlled pixel (0, 0)</li>
+<li>Address 0 in Plane 1 controlled pixel (1, 0)</li>
+<li>Address 0 in Plane 2 controlled pixel (2, 0)</li>
+<li>Address 0 in Plane 3 controlled pixel (3, 0)</li>
+<li>Address 1 in Plane 0 controlled pixel (4, 0)</li>
+</ul>
+<p>Because each plane only required 16,000 bytes to represent a full
+320x200 image (<span class="math inline">\(320 \times 200 \div
+4\)</span>), a single display frame fit easily within the 64 KB plane
+limit. This unlocked critical capabilities:</p>
+<ol type="1">
+<li><strong>Hardware Page Flipping:</strong> Developers could fit up to
+four complete display pages into the 256 KB of video memory. Games could
+draw the next frame into a hidden page in the background and instantly
+swap the visible screen during the vertical blanking interval,
+eliminating screen flicker and tearing.</li>
+<li><strong>Hardware-Accelerated Writes:</strong> The VGA hardware
+included internal latch registers and plane write-masks. A programmer
+could configure the hardware to write to all four planes simultaneously
+in a single CPU instruction, effectively painting four pixels at the
+cost of one memory write.</li>
+<li><strong>Smooth Scrolling:</strong> Using the VGA's built-in
+start-address registers, games could scroll horizontally and vertically
+at the hardware level without redrawing the entire screen.</li>
+</ol>
+<h3 id="the-origin-of-the-name-mode-y">The Origin of the Name "Mode
+Y"</h3>
+<p>The planar 320x200 technique was first discovered and published in
+the late 1980s by John Bridges, an early PC graphics pioneer who worked
+on programs such as <em>Paint Show</em> and developed graphical tools
+for PC games. At the time, Bridges simply referred to it as an unchained
+or planar 320x200 VGA mode.</p>
+<p>In July 1991, legendary programmer Michael Abrash published a
+landmark article in <em>Dr. Dobb's Journal</em> detailing an unchained
+320x240 resolution. Abrash named his configuration <strong>"Mode
+X"</strong> to symbolize the unknown and to highlight its square 1:1
+pixel aspect ratio on standard 4:3 CRT monitors.</p>
+<p>Following the massive popularity of Abrash's article, developers who
+wanted the benefits of unchained VGA architecture without switching to
+the taller 240-line resolution returned to Bridges' unchained 320x200
+configuration. The 320x200 mode retained a memory width stride of 320
+bytes (80 bytes per plane), making memory offset calculations
+significantly faster and easier to optimize on 80286 and 80386
+processors than the 240-line format.</p>
+<p>As a humorous and logical nod to Abrash's "Mode X," programmers in
+the PC gaming community, BBS networks, and Usenet discussion groups
+(<code>comp.sys.ibm.pc.programmer</code>) began calling the unchained
+320x200 setup <strong>"Mode Y."</strong> While John Bridges engineered
+the mechanics behind the mode, the "Mode Y" label was a community-coined
+term that completed the naming pair alongside Mode X during the golden
+era of DOS game programming.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

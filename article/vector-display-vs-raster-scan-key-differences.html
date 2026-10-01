@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Display vs Raster Scan: Key Differences - vga</title>
+    <meta name="description" content="This article examines the core architectural and operational differences between vector display systems and the raster scanning method popularized by Video Graphics Array (VGA). While vector displays generate graphics by directly tracing continuous lines">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vector-display-vs-raster-scan-key-differences">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Vector Display vs Raster Scan: Key Differences - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vector-display-vs-raster-scan-key-differences" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines the core architectural and operational differences between vector display systems and the raster scanning method popularized by Video Graphics Array (VGA). While vector displays generate graphics by directly tracing continuous lines" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vector-display-vs-raster-scan-key-differences">Vector Display vs
+Raster Scan: Key Differences</h1>
+<p>This article examines the core architectural and operational
+differences between vector display systems and the raster scanning
+method popularized by Video Graphics Array (VGA). While vector displays
+generate graphics by directly tracing continuous lines between
+coordinates using an electron beam, raster displays draw an entire scene
+line-by-line across a predefined pixel grid. Understanding these two
+display paradigms highlights the evolutionary shift from early wireframe
+CRT systems to modern pixel-based visual rendering.</p>
+<h3 id="beam-path-and-drawing-mechanics">Beam Path and Drawing
+Mechanics</h3>
+<p>The primary technical distinction lies in how the cathode-ray tube
+(CRT) electron beam is steered across the screen:</p>
+<ul>
+<li><strong>Vector Displays (Random Scan):</strong> The electron beam is
+directed only to parts of the screen where an image is to be drawn. It
+moves directly from one coordinate pair <span
+class="math inline">\((X_1, Y_1)\)</span> to another <span
+class="math inline">\((X_2, Y_2)\)</span> to trace out lines, text, and
+geometric shapes. When a line is finished, the beam turns off (blanks)
+and relocates to the next coordinate set.</li>
+<li><strong>Raster Scanning (VGA):</strong> The electron beam follows a
+fixed, repetitive path across the entire face of the display regardless
+of the image content. Starting at the top-left corner, it sweeps
+horizontally from left to right, shuts off during horizontal blanking to
+reset to the left of the next line down, and repeats this until reaching
+the bottom right. A vertical blanking interval resets the beam back to
+the top left. VGA dynamically modifies the beam's intensity at fixed
+intervals along this path to activate individual phosphor dots
+(pixels).</li>
+</ul>
+<h3 id="resolution-and-visual-fidelity">Resolution and Visual
+Fidelity</h3>
+<p>Because vector displays do not rely on an underlying grid of discrete
+pixels, they produce smooth, continuous lines. Diagonals and curves show
+no aliasing, "stair-stepping," or pixelation, effectively offering
+resolution limited only by the precision of the deflection circuitry and
+the beam focus.</p>
+<p>In contrast, VGA raster systems are bound by a fixed resolution
+matrix (typically 640×480 pixels in standard VGA at a 60 Hz refresh
+rate). Diagonal lines and curved geometries frequently exhibit aliasing
+artifacts unless processed with software anti-aliasing techniques.
+However, raster scan technology excels at rendering complex, filled
+shapes, subtle gradients, and photographic imagery—tasks that are
+virtually impossible for pure vector hardware.</p>
+<h3 id="memory-architecture-and-complexity-limits">Memory Architecture
+and Complexity Limits</h3>
+<p>Vector and raster systems approach memory and scene complexity from
+opposing directions:</p>
+<ul>
+<li><strong>Display Lists vs. Frame Buffers:</strong> Vector systems
+utilize a "display list" or program stored in memory, containing
+commands that tell the beam where to move next. Raster systems like VGA
+rely on a dedicated frame buffer in video RAM (VRAM), where every pixel
+location on the screen corresponds to a specific memory address that
+holds color and intensity data.</li>
+<li><strong>Flicker vs. Fixed Refresh Rates:</strong> In a vector
+system, the refresh rate depends on the number of lines being drawn. If
+an image contains too many vectors, the beam cannot re-trace all lines
+before the phosphor begins to fade, resulting in visible flickering. In
+a VGA raster display, the refresh rate remains completely constant
+(e.g., 60 Hz or 70 Hz), because the beam always travels across every
+line of the screen regardless of how simple or complex the visual scene
+is.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

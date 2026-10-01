@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Feature Control Register Explained - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) Feature Control Register is a legacy hardware register used to manipulate and route display timing signals, primarily to interface with external video hardware through the VGA feature connector. This article explains the te">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-feature-control-register-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Feature Control Register Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-feature-control-register-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) Feature Control Register is a legacy hardware register used to manipulate and route display timing signals, primarily to interface with external video hardware through the VGA feature connector. This article explains the te" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-feature-control-register-explained">VGA Feature Control
+Register Explained</h1>
+<p>The Video Graphics Array (VGA) Feature Control Register is a legacy
+hardware register used to manipulate and route display timing signals,
+primarily to interface with external video hardware through the VGA
+feature connector. This article explains the technical purpose of the
+Feature Control Register, details its input/output port assignments,
+breaks down its bit-level functionality, and outlines its historical
+role in PC graphics architecture.</p>
+<h3 id="primary-purpose-of-the-register">Primary Purpose of the
+Register</h3>
+<p>The main purpose of the Feature Control Register is to control the
+output of vertical sync (VSync) signals and facilitate communication
+with auxiliary video devices. During the early era of PC hardware,
+high-end multimedia devices—such as hardware MPEG decoders, TV tuners,
+and video overlay boards—needed to synchronize with or modify the VGA
+video output.</p>
+<p>The Feature Control Register allowed programmers and hardware
+designers to direct sync signals to the VGA edge/feature connector or
+toggle specific control pins (designated FC0, FC1, and FC2) to
+coordinate frame rendering between the primary VGA controller and
+secondary add-on cards.</p>
+<h3 id="port-addresses-and-access">Port Addresses and Access</h3>
+<p>Like several other VGA registers, the Feature Control Register shares
+its address space depending on the graphics emulation mode (monochrome
+or color) and whether a read or write operation is being performed:</p>
+<ul>
+<li><strong>Read Address:</strong> <code>0x3CA</code> (independent of
+monochrome or color mode)</li>
+<li><strong>Write Address (Color Emulation):</strong>
+<code>0x3DA</code></li>
+<li><strong>Write Address (Monochrome Emulation):</strong>
+<code>0x3BA</code></li>
+</ul>
+<p>Because the read and write locations differ, software cannot read and
+write using the same I/O port address. Modern hardware emulators (such
+as DOSBox or QEMU) maintain this port behavior to ensure backward
+compatibility with real-mode DOS software.</p>
+<h3 id="bit-layout-and-functions">Bit Layout and Functions</h3>
+<p>In standard IBM VGA implementations, most bits of this byte-wide
+register are reserved or unused. The standard register mapping is as
+follows:</p>
+<ul>
+<li><strong>Bits 0–2 (Reserved / Feature Control 0 and 1):</strong> In
+early hardware revisions, these bits were directly mapped to the FC0 and
+FC1 pins on the internal VGA feature connector to pass proprietary
+control logic to daughtercards. On standard modern VGA implementations,
+they are reserved and return zero when read.</li>
+<li><strong>Bit 3 (Vertical Sync Control / FC2):</strong> This bit
+controls the vertical sync timing generation. When set to
+<code>0</code>, normal vertical sync pulses generated by the Cathode Ray
+Tube Controller (CRTC) are driven to the display. When set to
+<code>1</code>, the vertical sync line output is altered, typically
+forced to an alternate state or controlled by an external source
+connected to the feature connector.</li>
+<li><strong>Bits 4–7 (Reserved):</strong> Unused and read as zeros.</li>
+</ul>
+<h3 id="historical-context-and-legacy-usage">Historical Context and
+Legacy Usage</h3>
+<p>The Feature Control Register was vital when graphics chips lacked the
+bandwidth and capabilities to handle video capture or 3D acceleration on
+a single die. Peripheral component interconnects and dedicated 2D/3D
+passthrough cables relied on these registers to achieve genlock, overlay
+subtitles, or synchronize frame buffers without tearing.</p>
+<p>As integrated graphics processors and standards like AGP and PCIe
+emerged, external feature connectors became obsolete. In contemporary
+systems, the Feature Control Register exists almost exclusively within
+software-based VGA emulation layers and bare-metal OS display drivers to
+maintain legacy IBM VGA compatibility.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

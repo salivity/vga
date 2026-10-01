@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Scanline Generators Work on 31 kHz VGA CRTs - vga</title>
+    <meta name="description" content="An active scanline generator simulates the appearance of low-resolution retro displays on high-resolution 31 kHz CRT monitors by hardware-intercepting analog video signals and darkening alternate horizontal lines. This article explains how these devices">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-scanline-generators-work-on-31-k-hz-vga-cr-ts">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Scanline Generators Work on 31 kHz VGA CRTs - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-scanline-generators-work-on-31-k-hz-vga-cr-ts" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="An active scanline generator simulates the appearance of low-resolution retro displays on high-resolution 31 kHz CRT monitors by hardware-intercepting analog video signals and darkening alternate horizontal lines. This article explains how these devices" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-scanline-generators-work-on-31-khz-vga-crts">How Scanline
+Generators Work on 31 kHz VGA CRTs</h1>
+<p>An active scanline generator simulates the appearance of
+low-resolution retro displays on high-resolution 31 kHz CRT monitors by
+hardware-intercepting analog video signals and darkening alternate
+horizontal lines. This article explains how these devices track
+synchronization pulses, use digital switching logic to alternate between
+odd and even lines, and manipulate analog RGB voltage levels to recreate
+authentic retro scanlines without software emulation.</p>
+<h3 id="the-15-khz-vs-31-khz-disconnect">The 15 kHz vs. 31 kHz
+Disconnect</h3>
+<p>Standard-definition retro gaming consoles (such as the NES, Genesis,
+or SNES) output video at roughly 15 kHz, commonly known as 240p. Because
+240p only draws every other field without interlacing, thick blank
+gaps—scanlines—naturally appear between drawn lines on standard 15 kHz
+CRT televisions.</p>
+<p>In contrast, standard Video Graphics Array (VGA) PC monitors operate
+at a horizontal refresh rate of 31 kHz (480p). When upscaling or
+displaying 480p content, the monitor draws all 480 progressive lines
+consecutively, eliminating those characteristic black gaps. An active
+scanline generator bridges this visual gap by artificially suppressing
+every other horizontal sweep in hardware.</p>
+<h3 id="synchronization-detection-and-line-counting">Synchronization
+Detection and Line Counting</h3>
+<p>Active scanline generators sit inline between the video source and
+the display via standard VGA (DE-15) connections. To determine which
+lines to darken, the device monitors two discrete signals:</p>
+<ol type="1">
+<li><strong>Vertical Sync (VSYNC):</strong> Signals the start of a new
+video frame. When the VSYNC pulse arrives, the generator's internal
+logic counter resets to a defined starting state (line 0).</li>
+<li><strong>Horizontal Sync (HSYNC):</strong> Signals the end of one
+horizontal line and the start of the next. Each HSYNC pulse advances an
+internal logic circuit—often built using high-speed 7400-series logic
+(such as a D or T flip-flop) or a small complex programmable logic
+device (CPLD).</li>
+</ol>
+<p>By toggling on every HSYNC pulse, the flip-flop's output alternates
+between high (logic 1) and low (logic 0) for odd and even scanlines
+across the 480-line frame.</p>
+<h3 id="signal-attenuation-on-alternating-lines">Signal Attenuation on
+Alternating Lines</h3>
+<p>Once the generator identifies an alternating line, it manipulates the
+analog color channels:</p>
+<ul>
+<li><strong>Pass-Through State:</strong> On the designated visible line,
+high-speed analog switches (such as CMOS multiplexers or fast switching
+transistors) allow the Red, Green, and Blue (RGB) signals to pass
+unaltered from the input to the output pins at the standard 0.7V
+peak-to-peak amplitude.</li>
+<li><strong>Darkened State:</strong> On the alternate line, the logic
+circuit switches the RGB pathways through an attenuation circuit.
+Depending on the user's settings, the generator either ties the RGB
+signals directly to ground via an internal load (creating completely
+black scanlines) or routes the signal through variable
+resistors/potentiometers. Bleeding a portion of the RGB signal voltage
+to ground reduces line brightness to 25%, 50%, or 75%, generating
+variable-opacity scanlines.</li>
+</ul>
+<h3 id="why-active-processing-matters">Why Active Processing
+Matters</h3>
+<p>Passive scanline generators rely solely on line power stolen from the
+VGA cable, which can result in video ghosting, impedance mismatching,
+and overall picture dimming.</p>
+<p>Active scanline generators use an independent power source (typically
+5V via micro-USB or pin 9 on the VGA connector) to drive low-latency
+logic gates and operational buffers. This dedicated power allows the
+analog switches to toggle within nanoseconds during the horizontal
+blanking interval, preventing color bleed, preserving signal impedance
+(75 ohms), and keeping non-darkened lines at full, vibrant
+brightness.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

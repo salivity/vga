@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Wrong Scan Rates Damaged Early VGA CRT Monitors - vga</title>
+    <meta name="description" content="Early analog CRT monitors were strictly tuned electro-mechanical systems that could be physically destroyed by receiving an unsupported horizontal scan rate from a computer's graphics card. This article explains the internal vulnerabilities of early Vide">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-wrong-scan-rates-damaged-early-vga-crt-monitors">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Wrong Scan Rates Damaged Early VGA CRT Monitors - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-wrong-scan-rates-damaged-early-vga-crt-monitors" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Early analog CRT monitors were strictly tuned electro-mechanical systems that could be physically destroyed by receiving an unsupported horizontal scan rate from a computer's graphics card. This article explains the internal vulnerabilities of early Vide" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-wrong-scan-rates-damaged-early-vga-crt-monitors">Why Wrong
+Scan Rates Damaged Early VGA CRT Monitors</h1>
+<p>Early analog CRT monitors were strictly tuned electro-mechanical
+systems that could be physically destroyed by receiving an unsupported
+horizontal scan rate from a computer's graphics card. This article
+explains the internal vulnerabilities of early Video Graphics Array
+(VGA) displays, detailing how mismatched horizontal synchronization
+signals overloaded horizontal deflection circuits, destroyed flyback
+transformers, and caused catastrophic hardware failure due to the
+absence of modern safety protections.</p>
+<p>In an analog Cathode Ray Tube (CRT) monitor, an electron gun fires
+electrons toward the phosphorescent inner surface of the screen. To draw
+a coherent image, these beams must be swept rapidly left to right
+(horizontal deflection) and top to bottom (vertical deflection). The
+horizontal deflection system operates at a significantly higher
+frequency than the vertical system. For standard early VGA, this
+horizontal scan frequency was typically fixed at 31.5 kHz.</p>
+<p>The heart of the horizontal deflection system is the Horizontal
+Output Transistor (HOT) coupled directly to the deflection yoke coils
+and the flyback transformer. The flyback transformer serves a dual
+purpose: it generates the high-voltage flyback pulse required to snap
+the electron beam back to the left side of the screen, and it steps up
+voltage to tens of thousands of volts to power the CRT's high-voltage
+anode.</p>
+<p>Early analog monitors were fundamentally fixed-frequency or narrowly
+bounded multi-frequency devices. Their internal deflection circuits were
+tuned like an LC resonant circuit designed to operate safely within a
+tight timing window. When an early video card pushed a horizontal sync
+signal that was significantly higher or out of phase with what the
+monitor's chassis was engineered to handle, the delicate timing of this
+resonant system collapsed.</p>
+<p>The primary failure point was the Horizontal Output Transistor. The
+HOT relies on precise timing to switch fully on and fully off. If the
+incoming horizontal sync frequency is too high, the transistor does not
+have sufficient time to fully turn off before the next cycle forces it
+to conduct again. Operating continuously in this semi-conductive, active
+linear region generates massive amounts of heat almost instantly. The
+resulting thermal runaway causes the transistor to short out internally,
+often within seconds or minutes of receiving the bad signal.</p>
+<p>Furthermore, driving the flyback transformer at an incorrect
+frequency disrupts its inductive balance. An improper frequency causes
+massive inductive voltage spikes that exceed the dielectric breakdown
+ratings of the transformer's internal insulation and the
+collector-emitter breakdown voltage (<span
+class="math inline">\(V_{CEO}\)</span>) of the HOT. This leads to
+internal electrical arcing, melted windings, and the destruction of
+surrounding passive components such as damper diodes and tuning
+capacitors.</p>
+<p>Modern CRT monitors developed later in the 1990s avoided this
+catastrophe by incorporating microcontrollers and dedicated sync-polling
+integrated circuits. These newer multisync displays read the incoming
+horizontal and vertical frequencies, verify them against an internal
+lookup table, and immediately shut down the deflection stage—displaying
+an "Out of Range" warning if the signal is unsafe. Early VGA monitors
+possessed no such digital logic; their deflection stages were driven
+directly by the incoming analog sync pulses, leaving the hardware
+entirely at the mercy of the video card's output.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

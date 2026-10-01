@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA Clones Disabled Vertical Retrace Interrupts - vga</title>
+    <meta name="description" content="When IBM introduced the Video Graphics Array (VGA) standard with the PS/2 line in 1987, the hardware included the capability to generate a CPU interrupt at the start of each vertical blanking interval. Despite this design specification, third-party manuf">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-clones-disabled-vertical-retrace-interrupts">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA Clones Disabled Vertical Retrace Interrupts - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-clones-disabled-vertical-retrace-interrupts" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When IBM introduced the Video Graphics Array (VGA) standard with the PS/2 line in 1987, the hardware included the capability to generate a CPU interrupt at the start of each vertical blanking interval. Despite this design specification, third-party manuf" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-clones-disabled-vertical-retrace-interrupts">Why VGA
+Clones Disabled Vertical Retrace Interrupts</h1>
+<p>When IBM introduced the Video Graphics Array (VGA) standard with the
+PS/2 line in 1987, the hardware included the capability to generate a
+CPU interrupt at the start of each vertical blanking interval. Despite
+this design specification, third-party manufacturers of clone VGA cards
+frequently left the vertical retrace interrupt disabled by default, made
+it optional via jumpers, or omitted the physical trace entirely. This
+article explains the technical constraints and software design patterns
+that made the vertical retrace interrupt obsolete on PC clones,
+specifically focusing on ISA bus IRQ scarcity, software reliance on
+register polling, hardware implementation flaws, and historical
+precedents.</p>
+<h3 id="the-problem-of-isa-bus-irq-scarcity">The Problem of ISA Bus IRQ
+Scarcity</h3>
+<p>The original IBM PS/2 architecture utilized the Micro Channel
+Architecture (MCA) bus, which supported level-triggered, shareable
+interrupts. In contrast, the vast majority of third-party VGA clone
+cards were manufactured for the standard Industry Standard Architecture
+(ISA) bus found in IBM PC/AT compatibles.</p>
+<p>The ISA bus used edge-triggered interrupts that could not easily be
+shared among multiple expansion cards. IBM assigned the display adapter
+interrupt to IRQ 2, which on the AT architecture was repurposed as the
+cascade line to the secondary interrupt controller, mapping to IRQ 9.
+Because ISA systems had a strictly limited pool of interrupts, reserving
+a dedicated interrupt line for the video card was inefficient. Expansion
+devices such as network interface cards, sound cards, and SCSI
+controllers actively competed for IRQ 2/9, forcing manufacturers to
+avoid assigning an IRQ to the VGA card to prevent hardware
+conflicts.</p>
+<h3 id="the-shift-toward-register-polling">The Shift Toward Register
+Polling</h3>
+<p>Even when hardware interrupts were functional, real-time graphics
+programmers largely ignored them. Video games and graphical software
+required precise synchronization with the display refresh cycle to
+prevent visual tearing when swapping display buffers or updating palette
+registers.</p>
+<p>Handling synchronization through an interrupt service routine (ISR)
+introduced noticeable overhead:</p>
+<ul>
+<li>Saving and restoring CPU register states.</li>
+<li>Processing interrupt masks on the 8259 Programmable Interrupt
+Controller (PIC).</li>
+<li>Latency caused by other system interrupts temporarily disabling the
+interrupt flag (<code>CLI</code>).</li>
+</ul>
+<p>Programmers discovered that polling the VGA hardware directly was
+faster, more deterministic, and avoided interrupt latency. By reading
+bit 3 of the Input Status Register 1 (located at I/O port
+<code>0x3DA</code> for color systems or <code>0x3BA</code> for
+monochrome), software could continuously poll for the vertical blanking
+interval using a tight loop. Because polling worked universally across
+all clone hardware without requiring a dedicated IRQ, software
+developers standardized on this method, eliminating the commercial need
+for the hardware interrupt.</p>
+<h3 id="silicon-bugs-and-errata-in-clone-chipsets">Silicon Bugs and
+Errata in Clone Chipsets</h3>
+<p>To enable the vertical retrace interrupt, software had to clear bit 5
+of the Vertical Retrace End Register (CRTC register <code>0x11</code>)
+and set bit 4 to clear any pending interrupt status.</p>
+<p>Early VGA clone chipsets—such as those produced by Tseng Labs,
+Trident, Oak Technology, and Cirrus Logic—frequently exhibited errata in
+their CRTC state machines. On some clone cards, clearing the interrupt
+flag failed to reset the internal latch reliably, resulting in
+continuous interrupt requests that locked up the host CPU. On others,
+the interrupt signal was noisy, generating spurious interrupts. To
+ensure stability across diverse clone motherboards, manufacturers chose
+either to ground the interrupt pin on the graphics controller, leave the
+ISA IRQ line disconnected, or hardwire the feature to an off state.</p>
+<h3 id="the-legacy-of-the-enhanced-graphics-adapter">The Legacy of the
+Enhanced Graphics Adapter</h3>
+<p>The practice of abandoning the display interrupt predated VGA. The
+earlier Enhanced Graphics Adapter (EGA) standard also featured a
+vertical retrace interrupt routed to IRQ 2. In practice, IBM's own EGA
+BIOS routinely left this interrupt disabled due to reliability problems
+and peripheral conflicts on early PC and XT motherboards.</p>
+<p>Because the software ecosystem had already adapted to the absence of
+a reliable video interrupt during the EGA era, the transition to VGA
+clones inherited the established paradigm: graphics synchronization
+belonged in software loops, freeing system interrupts for devices that
+could not operate without them.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

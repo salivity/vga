@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Memory Avoids 0xB0000 Legacy Conflicts - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) architecture prevents memory conflicts with legacy monochrome display adapters at address 0xB0000 through dynamic, programmable memory mapping controlled by internal hardware registers. By allowing the system to isolate gra">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-memory-avoids-0-x-b-0000-legacy-conflicts">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Memory Avoids 0xB0000 Legacy Conflicts - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-memory-avoids-0-x-b-0000-legacy-conflicts" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) architecture prevents memory conflicts with legacy monochrome display adapters at address 0xB0000 through dynamic, programmable memory mapping controlled by internal hardware registers. By allowing the system to isolate gra" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-memory-avoids-0xb0000-legacy-conflicts">How VGA Memory
+Avoids 0xB0000 Legacy Conflicts</h1>
+<p>The Video Graphics Array (VGA) architecture prevents memory conflicts
+with legacy monochrome display adapters at address 0xB0000 through
+dynamic, programmable memory mapping controlled by internal hardware
+registers. By allowing the system to isolate graphics modes to the
+0xA0000 memory range, restrict color text modes to 0xB8000, and
+selectively enable or disable the 0xB0000 region, the VGA standard
+ensures backward compatibility while permitting dual-monitor
+configurations with legacy Monochrome Display Adapter (MDA)
+hardware.</p>
+<p>In the original IBM PC memory architecture, video memory was
+allocated a 128 KB segment ranging from 0xA0000 to 0xBFFFF. This block
+was divided among distinct display standards:</p>
+<ul>
+<li><strong>0xA0000 – 0xAFFFF (64 KB):</strong> Reserved for EGA/VGA
+bitmapped graphics modes.</li>
+<li><strong>0xB0000 – 0xB7FFF (32 KB):</strong> Reserved for monochrome
+text and graphics (MDA and Hercules).</li>
+<li><strong>0xB8000 – 0xBFFFF (32 KB):</strong> Reserved for color text
+and CGA-compatible graphics.</li>
+</ul>
+<p>VGA manages this address space using the <strong>Miscellaneous
+Register</strong> of the Graphics Controller, accessed by writing index
+<code>0x06</code> to port <code>0x3CE</code> and reading or writing data
+through port <code>0x3CF</code>. Bits 3 and 2 of this register configure
+the Memory Map Select, dictating how VGA video RAM is decoded into the
+CPU's memory space:</p>
+<ul>
+<li><strong>Value 00b (128 KB at 0xA0000 – 0xBFFFF):</strong> Direct
+mapping across the entire video window, used in specialized native VGA
+graphics configurations where no legacy display adapters are
+present.</li>
+<li><strong>Value 01b (64 KB at 0xA0000 – 0xAFFFF):</strong> Standard
+VGA graphics modes (such as Mode 12h, 640x480 16-color, or Mode 13h,
+320x200 256-color). The entire <code>0xB0000</code> to
+<code>0xBFFFF</code> block is unmapped by the VGA controller, leaving
+<code>0xB0000</code> accessible to a physical monochrome card.</li>
+<li><strong>Value 10b (32 KB at 0xB0000 – 0xB7FFF):</strong> Dedicated
+monochrome emulation mode. VGA decodes text directly at the MDA address
+space when operating as the primary monochrome display.</li>
+<li><strong>Value 11b (32 KB at 0xB8000 – 0xBFFFF):</strong> Standard
+color text modes (such as 80x25 text Mode 03h). The VGA adapter decodes
+memory exclusively above <code>0xB8000</code>, leaving the lower
+<code>0xB0000 – 0xB7FFF</code> region floating on the bus for legacy
+monochrome hardware.</li>
+</ul>
+<p>Beyond memory address decoding, VGA addresses I/O port conflicts
+using bit 0 of the <strong>Miscellaneous Output Register</strong> (write
+port <code>0x3C2</code>, read port <code>0x3CC</code>). Setting this bit
+to <code>1</code> routes CRT controller registers to color I/O ports
+(<code>0x3D4</code> and <code>0x3D5</code>), while setting it to
+<code>0</code> routes them to monochrome I/O ports (<code>0x3B4</code>
+and <code>0x3B5</code>).</p>
+<p>By pairing I/O address remapping with the 64 KB or color-only 32 KB
+memory map selections, the VGA adapter completely vacates the physical
+<code>0xB0000</code> memory window and the <code>0x3Bx</code> port range
+during normal color operations. This hardware separation allows a VGA
+card and a legacy monochrome card to coexist on the same ISA bus without
+bus contention.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

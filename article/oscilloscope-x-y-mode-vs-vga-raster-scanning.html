@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oscilloscope X-Y Mode vs VGA Raster Scanning - vga</title>
+    <meta name="description" content="This article explores how an oscilloscope operating in X-Y mode generates vector graphics and contrasts this approach with the raster scanning technique used in Video Graphics Array (VGA) displays. While an oscilloscope manipulates an electron beam direc">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/oscilloscope-x-y-mode-vs-vga-raster-scanning">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Oscilloscope X-Y Mode vs VGA Raster Scanning - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/oscilloscope-x-y-mode-vs-vga-raster-scanning" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how an oscilloscope operating in X-Y mode generates vector graphics and contrasts this approach with the raster scanning technique used in Video Graphics Array (VGA) displays. While an oscilloscope manipulates an electron beam direc" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="oscilloscope-x-y-mode-vs-vga-raster-scanning">Oscilloscope X-Y
+Mode vs VGA Raster Scanning</h1>
+<p>This article explores how an oscilloscope operating in X-Y mode
+generates vector graphics and contrasts this approach with the raster
+scanning technique used in Video Graphics Array (VGA) displays. While an
+oscilloscope manipulates an electron beam directly across arbitrary
+geometric coordinates to render continuous lines, VGA uses a rigid,
+grid-based scanning pattern to paint pixels row by row. Understanding
+these differing architectures highlights the mechanical and
+computational trade-offs between point-to-point vector rendering and
+uniform rasterization.</p>
+<h3 id="vector-graphics-via-oscilloscope-x-y-mode">Vector Graphics via
+Oscilloscope X-Y Mode</h3>
+<p>In normal operation, an oscilloscope plots voltage over time along
+the horizontal axis using an internal timebase. In X-Y mode, this
+timebase is disabled, allowing two external voltage signals to control
+the beam’s position directly. Channel 1 (X) controls the horizontal
+electrostatic deflection, while Channel 2 (Y) controls the vertical
+deflection.</p>
+<p>To draw a shape, the source device outputs synchronized analog
+voltages that guide the electron beam along specific paths. For
+instance, generating two 90-degree out-of-phase sine waves causes the
+beam to trace a perfect circle. A third signal, often referred to as the
+Z-axis, can modulate the intensity or blank the beam entirely, allowing
+the beam to move between distinct shapes without leaving a visible
+trace. Because the beam physically draws the shapes as uninterrupted
+lines, vector graphics rendered this way exhibit infinite resolution
+with no pixelation, jaggies, or aliasing.</p>
+<p>However, X-Y vector graphics have distinct limitations:</p>
+<ul>
+<li><strong>Flicker Threshold:</strong> The display must redraw every
+vector repeatedly within the phosphor's persistence window. If an image
+contains too many strokes, the beam cannot revisit points quickly
+enough, causing the image to flicker.</li>
+<li><strong>Rendering Limits:</strong> Solid fills and complex textures
+are extremely difficult to produce, as filling an area requires tight,
+repeated raster-like beam tracing that strains the refresh budget.</li>
+</ul>
+<h3 id="vga-raster-scanning">VGA Raster Scanning</h3>
+<p>VGA operates on an entirely different display philosophy called
+raster scanning. Instead of following the contours of an image, the
+electron beam in a traditional CRT—or the digital scanning logic in
+modern displays—follows a continuous, fixed path. The beam sweeps
+horizontally from left to right, line by line, moving down the screen
+until it reaches the bottom, before resetting to the top during a
+vertical blanking interval.</p>
+<p>To display vector-like shapes, a VGA controller cannot steer the beam
+along the shape's edges. Instead, the graphics pipeline must first
+convert geometric coordinates into a fixed grid of pixels through a
+process known as rasterization. These pixels are stored in a dedicated
+memory buffer (the frame buffer) and read out sequentially in lockstep
+with the electron beam's scan lines.</p>
+<p>Characteristics of raster scanning include:</p>
+<ul>
+<li><strong>Constant Refresh Rate:</strong> The screen refreshes at a
+fixed frequency (such as 60 Hz), completely independent of how many
+objects are on the screen. A blank screen takes the exact same amount of
+beam time to display as a hyper-detailed scene.</li>
+<li><strong>Discretization and Aliasing:</strong> Lines drawn on a
+diagonal must conform to a fixed pixel grid, leading to visible
+stair-stepping artifacts unless anti-aliasing techniques are
+applied.</li>
+<li><strong>Surface Rendering:</strong> Rasterization easily
+accommodates solid colors, complex textures, text, and photographic
+imagery, as filling an area requires simply assigning color values to
+memory addresses.</li>
+</ul>
+<h3 id="core-differences-in-practice">Core Differences in Practice</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Oscilloscope X-Y Mode (Vector)</th>
+<th style="text-align: left;">VGA (Raster)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Beam Trajectory</strong></td>
+<td style="text-align: left;">Arbitrary path dictated by shape
+geometry</td>
+<td style="text-align: left;">Fixed, sequential, top-to-bottom scan
+lines</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Resolution</strong></td>
+<td style="text-align: left;">Continuous analog paths; effectively
+infinite</td>
+<td style="text-align: left;">Discrete pixel grid (e.g., 640×480)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Rendering Bottleneck</strong></td>
+<td style="text-align: left;">Number of lines/vertices (causes
+flicker)</td>
+<td style="text-align: left;">Memory bandwidth and rasterization
+processing</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Color and Fill</strong></td>
+<td style="text-align: left;">Primarily line art; fills are
+inefficient</td>
+<td style="text-align: left;">Arbitrary colors and efficient solid
+polygon fills</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Memory Model</strong></td>
+<td style="text-align: left;">Can be driven directly by analog circuits
+or DACs</td>
+<td style="text-align: left;">Requires a dedicated frame buffer for
+pixel storage</td>
+</tr>
+</tbody>
+</table>
+<p>By directly steering the electron beam, an oscilloscope’s X-Y mode
+replicates early vector display hardware, prioritizing sharp, high-speed
+line drawing. In contrast, VGA's raster scanning trades path-following
+precision for architectural consistency, using a structured pixel grid
+capable of rendering arbitrary, complex visual scenes.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

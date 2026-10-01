@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How the Amiga Copper Was Simulated on PC VGA - vga</title>
+    <meta name="description" content="The Commodore Amiga achieved revolutionary visual effects in the 1980s largely due to the "Copper," a dedicated hardware coprocessor synchronized with the monitor's display beam. While the Amiga manipulated display registers per-scanline with virtually z">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-the-amiga-copper-was-simulated-on-pc-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How the Amiga Copper Was Simulated on PC VGA - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-the-amiga-copper-was-simulated-on-pc-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Commodore Amiga achieved revolutionary visual effects in the 1980s largely due to the "Copper," a dedicated hardware coprocessor synchronized with the monitor's display beam. While the Amiga manipulated display registers per-scanline with virtually z" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-the-amiga-copper-was-simulated-on-pc-vga">How the Amiga
+Copper Was Simulated on PC VGA</h1>
+<p>The Commodore Amiga achieved revolutionary visual effects in the
+1980s largely due to the "Copper," a dedicated hardware coprocessor
+synchronized with the monitor's display beam. While the Amiga
+manipulated display registers per-scanline with virtually zero CPU
+overhead, IBM-compatible PCs equipped with standard Video Graphics Array
+(VGA) hardware lacked any such coprocessor. To replicate Amiga-style
+raster effects, PC demoscene and game developers devised clever software
+techniques that hijacked the PC's central processor to manually "race
+the electron beam" using timing loops and hardware port polling.</p>
+<h3 id="the-amiga-copper-hardware-concept">The Amiga Copper Hardware
+Concept</h3>
+<p>The Copper (short for Coprocessor) was an integral component of the
+Amiga's original custom chipset, housed inside the Agnus chip. It
+functioned as an independent, programmable finite-state machine
+operating in complete lockstep with the video beam tracing across the
+CRT screen.</p>
+<p>The Copper possessed a tiny but powerful instruction set consisting
+primarily of three operations:</p>
+<ul>
+<li><strong>WAIT</strong>: Pauses the Copper until the video beam
+reaches a specific horizontal and vertical beam position on the
+screen.</li>
+<li><strong>MOVE</strong>: Writes a 16-bit value into any hardware
+register within the custom chipset.</li>
+<li><strong>SKIP</strong>: Skips the next instruction if the beam is
+past a specific coordinate.</li>
+</ul>
+<p>Because it operated independently of the main Motorola 68000 CPU, the
+Copper could alter display properties on a scanline-by-scanline basis
+without taxing the system. Its most common applications included
+changing the background color on every scanline to produce smooth
+gradient "copper bars," modifying color palettes mid-frame to display
+hundreds of distinct colors simultaneously, altering screen resolutions
+dynamically, and multiplexing sprites to bypass hardware limits.</p>
+<h3 id="the-architectural-limitations-of-pc-vga">The Architectural
+Limitations of PC VGA</h3>
+<p>When IBM introduced the Video Graphics Array (VGA) standard in 1987,
+it was designed primarily for business applications, text processing,
+and static graphics. Standard VGA featured no dedicated display
+coprocessor, no scanline interrupts, and no hardware mechanism to
+trigger register changes at specific screen coordinates.</p>
+<p>VGA did, however, provide basic status feedback via I/O ports. Most
+notably, reading <strong>Input Status Register 1</strong> (port
+<code>0x3DA</code>) exposed two crucial bits:</p>
+<ul>
+<li><strong>Bit 3 (Vertical Retrace):</strong> Set to 1 when the
+electron beam finishes the frame and moves back to the top of the
+monitor.</li>
+<li><strong>Bit 0 (Display Enable / Horizontal Blanking):</strong>
+Toggled rapidly as the beam moved from the end of one scanline to the
+start of the next.</li>
+</ul>
+<h3 id="simulating-the-copper-in-software-on-vga">Simulating the Copper
+in Software on VGA</h3>
+<p>Without hardware support, PC developers had to simulate the Copper
+entirely in software by dedicating the host x86 CPU to act as a virtual
+Copper. Recreating these effects required strict real-time
+synchronization with the CRT beam:</p>
+<h4 id="1-disabling-interrupts">1. Disabling Interrupts</h4>
+<p>To prevent erratic timing caused by system timers, keyboards, or
+background tasks, programmers executed the <code>CLI</code> (Clear
+Interrupt Flag) assembly instruction. This guaranteed the CPU dedicated
+100% of its execution cycles to tracking the raster beam.</p>
+<h4 id="2-polling-for-synchronization">2. Polling for
+Synchronization</h4>
+<p>The CPU entered a tight loop reading port <code>0x3DA</code> to
+detect the start of the Vertical Blanking Interval (V-Blank). This
+established a reliable starting frame reference point. From there, the
+CPU would poll the Horizontal Blanking (H-Blank) bit to detect the start
+of each individual scanline.</p>
+<h4 id="3-cycle-exact-timing-and-racing-the-beam">3. Cycle-Exact Timing
+and Racing the Beam</h4>
+<p>Polling port <code>0x3DA</code> introduced slight timing jitter due
+to the varying clock cycles of the <code>IN</code> instruction and
+memory buses. Advanced programmers calibrated their code using
+cycle-exact assembly loops, filling execution gaps with precise
+sequences of <code>NOP</code> (No Operation) instructions to keep the
+CPU synchronized to the monitor's refresh frequency.</p>
+<h4 id="4-mid-frame-palette-manipulation">4. Mid-Frame Palette
+Manipulation</h4>
+<p>Once synchronized to the raster line, the CPU acted like the Copper’s
+<code>MOVE</code> command. It wrote directly to the VGA
+Digital-to-Analog Converter (DAC) registers via ports <code>0x3C8</code>
+(Palette Address Write) and <code>0x3C9</code> (Palette Data). By
+updating the color values during the narrow H-Blank window, developers
+produced smooth color gradients and split-palette effects across the
+screen, effectively breaking the standard 256-color limit per
+screen.</p>
+<h3 id="trade-offs-of-the-software-approach">Trade-Offs of the Software
+Approach</h3>
+<p>While software simulation allowed PC games and demos to reproduce
+Amiga-quality raster bars, dynamic sky gradients, and split-screen
+menus, it carried significant drawbacks. On the Amiga, the Copper ran in
+parallel, leaving the CPU free for game physics and AI. On the PC,
+simulating the Copper consumed the entirety of the CPU's processing
+power while active, meaning game logic had to be suspended or tightly
+interleaved between scanline updates. Furthermore, differences in CPU
+clock speeds and bus architectures across PC clones often made these
+effects fragile and prone to graphical tearing or palette corruption if
+execution fell out of step with the display beam.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

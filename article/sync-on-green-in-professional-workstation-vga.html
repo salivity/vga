@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync-on-Green in Professional Workstation VGA - vga</title>
+    <meta name="description" content="Sync-on-green (SoG), often designated as RGsB, was a video signaling method widely utilized by high-end Unix workstations from manufacturers like Sun Microsystems, Silicon Graphics (SGI), Hewlett-Packard, and Digital Equipment Corporation (DEC). This art">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/sync-on-green-in-professional-workstation-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sync-on-Green in Professional Workstation VGA - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/sync-on-green-in-professional-workstation-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Sync-on-green (SoG), often designated as RGsB, was a video signaling method widely utilized by high-end Unix workstations from manufacturers like Sun Microsystems, Silicon Graphics (SGI), Hewlett-Packard, and Digital Equipment Corporation (DEC). This art" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="sync-on-green-in-professional-workstation-vga">Sync-on-Green in
+Professional Workstation VGA</h1>
+<p>Sync-on-green (SoG), often designated as RGsB, was a video signaling
+method widely utilized by high-end Unix workstations from manufacturers
+like Sun Microsystems, Silicon Graphics (SGI), Hewlett-Packard, and
+Digital Equipment Corporation (DEC). This article examines the technical
+implementation of sync-on-green in workstation-class video systems,
+detailing how horizontal and vertical timing signals were combined and
+multiplexed directly onto the green color channel, the electrical
+voltage standards governing the composite waveform, the role of
+specialized RAMDAC hardware, and how receiving displays recovered the
+timing data.</p>
+<h3 id="the-purpose-of-sync-on-green-in-workstations">The Purpose of
+Sync-on-Green in Workstations</h3>
+<p>Standard consumer Video Graphics Array (VGA) interfaces typically
+rely on five distinct coaxial lines (RGBHV): red, green, blue,
+horizontal sync, and vertical sync. In contrast, early professional
+workstations prioritized high-bandwidth video, large CRT displays, and
+heavily shielded multi-coaxial cabling to maintain signal integrity at
+extreme resolutions (such as 1280×1024 or 1600×1200 at high refresh
+rates).</p>
+<p>To reduce cable bulk and eliminate skew between discrete timing lines
+and color signals, workstation vendors opted for three-wire (RGsB)
+transmission. While workstations commonly featured proprietary
+connectors like 13W3 or direct BNC connectors, many also used standard
+DE-15 (VGA) ports wired to output sync-on-green, requiring the display
+to detect and strip sync pulses directly from the green analog
+channel.</p>
+<h3 id="electrical-characteristics-and-signal-structure">Electrical
+Characteristics and Signal Structure</h3>
+<p>In a standard separate-sync RGB configuration, the video channels
+carry analog signals ranging from 0.0 volts (black level) to 0.7 volts
+(peak white) terminated into a 75-ohm impedance, with horizontal and
+vertical sync driven as separate TTL logic levels (0V to 5V).</p>
+<p>Sync-on-green merges these signals by shifting the baseline
+reference:</p>
+<ul>
+<li><strong>Peak White:</strong> +0.7 V above the blanking level.</li>
+<li><strong>Black/Blanking Level:</strong> 0.0 V (the reference baseline
+for video data).</li>
+<li><strong>Sync Tip:</strong> -0.3 V below the blanking level.</li>
+<li><strong>Total Voltage Swing:</strong> 1.0 V peak-to-peak (<span
+class="math inline">\(1.0\text{ V}_{\text{p-p}}\)</span>).</li>
+</ul>
+<p>During the horizontal and vertical blanking intervals, the active
+video output drops to the blanking level (0.0 V). The sync generator
+then pulls the green line down to -0.3 V to generate synchronization
+pulses. Because the sync pulses exist entirely in the negative voltage
+region relative to black, the display's beam-intensity circuitry
+naturally ignores them as "blacker-than-black," preventing sync pulses
+from visibly distorting the raster scan.</p>
+<h3 id="hardware-generation-the-role-of-the-ramdac">Hardware Generation:
+The Role of the RAMDAC</h3>
+<p>Workstation graphics framebuffers (such as SGI's Newport and Impact
+architectures or Sun's TGX and Creator series) relied heavily on
+integrated Random-Access Memory Digital-to-Analog Converters (RAMDACs)
+manufactured by companies like Brooktree (e.g., Bt458, Bt459, Bt478) and
+Inmos.</p>
+<p>The implementation within these systems operated as follows:</p>
+<ol type="1">
+<li><strong>Composite Sync Generation:</strong> The graphics
+controller's timing engine combined separate horizontal sync (HSYNC) and
+vertical sync (VSYNC) into a single composite sync (CSYNC) line using
+digital logic (typically an XOR gate or dedicated state machine to
+handle vertical equalization pulses).</li>
+<li><strong>RAMDAC Sync Control:</strong> The composite sync signal was
+fed into a dedicated <code>SYNC</code> input pin on the RAMDAC.</li>
+<li><strong>Current-Steering DAC Output:</strong> The RAMDAC possessed
+internal 75-ohm current sources for all three color channels, but only
+the green output channel integrated a sync-current generator. When the
+<code>SYNC</code> pin was asserted during blanking intervals, an
+auxiliary internal current sink switched on, drawing the green output
+pin down by an additional 40% of its normal dynamic range (creating the
+-0.3 V pulse).</li>
+<li><strong>Register-Level Activation:</strong> Hardware could
+dynamically enable or disable sync-on-green via internal control
+registers inside the RAMDAC. Setting the appropriate bit directed the
+chip to superimpose CSYNC onto the green output while disabling the
+discrete sync output pins.</li>
+</ol>
+<h3 id="workstation-firmware-and-configuration">Workstation Firmware and
+Configuration</h3>
+<p>In many workstation platforms, the video output mode was configured
+before the operating system loaded. For example, Sun workstations
+managed video configuration through the OpenBoot PROM (OBP). System
+administrators used NVRAM parameters or the <code>setenv</code> command
+to dictate monitor timings and sync behavior:</p>
+<ul>
+<li>Firmware probed the monitor via DDC or vendor-specific sense pins
+(common on 13W3 connectors).</li>
+<li>If a fixed-frequency workstation monitor was detected, the firmware
+initialized the graphics controller to output composite sync on
+green.</li>
+<li>If adapted to a multi-sync PC monitor via an adapter cable, jumpers
+inside the adapter or specific monitor sense pins signaled the
+framebuffer to split sync into standard RGBHV via board-level
+multiplexers, provided the hardware supported it.</li>
+</ul>
+<h3 id="display-side-decoding">Display-Side Decoding</h3>
+<p>Monitors designed for workstation use contained specialized
+sync-stripper circuitry at their input stages. An analog comparator or a
+dedicated sync-separator IC (such as the industry-standard LM1881)
+monitored the green input line:</p>
+<ol type="1">
+<li><strong>DC Restoration/Clamping:</strong> The incoming AC-coupled
+video signal was clamped to establish a stable DC reference at the
+blanking level (0.0 V).</li>
+<li><strong>Level Slicing:</strong> A comparator evaluated the signal
+against a threshold voltage set midway between blanking and the sync tip
+(typically around -0.15 V).</li>
+<li><strong>Pulse Extraction:</strong> Any signal dropping below this
+threshold triggered the comparator, effectively reconstructing the
+digital CSYNC pulse train while routing the pure 0.0V–0.7V color
+information to the green electron gun amplifier.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

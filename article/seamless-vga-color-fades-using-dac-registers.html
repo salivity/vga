@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seamless VGA Color Fades Using DAC Registers - vga</title>
+    <meta name="description" content="Modifying the Video Graphics Array (VGA) Digital-to-Analog Converter (DAC) palette registers strictly during the vertical blanking interval (V-Blank) allows developers to achieve smooth, artifact-free color transitions across the entire screen. By timing">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/seamless-vga-color-fades-using-dac-registers">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Seamless VGA Color Fades Using DAC Registers - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/seamless-vga-color-fades-using-dac-registers" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Modifying the Video Graphics Array (VGA) Digital-to-Analog Converter (DAC) palette registers strictly during the vertical blanking interval (V-Blank) allows developers to achieve smooth, artifact-free color transitions across the entire screen. By timing" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="seamless-vga-color-fades-using-dac-registers">Seamless VGA Color
+Fades Using DAC Registers</h1>
+<p>Modifying the Video Graphics Array (VGA) Digital-to-Analog Converter
+(DAC) palette registers strictly during the vertical blanking interval
+(V-Blank) allows developers to achieve smooth, artifact-free color
+transitions across the entire screen. By timing updates to occur when
+the display hardware is not actively drawing pixels to the monitor,
+software can alter the RGB intensity levels of the palette without
+introducing visual noise, flicker, or horizontal shearing.</p>
+<h3 id="the-role-of-the-vga-palette-and-ramdac">The Role of the VGA
+Palette and RAMDAC</h3>
+<p>In standard 256-color VGA modes (such as Mode 13h), screen memory
+does not store raw RGB values for each pixel. Instead, each byte in
+video memory acts as an index pointing to one of 256 entries inside the
+internal RAMDAC (Random Access Memory Digital-to-Analog Converter).</p>
+<p>Each DAC palette entry holds three color components: red, green, and
+blue. On standard VGA hardware, each component is represented by a 6-bit
+value ranging from 0 to 63, allowing for a total of 262,144 possible
+colors. When software updates these DAC registers—accessed via I/O port
+<code>0x3C8</code> (write index) and <code>0x3C9</code> (data)—any pixel
+on the screen referencing the modified palette index instantly changes
+color on the next scan.</p>
+<h3 id="the-cause-of-video-artifacts-snow-and-tearing">The Cause of
+Video Artifacts ("Snow" and Tearing)</h3>
+<p>During active video display, the RAMDAC continuously reads its
+internal color lookup table at high speeds to generate the analog
+voltages sent to the display. If the CPU attempts to write new color
+values to the DAC registers while this active scanning takes place, bus
+contention occurs.</p>
+<p>On classic hardware, this concurrent access causes two distinct
+problems:</p>
+<ol type="1">
+<li><strong>Snow/Noise</strong>: Read/write collisions inside the RAMDAC
+disrupt the output signal, causing transient, bright speckles to flicker
+across the screen.</li>
+<li><strong>Color Tearing</strong>: If a palette update takes multiple
+CPU cycles and spans across an active frame, the upper half of the
+screen renders with the old palette values, while the lower half renders
+with the new palette values, creating an abrupt horizontal
+discontinuity.</li>
+</ol>
+<h3 id="utilizing-the-vertical-blanking-interval">Utilizing the Vertical
+Blanking Interval</h3>
+<p>To prevent these artifacts, palette updates must be deferred to the
+vertical blanking interval. The vertical blanking interval represents
+the period of time when the display beam reaches the bottom of the
+screen, shuts off its electron guns, and retraces back to the top-left
+corner to begin the next frame.</p>
+<p>During this inactive window, the RAMDAC is idle and does not need to
+look up color values to draw the image. Consequently, the CPU can read
+and write to the DAC registers with zero hardware contention.</p>
+<p>In low-level programming, software synchronizes with this interval by
+polling the VGA Input Status Register 1 (located at I/O port
+<code>0x3DA</code> in color modes):</p>
+<ol type="1">
+<li>Poll bit 3 of port <code>0x3DA</code> until it reads low, confirming
+any ongoing retrace has finished.</li>
+<li>Poll bit 3 until it reads high, signaling the precise start of the
+new vertical retrace.</li>
+<li>Immediately write the updated palette values to ports
+<code>0x3C8</code> and <code>0x3C9</code>.</li>
+</ol>
+<h3 id="executing-the-seamless-fade">Executing the Seamless Fade</h3>
+<p>To execute a fade to black, software maintains a copy of the target
+or original palette in system memory. Over a sequence of frames, an
+algorithm calculates incremental reductions of the 6-bit RGB components
+toward zero:</p>
+<ol type="1">
+<li><strong>Calculate the Step</strong>: For each of the 256 colors,
+decrement the red, green, and blue values by a predetermined step size
+(or interpolate toward zero).</li>
+<li><strong>Wait for V-Blank</strong>: The CPU halts and waits for the
+vertical retrace signal to ensure maximum time availability before the
+beam begins the next active scan line.</li>
+<li><strong>Burst Write the DAC</strong>: The software rapidly streams
+the 768 bytes (256 colors × 3 components) to the DAC data port.</li>
+<li><strong>Frame Delay</strong>: The software yields execution until
+the next frame tick to control the fade speed.</li>
+</ol>
+<p>Because the entire palette update completes while the display is
+blanked, the hardware begins the subsequent frame with the new color
+levels fully established. Every pixel on screen transforms
+simultaneously and uniformly, yielding a perfectly seamless fade
+transition.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

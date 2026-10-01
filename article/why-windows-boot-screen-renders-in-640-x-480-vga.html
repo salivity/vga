@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Windows Boot Screen Renders in 640x480 VGA - vga</title>
+    <meta name="description" content="The Windows operating system renders its boot splash screen in low-resolution Video Graphics Array (VGA) modes, typically 640x480 or 320x200, primarily because full graphics drivers have not yet loaded during the early startup phase. To maintain universa">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-windows-boot-screen-renders-in-640-x-480-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Windows Boot Screen Renders in 640x480 VGA - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-windows-boot-screen-renders-in-640-x-480-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Windows operating system renders its boot splash screen in low-resolution Video Graphics Array (VGA) modes, typically 640x480 or 320x200, primarily because full graphics drivers have not yet loaded during the early startup phase. To maintain universa" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-windows-boot-screen-renders-in-640x480-vga">Why Windows Boot
+Screen Renders in 640x480 VGA</h1>
+<p>The Windows operating system renders its boot splash screen in
+low-resolution Video Graphics Array (VGA) modes, typically 640x480 or
+320x200, primarily because full graphics drivers have not yet loaded
+during the early startup phase. To maintain universal hardware
+compatibility across all computer monitors and graphics cards, the
+Windows bootloader relies on standard legacy firmware protocols rather
+than modern, high-resolution display drivers. This article explains the
+technical reasons behind these low-resolution boot screens, from legacy
+BIOS constraints to fallback driver mechanisms.</p>
+<h3 id="absence-of-gpu-drivers-at-early-boot">Absence of GPU Drivers at
+Early Boot</h3>
+<p>When a computer powers on, the operating system kernel is initialized
+before device-specific drivers are loaded into memory. Dedicated drivers
+for modern graphics processing units (GPUs) from NVIDIA, AMD, or Intel
+reside in the Windows file system and require system services that are
+not yet active during the initial boot sequence. Without these
+proprietary drivers, Windows cannot communicate with the GPU to output
+high refresh rates or native resolutions, forcing it to fall back onto
+minimal, universally recognized display standards.</p>
+<h3 id="the-role-of-bootviddll-and-standard-vga-modes">The Role of
+<code>bootvid.dll</code> and Standard VGA Modes</h3>
+<p>Historically, older versions of Windows (such as Windows 2000, XP,
+and 7) utilized a specialized driver called <code>bootvid.dll</code>
+(Boot Video Driver) to draw the startup animation. This file was
+deliberately hardcoded to operate within standard IBM VGA
+specifications:</p>
+<ul>
+<li><strong>Mode 12h (640x480, 16 colors):</strong> The standard mode
+for Windows startup logos, chosen because every VGA-compatible display
+adapter manufactured since 1987 can display this mode without requiring
+additional software.</li>
+<li><strong>Mode 13h (320x200, 256 colors):</strong> Often utilized by
+early Windows versions (such as Windows 95 and 98) for full-color
+animated splash screens, trading screen resolution for a wider palette
+of colors.</li>
+</ul>
+<p>By adhering to these baseline standards, Microsoft ensured that an
+unbootable system could still render error messages or progress
+indicators on virtually any display.</p>
+<h3 id="legacy-bios-and-int-10h-interrupts">Legacy BIOS and INT 10h
+Interrupts</h3>
+<p>On computers utilizing a traditional Basic Input/Output System
+(BIOS), video output relies on real-mode CPU execution and the video
+BIOS interrupt service (<code>INT 10h</code>). Legacy BIOS services are
+inherently limited in bandwidth and functionality, restricting output to
+standard resolution tables. The Windows Boot Manager uses these basic
+BIOS functions to initialize the display before transitioning the CPU
+into protected mode or long mode.</p>
+<h3 id="modern-systems-and-csmuefi-differences">Modern Systems and
+CSM/UEFI Differences</h3>
+<p>On modern hardware running Windows 8, 10, or 11, the boot sequence
+typically renders at native monitor resolutions using the Unified
+Extensible Firmware Interface (UEFI) and the Graphics Output Protocol
+(GOP). However, the boot splash screen will still drop down to 640x480
+or basic VGA under the following conditions:</p>
+<ul>
+<li><strong>Compatibility Support Module (CSM):</strong> If CSM is
+enabled in the motherboard firmware, the system may boot using legacy
+BIOS emulation instead of pure UEFI, restricting the display to legacy
+VGA modes.</li>
+<li><strong>Missing UEFI GOP Drivers:</strong> If an older graphics card
+lacks a UEFI-compatible GOP vBIOS, the firmware must revert to legacy
+VGA mode to display early boot graphics.</li>
+<li><strong>Display Detection Failure:</strong> If the video card fails
+to read the monitor's Extended Display Identification Data (EDID) over
+the display cable during early Power-On Self-Test (POST), Windows
+defaults to a safe 640x480 resolution to prevent a blank or out-of-range
+screen.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

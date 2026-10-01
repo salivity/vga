@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Dual-Ported VRAM Was More Expensive Than DRAM - vga</title>
+    <meta name="description" content="During the early era of PC graphics accelerators, dual-ported Video RAM (VRAM) commanded a massive price premium over standard dynamic RAM (DRAM). This article examines why dual-ported VRAM was substantially more expensive to produce and purchase for con">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-dual-ported-vram-was-more-expensive-than-dram">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Dual-Ported VRAM Was More Expensive Than DRAM - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-dual-ported-vram-was-more-expensive-than-dram" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="During the early era of PC graphics accelerators, dual-ported Video RAM (VRAM) commanded a massive price premium over standard dynamic RAM (DRAM). This article examines why dual-ported VRAM was substantially more expensive to produce and purchase for con" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-dual-ported-vram-was-more-expensive-than-dram">Why
+Dual-Ported VRAM Was More Expensive Than DRAM</h1>
+<p>During the early era of PC graphics accelerators, dual-ported Video
+RAM (VRAM) commanded a massive price premium over standard dynamic RAM
+(DRAM). This article examines why dual-ported VRAM was substantially
+more expensive to produce and purchase for consumer Video Graphics Array
+(VGA) cards. The primary factors driving these costs included physical
+silicon complexity, decreased manufacturing yields, specialized
+packaging requirements, and a lack of the massive economies of scale
+enjoyed by commodity system memory.</p>
+<h3 id="the-problem-dual-ported-vram-solved">The Problem Dual-Ported
+VRAM Solved</h3>
+<p>Standard DRAM possesses a single access port. In a graphics card,
+this single port created severe memory bus contention: the graphics
+processor needed to write new pixel data to the framebuffer, while the
+card's digital-to-analog converter (RAMDAC) had to continuously read the
+framebuffer to refresh the CRT monitor. Because the RAMDAC required
+uninterrupted access to prevent visual flickering or "snow," the
+graphics processor had to wait during active scan lines, severely
+degrading rendering performance.</p>
+<p>Dual-ported VRAM eliminated this bottleneck by providing two distinct
+access paths to the memory cells:</p>
+<ol type="1">
+<li><strong>A standard parallel port:</strong> Used by the graphics
+processor or CPU to perform random-access reads and writes.</li>
+<li><strong>A serial port (SAM):</strong> A serial access memory
+register that allowed the RAMDAC to read sequential scan-line data
+independently and simultaneously without blocking the main
+processor.</li>
+</ol>
+<h3 id="increased-silicon-die-size-and-transistor-count">Increased
+Silicon Die Size and Transistor Count</h3>
+<p>The fundamental reason for VRAM's high cost was its physical
+construction. Standard DRAM cells are remarkably simple, typically
+relying on a single transistor and a single capacitor (1T1C) per
+bit.</p>
+<p>To enable dual-port functionality, VRAM integrated an on-chip shift
+register directly into each memory array. Adding this Serial Access
+Memory (SAM), along with the internal multiplexers, control logic, and
+secondary data routing necessary to transfer an entire row of memory to
+the shift register in a single cycle, significantly increased the total
+transistor count. As a result, a VRAM chip required a much larger
+physical silicon die area to store the same capacity (such as 1 MB) as a
+standard DRAM chip.</p>
+<h3 id="lower-manufacturing-yields">Lower Manufacturing Yields</h3>
+<p>In semiconductor manufacturing, manufacturing cost is inversely
+proportional to yield. Silicon wafers have a relatively fixed defect
+density per square inch. Because VRAM dies were substantially larger
+than equivalent-capacity DRAM dies:</p>
+<ul>
+<li>Fewer chips could physically fit onto a single silicon wafer.</li>
+<li>Any given defect on a wafer was more likely to ruin a larger VRAM
+die than a smaller DRAM die.</li>
+</ul>
+<p>This combination caused manufacturing yields for VRAM to be
+significantly lower than those for conventional DRAM, driving the
+effective production cost per working chip much higher.</p>
+<h3 id="pin-count-and-packaging-costs">Pin Count and Packaging
+Costs</h3>
+<p>Dual ports required additional physical pins to route the secondary
+serial interface. Standard DRAM chips of the late 1980s and early 1990s
+utilized compact packages with relatively low pin counts (such as 16-pin
+or 20-pin DIP or SOJ packages).</p>
+<p>In contrast, VRAM required wider packages with higher pin counts
+(often 28-pin to 44-pin ZIP, SOJ, or QFP packages) to support the
+dedicated serial address, clock, and data pins. These larger packages
+cost more to produce and required larger, more complex printed circuit
+boards (PCBs) with additional routing traces on the graphics card
+itself.</p>
+<h3 id="lack-of-economies-of-scale">Lack of Economies of Scale</h3>
+<p>Commodity DRAM was the universal standard for system memory across
+every PC, server, and workstation produced worldwide, generating massive
+global demand and continuous production optimization.</p>
+<p>VRAM, by contrast, was a specialized component utilized almost
+exclusively in high-end graphics adapters and professional workstations.
+Without the astronomical production volumes of standard system memory,
+manufacturers could not amortize their research, development, and
+tooling costs as effectively, leaving VRAM trapped as an expensive,
+niche luxury on the consumer market.</p>
+<h3 id="the-eventual-demise-of-dual-ported-vram">The Eventual Demise of
+Dual-Ported VRAM</h3>
+<p>Dual-ported VRAM was rendered obsolete in the late 1990s by the
+arrival of Synchronous DRAM (SDRAM) and Synchronous Graphics RAM
+(SGRAM), along with wider memory buses. By operating at significantly
+higher clock frequencies, single-ported synchronous memory provided
+enough raw bandwidth to service both the RAMDAC display refresh and the
+GPU's rendering pipeline simultaneously, entirely eliminating the need
+for expensive dual-port silicon architectures.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

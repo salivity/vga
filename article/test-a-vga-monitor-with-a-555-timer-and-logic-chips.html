@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test a VGA Monitor with a 555 Timer and Logic Chips - vga</title>
+    <meta name="description" content="This article explains how to build a hardware-based Video Graphics Array (VGA) signal generator using 555 timers and standard digital logic integrated circuits (ICs). By generating standard horizontal and vertical synchronization pulses alongside basic c">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/test-a-vga-monitor-with-a-555-timer-and-logic-chips">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Test a VGA Monitor with a 555 Timer and Logic Chips - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/test-a-vga-monitor-with-a-555-timer-and-logic-chips" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how to build a hardware-based Video Graphics Array (VGA) signal generator using 555 timers and standard digital logic integrated circuits (ICs). By generating standard horizontal and vertical synchronization pulses alongside basic c" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="test-a-vga-monitor-with-a-555-timer-and-logic-chips">Test a VGA
+Monitor with a 555 Timer and Logic Chips</h1>
+<p>This article explains how to build a hardware-based Video Graphics
+Array (VGA) signal generator using 555 timers and standard digital logic
+integrated circuits (ICs). By generating standard horizontal and
+vertical synchronization pulses alongside basic color signals, an
+electronics hobbyist can test the functionality of a VGA monitor without
+needing a microcontroller, FPGA, or computer.</p>
+<h2 id="understanding-basic-vga-timing">Understanding Basic VGA
+Timing</h2>
+<p>VGA monitors require five active signals to display an image:
+Horizontal Sync (HSync), Vertical Sync (VSync), Red, Green, and Blue
+video lines.</p>
+<p>For the standard 640x480 resolution at a 60 Hz refresh rate:</p>
+<ul>
+<li><strong>HSync Frequency:</strong> Approximately 31.468 kHz
+(active-low pulse lasting roughly 3.8 µs).</li>
+<li><strong>VSync Frequency:</strong> Approximately 59.94 Hz (active-low
+pulse lasting roughly 64 µs).</li>
+<li><strong>RGB Signals:</strong> Analog voltages ranging from 0.0V
+(black) to 0.7V (maximum brightness) terminated into 75-ohm loads.</li>
+</ul>
+<p>If the monitor detects valid HSync and VSync timings, it wakes from
+standby mode and displays whatever information is present on the RGB
+lines.</p>
+<h2 id="required-components">Required Components</h2>
+<ul>
+<li>2 × 555 Timers (or one 556 dual timer)</li>
+<li>1 × 74HC04 (Hex Inverter) or 74HC14 (Hex Schmitt-Trigger
+Inverter)</li>
+<li>1 × 74HC161 or CD4017 (Counter IC for generating
+stripes/patterns)</li>
+<li>Potentiometers: 10 kΩ and 100 kΩ for fine frequency tuning</li>
+<li>Capacitors: Ceramic (1 nF, 10 nF) and electrolytic (1 µF, 10
+µF)</li>
+<li>Resistors: Assortment for timing networks, pull-ups, and RGB
+attenuation (e.g., 390 Ω and 100 Ω)</li>
+<li>Female DE-15 (VGA) connector</li>
+<li>5V DC power supply</li>
+</ul>
+<h2 id="step-1-generating-the-sync-pulses">Step 1: Generating the Sync
+Pulses</h2>
+<h3 id="horizontal-synchronization-315-khz">Horizontal Synchronization
+(31.5 kHz)</h3>
+<p>Configure the first 555 timer as an astable multivibrator designed to
+run at 31.5 kHz.</p>
+<ol type="1">
+<li>Use a timing capacitor around 1 nF on Pin 2/6.</li>
+<li>Use a diode across the timing resistor (<span
+class="math inline">\(R_2\)</span>) to achieve a narrow duty cycle, or
+use an inverter gate (74HC04) after the output (Pin 3) to produce the
+required active-low pulse duration of approximately 3.8 µs.</li>
+<li>Place a multi-turn potentiometer in the charging path to tune the
+frequency until it falls cleanly into the 31.5 kHz range.</li>
+</ol>
+<h3 id="vertical-synchronization-60-hz">Vertical Synchronization (60
+Hz)</h3>
+<p>Configure the second 555 timer as an astable multivibrator tuned to
+60 Hz.</p>
+<ol type="1">
+<li>Use a timing capacitor around 100 nF to 1 µF on Pin 2/6.</li>
+<li>Configure the duty cycle to output a brief pulse lasting roughly 64
+µs to 100 µs.</li>
+<li>Add a potentiometer to allow fine adjustment around 59 to 60
+Hz.</li>
+<li>Pass the output through an inverter if an active-low pulse is
+required by your monitor configuration.</li>
+</ol>
+<h2 id="step-2-generating-video-patterns">Step 2: Generating Video
+Patterns</h2>
+<p>To confirm the display can render colors, you need to drive the color
+lines during the visible portion of the scan line:</p>
+<ol type="1">
+<li><strong>Solid Color Screen:</strong> Connect a constant high logic
+level (5V) through a voltage divider (such as a 390 Ω series resistor)
+to the Red, Green, or Blue pins. When loaded by the monitor's internal
+75 Ω termination, the voltage drops to approximately 0.7V.</li>
+<li><strong>Vertical Bars:</strong> Clock a counter IC (like a 74HC161
+or CD4017) using an amplified harmonic or a third high-frequency
+oscillator (e.g., a 1 MHz to 25 MHz oscillator). Connect individual
+output bits to the Red, Green, and Blue lines via 390 Ω resistors. The
+counter increments rapidly across each horizontal line, creating
+vertical color bars.</li>
+</ol>
+<h2 id="step-3-vga-pin-connections">Step 3: VGA Pin Connections</h2>
+<p>Wire the circuit outputs to a female DE-15 port as follows:</p>
+<ul>
+<li><strong>Pin 1 (Red):</strong> Pattern output / 0.7V divider</li>
+<li><strong>Pin 2 (Green):</strong> Pattern output / 0.7V divider</li>
+<li><strong>Pin 3 (Blue):</strong> Pattern output / 0.7V divider</li>
+<li><strong>Pin 5 (Ground):</strong> Common circuit ground</li>
+<li><strong>Pins 6, 7, 8 (Color Grounds):</strong> Common circuit
+ground</li>
+<li><strong>Pin 10 (Sync Ground):</strong> Common circuit ground</li>
+<li><strong>Pin 13 (HSync):</strong> Output of the 31.5 kHz circuit</li>
+<li><strong>Pin 14 (VSync):</strong> Output of the 60 Hz circuit</li>
+</ul>
+<h2 id="step-4-calibration-and-testing">Step 4: Calibration and
+Testing</h2>
+<ol type="1">
+<li>Connect the DE-15 output to the VGA monitor.</li>
+<li>Power the circuit with a stable 5V supply.</li>
+<li>If the monitor indicates "No Signal" or stays in standby, use an
+oscilloscope or frequency counter to check Pins 13 and 14. Adjust the
+potentiometers until HSync reads 31.5 kHz and VSync reads 60 Hz.</li>
+<li>Once the frequencies are inside the monitor's capture range, the
+screen will activate and show the generated color field or vertical
+stripes, verifying that the display's deflection circuits, power supply,
+and color channels are operational.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

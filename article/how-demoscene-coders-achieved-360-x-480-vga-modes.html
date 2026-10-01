@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Demoscene Coders Achieved 360x480 VGA Modes - vga</title>
+    <meta name="description" content="This article explores how early PC demoscene programmers manipulated IBM VGA hardware registers to bypass standard BIOS video limits and generate non-standard 360x480 resolution modes in 256 colors. By selecting alternative master dot clocks, disabling m">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-demoscene-coders-achieved-360-x-480-vga-modes">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Demoscene Coders Achieved 360x480 VGA Modes - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-demoscene-coders-achieved-360-x-480-vga-modes" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how early PC demoscene programmers manipulated IBM VGA hardware registers to bypass standard BIOS video limits and generate non-standard 360x480 resolution modes in 256 colors. By selecting alternative master dot clocks, disabling m" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-demoscene-coders-achieved-360x480-vga-modes">How Demoscene
+Coders Achieved 360x480 VGA Modes</h1>
+<p>This article explores how early PC demoscene programmers manipulated
+IBM VGA hardware registers to bypass standard BIOS video limits and
+generate non-standard 360x480 resolution modes in 256 colors. By
+selecting alternative master dot clocks, disabling memory chaining, and
+reprogramming the Cathode Ray Tube Controller (CRTC), coders pushed
+standard cathode-ray monitors beyond their documented specifications
+without exceeding the monitor's analog scanning limits.</p>
+<h3 id="exploiting-the-28-mhz-dot-clock">Exploiting the 28 MHz Dot
+Clock</h3>
+<p>The IBM Video Graphics Array (VGA) chipset featured two master
+hardware crystal oscillators: 25.175 MHz and 28.322 MHz. Standard
+320-pixel graphics modes (such as BIOS Mode 13h) and 640-pixel modes
+(Mode 12h) relied on the 25 MHz clock. The 28 MHz clock was normally
+reserved for 80-column text mode (720x400), where each character cell
+spanned 9 dots across rather than 8.</p>
+<p>Demoscene coders accessed the faster 28.322 MHz oscillator by writing
+directly to the Miscellaneous Output Register at I/O port
+<code>0x3C2</code>. Setting the clock selection bits from
+<code>00</code> (25 MHz) to <code>01</code> (28 MHz) forced the graphics
+pipeline to pump pixels out at the higher frequency. Because the
+horizontal scan rate of a VGA monitor is fixed near 31.5 kHz, increasing
+the pixel clock allowed 360 visible pixels to fit into a single
+horizontal scanline rather than the default 320, all without driving the
+monitor outside of its safe sync window.</p>
+<h3 id="unchaining-vga-memory">Unchaining VGA Memory</h3>
+<p>Standard Mode 13h used a hardware feature called "Chain-4," which
+mapped consecutive bytes to four interleaved internal 64 KB memory
+planes. While Chain-4 simplified programming by providing a linear
+memory layout, it restricted the programmer to 64 KB of accessible
+display memory, making a 360x480 frame buffer impossible since a single
+256-color screen at that resolution requires 172,800 bytes.</p>
+<p>To accommodate this data, coders unchained the video memory—a
+technique popularized in custom "Mode X" implementations:</p>
+<ol type="1">
+<li>They accessed the Sequencer Register (<code>0x3C4</code>) and set
+the Memory Mode Register (index <code>0x04</code>) bit 3 to zero,
+disabling Chain-4.</li>
+<li>They reconfigured the Graphics Controller (<code>0x3CE</code>) Read
+and Write Modes to planar access.</li>
+<li>They unlocked full access to all 256 KB of VGA RAM.</li>
+</ol>
+<p>In this unchained planar setup, four sequential horizontal pixels
+were split across four separate memory planes at the same memory
+address. Writing a full 360x480 image required programmers to select
+planes using the Map Mask register (<code>0x3C4</code>, index
+<code>0x02</code>), distributing the 172,800 bytes across the available
+262,144 bytes of video RAM with memory to spare for page flipping.</p>
+<h3 id="reprogramming-the-crtc-for-480-scanlines">Reprogramming the CRTC
+for 480 Scanlines</h3>
+<p>To achieve 480 vertical lines, coders bypassed the default
+scan-doubling mechanics used by 200-line modes. In 320x200 modes, the
+VGA hardware draws each scanline twice to fill out a 400-line field.
+Demoscene developers disabled this behavior:</p>
+<ol type="1">
+<li><strong>Unlock CRTC Registers:</strong> Bit 7 of the Vertical Sync
+End register (index <code>0x11</code> on port <code>0x3D4</code>) was
+cleared to enable write access to the write-protected timing
+registers.</li>
+<li><strong>Disable Scan Doubling:</strong> The Maximum Scan Line
+register (index <code>0x09</code>) had its cell-height bits cleared to
+0, configuring the display to single-scan mode so every hardware
+scanline displayed unique pixel data.</li>
+<li><strong>Set Display Timings:</strong> The Vertical Total, Vertical
+Retrace Start/End, and Vertical Display End registers were reconfigured
+to match the 480-line active display timings used by standard 640x480 60
+Hz modes (Mode 12h).</li>
+</ol>
+<h3 id="achieving-square-pixels-and-stability">Achieving Square Pixels
+and Stability</h3>
+<p>Combining a 360-pixel horizontal clock with a 480-line single-scan
+vertical refresh created an exact 3:4 pixel ratio on a standard 4:3 CRT
+monitor. This gave developers perfectly square pixels—a massive
+advantage over the stretched pixels of Mode 13h (320x200), eliminating
+distortion when rendering 3D transformations, vector shapes, and
+circular graphics.</p>
+<p>Because the timing signals precisely mimicked standard 31.5 kHz
+horizontal and 60 Hz vertical sync conventions, the hardware
+modification was completely invisible to the CRT monitor itself. The
+monitor continued operating within standard electrical parameters while
+the VGA card generated a richer, sharper 256-color image than standard
+PC BIOS routines ever officially supported.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Copper Style Raster Bars on VGA Hardware - vga</title>
+    <meta name="description" content="Copper-style color raster chasing—commonly known as "raster bars"—is a visual demoscene technique where the screen background or border dynamically shifts colors scanline by scanline to create glowing, undulating horizontal bands. Originating on the">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/programming-copper-style-raster-bars-on-vga-hardware">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Programming Copper Style Raster Bars on VGA Hardware - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/programming-copper-style-raster-bars-on-vga-hardware" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Copper-style color raster chasing—commonly known as "raster bars"—is a visual demoscene technique where the screen background or border dynamically shifts colors scanline by scanline to create glowing, undulating horizontal bands. Originating on the" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="programming-copper-style-raster-bars-on-vga-hardware">Programming
+Copper Style Raster Bars on VGA Hardware</h1>
+<p>Copper-style color raster chasing—commonly known as "raster bars"—is
+a visual demoscene technique where the screen background or border
+dynamically shifts colors scanline by scanline to create glowing,
+undulating horizontal bands. Originating on the Commodore Amiga via its
+dedicated "Copper" coprocessor, the effect had to be entirely reinvented
+on IBM PC Video Graphics Array (VGA) hardware. Because standard VGA
+lacked a dedicated display-synchronized coprocessor, PC programmers had
+to force the central CPU to "race the beam" by continuously monitoring
+the cathode-ray tube (CRT) electron gun's position and rewriting the
+hardware digital-to-analog converter (DAC) palette registers during
+horizontal blanking intervals.</p>
+<h3 id="the-origin-and-the-vga-limitation">The Origin and the VGA
+Limitation</h3>
+<p>On the Amiga, the Copper chip executed instructions synchronized
+directly with the video beam, freeing the Motorola 68000 CPU entirely
+while changing hardware color registers line by line. Standard IBM VGA
+hardware provided no such automation. The VGA card operated essentially
+as a dumb framebuffer paired with an Inmos-compatible palette DAC. To
+alter colors on a per-scanline basis, the PC’s CPU had to execute
+tightly timed I/O port writes synchronized to the monitor's horizontal
+sweep.</p>
+<h3 id="the-mechanism-of-raster-chasing">The Mechanism of Raster
+Chasing</h3>
+<p>Cathode-ray monitors construct images sequentially from left to
+right, line by line from top to bottom. Between each visible line lies a
+brief duration called the Horizontal Blanking Interval (HBlank), where
+the beam shuts off and returns to the left side of the screen. If a
+programmer changes the color palette precisely during this blanking
+window, the next drawn scanline will render in the updated color without
+visual tearing or graphical distortion ("snow"). By continuously
+shifting color assignments down the screen across subsequent scanlines,
+a solid color background appears split into smooth, scrolling
+gradients.</p>
+<h3 id="hardware-registers-involved">Hardware Registers Involved</h3>
+<p>Implementing this effect on VGA hardware requires interacting with
+two primary hardware sub-systems using x86 assembly I/O instructions
+(<code>IN</code> and <code>OUT</code>):</p>
+<ol type="1">
+<li><p><strong>Input Status Register 1 (Port
+<code>0x3DA</code>):</strong> This read-only port provides the current
+state of the video beam. Bit 0 indicates Display Inactive/HBlank when
+set to <code>1</code> (or actively drawing when <code>0</code>). Bit 3
+indicates the Vertical Retrace (VBlank) state, which marks the
+completion of an entire screen frame.</p></li>
+<li><p><strong>DAC Palette Address Register (Port <code>0x3C8</code>)
+and Data Register (Port <code>0x3C9</code>):</strong> Port
+<code>0x3C8</code> receives the palette index to be modified (commonly
+index <code>0</code>, the default overscan/background color). Once
+selected, three consecutive 6-bit values representing Red, Green, and
+Blue (ranging from 0 to 63) are sent sequentially to port
+<code>0x3C9</code>. The internal address pointer automatically
+auto-increments after the third write.</p></li>
+</ol>
+<h3 id="the-implementation-pipeline">The Implementation Pipeline</h3>
+<p>The implementation relies on an exact polling loop executed entirely
+in x86 assembly:</p>
+<ol type="1">
+<li><strong>Disable Interrupts:</strong> The CPU executes
+<code>CLI</code> (Clear Interrupt Flag). If a timer tick or hardware
+interrupt fires during the raster loop, the timing drifts, resulting in
+severe visual jitter.</li>
+<li><strong>Synchronize with Vertical Retrace:</strong> The CPU polls
+port <code>0x3DA</code>, waiting for bit 3 to turn low (if already in
+retrace) and then high. This establishes a fixed anchor point at the top
+of the frame.</li>
+<li><strong>Wait for Scanline Boundary:</strong> The program enters an
+inner loop reading port <code>0x3DA</code>:
+<ul>
+<li>Wait until bit 0 is <code>0</code> (ensure the beam is currently
+drawing pixels, avoiding a mid-blank sync error).</li>
+<li>Wait until bit 0 flips to <code>1</code> (the exact start of the
+HBlank interval).</li>
+</ul></li>
+<li><strong>Update the Palette:</strong> As soon as HBlank is asserted,
+the CPU immediately outputs the target palette index to port
+<code>0x3C8</code> (if not already set) and writes the new Red, Green,
+and Blue values to port <code>0x3C9</code> using the <code>OUT</code>
+instruction.</li>
+<li><strong>Cycle Padding and Repeat:</strong> Because the HBlank window
+is only a few microseconds wide, the writes must finish before the beam
+begins the next active scanline. The CPU reads the next set of RGB
+colors from a precomputed lookup table, repeats the cycle for all
+remaining visible scanlines, and then re-enables interrupts via
+<code>STI</code> once the bottom of the screen is reached.</li>
+</ol>
+<h3 id="technical-challenges">Technical Challenges</h3>
+<p>The fundamental challenge on VGA hardware was CPU starvation. While
+the Amiga handled this in background silicon, a PC running copper bars
+devoted nearly 100% of its CPU cycles to polling I/O ports. Variations
+in motherboard bus speeds, wait states during port I/O, and CPU clock
+speeds often required developers to carefully count CPU cycles or
+calibrate the polling loops dynamically to prevent visual shearing
+across different IBM PC compatibles.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

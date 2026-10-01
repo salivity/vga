@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Determines High-Speed RAMDAC Slew Rate? - vga</title>
+    <meta name="description" content="The slew rate of a high-speed Video Graphics Array (VGA) Random Access Memory Digital-to-Analog Converter (RAMDAC) dictates how rapidly the analog video output can transition between discrete voltage levels, directly impacting display sharpness and maxim">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/what-determines-high-speed-ramdac-slew-rate">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Determines High-Speed RAMDAC Slew Rate? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/what-determines-high-speed-ramdac-slew-rate" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The slew rate of a high-speed Video Graphics Array (VGA) Random Access Memory Digital-to-Analog Converter (RAMDAC) dictates how rapidly the analog video output can transition between discrete voltage levels, directly impacting display sharpness and maxim" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-determines-high-speed-ramdac-slew-rate">What Determines
+High-Speed RAMDAC Slew Rate?</h1>
+<p>The slew rate of a high-speed Video Graphics Array (VGA) Random
+Access Memory Digital-to-Analog Converter (RAMDAC) dictates how rapidly
+the analog video output can transition between discrete voltage levels,
+directly impacting display sharpness and maximum pixel clock
+frequencies. This article examines the primary electrical parameters
+that govern this transition speed, focusing on the interplay between the
+internal output drive current, the external load capacitance, and system
+impedance.</p>
+<p>In high-speed VGA RAMDACs, the architecture relies almost universally
+on current-steering digital-to-analog converter (DAC) designs. Because
+these devices source or sink current rather than driving a raw voltage,
+the primary electrical parameter determining the slew rate (<span
+class="math inline">\(dV/dt\)</span>) is the full-scale output drive
+current (<span class="math inline">\(I_{out}\)</span>) relative to the
+total load capacitance (<span class="math inline">\(C_L\)</span>).
+According to fundamental circuit dynamics, the maximum rate of voltage
+change across a capacitive load is defined by the relationship:</p>
+<p><span class="math display">\[\frac{dV}{dt} =
+\frac{I_{out}}{C_L}\]</span></p>
+<p>While output current sets the ceiling for charge transfer, the total
+load capacitance (<span class="math inline">\(C_L\)</span>) is the
+critical limiting parameter. This capacitance is a composite value
+comprising the RAMDAC's internal output pin parasitic capacitance,
+printed circuit board (PCB) trace capacitance, ESD protection diode
+capacitance, and the input capacitance of the connected video monitor or
+receiver. A higher capacitance demands more charge to alter the voltage,
+directly degrading the slew rate if the current remains fixed.</p>
+<p>The effective load resistance (<span
+class="math inline">\(R_L\)</span>) also shapes the voltage transition.
+VGA video standards mandate a doubly-terminated transmission line system
+where the RAMDAC drives a <span
+class="math inline">\(75\,\Omega\)</span> trace terminated at both the
+source and the display receiver, resulting in an effective parallel load
+resistance of <span class="math inline">\(37.5\,\Omega\)</span>.
+Consequently, the output response behaves as a first-order RC network
+with a time constant:</p>
+<p><span class="math display">\[\tau = R_L \times C_L\]</span></p>
+<p>In addition to external load factors, the internal switching speed of
+the steering transistors (transconductance, <span
+class="math inline">\(g_m\)</span>) sets an upper physical boundary. If
+the internal current switches switch slower than the external RC time
+constant allows, the internal switch transition time becomes the
+dominant factor determining the edge rate of the analog output
+signal.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Over Cat5 Color Skew and Twist Rates - vga</title>
+    <meta name="description" content="Transmitting analog Video Graphics Array (VGA) signals over standard Category 5 (Cat5) twisted-pair cable often produces visible color separation, an artifact commonly referred to as "skew." This problem occurs because each twisted pair inside a Cat5 cab">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-over-cat-5-color-skew-and-twist-rates">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Over Cat5 Color Skew and Twist Rates - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-over-cat-5-color-skew-and-twist-rates" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Transmitting analog Video Graphics Array (VGA) signals over standard Category 5 (Cat5) twisted-pair cable often produces visible color separation, an artifact commonly referred to as "skew." This problem occurs because each twisted pair inside a Cat5 cab" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-over-cat5-color-skew-and-twist-rates">VGA Over Cat5 Color
+Skew and Twist Rates</h1>
+<p>Transmitting analog Video Graphics Array (VGA) signals over standard
+Category 5 (Cat5) twisted-pair cable often produces visible color
+separation, an artifact commonly referred to as "skew." This problem
+occurs because each twisted pair inside a Cat5 cable is engineered with
+a different twist rate to prevent internal crosstalk. This article
+explains the relationship between twist pitch, physical conductor
+length, propagation delay, and how these factors misalign the red,
+green, and blue color channels on a display.</p>
+<h3 id="the-engineering-purpose-of-differing-twist-rates">The
+Engineering Purpose of Differing Twist Rates</h3>
+<p>Cat5 cable contains four balanced twisted pairs. If two adjacent
+pairs share the exact same twist pitch (the number of twists per inch or
+meter), their electrical conductors remain parallel over long distances.
+This causes capacitive and inductive coupling, known as crosstalk, which
+corrupts the data being transmitted. To prevent this interference,
+manufacturers intentionally wind each of the four pairs at a slightly
+different twist rate.</p>
+<h3 id="how-twist-pitch-changes-physical-conductor-length">How Twist
+Pitch Changes Physical Conductor Length</h3>
+<p>Because each pair is twisted at a unique rate, the physical length of
+the copper wire within each pair is not equal, even though the outer
+jacket of the cable measures the same length. A pair with a tight twist
+rate requires significantly more physical copper wire to traverse a
+100-foot run of cable than a pair with a loose twist rate. Consequently,
+while the cable jacket may measure 100 feet from end to end, the
+internal copper conductors can differ in physical length by several
+feet.</p>
+<h3 id="propagation-delay-across-color-channels">Propagation Delay
+Across Color Channels</h3>
+<p>In a standard VGA-over-Cat5 passive or active transmission setup, the
+Red, Green, and Blue (RGB) analog video signals are mapped to separate
+twisted pairs:</p>
+<ul>
+<li>Pair 1 might carry the Red signal.</li>
+<li>Pair 2 might carry the Green signal.</li>
+<li>Pair 3 might carry the Blue signal.</li>
+</ul>
+<p>Electrical signals travel through copper at a specific nominal
+velocity of propagation (NVP), typically around 65% to 70% of the speed
+of light. Because the NVP is roughly identical for all conductors, a
+signal traveling on a longer conductor takes more time to reach the
+destination than a signal traveling on a shorter conductor.</p>
+<p>For every foot of additional wire length caused by a tighter twist
+pitch, the signal is delayed by roughly 1.5 nanoseconds. Over typical
+transmission distances (100 to 300 feet), this propagation
+differential—or pair-to-pair skew—can easily reach 20 to 50 nanoseconds
+between the fastest and slowest pairs.</p>
+<h3 id="manifestation-as-color-separation-on-the-display">Manifestation
+as Color Separation on the Display</h3>
+<p>VGA is an analog raster format. An electron gun or digital timing
+controller paints the display line by line, moving rapidly from left to
+right. Because the display scans horizontally at high frequencies, time
+directly translates to horizontal position on the screen:</p>
+<ol type="1">
+<li><strong>Simultaneous Transmission:</strong> The video source sends
+the red, green, and blue components of a pixel at the exact same
+moment.</li>
+<li><strong>Delayed Arrival:</strong> The loosely twisted pair delivers
+its color signal to the monitor first. The tightly twisted pair delivers
+its color signal a few nanoseconds later.</li>
+<li><strong>Spatial Misalignment:</strong> By the time the delayed color
+signal arrives, the monitor’s scanning beam has already moved further
+along the horizontal line.</li>
+</ol>
+<p>This delay causes the delayed color channel to be drawn several
+pixels to the right of the earlier arriving channels. High-contrast
+edges, such as black text on a white background, clearly reveal this
+separation: one side of the text displays a noticeable red outline,
+while the opposite side displays a cyan, green, or blue shadow.</p>
+<h3 id="solutions-to-skew-delay">Solutions to Skew Delay</h3>
+<p>Color separation can be eliminated either by using "low-skew" Cat5
+cable—where all pairs are twisted at identical or nearly identical rates
+at the expense of higher crosstalk—or by installing an active receiver
+with skew-compensation capabilities. Skew compensators add variable
+electronic delay lines to the faster-arriving color channels, aligning
+all three signals in time before they are rendered on the screen.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

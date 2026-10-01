@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aspect Ratio of 320x200 Graphics on 4:3 VGA - vga</title>
+    <meta name="description" content="This article breaks down the mathematical relationship between the classic 320x200 resolution and a standard 4:3 Video Graphics Array (VGA) display. While a 320x200 pixel grid natively forms a 16:10 image, vintage cathode-ray tube (CRT) monitors physical">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/aspect-ratio-of-320-x-200-graphics-on-4-3-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Aspect Ratio of 320x200 Graphics on 4:3 VGA - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/aspect-ratio-of-320-x-200-graphics-on-4-3-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article breaks down the mathematical relationship between the classic 320x200 resolution and a standard 4:3 Video Graphics Array (VGA) display. While a 320x200 pixel grid natively forms a 16:10 image, vintage cathode-ray tube (CRT) monitors physical" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="aspect-ratio-of-320x200-graphics-on-43-vga">Aspect Ratio of
+320x200 Graphics on 4:3 VGA</h1>
+<p>This article breaks down the mathematical relationship between the
+classic 320x200 resolution and a standard 4:3 Video Graphics Array (VGA)
+display. While a 320x200 pixel grid natively forms a 16:10 image,
+vintage cathode-ray tube (CRT) monitors physically stretched this signal
+to fill a 4:3 screen. Understanding this transformation requires
+distinguishing between the storage aspect ratio, the display aspect
+ratio, and the resulting non-square pixel aspect ratio.</p>
+<h3 id="storage-aspect-ratio-sar">Storage Aspect Ratio (SAR)</h3>
+<p>The native resolution of 320x200 graphics represents the storage
+aspect ratio, which is the raw count of horizontal pixels relative to
+vertical pixels:</p>
+<p><span class="math display">\[\text{SAR} = \frac{320}{200} =
+\frac{16}{10} = 1.6:1\]</span></p>
+<p>If these pixels were mapped to square units (a 1:1 pixel aspect
+ratio), the resulting picture would produce a widescreen 16:10
+format.</p>
+<h3 id="display-aspect-ratio-dar">Display Aspect Ratio (DAR)</h3>
+<p>When output over standard VGA hardware (such as Mode 13h), the analog
+CRT monitor does not display the image at 16:10. Instead, the monitor's
+electron beam scans across the full physical frame, forcing the image
+into the hardware's native display aspect ratio:</p>
+<p><span class="math display">\[\text{DAR} = \frac{4}{3} \approx
+1.333:1\]</span></p>
+<p>The physical picture on the screen is strictly 4:3.</p>
+<h3 id="pixel-aspect-ratio-par">Pixel Aspect Ratio (PAR)</h3>
+<p>Because a 16:10 digital buffer is compressed horizontally into a 4:3
+physical area, the individual pixels cannot be square. The mathematical
+pixel aspect ratio (PAR) determines the width-to-height ratio of a
+single pixel:</p>
+<p><span class="math display">\[\text{PAR} =
+\frac{\text{DAR}}{\text{SAR}} = \frac{4/3}{16/10} = \frac{4}{3} \times
+\frac{10}{16} = \frac{40}{48} = \frac{5}{6}\]</span></p>
+<p>Expressed as a decimal, the horizontal-to-vertical pixel ratio is
+approximately <span class="math inline">\(0.8333:1\)</span>.</p>
+<p>Inverting this ratio (<span
+class="math inline">\(\frac{6}{5}\)</span>) reveals that each pixel is
+stretched vertically by a factor of 1.2. Consequently, graphics rendered
+in 320x200 on a 4:3 display appear 20% taller than their raw pixel
+dimensions would suggest.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

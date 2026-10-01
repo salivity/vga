@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Scaling for 320x200 VGA to 4K Displays - vga</title>
+    <meta name="description" content="Displaying legacy 320x200 Video Graphics Array (VGA) content on modern 3840x2160 (4K) monitors requires specialized hardware to bridge the massive gap in resolution, refresh rates, and signal types. Because 320x200 (commonly Mode 13h) relies on non-squar">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/hardware-scaling-for-320-x-200-vga-to-4-k-displays">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Hardware Scaling for 320x200 VGA to 4K Displays - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/hardware-scaling-for-320-x-200-vga-to-4-k-displays" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Displaying legacy 320x200 Video Graphics Array (VGA) content on modern 3840x2160 (4K) monitors requires specialized hardware to bridge the massive gap in resolution, refresh rates, and signal types. Because 320x200 (commonly Mode 13h) relies on non-squar" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="hardware-scaling-for-320x200-vga-to-4k-displays">Hardware
+Scaling for 320x200 VGA to 4K Displays</h1>
+<p>Displaying legacy 320x200 Video Graphics Array (VGA) content on
+modern 3840x2160 (4K) monitors requires specialized hardware to bridge
+the massive gap in resolution, refresh rates, and signal types. Because
+320x200 (commonly Mode 13h) relies on non-square pixels designed to fill
+a 4:3 CRT display, simply sending the signal to a modern monitor results
+in blurry bilinear interpolation, incorrect aspect ratios, or complete
+signal rejection. This article outlines the primary hardware scaling
+solutions capable of converting and upscaling 320x200 analog signals to
+clean, sharp 4K outputs.</p>
+<h3 id="dedicated-retro-video-processors-fpga-upscalers">Dedicated Retro
+Video Processors (FPGA Upscalers)</h3>
+<p>The most effective modern solution for scaling legacy PC signals to
+4K is an FPGA-based video processor.</p>
+<ul>
+<li><strong>RetroTINK-4K:</strong> Currently the benchmark for
+legacy-to-4K scaling. It accepts 15kHz and 31kHz analog RGB/VGA signals
+directly and outputs up to 3840x2160 at 60Hz. It features custom
+pixel-clock sampling to capture the exact 320x200 active area without
+jitter. It supports both integer scaling (such as a clean 9x or 10x
+vertical scale) and polyphase scaling to correctly stretch the 16:10
+native resolution into the intended 4:3 display aspect ratio. It also
+provides advanced CRT mask and scanline emulation directly at 4K.</li>
+<li><strong>Pixel FX Morph 4K:</strong> Another FPGA-based multi-format
+scaler capable of accepting analog video signals via modular inputs and
+outputting native 4K. Like the RetroTINK-4K, it bypasses the monitor's
+internal scaler to provide low-latency integer scaling, motion-adaptive
+deinterlacing (if needed), and precise aspect-ratio correction.</li>
+</ul>
+<h3 id="two-stage-scaling-line-doublers--4k-scalers">Two-Stage Scaling
+(Line Doublers + 4K Scalers)</h3>
+<p>For setups using older line doublers that do not output native 4K, a
+two-stage hardware pipeline can be implemented:</p>
+<ol type="1">
+<li><strong>Stage One (Digitization and Stabilization):</strong> Devices
+such as the Open Source Scan Converter (OSSC) or GBS-Control take the
+analog 320x200 VGA signal and apply line-doubling or line-tripling
+(e.g., up to 480p, 960p, or 1200p) via HDMI.</li>
+<li><strong>Stage Two (4K Upscaling):</strong> An intermediate
+commercial upscaler or an mClassic processing dongle scales that digital
+signal to 4K. Alternatively, the digitized signal can be passed directly
+to a 4K display that features robust internal handling of standard
+progressive resolutions.</li>
+</ol>
+<h3 id="commercial-and-broadcast-presentation-scalers">Commercial and
+Broadcast Presentation Scalers</h3>
+<p>Professional-grade audiovisual equipment from manufacturers such as
+Extron, Crestron, and Kramer offers another hardware pathway:</p>
+<ul>
+<li><strong>Extron DTP/IN Series (e.g., IN1608 4K):</strong> These
+presentation matrix switchers feature dedicated analog VGA inputs and
+proprietary scaling engines (such as Extron Vector 4K). They instantly
+lock onto non-standard or variable refresh rates common in vintage DOS
+gaming.</li>
+<li><strong>Trade-offs:</strong> Broadcast scalers are optimized for
+motion smoothing and video presentation rather than sharp, pixelated
+reproduction. They typically utilize high-order edge-adaptive or bicubic
+interpolation rather than nearest-neighbor integer scaling, resulting in
+a cleaner image than a typical monitor scaler, but a softer look
+compared to FPGA retro upscalers.</li>
+</ul>
+<h3 id="monitor-level-hardware-scaling">Monitor-Level Hardware
+Scaling</h3>
+<p>A minority of 4K computer monitors contain internal scaling hardware
+capable of properly handling legacy signals:</p>
+<ul>
+<li><strong>Integrated Integer Scaling:</strong> Certain modern 4K
+gaming displays feature a selectable "1:1" or "Integer" scaling mode in
+their internal on-screen display (OSD).</li>
+<li><strong>Signal Bottlenecks:</strong> Almost no 4K monitor contains a
+native analog VGA port. To use the monitor’s internal scaling hardware,
+the 320x200 signal must first pass through a transparent
+analog-to-digital converter (ADC) that converts RGBHV to HDMI without
+altering the resolution. Furthermore, many monitors refuse to sync to
+320x200 (treated by VGA standards as a 70Hz 400-line signal with doubled
+scanlines) over digital connections.</li>
+</ul>
+<h3 id="aspect-ratio-and-resolution-constraints">Aspect Ratio and
+Resolution Constraints</h3>
+<p>When selecting hardware to scale 320x200 to 3840x2160, the hardware
+must resolve the pixel aspect ratio:</p>
+<ul>
+<li><strong>1:1 Pixel Mapping (16:10):</strong> Direct integer scaling
+scales 320 horizontally by 10 (3200 pixels) and 200 vertically by 10
+(2000 pixels). This produces a sharp, centered image within the
+3840x2160 frame but leaves the image slightly squashed compared to how
+it appeared on period-accurate CRTs.</li>
+<li><strong>Aspect-Corrected Mapping (4:3):</strong> True hardware
+solutions scale the horizontal axis to approximately 2880 pixels while
+scaling the vertical to 2160 pixels. Hardware upscalers with fractional
+interpolation filters maintain consistent pixel width across the screen
+to eliminate "shimmering" artifacts during horizontal scrolling.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

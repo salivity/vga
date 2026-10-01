@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Passive VGA Splitters Impact Brightness and Impedance - vga</title>
+    <meta name="description" content="A passive Video Graphics Array (VGA) splitter duplicates an analog video signal from a single source to multiple displays without an external power source or active signal amplification. While convenient and inexpensive, passive splitting forces an analo">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-passive-vga-splitters-impact-brightness-and-impedance">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Passive VGA Splitters Impact Brightness and Impedance - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-passive-vga-splitters-impact-brightness-and-impedance" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="A passive Video Graphics Array (VGA) splitter duplicates an analog video signal from a single source to multiple displays without an external power source or active signal amplification. While convenient and inexpensive, passive splitting forces an analo" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-passive-vga-splitters-impact-brightness-and-impedance">How
+Passive VGA Splitters Impact Brightness and Impedance</h1>
+<p>A passive Video Graphics Array (VGA) splitter duplicates an analog
+video signal from a single source to multiple displays without an
+external power source or active signal amplification. While convenient
+and inexpensive, passive splitting forces an analog transmission line to
+drive multiple loads simultaneously. This article explains how passive
+splitters degrade image quality by disrupting the standard 75-ohm
+impedance matching and causing severe signal attenuation, which leads to
+noticeable drops in display brightness and visual artifacts such as
+ghosting.</p>
+<h3 id="the-role-of-impedance-matching-in-vga">The Role of Impedance
+Matching in VGA</h3>
+<p>VGA is an analog video standard designed around a characteristic
+transmission line impedance of 75 ohms (<span
+class="math inline">\(\Omega\)</span>). In a properly configured
+system:</p>
+<ul>
+<li>The graphics card (source) has an output impedance of 75 <span
+class="math inline">\(\Omega\)</span>.</li>
+<li>The coaxial transmission cable has a characteristic impedance of 75
+<span class="math inline">\(\Omega\)</span>.</li>
+<li>The monitor (load) provides a 75 <span
+class="math inline">\(\Omega\)</span> resistive termination to ground
+for each color channel (Red, Green, and Blue).</li>
+</ul>
+<p>When the source, cable, and load impedances match, the maximum
+possible power is transferred from the source to the monitor, and signal
+reflections along the cable are eliminated.</p>
+<h3 id="impedance-disruption-caused-by-passive-splitters">Impedance
+Disruption Caused by Passive Splitters</h3>
+<p>A passive VGA splitter is simply a physical "Y-cable" that wires two
+monitor inputs directly in parallel to a single source output.</p>
+<p>When two 75 <span class="math inline">\(\Omega\)</span> displays are
+connected in parallel, the effective load impedance (<span
+class="math inline">\(R_{total}\)</span>) drops according to the
+parallel resistance formula:</p>
+<p><span class="math display">\[R_{total} = \frac{R_1 \times R_2}{R_1 +
+R_2} = \frac{75 \times 75}{75 + 75} = 37.5\ \Omega\]</span></p>
+<p>This drop to 37.5 <span class="math inline">\(\Omega\)</span> creates
+a severe impedance mismatch between the 75 <span
+class="math inline">\(\Omega\)</span> source and the combined load:</p>
+<ol type="1">
+<li><strong>Signal Reflections:</strong> Because the termination
+impedance no longer matches the 75 <span
+class="math inline">\(\Omega\)</span> characteristic impedance of the
+cable, high-frequency video signals reflect backward toward the
+source.</li>
+<li><strong>Ghosting and Ringing:</strong> These reflected signals
+bounce between the source and the monitors, arriving with a slight delay
+relative to the primary signal. On screen, this manifests as double
+images, halos, or horizontal smearing (known as ringing or ghosting),
+particularly along sharp vertical edges.</li>
+</ol>
+<h3 id="impact-on-display-brightness">Impact on Display Brightness</h3>
+<p>VGA relies on an analog voltage range to communicate color intensity.
+By specification, the RGB color channels use a 0.0V to 0.7V peak-to-peak
+signal:</p>
+<ul>
+<li><strong>0.0V</strong> represents total black.</li>
+<li><strong>0.7V</strong> represents full brightness (100% saturation or
+pure white).</li>
+</ul>
+<p>The graphics card generates this signal using an internal
+Digital-to-Analog Converter (DAC) that operates through a 75 <span
+class="math inline">\(\Omega\)</span> internal source resistance. In a
+standard setup with a single 75 <span
+class="math inline">\(\Omega\)</span> display, a simple voltage divider
+forms:</p>
+<p><span class="math display">\[V_{load} = V_{source} \times \frac{75\
+\Omega}{75\ \Omega + 75\ \Omega} = 0.5 \times V_{source}\]</span></p>
+<p>The DAC outputs 1.4V internally so that exactly 0.7V appears across
+the standard 75 <span class="math inline">\(\Omega\)</span> monitor
+load.</p>
+<p>When a passive splitter halves the load impedance to 37.5 <span
+class="math inline">\(\Omega\)</span>, the voltage division changes:</p>
+<p><span class="math display">\[V_{load} = 1.4\text{ V} \times
+\frac{37.5\ \Omega}{75\ \Omega + 37.5\ \Omega} = 1.4\text{ V} \times
+\frac{37.5}{112.5} \approx 0.467\text{ V}\]</span></p>
+<p>Because the peak voltage drops from the nominal 0.7V to approximately
+0.47V:</p>
+<ul>
+<li>The monitor cannot display pure white. Full-intensity pixels only
+achieve about two-thirds of their intended brightness.</li>
+<li>The overall image appears dim, washed out, and flat.</li>
+<li>Color contrast and dynamic range are compressed, making dark scenes
+muddy and indistinct.</li>
+</ul>
+<h3 id="additional-side-effects">Additional Side Effects</h3>
+<ul>
+<li><strong>Loss of High-Frequency Detail:</strong> The reduced
+impedance and increased stray capacitance from the split cable act as a
+low-pass filter, rounding off high-frequency transitions and causing
+soft, blurry text at higher resolutions (such as 1080p).</li>
+<li><strong>DDC and EDID Failures:</strong> VGA uses Display Data
+Channel (DDC) pins to communicate the monitor's Extended Display
+Identification Data (EDID) to the host PC. Passive splitters often leave
+these data lines tied together or only connected to one branch,
+resulting in incorrect resolution detection, blinking screens, or
+unsupported refresh rates on one or both monitors.</li>
+</ul>
+<h3 id="the-solution-active-distribution-amplifiers">The Solution:
+Active Distribution Amplifiers</h3>
+<p>To drive multiple VGA displays without compromising brightness or
+signal integrity, an active distribution amplifier (powered VGA
+splitter) is required. An active splitter provides an individual 75
+<span class="math inline">\(\Omega\)</span> termination buffer for each
+output, isolating the displays, preventing reflections, and maintaining
+the full 0.7V peak-to-peak signal level across every connected
+monitor.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

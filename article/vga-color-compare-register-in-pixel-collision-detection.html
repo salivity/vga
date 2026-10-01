@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Color Compare Register in Pixel Collision Detection - vga</title>
+    <meta name="description" content="This article examines how classic PC game developers utilized the Video Graphics Array (VGA) hardware Color Compare register to accelerate pixel-level collision detection. By offloading complex multi-plane bitwise evaluations directly to the VGA Graphics">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-color-compare-register-in-pixel-collision-detection">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Color Compare Register in Pixel Collision Detection - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-color-compare-register-in-pixel-collision-detection" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines how classic PC game developers utilized the Video Graphics Array (VGA) hardware Color Compare register to accelerate pixel-level collision detection. By offloading complex multi-plane bitwise evaluations directly to the VGA Graphics" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-color-compare-register-in-pixel-collision-detection">VGA
+Color Compare Register in Pixel Collision Detection</h1>
+<p>This article examines how classic PC game developers utilized the
+Video Graphics Array (VGA) hardware Color Compare register to accelerate
+pixel-level collision detection. By offloading complex multi-plane
+bitwise evaluations directly to the VGA Graphics Controller, games
+running on resource-constrained CPUs could detect boundary hits and
+object overlaps in a fraction of the standard processing time.</p>
+<h3 id="the-challenge-of-planar-memory">The Challenge of Planar
+Memory</h3>
+<p>In standard planar VGA display modes (such as 640x480 16-color Mode
+12h or unchained 256-color Mode X), pixel data is distributed across
+four distinct memory planes rather than stored contiguously. Determining
+the color of a single pixel using standard operations requires reading
+each of the four planes sequentially, latching the data, and
+reconstructing the color index using CPU-intensive bit-shifting and
+masking routines. In fast-paced games where dozens of bounding boxes or
+complex sprite masks must be verified every frame, performing
+software-based pixel checks quickly saturates the CPU bus.</p>
+<h3 id="the-role-of-read-mode-1">The Role of Read Mode 1</h3>
+<p>The VGA Graphics Controller provides specialized hardware read modes
+to mitigate this bottleneck. While Read Mode 0 performs standard byte
+reads, Read Mode 1 transforms screen reads into automated parallel
+comparisons.</p>
+<p>To use this feature, the game programmer configures two specific
+registers in the VGA Graphics Controller:</p>
+<ol type="1">
+<li><strong>Color Compare Register (Index 02h):</strong> Holds the
+specific color index (0–15 in 16-color modes) being tested, such as the
+color of a solid wall, obstacle, or transparent background.</li>
+<li><strong>Color Don't Care Register (Index 07h):</strong> Designates
+which bitplanes should be included in or excluded from the
+comparison.</li>
+</ol>
+<h3 id="hardware-accelerated-bitmask-generation">Hardware-Accelerated
+Bitmask Generation</h3>
+<p>When the CPU reads a single byte from display memory while in Read
+Mode 1, the VGA hardware executes a comparison across all four internal
+latches simultaneously. For each of the eight horizontal pixels
+represented by the memory address, the hardware checks if the pixel's
+color matches the value in the Color Compare register.</p>
+<p>Instead of returning pixel data, the read operation returns a single
+8-bit byte directly to the CPU:</p>
+<ul>
+<li>A bit is set to <code>1</code> if the corresponding pixel matches
+the Color Compare register.</li>
+<li>A bit is set to <code>0</code> if the pixel does not match.</li>
+</ul>
+<h3 id="implementing-rapid-collision-detection">Implementing Rapid
+Collision Detection</h3>
+<p>This hardware mechanism drastically simplifies collision routines. To
+check if a moving entity collides with a background obstacle:</p>
+<ol type="1">
+<li>The developer sets the Color Compare register to the color value
+assigned to impenetrable terrain.</li>
+<li>The controller is placed into Read Mode 1.</li>
+<li>The CPU reads the display memory addresses corresponding to the
+bounding box of the entity. Each read immediately yields an 8-pixel
+collision mask generated by the VGA silicon.</li>
+<li>The CPU performs a single bitwise <code>AND</code> operation between
+the returned byte and the entity's own 1-bit transparency or collision
+mask.</li>
+<li>If the result is non-zero, a pixel-perfect collision has
+occurred.</li>
+</ol>
+<p>By eliminating the need to manually extract individual plane bits,
+the Color Compare register compresses dozens of CPU instructions into a
+single memory read and a single logical operation, enabling smooth,
+pixel-accurate collision detection on vintage hardware.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

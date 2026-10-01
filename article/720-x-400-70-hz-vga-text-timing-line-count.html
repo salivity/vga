@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>720x400 70Hz VGA Text Timing Line Count - vga</title>
+    <meta name="description" content="In standard 720x400 @ 70Hz Video Graphics Array (VGA) text mode, the total horizontal line count per frame is 449 lines. While the active display region uses 400 visible scanlines, the full frame includes an additional 49 blanking lines composed of front">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/720-x-400-70-hz-vga-text-timing-line-count">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="720x400 70Hz VGA Text Timing Line Count - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/720-x-400-70-hz-vga-text-timing-line-count" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In standard 720x400 @ 70Hz Video Graphics Array (VGA) text mode, the total horizontal line count per frame is 449 lines. While the active display region uses 400 visible scanlines, the full frame includes an additional 49 blanking lines composed of front" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="720x400-70hz-vga-text-timing-line-count">720x400 70Hz VGA Text
+Timing Line Count</h1>
+<p>In standard 720x400 @ 70Hz Video Graphics Array (VGA) text mode, the
+total horizontal line count per frame is <strong>449 lines</strong>.
+While the active display region uses 400 visible scanlines, the full
+frame includes an additional 49 blanking lines composed of front porch,
+vertical synchronization, and back porch intervals to maintain a stable
+70.087 Hz refresh rate.</p>
+<h2 id="vertical-timing-breakdown">Vertical Timing Breakdown</h2>
+<p>The vertical frame structure defines the total number of horizontal
+scanlines drawn from top to bottom during each complete screen
+refresh:</p>
+<ul>
+<li><strong>Active Display:</strong> 400 lines (visible text area)</li>
+<li><strong>Vertical Front Porch:</strong> 12 lines</li>
+<li><strong>Vertical Sync Pulse:</strong> 2 lines</li>
+<li><strong>Vertical Back Porch:</strong> 35 lines</li>
+<li><strong>Total Vertical Lines:</strong> <strong>449
+lines</strong></li>
+</ul>
+<h2 id="timing-verification-and-calculation">Timing Verification and
+Calculation</h2>
+<p>VGA 720x400 text mode operates using a standard <strong>28.322
+MHz</strong> pixel clock (master dot clock):</p>
+<ol type="1">
+<li><strong>Horizontal Scanline Width:</strong> Each scanline consists
+of 720 active pixels, an 18-pixel front porch, a 108-pixel horizontal
+sync, and a 54-pixel back porch, totaling <strong>900 pixels</strong>
+per line.</li>
+<li><strong>Horizontal Line Frequency:</strong> Dividing the 28.322 MHz
+dot clock by the 900-pixel total line width yields a horizontal
+frequency of <strong>31.469 kHz</strong>.</li>
+<li><strong>Vertical Refresh Rate:</strong> Dividing the 31.469 kHz
+horizontal frequency by the <strong>449 total horizontal lines</strong>
+results in a vertical refresh rate of approximately <strong>70.087
+Hz</strong>.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

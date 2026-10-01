@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uncompressed 640x480 60Hz 24-Bit VGA Data Rate - vga</title>
+    <meta name="description" content="This article breaks down the mathematical calculation required to determine the exact bandwidth and data rate for streaming raw, uncompressed 640x480 video at 60 frames per second with a 24-bit color depth. By analyzing the pixel count, color depth per p">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/uncompressed-640-x-480-60-hz-24-bit-vga-data-rate">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Uncompressed 640x480 60Hz 24-Bit VGA Data Rate - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/uncompressed-640-x-480-60-hz-24-bit-vga-data-rate" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article breaks down the mathematical calculation required to determine the exact bandwidth and data rate for streaming raw, uncompressed 640x480 video at 60 frames per second with a 24-bit color depth. By analyzing the pixel count, color depth per p" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="uncompressed-640x480-60hz-24-bit-vga-data-rate">Uncompressed
+640x480 60Hz 24-Bit VGA Data Rate</h1>
+<p>This article breaks down the mathematical calculation required to
+determine the exact bandwidth and data rate for streaming raw,
+uncompressed 640x480 video at 60 frames per second with a 24-bit color
+depth. By analyzing the pixel count, color depth per pixel, and refresh
+rate, you will find the total active payload transfer rate expressed in
+megabytes per second using standard decimal and binary notations, as
+well as the transmission rate required when accounting for standard
+video timing signals.</p>
+<h3 id="step-by-step-calculation-for-active-video-data">Step-by-Step
+Calculation for Active Video Data</h3>
+<p>To find the raw payload data rate for the visible portion of the
+screen, multiply the screen resolution, color depth, and refresh
+rate:</p>
+<ol type="1">
+<li><p><strong>Calculate Total Pixels per Frame:</strong> <span
+class="math display">\[640 \text{ (horizontal)} \times 480 \text{
+(vertical)} = 307,200 \text{ pixels per frame}\]</span></p></li>
+<li><p><strong>Calculate Bytes per Frame:</strong> A 24-bit color depth
+(TrueColor) uses 8 bits per channel (Red, Green, Blue), which equals 3
+bytes per pixel: <span class="math display">\[307,200 \text{ pixels}
+\times 3 \text{ bytes} = 921,600 \text{ bytes per
+frame}\]</span></p></li>
+<li><p><strong>Calculate Total Bytes per Second:</strong> Multiply the
+bytes per frame by the 60 Hz refresh rate (60 frames per second): <span
+class="math display">\[921,600 \text{ bytes/frame} \times 60 \text{
+frames/second} = 55,296,000 \text{ bytes per second}\]</span></p></li>
+</ol>
+<h3 id="final-data-rate-in-megabytes-per-second">Final Data Rate in
+Megabytes per Second</h3>
+<p>Depending on the measurement standard applied, the total active data
+rate is:</p>
+<ul>
+<li><p><strong>Decimal Megabytes (MB/s):</strong> Using the standard SI
+system (<span class="math inline">\(1 \text{ MB} = 1,000,000 \text{
+bytes}\)</span>): <span class="math display">\[\frac{55,296,000 \text{
+bytes/s}}{1,000,000} = \mathbf{55.296 \text{ MB/s}}\]</span></p></li>
+<li><p><strong>Binary Mebibytes (MiB/s):</strong> Using the IEC binary
+system (<span class="math inline">\(1 \text{ MiB} = 1,048,576 \text{
+bytes}\)</span>): <span class="math display">\[\frac{55,296,000 \text{
+bytes/s}}{1,048,576} \approx \mathbf{52.73 \text{
+MiB/s}}\]</span></p></li>
+</ul>
+<p>In terms of raw network and bus transmission speed, this equates to
+<strong>442.368 Megabits per second (Mbps)</strong>.</p>
+<h3 id="total-transmission-rate-with-blanking-intervals">Total
+Transmission Rate with Blanking Intervals</h3>
+<p>When transmitted across a physical display interface (such as analog
+VGA or DVI/HDMI), the signal includes horizontal and vertical blanking
+intervals (front porch, sync pulse, and back porch).</p>
+<p>Standard 640x480 @ 60Hz video timing requires a total frame dimension
+of 800 horizontal pixels by 525 vertical lines with a pixel clock
+frequency of <strong>25.175 MHz</strong>:</p>
+<ul>
+<li><span class="math inline">\(25,175,000 \text{ pixels/s} \times 3
+\text{ bytes/pixel} = 75,525,000 \text{ bytes per second}\)</span></li>
+<li><strong>Total Interface Data Rate:</strong> <strong>75.525
+MB/s</strong> (or ~72.03 MiB/s / 604.2 Mbps)</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

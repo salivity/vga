@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why IBM VGA Switches Monochrome and Color Registers - vga</title>
+    <meta name="description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987, it implemented hardware register switching between monochrome and color modes to maintain strict backward compatibility with legacy display hardware. Early PC software frequently bypass">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-ibm-vga-switches-monochrome-and-color-registers">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why IBM VGA Switches Monochrome and Color Registers - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-ibm-vga-switches-monochrome-and-color-registers" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987, it implemented hardware register switching between monochrome and color modes to maintain strict backward compatibility with legacy display hardware. Early PC software frequently bypass" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-ibm-vga-switches-monochrome-and-color-registers">Why IBM VGA
+Switches Monochrome and Color Registers</h1>
+<p>When IBM introduced the Video Graphics Array (VGA) standard in 1987,
+it implemented hardware register switching between monochrome and color
+modes to maintain strict backward compatibility with legacy display
+hardware. Early PC software frequently bypassed the system BIOS to write
+directly to display hardware, relying on specific Input/Output (I/O)
+port addresses and video memory locations established by the Monochrome
+Display Adapter (MDA) and Color Graphics Adapter (CGA). By allowing the
+VGA chip to switch its register base addresses between monochrome and
+color assignments, IBM ensured that legacy applications continued to
+function without modification while still supporting advanced graphics
+and potential multi-monitor configurations.</p>
+<h3 id="legacy-io-port-division">Legacy I/O Port Division</h3>
+<p>In the original IBM PC architecture, the MDA and CGA cards were
+designed to coexist in the same machine without hardware conflicts. To
+achieve this, IBM allocated different memory spaces and I/O ports to
+each standard:</p>
+<ul>
+<li><strong>Monochrome (MDA):</strong> Mapped display RAM to memory
+address <code>0xB0000</code>–<code>0xB7FFF</code> and mapped its
+Motorola 6845 Cathode Ray Tube Controller (CRTC) index and data
+registers to I/O ports <code>0x3B4</code> and <code>0x3B5</code>. Its
+status register resided at <code>0x3BA</code>.</li>
+<li><strong>Color (CGA):</strong> Mapped display RAM to memory address
+<code>0xB8000</code>–<code>0xBFFFF</code> and mapped its CRTC index and
+data registers to I/O ports <code>0x3D4</code> and <code>0x3D5</code>.
+Its status register resided at <code>0x3DA</code>.</li>
+</ul>
+<p>Because the 8088 processor was relatively slow, software developers
+of performance-critical applications—such as spreadsheets, word
+processors, and games—routinely bypassed slow BIOS calls. Instead, they
+hardcoded reads and writes directly to these specific I/O ports and
+memory addresses to manipulate text modes, cursor positions, and raster
+timings.</p>
+<h3 id="the-problem-facing-vga">The Problem Facing VGA</h3>
+<p>When developing the VGA standard for the IBM PS/2 line, IBM engineers
+needed a single graphics subsystem capable of displaying both legacy
+text modes and advanced all-points-addressable color graphics. If VGA
+had permanently bound its CRTC registers to the color addresses
+(<code>0x3D4</code>/<code>0x3D5</code>), legacy software explicitly
+written for MDA hardware would fail, as those programs would attempt to
+communicate only through port <code>0x3B4</code>. Conversely, hardcoding
+the registers to monochrome addresses would break software written for
+CGA and the Enhanced Graphics Adapter (EGA).</p>
+<h3 id="the-implementation-dynamic-register-relocation">The
+Implementation: Dynamic Register Relocation</h3>
+<p>IBM resolved this conflict by introducing a hardware-level
+multiplexing mechanism controlled by the <strong>Miscellaneous Output
+Register</strong> (written at I/O port <code>0x3C2</code> and read at
+<code>0x3CC</code>).</p>
+<p>Bit 0 of this register, known as the <strong>I/O Address Select
+bit</strong>, directly controls the base address mapping for the VGA CRT
+Controller and the Input Status Register 1:</p>
+<ul>
+<li><strong>Bit 0 = 0 (Monochrome Mode):</strong> The CRTC index and
+data registers are mapped to <code>0x3B4</code> and <code>0x3B5</code>,
+and Input Status Register 1 is mapped to <code>0x3BA</code>. The frame
+buffer is restricted to the monochrome range starting at
+<code>0xB0000</code>.</li>
+<li><strong>Bit 0 = 1 (Color Mode):</strong> The CRTC registers are
+mapped to <code>0x3D4</code> and <code>0x3D5</code>, and Input Status
+Register 1 is mapped to <code>0x3DA</code>. The frame buffer utilizes
+the color space starting at <code>0xB8000</code> (or
+<code>0xA0000</code> for graphics modes).</li>
+</ul>
+<p>Whenever software requested a video mode change through the VGA BIOS
+(interrupt <code>INT 10h</code>), the BIOS programmed Bit 0 of the
+Miscellaneous Output Register according to whether the requested mode
+was monochrome (such as Mode 07h) or color (such as Modes 03h, 0Dh, or
+12h).</p>
+<h3 id="multi-monitor-compatibility-and-debugging">Multi-Monitor
+Compatibility and Debugging</h3>
+<p>Beyond software compatibility, this register switching supported
+dual-adapter configurations. Because IBM VGA hardware could vacate the
+monochrome I/O ports and memory address space entirely when operating in
+color mode, users could install a secondary physical MDA or Hercules
+monochrome card alongside a VGA card.</p>
+<p>Programmers widely used this setup for debugging: a debugger
+interface like Borland Turbo Debugger ran on the monochrome monitor
+connected to <code>0x3B4</code>/<code>0xB0000</code>, while the primary
+application executed on the color VGA monitor connected to
+<code>0x3D4</code>/<code>0xB8000</code>. If VGA had occupied both
+address ranges simultaneously, the resulting bus contention would have
+made hardware-level dual-screen debugging impossible.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

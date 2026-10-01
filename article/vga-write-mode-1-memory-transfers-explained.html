@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Write Mode 1 Memory Transfers Explained - vga</title>
+    <meta name="description" content="VGA Write Mode 1 is a specialized hardware-level data transfer mechanism designed to copy planar video memory directly to another memory location without CPU intervention. By utilizing the Video Graphics Array's four internal 8-bit latches, Write Mode 1">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-write-mode-1-memory-transfers-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Write Mode 1 Memory Transfers Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-write-mode-1-memory-transfers-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="VGA Write Mode 1 is a specialized hardware-level data transfer mechanism designed to copy planar video memory directly to another memory location without CPU intervention. By utilizing the Video Graphics Array's four internal 8-bit latches, Write Mode 1" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-write-mode-1-memory-transfers-explained">VGA Write Mode 1
+Memory Transfers Explained</h1>
+<p>VGA Write Mode 1 is a specialized hardware-level data transfer
+mechanism designed to copy planar video memory directly to another
+memory location without CPU intervention. By utilizing the Video
+Graphics Array's four internal 8-bit latches, Write Mode 1 allows an
+application to read 32 bits of planar data (8 bits across 4 memory
+planes) and write that exact 32-bit slice to a new address using
+standard 8-bit read and write CPU instructions. This bypasses the
+standard processing pipeline, enabling exceptionally fast block-copy
+operations, such as scrolling and sprite blitting, on legacy
+hardware.</p>
+<h2 id="the-architecture-of-vga-planar-memory">The Architecture of VGA
+Planar Memory</h2>
+<p>In standard 16-color graphics modes (such as Mode 12h, 640x480), VGA
+organizes video memory into four distinct memory planes (Planes 0, 1, 2,
+and 3). Each pixel's color is formed by taking one bit from each of the
+four planes at a given address, creating a 4-bit color index.</p>
+<p>Because the standard PC system bus interacts with memory in
+byte-sized chunks, a standard CPU write cannot alter all four planes
+simultaneously with unique data in a single cycle. To facilitate
+operations across all four planes, the VGA Graphics Controller
+incorporates four internal 8-bit latches, providing a temporary 32-bit
+holding buffer directly on the graphics hardware.</p>
+<h2 id="populating-the-internal-latches">Populating the Internal
+Latches</h2>
+<p>The transfer process in Write Mode 1 begins with a standard CPU read
+cycle:</p>
+<ol type="1">
+<li>The CPU initiates a read operation from a specific video memory
+address.</li>
+<li>Regardless of which plane is designated for the CPU's read data
+(configured via the Read Map Select register), the VGA hardware
+automatically loads the data bytes from <strong>all four planes</strong>
+at that specific address into the four internal latches
+simultaneously.</li>
+<li>The latches now hold a full 32-bit snapshot of that memory
+coordinate (8 bits for Plane 0, 8 bits for Plane 1, 8 bits for Plane 2,
+and 8 bits for Plane 3).</li>
+</ol>
+<h2 id="the-write-mode-1-transfer-mechanism">The Write Mode 1 Transfer
+Mechanism</h2>
+<p>Write Mode 1 is configured by setting bits 0 and 1 of the Graphics
+Mode Register (Graphics Controller Index <code>05h</code>) to
+<code>01b</code>. Once activated, the write process functions as
+follows:</p>
+<ol type="1">
+<li><strong>CPU Destination Write:</strong> The CPU issues a memory
+write instruction (such as <code>MOV</code>) directed at a destination
+video memory address.</li>
+<li><strong>Ignoring CPU Bus Data:</strong> Unlike Write Modes 0, 2, and
+3, Write Mode 1 causes the VGA hardware to completely ignore whatever
+data byte is currently present on the CPU data bus. The CPU write cycle
+serves purely as an address strobe and timing trigger.</li>
+<li><strong>Direct Latch-to-Memory Write:</strong> The VGA hardware
+immediately copies the byte stored in each of the four internal latches
+directly into its corresponding plane at the target memory address.
+Latch 0 writes to Plane 0, Latch 1 writes to Plane 1, Latch 2 writes to
+Plane 2, and Latch 3 writes to Plane 3.</li>
+<li><strong>Bypassing the Arithmetic Logic Unit (ALU):</strong> The
+standard VGA data modification units—including the Data Rotate logic,
+the Bit Mask Register, and the Logical Operation functions (AND, OR,
+XOR)—are bypassed entirely during Write Mode 1.</li>
+</ol>
+<h2 id="hardware-masking-with-the-sequencer-map-mask">Hardware Masking
+with the Sequencer Map Mask</h2>
+<p>While the CPU data and standard Graphics Controller masks are
+ignored, Write Mode 1 still respects the Sequencer's Map Mask Register
+(Index <code>02h</code>). This register controls which memory planes are
+enabled for writing:</p>
+<ul>
+<li>If a bit in the Map Mask Register is set to <code>1</code>, the
+corresponding plane receives the byte from its latch.</li>
+<li>If a bit is set to <code>0</code>, the corresponding plane is
+protected from modification, leaving the existing memory at that plane
+unchanged.</li>
+</ul>
+<p>This selective plane masking allows developers to perform block
+transfers on specific color components or planes while leaving other
+graphical layers untouched.</p>
+<h2 id="efficiency-and-performance">Efficiency and Performance</h2>
+<p>In normal operation, copying 32 bits across four planar memories
+would require the CPU to execute multiple read and write cycles,
+switching the active plane between operations via I/O port writes. Write
+Mode 1 reduces this entire sequence to two simple memory access cycles:
+one byte-read from the source address to fill the latches, followed by
+one byte-write to the destination address to commit the latches. This
+hardware-level latch transfer allowed early systems to achieve
+high-speed bit-block transfers (BitBLT) with minimal CPU cycle
+consumption.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

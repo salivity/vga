@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brooktree RAMDAC in Third-Party VGA Design - vga</title>
+    <meta name="description" content="The Brooktree RAMDAC chip family played a foundational role in the expansion and maturation of third-party Video Graphics Array (VGA) hardware during the late 1980s and early 1990s. When IBM introduced the VGA standard in 1987, clone manufacturers faced">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/brooktree-ramdac-in-third-party-vga-design">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Brooktree RAMDAC in Third-Party VGA Design - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/brooktree-ramdac-in-third-party-vga-design" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Brooktree RAMDAC chip family played a foundational role in the expansion and maturation of third-party Video Graphics Array (VGA) hardware during the late 1980s and early 1990s. When IBM introduced the VGA standard in 1987, clone manufacturers faced" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="brooktree-ramdac-in-third-party-vga-design">Brooktree RAMDAC in
+Third-Party VGA Design</h1>
+<p>The Brooktree RAMDAC chip family played a foundational role in the
+expansion and maturation of third-party Video Graphics Array (VGA)
+hardware during the late 1980s and early 1990s. When IBM introduced the
+VGA standard in 1987, clone manufacturers faced the challenge of
+replicating complex mixed-signal hardware without proprietary silicon.
+Brooktree Corporation provided modular, high-speed Random Access Memory
+Digital-to-Analog Converters (RAMDACs) that decoupled analog video
+generation from digital graphics logic. This separation enabled
+third-party vendors to bypass the technical barrier of high-frequency
+mixed-signal design, dramatically reduce development costs, establish
+industry pin-compatibility standards, and push graphics capabilities far
+beyond IBM’s original specifications into what became the Super VGA
+(SVGA) and True Color eras.</p>
+<h3 id="overcoming-the-mixed-signal-engineering-barrier">Overcoming the
+Mixed-Signal Engineering Barrier</h3>
+<p>In original IBM VGA hardware, the digital-to-analog conversion and
+color lookup table (CLUT) were handled by dedicated components, such as
+the INMOS G171 or IBM's custom integrated chips. For third-party
+graphics silicon vendors—such as Tseng Labs, Cirrus Logic, Paradise
+Systems, and Trident—fabricating high-frequency analog circuitry inside
+digital CMOS logic was prohibitively difficult and cost-inefficient.</p>
+<p>Analog video signals require clean, low-noise digital-to-analog
+converters running at precise clock rates to drive the red, green, and
+blue lines of an analog monitor without distortion. Brooktree
+specialized in high-performance bipolar and BiCMOS mixed-signal design.
+By sourcing standalone RAMDAC chips, such as the Bt471, Bt476, and
+Bt478, third-party manufacturers could focus their engineering talent
+entirely on digital raster operations, memory controllers, and bus
+interfaces, leaving the high-precision analog domain to a proven,
+off-the-shelf component.</p>
+<h3 id="enabling-the-super-vga-revolution">Enabling the Super VGA
+Revolution</h3>
+<p>IBM’s baseline VGA standard operated with a pixel clock of
+approximately 25.175 MHz for 640x480 at 60 Hz and 28.322 MHz for 720x400
+text mode. These constraints limited stock IBM VGA to 256 colors at a
+low 320x200 resolution, or 16 colors at 640x480.</p>
+<p>Brooktree RAMDACs significantly increased available pixel clock
+speeds. Models rated for 50 MHz, 66 MHz, and 80 MHz or higher gave
+third-party engineers the bandwidth necessary to support Super VGA
+resolutions, such as 800x600 and 1024x768, while driving non-interlaced
+refresh rates of 60 Hz to 72 Hz and above. This performance leap made
+clone VGA cards not merely cheap substitutes for IBM hardware, but
+superior alternatives required for demanding CAD applications, graphical
+user interfaces like Windows 3.x, and high-resolution desktop
+publishing.</p>
+<h3 id="facilitating-high-color-and-true-color-depths">Facilitating High
+Color and True Color Depths</h3>
+<p>Beyond higher resolutions, the evolution of the Brooktree line was
+critical in moving personal computing past the 8-bit (256-color) indexed
+palette. Standard VGA used an 18-bit color palette (6 bits each for red,
+green, and blue), forcing software to select 256 colors from a total
+space of 262,144.</p>
+<p>Brooktree expanded this capability by developing parts with wider
+datapath inputs and 24-bit palettes (8 bits per channel), culminating in
+chips that supported 15-bit (32,768 colors), 16-bit (65,536 colors, or
+"High Color"), and 24-bit ("True Color", 16.7 million colors) direct
+color modes. Because Brooktree provided the necessary internal
+multiplexing to ingest wider color data across narrower memory buses,
+third-party board designers could offer photographic image reproduction
+on standard PCs without redesigning their underlying graphics
+architectures from scratch.</p>
+<h3 id="establishing-de-facto-hardware-standardization">Establishing De
+Facto Hardware Standardization</h3>
+<p>The widespread adoption of Brooktree chips established their physical
+footprints and electrical interfaces as de facto industry standards. The
+pinout of the 28-pin and 44-pin Brooktree RAMDACs became so ubiquitous
+that subsequent competitors—including Sierra Semiconductor, AT&amp;T,
+and Samsung—engineered drop-in, pin-compatible replacements (often
+marketing them explicitly as Brooktree-compatible).</p>
+<p>This hardware standardization benefited third-party board makers by
+fostering price competition and allowing single printed circuit board
+(PCB) layouts to accommodate multiple RAMDAC speed grades and brands.
+Consequently, graphics card manufacturers could sell an entry-level card
+and a premium high-resolution card using the same base board design,
+differentiated solely by the speed rating of the installed Brooktree
+RAMDAC.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

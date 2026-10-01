@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capturing Non-Standard Refresh Rate VGA Signals - vga</title>
+    <meta name="description" content="Modern video capture cards are engineered primarily for contemporary digital video standards, which rely on rigid timing protocols and fixed refresh rates. When tasked with capturing legacy Video Graphics Array (VGA) inputs—particularly those operating">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/capturing-non-standard-refresh-rate-vga-signals">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Capturing Non-Standard Refresh Rate VGA Signals - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/capturing-non-standard-refresh-rate-vga-signals" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Modern video capture cards are engineered primarily for contemporary digital video standards, which rely on rigid timing protocols and fixed refresh rates. When tasked with capturing legacy Video Graphics Array (VGA) inputs—particularly those operating" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="capturing-non-standard-refresh-rate-vga-signals">Capturing
+Non-Standard Refresh Rate VGA Signals</h1>
+<p>Modern video capture cards are engineered primarily for contemporary
+digital video standards, which rely on rigid timing protocols and fixed
+refresh rates. When tasked with capturing legacy Video Graphics Array
+(VGA) inputs—particularly those operating at non-standard or
+unconventional refresh rates—these devices encounter severe technical
+bottlenecks. This article examines the core challenges capture hardware
+faces, including pixel clock synchronization, analog-to-digital
+conversion tolerances, frame buffering constraints, and mode-switching
+instability common to legacy computing and arcade hardware.</p>
+<h3 id="pixel-clock-and-phase-mismatch">Pixel Clock and Phase
+Mismatch</h3>
+<p>Analog VGA signals do not carry a discreet pixel clock across the
+cable; instead, they transmit continuous analog color voltages paired
+with horizontal and vertical synchronization pulses. A modern capture
+card must reconstruct the pixel clock internally using an
+Analog-to-Digital Converter (ADC).</p>
+<p>When a source outputs an unusual refresh rate—such as 70.08 Hz
+(common in DOS text mode) or 55–58 Hz (found in various vintage arcade
+boards)—the capture card's ADC often fails to calculate the exact pixel
+clock and phase. This timing mismatch results in horizontal pixel
+jitter, uneven pixel widths, phase noise, and shimmering artifacts
+across high-contrast edges.</p>
+<h3 id="strict-edid-and-handshake-constraints">Strict EDID and Handshake
+Constraints</h3>
+<p>Modern capture cards rely on strict Extended Display Identification
+Data (EDID) profiles and digital timing tables typically aligned with
+standard broadcast or VESA display formats (e.g., 1080p at 60 Hz or 4K
+at 120 Hz).</p>
+<p>When fed an analog signal via an active adapter or onboard VGA
+digitizer that operates outside standard refresh windows, the capture
+firmware often fails to negotiate a valid display mode. The card may
+interpret minor deviations (such as a 59.1 Hz or 72.8 Hz signal) as an
+out-of-range frequency, resulting in a black screen, an intermittent "No
+Signal" loop, or forced downscaling.</p>
+<h3 id="frame-buffer-synchronization-and-stutter">Frame Buffer
+Synchronization and Stutter</h3>
+<p>To stream or record video to a host operating system, capture cards
+deposit incoming frames into an internal frame buffer before
+transferring them over PCIe or USB. These buffers are optimized for
+predictable intervals.</p>
+<p>When ingesting non-standard refresh rates, the capture device must
+reconcile the mismatch between the input frequency and the target
+capture rate:</p>
+<ul>
+<li><strong>Frame Dropping and Duplication:</strong> If the card
+captures at a fixed 60 Hz while the source operates at 57 Hz, frames
+must be periodically duplicated, causing noticeable motion judder.</li>
+<li><strong>Tearing:</strong> If the capture card's buffer does not
+implement proper triple-buffering or dynamic frame-locking, partial
+frames are written during readout, introducing horizontal screen
+tearing.</li>
+<li><strong>Audio-Video Desynchronization:</strong> Over extended
+capture sessions, a continuous timing delta between an odd refresh rate
+and a standard audio sample rate (such as 48 kHz) causes progressive
+drift, pulling audio and video out of alignment.</li>
+</ul>
+<h3 id="dynamic-resolution-and-frequency-shifts">Dynamic Resolution and
+Frequency Shifts</h3>
+<p>Legacy systems that rely on VGA frequently switch video modes on the
+fly. For example, older PCs regularly alternate between a 720x400
+resolution at 70 Hz for BIOS/DOS text and 320x200 or 640x480 at 60 Hz
+for games and applications.</p>
+<p>Modern capture devices are not designed for rapid hardware-level
+resynchronization. When the refresh rate changes, the card's scaler and
+ADC pipeline typically require several seconds to detect the new timing,
+re-lock the phase, and renegotiate the frame buffer. During this window,
+the capture card drops the feed entirely, resulting in lost footage
+during critical mode transitions.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Early VGA 59.94 Hz Was Called 60 Hz - vga</title>
+    <meta name="description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987, the default 640x480 resolution ran at an actual vertical refresh rate of approximately 59.94 Hz rather than an even 60 Hz. This exact figure was a direct byproduct of IBM adapting exist">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-early-vga-59-94-hz-was-called-60-hz">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Early VGA 59.94 Hz Was Called 60 Hz - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-early-vga-59-94-hz-was-called-60-hz" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987, the default 640x480 resolution ran at an actual vertical refresh rate of approximately 59.94 Hz rather than an even 60 Hz. This exact figure was a direct byproduct of IBM adapting exist" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-early-vga-5994-hz-was-called-60-hz">Why Early VGA 59.94 Hz
+Was Called 60 Hz</h1>
+<p>When IBM introduced the Video Graphics Array (VGA) standard in 1987,
+the default 640x480 resolution ran at an actual vertical refresh rate of
+approximately 59.94 Hz rather than an even 60 Hz. This exact figure was
+a direct byproduct of IBM adapting existing NTSC television timing
+standards to computer displays. Despite this technical reality, hardware
+manufacturers, software developers, and documentation consistently
+referred to the standard as 60 Hz for conversational convenience,
+compatibility with integer-based computing systems, and historical
+precedent.</p>
+<h3 id="the-origin-of-5994-hz-in-vga-hardware">The Origin of 59.94 Hz in
+VGA Hardware</h3>
+<p>The 59.94 Hz figure was not an arbitrary design choice; it was rooted
+in the mathematics of American broadcast television. Early
+black-and-white NTSC television used a true 60 Hz vertical refresh rate
+to synchronize cleanly with North America’s 60 Hz alternating current
+(AC) electrical grid. However, when color television was standardized in
+1953, engineers had to prevent interference between the newly added
+color subcarrier signal and the existing audio carrier.</p>
+<p>To eliminate this artifact, the field rate was reduced by a factor of
+1000/1001:</p>
+<p><span class="math display">\[\frac{60 \times 1000}{1001} \approx
+59.940059\text{ Hz}\]</span></p>
+<p>When IBM engineered the original VGA standard for the PS/2 line in
+1987, component cost and manufacturing efficiency were major priorities.
+IBM designed VGA's 640x480 mode using an off-the-shelf 25.175 MHz
+crystal oscillator. Under standard VGA timing specifications:</p>
+<ul>
+<li>The horizontal line requires 800 total pixel clocks (including
+visible display, front porch, sync pulse, and back porch).</li>
+<li>The vertical frame requires 525 total scanlines (480 visible lines
+plus vertical blanking intervals).</li>
+</ul>
+<p>Dividing the oscillator clock by the product of total pixels and
+scanlines yields the refresh rate:</p>
+<p><span class="math display">\[\frac{25,175,000\text{ Hz}}{800 \times
+525} = 59.940476\text{ Hz}\]</span></p>
+<p>Because this matched the 525-line structure and ~59.94 Hz timing of
+NTSC video, display manufacturers could repurpose standard television
+tube components and deflection circuitry for computer monitors,
+significantly reducing production costs.</p>
+<h3 id="why-5994-hz-was-rounded-to-60-hz">Why 59.94 Hz Was Rounded to 60
+Hz</h3>
+<p>Despite the precise fractional frequency dictated by the hardware
+oscillator, the industry universally adopted the label "60 Hz." Several
+key factors drove this convention:</p>
+<h4 id="1-precedent-from-television-terminology">1. Precedent from
+Television Terminology</h4>
+<p>Decades before personal computers arrived, the consumer electronics
+industry had already established the precedent of calling 59.94i NTSC
+signals "60 Hz" (or "60 fields per second"). Because the 0.1% difference
+was practically negligible to consumers, standardizing on the whole
+integer avoided unnecessary technical confusion.</p>
+<h4 id="2-analog-monitor-tolerance">2. Analog Monitor Tolerance</h4>
+<p>Early computer monitors were analog cathode-ray tube (CRT) displays.
+Unlike modern digital flat panels, which operate with fixed frame
+buffers, CRTs used analog deflection coils to sweep an electron beam
+across a phosphor-coated screen. These circuits had built-in margins of
+tolerance (often managed by an internal vertical-hold circuit) capable
+of locking onto vertical signals spanning anywhere from 55 Hz to 65 Hz.
+In an analog ecosystem, the 0.06 Hz distinction between 59.94 Hz and 60
+Hz was electrically trivial.</p>
+<h4 id="3-integer-representation-in-early-software-and-bios">3. Integer
+Representation in Early Software and BIOS</h4>
+<p>Early PC architecture and BIOS software had limited resources and
+favored integer arithmetic over floating-point operations. Display modes
+were defined in BIOS tables using whole numbers. Software developers
+timing their game loops or screen redrawing routines simply treated the
+vertical sync interrupt as a 60 Hz event.</p>
+<h4 id="4-marketing-and-consumer-clarity">4. Marketing and Consumer
+Clarity</h4>
+<p>From a retail and specifications standpoint, advertising a monitor or
+graphics card as "60 Hz" was cleaner than listing "59.94 Hz." Rounding
+up provided consumers with an easy-to-understand metric that directly
+correlated with the 60 Hz AC line frequency familiar to the general
+public.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

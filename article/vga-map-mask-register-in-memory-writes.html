@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Map Mask Register in Memory Writes - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) Map Mask register plays a critical role in controlling how data is written to the display adapter’s video memory in planar graphics modes. Because VGA hardware arranges its video RAM into four parallel memory planes shari">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-map-mask-register-in-memory-writes">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Map Mask Register in Memory Writes - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-map-mask-register-in-memory-writes" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) Map Mask register plays a critical role in controlling how data is written to the display adapter’s video memory in planar graphics modes. Because VGA hardware arranges its video RAM into four parallel memory planes shari" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-map-mask-register-in-memory-writes">VGA Map Mask Register in
+Memory Writes</h1>
+<p>The Video Graphics Array (VGA) Map Mask register plays a critical
+role in controlling how data is written to the display adapter’s video
+memory in planar graphics modes. Because VGA hardware arranges its video
+RAM into four parallel memory planes sharing the same CPU address space,
+standard memory writes require a selection mechanism to determine where
+data is applied. The Map Mask register provides this mechanism by
+selectively enabling or masking writes to any combination of these four
+memory planes during CPU write operations.</p>
+<h3 id="vga-memory-architecture-and-the-planar-model">VGA Memory
+Architecture and the Planar Model</h3>
+<p>In standard VGA planar modes, such as Mode 12h (640x480, 16 colors),
+the display memory is divided into four 64 KB memory planes: Plane 0,
+Plane 1, Plane 2, and Plane 3. When the CPU accesses an address in the
+video memory segment (typically <code>0xA0000</code>), that single
+address maps simultaneously to the corresponding byte in all four
+planes. Without a filtering mechanism, a CPU write would either
+overwrite all four planes identically or require multiple complex bus
+cycles. The Map Mask register solves this limitation.</p>
+<h3 id="function-of-the-map-mask-register">Function of the Map Mask
+Register</h3>
+<p>The Map Mask register is part of the VGA Sequencer registers,
+accessed by setting the Sequencer Index port (<code>0x3C4</code>) to
+<code>0x02</code> and writing the desired bitmask to the Sequencer Data
+port (<code>0x3C5</code>).</p>
+<p>Only the lower four bits of the 8-bit register are functional, with
+each bit corresponding directly to one of the four memory planes:</p>
+<ul>
+<li><strong>Bit 0:</strong> Enables or disables writes to Plane 0
+(typically Blue data in 16-color modes).</li>
+<li><strong>Bit 1:</strong> Enables or disables writes to Plane 1
+(typically Green data).</li>
+<li><strong>Bit 2:</strong> Enables or disables writes to Plane 2
+(typically Red data).</li>
+<li><strong>Bit 3:</strong> Enables or disables writes to Plane 3
+(typically Intensity data).</li>
+<li><strong>Bits 4–7:</strong> Unused and ignored by the hardware.</li>
+</ul>
+<p>Setting a bit to <code>1</code> enables CPU write access to that
+plane. Setting a bit to <code>0</code> masks the plane, leaving its
+contents completely unmodified regardless of the data being written by
+the CPU.</p>
+<h3 id="role-during-memory-write-cycles">Role During Memory Write
+Cycles</h3>
+<p>When the CPU executes a write instruction to VGA video RAM, the data
+byte presented on the system bus passes through the VGA Graphics
+Controller and Sequencer before reaching the memory chips. The Map Mask
+register acts as a hardware gatekeeper during this phase:</p>
+<ol type="1">
+<li><strong>Selective Color Plane Updates:</strong> If an application
+needs to draw graphics that only alter specific color components (for
+example, drawing pure red shapes), it configures the Map Mask register
+to enable only Plane 2 (<code>0x04</code>). Writes to memory will modify
+only the red component, leaving the green, blue, and intensity values
+intact.</li>
+<li><strong>Parallel Plane Writing:</strong> If multiple bits in the
+register are set to <code>1</code>, a single CPU byte-write writes that
+same byte across all selected planes simultaneously. This allows rapid
+bulk filling of solid colors using fewer CPU cycles.</li>
+<li><strong>Unchained Modes (Mode X):</strong> In unchained 256-color
+modes (popularly known as Mode X), the four planes are arranged so that
+consecutive horizontal pixels reside in consecutive planes rather than
+consecutive address offsets. In this configuration, the Map Mask
+register is used to select which individual pixel (plane) at a given
+address is being updated, or to write four adjacent pixels at once when
+drawing repeating patterns or horizontal spans.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

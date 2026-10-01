@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA 400-Line Mode CRTC Register Timings - vga</title>
+    <meta name="description" content="This article details the exact Cathode Ray Tube Controller (CRTC) register values and frame timings required to configure a standard 400-line Video Graphics Array (VGA) mode. It covers the vertical timing breakdown—including active display, overscan bo">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-400-line-mode-crtc-register-timings">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA 400-Line Mode CRTC Register Timings - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-400-line-mode-crtc-register-timings" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article details the exact Cathode Ray Tube Controller (CRTC) register values and frame timings required to configure a standard 400-line Video Graphics Array (VGA) mode. It covers the vertical timing breakdown—including active display, overscan bo" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-400-line-mode-crtc-register-timings">VGA 400-Line Mode CRTC
+Register Timings</h1>
+<p>This article details the exact Cathode Ray Tube Controller (CRTC)
+register values and frame timings required to configure a standard
+400-line Video Graphics Array (VGA) mode. It covers the vertical timing
+breakdown—including active display, overscan borders, blanking
+intervals, and synchronization pulses—as well as the specific values
+written to CRTC index registers <code>0x06</code> through
+<code>0x16</code> and the Miscellaneous Output Register.</p>
+<hr />
+<h3 id="frame-geometry-for-standard-400-line-vga-70-hz">Frame Geometry
+for Standard 400-Line VGA (70 Hz)</h3>
+<p>Standard IBM VGA 400-line modes (such as 720×400 text or 640×400
+graphics) operate at a vertical refresh rate of 70.08 Hz and a
+horizontal scan rate of 31.469 kHz. A full vertical frame consists of
+<strong>449 total scan lines</strong>:</p>
+<ul>
+<li><strong>Active Display:</strong> 400 lines (scan lines 0–399)</li>
+<li><strong>Bottom Border (Overscan):</strong> 6 lines (scan lines
+400–405)</li>
+<li><strong>Bottom Blanking (Front Porch):</strong> 6 lines (scan lines
+406–411)</li>
+<li><strong>Vertical Sync (Retrace):</strong> 2 lines (scan lines
+412–413)</li>
+<li><strong>Top Blanking (Back Porch):</strong> 28 lines (scan lines
+414–441)</li>
+<li><strong>Top Border (Overscan):</strong> 7 lines (scan lines
+442–448)</li>
+</ul>
+<hr />
+<h3 id="miscellaneous-output-register-configuration">Miscellaneous
+Output Register Configuration</h3>
+<p>Before loading CRTC timings, the vertical sync polarity must be set.
+Standard 400-line modes use negative vertical sync and positive
+horizontal sync.</p>
+<ul>
+<li><strong>Register Port:</strong> <code>0x3C2</code> (Write)</li>
+<li><strong>Sync Bits:</strong>
+<ul>
+<li>Bit 7 (V-Sync Polarity): <code>0</code> (Negative)</li>
+<li>Bit 6 (H-Sync Polarity): <code>1</code> (Positive)</li>
+</ul></li>
+<li><strong>Clock Select:</strong>
+<ul>
+<li>Bits 2–3: <code>00</code> selects the 25.175 MHz pixel clock
+(640-pixel wide modes); <code>01</code> selects the 28.322 MHz pixel
+clock (720-pixel wide text modes).</li>
+</ul></li>
+</ul>
+<hr />
+<h3 id="crtc-vertical-timing-register-values">CRTC Vertical Timing
+Register Values</h3>
+<p>The CRTC is accessed via I/O ports <code>0x3D4</code> (Address Index)
+and <code>0x3D5</code> (Data) when color emulation is enabled. Before
+modifying write-protected registers
+(<code>0x00</code>–<code>0x07</code>), bit 7 of register
+<code>0x11</code> must be cleared to <code>0</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">CRTC Register Index</th>
+<th style="text-align: left;">Register Name</th>
+<th style="text-align: left;">Hex Value</th>
+<th style="text-align: left;">Decimal Value / Timing Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Index 0x06</strong></td>
+<td style="text-align: left;">Vertical Total</td>
+<td style="text-align: left;"><code>0xBF</code></td>
+<td style="text-align: left;">Programmed as <span
+class="math inline">\((\text{Total Lines} - 2) \pmod{256}\)</span>.
+Total lines = 449; <span class="math inline">\(449 - 2 = 447\)</span>
+(<code>0x1BF</code>). Lower 8 bits = <code>0xBF</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Index 0x07</strong></td>
+<td style="text-align: left;">Overflow Register</td>
+<td style="text-align: left;"><code>0x1F</code></td>
+<td style="text-align: left;">Stores bit 8 and bit 9 for various
+vertical counters:<br>• Bit 0 (Vertical Total Bit 8):
+<code>1</code><br>• Bit 1 (Vertical Display End Bit 8):
+<code>1</code><br>• Bit 2 (V-Sync Start Bit 8): <code>1</code><br>• Bit
+3 (Start Vertical Blank Bit 8): <code>1</code><br>• Bit 4 (Line Compare
+Bit 8): <code>1</code><br>• Bits 5–7 (Bits 9 of VT, VDE, VRS):
+<code>000</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Index 0x09</strong></td>
+<td style="text-align: left;">Maximum Scan Line</td>
+<td style="text-align: left;"><code>0x40</code> (Graphics) /
+<code>0x4F</code> (Text)</td>
+<td style="text-align: left;">Bit 5 is bit 9 of Start Vertical Blank
+(<code>0</code>). Bit 6 is bit 9 of Line Compare (<code>1</code>). Bits
+0–4 set character cell scanline height minus 1 (<code>0x00</code> for
+1-line graphics cell, <code>0x0F</code> for 16-line text font). Bit 7
+controls double-scanning (set to <code>0</code> for true 400-line
+modes).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Index 0x10</strong></td>
+<td style="text-align: left;">Vertical Retrace Start</td>
+<td style="text-align: left;"><code>0x9C</code></td>
+<td style="text-align: left;">Vertical sync pulse start line. Line 412
+(<code>0x19C</code>). Lower 8 bits = <code>0x9C</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Index 0x11</strong></td>
+<td style="text-align: left;">Vertical Retrace End</td>
+<td style="text-align: left;"><code>0x8E</code></td>
+<td style="text-align: left;">Low 4 bits specify the retrace end line
+modulo 16. Retrace ends at line 414 (<span class="math inline">\(414
+\pmod{16} = 14 = \text{0x0E}\)</span>). Bit 7 is set to <code>1</code>
+to re-enable write protection. Bit 5 is set to <code>0</code> to enable
+vertical interrupts if required.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Index 0x12</strong></td>
+<td style="text-align: left;">Vertical Display End</td>
+<td style="text-align: left;"><code>0x8F</code></td>
+<td style="text-align: left;">Programmed as <span
+class="math inline">\((\text{Active Lines} - 1)\)</span>. <span
+class="math inline">\(400 - 1 = 399\)</span> (<code>0x18F</code>). Lower
+8 bits = <code>0x8F</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Index 0x15</strong></td>
+<td style="text-align: left;">Start Vertical Blank</td>
+<td style="text-align: left;"><code>0x96</code></td>
+<td style="text-align: left;">Scan line where vertical blanking begins
+(after the bottom border). Line 406 (<code>0x196</code>). Lower 8 bits =
+<code>0x96</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Index 0x16</strong></td>
+<td style="text-align: left;">End Vertical Blank</td>
+<td style="text-align: left;"><code>0xB9</code></td>
+<td style="text-align: left;">Programmed as <span
+class="math inline">\((\text{Blank End Line}) \pmod{256}\)</span>.
+Blanking ends at scan line 441 (<code>0x1B9</code>). Lower 8 bits =
+<code>0xB9</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="programming-sequence">Programming Sequence</h3>
+<ol type="1">
+<li>Set the clock frequency and sync polarities by writing to the
+<strong>Miscellaneous Output Register</strong>
+(<code>0x3C2</code>).</li>
+<li>Write <code>0x11</code> to <code>0x3D4</code>, read
+<code>0x3D5</code>, and clear bit 7 (value <code>&amp; 0x7F</code>) to
+disable write protection on registers
+<code>0x00</code>–<code>0x07</code>.</li>
+<li>Program registers <code>0x06</code>, <code>0x07</code>,
+<code>0x09</code>, <code>0x10</code>, <code>0x12</code>,
+<code>0x15</code>, and <code>0x16</code> with the timing values listed
+above.</li>
+<li>Write <code>0x8E</code> to <code>0x3D5</code> at index
+<code>0x11</code> to set the retrace end timing and re-lock write
+protection on CRTC registers <code>0x00</code> through
+<code>0x07</code>.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

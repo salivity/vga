@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How CRT Shaders Emulate VGA Bloom and Phosphor Decay - vga</title>
+    <meta name="description" content="Modern emulators rely on advanced multi-pass fragment shaders to reproduce the physical characteristics of classic cathode-ray tube (CRT) monitors. When running retro Video Graphics Array (VGA) games, these shaders simulate hardware-level phenomena such">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-crt-shaders-emulate-vga-bloom-and-phosphor-decay">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How CRT Shaders Emulate VGA Bloom and Phosphor Decay - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-crt-shaders-emulate-vga-bloom-and-phosphor-decay" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Modern emulators rely on advanced multi-pass fragment shaders to reproduce the physical characteristics of classic cathode-ray tube (CRT) monitors. When running retro Video Graphics Array (VGA) games, these shaders simulate hardware-level phenomena such" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-crt-shaders-emulate-vga-bloom-and-phosphor-decay">How CRT
+Shaders Emulate VGA Bloom and Phosphor Decay</h1>
+<p>Modern emulators rely on advanced multi-pass fragment shaders to
+reproduce the physical characteristics of classic cathode-ray tube (CRT)
+monitors. When running retro Video Graphics Array (VGA) games, these
+shaders simulate hardware-level phenomena such as electron beam bloom
+and phosphor persistence. By mathematically modeling how high-energy
+electron beams scatter across shadow masks and how phosphors slowly
+release energy, shaders transform raw, blocky digital pixels into the
+soft, luminous images originally envisioned by DOS-era developers.</p>
+<h3 id="recreating-electron-beam-bloom">Recreating Electron Beam
+Bloom</h3>
+<p>Beam bloom occurs when an electron gun emits high currents to display
+bright colors, exciting the screen's phosphors beyond their standard
+focus area and widening the scanning beam. Shaders recreate this
+interaction through dynamic scanline modulation and luminance
+halation.</p>
+<ol type="1">
+<li><strong>Scanline Beam Widening:</strong> Standard CRT shaders
+calculate the luminance of each incoming pixel. For darker colors, the
+simulated electron beam remains focused, leaving prominent dark gaps
+(scanlines) between raster rows. For brighter values, the shader
+dynamically expands the vertical profile of the beam, causing bright
+scanlines to swell and partially fill the neighboring dark gaps.</li>
+<li><strong>Multi-Pass Halation and Glow:</strong> To simulate light
+bleeding through the monitor's front glass and internal reflections,
+shaders use multi-pass blur algorithms. The shader extracts bright pixel
+data above a set threshold, runs it through a series of Gaussian
+downsampling and upsampling passes, and composites this softened light
+back over the original image. This creates a natural optical halo around
+high-contrast elements, such as white text on a dark background.</li>
+</ol>
+<h3 id="simulating-phosphor-decay-and-persistence">Simulating Phosphor
+Decay and Persistence</h3>
+<p>Phosphor decay, or persistence, is the brief duration a CRT’s
+phosphor coating continues emitting photons after the electron beam has
+moved on. Standard VGA monitors used P22 phosphors, which had distinct
+decay rates for red, green, and blue sub-pixels. Shaders mimic this
+temporal effect using frame history buffers:</p>
+<ul>
+<li><p><strong>Feedback Loops:</strong> The shader architecture
+preserves the rendered output of the previous frame in an off-screen
+texture buffer.</p></li>
+<li><p><strong>Exponential Decay Mathematics:</strong> Rather than
+replacing the old frame entirely, the shader blends a fraction of the
+buffered frame into the current frame. The decay follows an exponential
+falloff function:</p>
+<p><span class="math display">\[\text{Color}_{\text{final}} =
+\text{Color}_{\text{current}} + (\text{Color}_{\text{previous}} \times
+e^{-k \cdot \Delta t})\]</span></p>
+<p>In this formula, <span class="math inline">\(k\)</span> represents
+the decay constant and <span class="math inline">\(\Delta t\)</span>
+represents elapsed frame time.</p></li>
+<li><p><strong>Per-Channel Latency:</strong> Advanced shaders assign
+different decay values to each color channel. Because green phosphors
+typically exhibit longer persistence than blue or red phosphors, the
+shader retains green values slightly longer across subsequent frames.
+This produces authentic phosphor trails and eliminates modern LCD motion
+blur by emulating natural CRT motion smoothing.</p></li>
+</ul>
+<h3 id="adapting-to-the-vga-standard">Adapting to the VGA Standard</h3>
+<p>Unlike consumer televisions that operated at a 15 kHz horizontal
+frequency, standard VGA monitors operated at 31.5 kHz. At lower
+resolutions, such as the 320×200 mode common in early PC gaming, the
+monitor double-scanned the signal to produce 400 lines at 70 Hz.</p>
+<p>CRT shaders specifically tuned for VGA emulate this tighter line
+pitch and higher refresh rate. The simulated shadow masks and aperture
+grilles feature much higher dot densities, resulting in sharper
+scanlines with narrower bloom radiuses than those designed for home game
+consoles. By integrating precise luminance bloom with temporal decay
+buffers, shaders deliver the high-contrast, luminous look inherent to
+vintage PC hardware.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

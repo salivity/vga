@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Windows 95 Safe Mode Used 640x480 VGA Mode - vga</title>
+    <meta name="description" content="Windows 95 introduced Safe Mode as an essential diagnostic environment designed to boot the operating system when software conflicts, corrupted files, or hardware misconfigurations prevented normal operation. Whenever users entered Safe Mode, the system">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-windows-95-safe-mode-used-640-x-480-vga-mode">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Windows 95 Safe Mode Used 640x480 VGA Mode - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-windows-95-safe-mode-used-640-x-480-vga-mode" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Windows 95 introduced Safe Mode as an essential diagnostic environment designed to boot the operating system when software conflicts, corrupted files, or hardware misconfigurations prevented normal operation. Whenever users entered Safe Mode, the system" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-windows-95-safe-mode-used-640x480-vga-mode">Why Windows 95
+Safe Mode Used 640x480 VGA Mode</h1>
+<p>Windows 95 introduced Safe Mode as an essential diagnostic
+environment designed to boot the operating system when software
+conflicts, corrupted files, or hardware misconfigurations prevented
+normal operation. Whenever users entered Safe Mode, the system
+invariably loaded in an unembellished 640x480 resolution with a 16-color
+palette. This article explores why Microsoft selected this specific
+Video Graphics Array (VGA) mode as the universal fallback, detailing how
+universal hardware compatibility, driver isolation, and absolute
+stability made it the definitive standard for system recovery.</p>
+<h3 id="universal-hardware-interoperability">Universal Hardware
+Interoperability</h3>
+<p>By 1995, the personal computer market was flooded with hundreds of
+competing graphics chipsets from manufacturers such as S3, Cirrus Logic,
+ATI, Matrox, and Trident. Each vendor implemented proprietary
+acceleration methods and hardware architectures. However, virtually
+every PC-compatible display adapter and CRT monitor manufactured since
+IBM introduced the PS/2 in 1987 retained hardware-level support for the
+basic IBM VGA standard.</p>
+<p>Standard VGA at 640x480 resolution using 16 colors was hardcoded into
+the Video BIOS of these cards. By falling back to this base-level
+standard, Windows 95 guaranteed that it could successfully output a
+visible signal to virtually any display hardware on the market without
+needing to query the monitor or negotiate display timings.</p>
+<h3 id="driver-isolation-and-fault-tolerance">Driver Isolation and Fault
+Tolerance</h3>
+<p>Faulty, unstable, or incompatible third-party video drivers were
+among the most frequent causes of boot failures and General Protection
+Faults in Windows 95. Modern operating system stability required a way
+to circumvent these issues entirely.</p>
+<p>When Safe Mode was initiated, Windows 95 intentionally ignored the
+display drivers specified in the system registry or
+<code>SYSTEM.INI</code>. Instead, it loaded <code>VGA.DRV</code>,
+Microsoft’s own bare-bones, highly tested 16-color driver. Bypassing
+third-party code eliminated the primary source of graphics crashes,
+ensuring that users could boot into the graphical user interface (GUI)
+even if their primary display driver was completely corrupt or
+configured to an unsupported refresh rate.</p>
+<h3 id="minimal-memory-and-processing-footprint">Minimal Memory and
+Processing Footprint</h3>
+<p>Standard VGA mode operated with minimal hardware requirements.
+Rendering an unaccelerated 640x480 screen with a 4-bit color depth (16
+colors) required only 150 kilobytes of video RAM. Because the original
+1987 VGA specification established a 256 KB memory baseline, every
+standard-compliant video card had more than enough onboard memory to
+handle the frame buffer without relying on advanced memory management or
+2D acceleration engines.</p>
+<p>Furthermore, this mode did not depend on graphics coprocessors or
+complex PCI/VLB bus communications. The CPU handled all rendering
+through direct, standardized I/O port writes and memory-mapped video
+buffers at segment <code>0xA0000</code>.</p>
+<h3 id="providing-access-to-diagnostic-tools">Providing Access to
+Diagnostic Tools</h3>
+<p>The ultimate goal of Safe Mode was recovery, not aesthetics. Windows
+95 relied on a graphical shell—the desktop, Start menu, and Explorer—to
+provide access to critical management utilities like Device Manager,
+Add/Remove Programs, and the Registry Editor (<code>REGEDIT</code>).</p>
+<p>Running in 640x480 VGA mode provided the minimum screen real estate
+required to display Windows dialog boxes and management windows legibly.
+This enabled administrators and home users to easily reconfigure display
+settings, roll back problematic driver updates, resolve hardware
+resource conflicts (IRQs and I/O addresses), and reboot the PC back into
+normal working order.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

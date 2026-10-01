@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running Monochrome and VGA Cards on Modern x86 - vga</title>
+    <meta name="description" content="While the x86 architecture historically supported running a legacy Monochrome Display Adapter (MDA) alongside a Video Graphics Array (VGA) card simultaneously, modern x86 computers cannot do so natively. In the early PC era, this dual-monitor configurati">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/running-monochrome-and-vga-cards-on-modern-x-86">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Running Monochrome and VGA Cards on Modern x86 - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/running-monochrome-and-vga-cards-on-modern-x-86" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="While the x86 architecture historically supported running a legacy Monochrome Display Adapter (MDA) alongside a Video Graphics Array (VGA) card simultaneously, modern x86 computers cannot do so natively. In the early PC era, this dual-monitor configurati" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="running-monochrome-and-vga-cards-on-modern-x86">Running
+Monochrome and VGA Cards on Modern x86</h1>
+<p>While the x86 architecture historically supported running a legacy
+Monochrome Display Adapter (MDA) alongside a Video Graphics Array (VGA)
+card simultaneously, modern x86 computers cannot do so natively. In the
+early PC era, this dual-monitor configuration was common because MDA and
+VGA occupied completely separate memory regions and I/O ports. However,
+modern x86 systems present insurmountable hardware and firmware
+barriers—including the elimination of the ISA bus, the deprecation of
+legacy BIOS in favor of UEFI, and PCIe address decoding conflicts—making
+a simultaneous dual-card setup impossible on off-the-shelf modern
+hardware without complex emulation or custom bridge circuitry.</p>
+<h3 id="the-historical-mechanism">The Historical Mechanism</h3>
+<p>In early IBM-compatible systems, simultaneous operation was possible
+because the video hardware specifications were deliberately engineered
+not to conflict:</p>
+<ul>
+<li><strong>Monochrome (MDA/Hercules):</strong> Utilized memory
+addresses <code>0xB0000</code> through <code>0xB7FFF</code> for its
+monochrome frame buffer and operated on I/O ports <code>0x3B4</code>,
+<code>0x3B5</code>, and <code>0x3BA</code>.</li>
+<li><strong>Color (CGA/EGA/VGA):</strong> Utilized <code>0xA0000</code>
+through <code>0xAFFFF</code> for graphics modes and <code>0xB8000</code>
+through <code>0xBFFFF</code> for color text modes, operating on I/O
+ports <code>0x3D4</code>, <code>0x3D5</code>, and
+<code>0x3DA</code>.</li>
+</ul>
+<p>Because these address ranges and ports never overlapped, a system
+could boot with both cards installed. Software such as Lotus 1-2-3 or
+debuggers like Soft-ICE and Turbo Debugger regularly took advantage of
+this by rendering spreadsheets or execution traces on the monochrome
+monitor while showing graphics on the VGA monitor.</p>
+<h3 id="hardware-bus-incompatibility">Hardware Bus Incompatibility</h3>
+<p>Original monochrome cards were designed exclusively for the 8-bit and
+16-bit Industry Standard Architecture (ISA) bus. Modern x86 motherboards
+have entirely transitioned to PCI Express (PCIe).</p>
+<p>While PCIe-to-ISA bridge chips exist in industrial motherboards, they
+rarely support legacy subtraction decoding or real-mode video memory
+routing. Most bridge controllers fail to forward unmapped legacy memory
+cycles (<code>0xB0000</code>–<code>0xB7FFF</code>) across the PCIe root
+complex to the ISA side, meaning the CPU cannot communicate directly
+with the legacy card.</p>
+<h3 id="firmware-and-address-decoding-clashes">Firmware and Address
+Decoding Clashes</h3>
+<p>Modern x86 motherboards utilize UEFI instead of the legacy BIOS.
+Legacy dual-head setups relied on BIOS interrupt <code>INT 10h</code>
+services that recognized monochrome hardware alongside color
+hardware.</p>
+<ol type="1">
+<li><strong>UEFI Deprecation:</strong> Modern platforms rely on UEFI
+Class 3, which lacks the Compatibility Support Module (CSM) required to
+initialize legacy Option ROMs and 16-bit video BIOS routines.</li>
+<li><strong>Monopolized Legacy Ranges:</strong> When a modern PCIe
+graphics card operates in legacy VGA compatibility mode, it typically
+claims the entire <code>0xA0000</code> through <code>0xBFFFF</code>
+address space. The PCIe root complex routes all memory requests in this
+range to the primary PCIe GPU, creating a collision that prevents any
+secondary legacy device from receiving its intended <code>0xB0000</code>
+signals.</li>
+</ol>
+<h3 id="workarounds-and-alternatives">Workarounds and Alternatives</h3>
+<p>Achieving this behavior on modern hardware requires software or
+hardware abstraction rather than direct hardware installation:</p>
+<ul>
+<li><strong>Hardware Emulators:</strong> Software environments such as
+86Box, PCem, and DOSBox can accurately emulate both an MDA/Hercules card
+and a VGA card simultaneously, outputting to two separate modern display
+windows.</li>
+<li><strong>FPGA and Custom Bridges:</strong> A user can deploy an FPGA
+programmed with MDA logic on a modern bus interface, though writing
+driver software to manage the split video memory map in modern operating
+systems (such as 64-bit Windows or Linux) remains a manual, non-standard
+engineering effort.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

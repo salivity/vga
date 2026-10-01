@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Mode X Enables 4-Pixel Parallel Writes - vga</title>
+    <meta name="description" content="This article explores how IBM’s Video Graphics Array (VGA) architecture utilizes Mode X's planar memory arrangement to write four pixels concurrently. Mode X achieves this performance leap by "unchaining" VGA memory, mapping four separate 64 KB hardwar">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-mode-x-enables-4-pixel-parallel-writes">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Mode X Enables 4-Pixel Parallel Writes - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-mode-x-enables-4-pixel-parallel-writes" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how IBM’s Video Graphics Array (VGA) architecture utilizes Mode X's planar memory arrangement to write four pixels concurrently. Mode X achieves this performance leap by "unchaining" VGA memory, mapping four separate 64 KB hardwar" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-mode-x-enables-4-pixel-parallel-writes">How VGA Mode X
+Enables 4-Pixel Parallel Writes</h1>
+<p>This article explores how IBM’s Video Graphics Array (VGA)
+architecture utilizes Mode X's planar memory arrangement to write four
+pixels concurrently. Mode X achieves this performance leap by
+"unchaining" VGA memory, mapping four separate 64 KB hardware planes to
+the same CPU memory address range. By configuring the VGA Sequencer's
+Map Mask register, a programmer can broadcast a single 8-bit color value
+to all four physical planes during a single memory cycle, effectively
+quadrupling write throughput for operations like screen clears and solid
+horizontal fills.</p>
+<h3 id="the-limits-of-standard-mode-13h">The Limits of Standard Mode
+13h</h3>
+<p>Standard VGA 320x200 256-color graphics (Mode 13h) relies on a
+"chained" memory configuration. In this mode, the VGA hardware
+automatically interleaves writes across its four physical memory planes
+so the CPU sees memory as a flat, linear array of bytes. Each byte
+corresponds sequentially to a single pixel on screen. While this
+simplifies pixel addressing, it prevents the CPU from directly
+addressing more than 64 KB of video memory at a time and forces the CPU
+to write pixels one by one, requiring four separate bus cycles to update
+four contiguous pixels.</p>
+<h3 id="the-planar-architecture-of-mode-x">The Planar Architecture of
+Mode X</h3>
+<p>Mode X alters this layout by disabling Chain-4 mode via the VGA
+Sequencer and Graphics Controller registers. This turns the display
+memory into an unchained planar structure.</p>
+<p>In Mode X:</p>
+<ul>
+<li>The screen resolution remains 320x240 (or 320x200).</li>
+<li>Video memory is divided across four parallel memory banks known as
+Plane 0, Plane 1, Plane 2, and Plane 3.</li>
+<li>Pixels are distributed cyclically: Pixel 0 resides on Plane 0, Pixel
+1 on Plane 1, Pixel 2 on Plane 2, and Pixel 3 on Plane 3.</li>
+<li>Pixel 4 wraps back to Plane 0 at the next byte address, and the
+cycle repeats.</li>
+</ul>
+<p>Because of this arrangement, four adjacent horizontal pixels share
+the exact same byte address in the CPU's memory map (located in segment
+<code>0xA000</code>), distinguished only by the hardware plane in which
+they reside.</p>
+<h3 id="the-vga-map-mask-register">The VGA Map Mask Register</h3>
+<p>Writing to multiple planes simultaneously depends on the VGA
+Sequencer’s Map Mask Register (Address <code>0x3C5</code>, Index
+<code>0x02</code>). This 4-bit register acts as a write gate for the
+memory planes:</p>
+<ul>
+<li>Bit 0 enables or disables writes to Plane 0 (Pixels 0, 4,
+8...).</li>
+<li>Bit 1 enables or disables writes to Plane 1 (Pixels 1, 5,
+9...).</li>
+<li>Bit 2 enables or disables writes to Plane 2 (Pixels 2, 6,
+10...).</li>
+<li>Bit 3 enables or disables writes to Plane 3 (Pixels 3, 7,
+11...).</li>
+</ul>
+<p>If a bit is set to <code>1</code>, the corresponding plane accepts
+data written to the video memory address space. If set to
+<code>0</code>, the plane ignores CPU write operations.</p>
+<h3 id="executing-the-4-pixel-simultaneous-write">Executing the 4-Pixel
+Simultaneous Write</h3>
+<p>To write four pixels in a single instruction, the system performs two
+steps:</p>
+<ol type="1">
+<li><strong>Set the Write Mask:</strong> The program sends a command to
+the Map Mask register setting all four lower bits to <code>1</code>
+(binary <code>00001111</code> or <code>0x0F</code>). This instructs the
+VGA hardware to open write paths to Planes 0, 1, 2, and 3
+simultaneously.</li>
+<li><strong>Execute the Write:</strong> The CPU executes a single byte
+write to an offset in video memory (for example, writing an 8-bit color
+index <code>0x2A</code> to address <code>0xA000:0000</code>).</li>
+</ol>
+<p>The internal VGA bus duplicates the byte across all four hardware
+plane data paths. Because Planes 0 through 3 are all write-enabled at
+address <code>0x0000</code>, the hardware updates:</p>
+<ul>
+<li>Plane 0 (Pixel 0) with <code>0x2A</code></li>
+<li>Plane 1 (Pixel 1) with <code>0x2A</code></li>
+<li>Plane 2 (Pixel 2) with <code>0x2A</code></li>
+<li>Plane 3 (Pixel 3) with <code>0x2A</code></li>
+</ul>
+<p>In one memory access cycle, four distinct, consecutive pixels on the
+display receive the target color.</p>
+<h3 id="performance-and-utility">Performance and Utility</h3>
+<p>This parallel write capability reduces the CPU bus overhead needed to
+update the screen. For operations involving uniform colors—such as
+clearing the display, rendering solid user interface panels, or drawing
+flat-shaded polygons—Mode X achieves up to four times the write
+bandwidth of Mode 13h. Paired with 16-bit or 32-bit CPU string write
+instructions (<code>REP STOSW</code> or <code>REP STOSD</code>),
+developers can fill 8 or 16 pixels per loop iteration, overcoming one of
+the primary hardware bottlenecks of early PC graphics.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Split Screen with the CRTC Line Compare Register - vga</title>
+    <meta name="description" content="This article explains the mechanics of implementing a hardware-level split screen on standard Video Graphics Array (VGA) hardware using the Cathode Ray Tube Controller (CRTC) Line Compare register. It details how the CRTC tracks scanlines, how matching t">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-split-screen-with-the-crtc-line-compare-register">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Split Screen with the CRTC Line Compare Register - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-split-screen-with-the-crtc-line-compare-register" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the mechanics of implementing a hardware-level split screen on standard Video Graphics Array (VGA) hardware using the Cathode Ray Tube Controller (CRTC) Line Compare register. It details how the CRTC tracks scanlines, how matching t" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-split-screen-with-the-crtc-line-compare-register">VGA Split
+Screen with the CRTC Line Compare Register</h1>
+<p>This article explains the mechanics of implementing a hardware-level
+split screen on standard Video Graphics Array (VGA) hardware using the
+Cathode Ray Tube Controller (CRTC) Line Compare register. It details how
+the CRTC tracks scanlines, how matching the target scanline forces an
+internal memory counter reset, and how this mechanism allows developers
+to display a fixed status bar alongside a scrolling playfield without
+consuming CPU cycles during rendering.</p>
+<h3 id="the-mechanics-of-vga-memory-addressing">The Mechanics of VGA
+Memory Addressing</h3>
+<p>Under normal operation, the VGA CRTC continuously generates the
+raster display by fetching pixel data from Video RAM (VRAM). The
+starting point for this fetch cycle is dictated by the CRTC Start
+Address High and Low registers (indices <code>0x0C</code> and
+<code>0x0D</code>).</p>
+<p>At the beginning of each frame (vertical retrace), the CRTC loads its
+internal memory address counter with the value stored in the Start
+Address registers. As the electron beam scans across each horizontal
+line, this address counter increments sequentially. When software
+updates the Start Address registers to implement smooth camera movement,
+the entire screen shifts accordingly.</p>
+<h3 id="the-function-of-the-line-compare-register">The Function of the
+Line Compare Register</h3>
+<p>To split the screen horizontally, the VGA hardware provides a
+dedicated register specifically designed to interrupt this continuous
+address progression. This is the Line Compare register, located
+primarily at CRTC index <code>0x18</code>.</p>
+<p>Because VGA display modes often exceed 256 scanlines, the Line
+Compare value is a 10-bit integer distributed across multiple
+registers:</p>
+<ul>
+<li><strong>Bits 0–7:</strong> CRTC Register <code>0x18</code> (Line
+Compare Register)</li>
+<li><strong>Bit 8:</strong> CRTC Register <code>0x07</code> (Overflow
+Register, Bit 4)</li>
+<li><strong>Bit 9:</strong> CRTC Register <code>0x09</code> (Maximum
+Scan Line Register, Bit 6)</li>
+</ul>
+<p>The 10-bit integer defines a specific horizontal scanline index on
+the display.</p>
+<h3 id="the-reset-mechanism">The Reset Mechanism</h3>
+<p>During rendering, the CRTC maintains an internal vertical scanline
+counter that increments after every horizontal line is drawn. On every
+scanline, the hardware comparator checks if the current scanline matches
+the 10-bit value programmed into the Line Compare register.</p>
+<p>When a match occurs:</p>
+<ol type="1">
+<li>The CRTC automatically resets its internal memory address counter to
+zero.</li>
+<li>For all subsequent scanlines in that frame, video data is fetched
+starting from memory offset <code>0x0000</code>, rather than continuing
+from the previous address.</li>
+<li>The hardware resets the Horizontal Pel Panning register (Attribute
+Controller register <code>0x33</code>, index <code>0x13</code>) to zero
+for the rest of the frame, ensuring that fine-scrolling offsets applied
+to the top half do not cause horizontal jitter in the bottom half.</li>
+</ol>
+<p>Because this reset is handled entirely in hardware at the silicon
+level, it occurs instantaneously without generating interrupts or
+requiring CPU intervention mid-frame.</p>
+<h3 id="practical-application">Practical Application</h3>
+<p>The Line Compare register divides the display into two distinct
+regions:</p>
+<ul>
+<li><strong>Top Area (Variable):</strong> Starts fetching from the CRTC
+Start Address (<code>0x0C</code>/<code>0x0D</code>). This region can be
+scrolled both vertically and horizontally (using fine pel panning) by
+updating the Start Address and panning registers.</li>
+<li><strong>Bottom Area (Fixed):</strong> Starts fetching strictly from
+VRAM offset <code>0x0000</code> starting at the designated scanline. It
+remains completely static regardless of how the top area scrolls.</li>
+</ul>
+<p>This architecture made the Line Compare register the standard method
+for rendering stationary heads-up displays (HUDs), inventories, and
+status bars at the bottom of the screen in MS-DOS action games and RPGs
+while maintaining high-performance hardware scrolling for the main game
+world.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

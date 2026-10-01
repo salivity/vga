@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Misc Output Register Clock Selection - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) Miscellaneous Output Register serves as a fundamental hardware control register responsible for configuring core board-level settings, most notably the selection of the master dot clock frequency. By manipulating dedicated">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-misc-output-register-clock-selection">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Misc Output Register Clock Selection - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-misc-output-register-clock-selection" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) Miscellaneous Output Register serves as a fundamental hardware control register responsible for configuring core board-level settings, most notably the selection of the master dot clock frequency. By manipulating dedicated" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-misc-output-register-clock-selection">VGA Misc Output
+Register Clock Selection</h1>
+<p>The Video Graphics Array (VGA) Miscellaneous Output Register serves
+as a fundamental hardware control register responsible for configuring
+core board-level settings, most notably the selection of the master dot
+clock frequency. By manipulating dedicated clock select bits within this
+register, the graphics subsystem determines the pixel generation rate,
+directly governing video display modes, horizontal resolution, and
+monitor refresh timings.</p>
+<p>In the IBM VGA standard and compatible hardware, the Miscellaneous
+Output Register is accessed at I/O port address <code>0x3C2</code> for
+write operations and <code>0x3CC</code> for read operations. Bits 2 and
+3 of this 8-bit register are collectively designated as the Clock Select
+bits. These two bits drive an internal multiplexer that routes one of
+several available hardware oscillator frequencies to the rest of the VGA
+graphics pipeline.</p>
+<p>The Clock Select bit combinations operate as follows:</p>
+<ul>
+<li><strong>Value <code>00b</code> (Bit 3 = 0, Bit 2 = 0):</strong>
+Selects the standard 25.175 MHz dot clock. This frequency is primarily
+used for standard 640-pixel horizontal graphics modes, including the
+iconic 640x480 graphics mode at a 60 Hz vertical refresh rate.</li>
+<li><strong>Value <code>01b</code> (Bit 3 = 0, Bit 2 = 1):</strong>
+Selects the 28.322 MHz dot clock. This frequency provides the higher
+timing rate required for 720-pixel horizontal modes, most commonly
+utilized by standard 80-column alphanumeric text modes (such as 720x400
+at 70 Hz with 9-dot wide character matrices).</li>
+<li><strong>Value <code>10b</code> (Bit 3 = 1, Bit 2 = 0):</strong>
+Historically configured to select an external clock source routed
+through the VGA feature connector. On modern or Super VGA (SVGA)
+chipsets, this setting was frequently repurposed to access an auxiliary
+onboard oscillator or programmable clock synthesizer.</li>
+<li><strong>Value <code>11b</code> (Bit 3 = 1, Bit 2 = 1):</strong>
+Reserved on the original IBM VGA hardware, but widely implemented by
+subsequent SVGA manufacturers to select additional clock synthesizer
+outputs for higher resolution modes (such as 800x600, 1024x768, and
+beyond).</li>
+</ul>
+<p>The dot clock chosen via the Miscellaneous Output Register
+establishes the fundamental timebase for the entire video generation
+system. Once the clock signal is chosen, it is delivered to the VGA
+Sequencer. The Sequencer's Clocking Mode Register can divide this master
+clock down (such as halving the clock rate for 320-pixel modes like Mode
+13h) or alter the character clock between 8 and 9 dots per
+character.</p>
+<p>Proper configuration of the Miscellaneous Output Register is critical
+during mode initialization. Because the CRT Controller (CRTC) derives
+horizontal and vertical sync timings from the chosen pixel clock,
+programming incorrect values into Bits 2 and 3 leads to out-of-spec sync
+signals, distorted display output, or an inability for monitors to lock
+onto the video signal.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

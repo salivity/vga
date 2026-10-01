@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Write Mode 2 for Fast Pixel Plotting - vga</title>
+    <meta name="description" content="During the late 1980s and early 1990s, PC game developers faced severe performance bottlenecks when drawing graphics in planar Video Graphics Array (VGA) and Enhanced Graphics Adapter (EGA) 16-color display modes. VGA Write Mode 2 provided an architectur">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-write-mode-2-for-fast-pixel-plotting">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Write Mode 2 for Fast Pixel Plotting - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-write-mode-2-for-fast-pixel-plotting" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="During the late 1980s and early 1990s, PC game developers faced severe performance bottlenecks when drawing graphics in planar Video Graphics Array (VGA) and Enhanced Graphics Adapter (EGA) 16-color display modes. VGA Write Mode 2 provided an architectur" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-write-mode-2-for-fast-pixel-plotting">VGA Write Mode 2 for
+Fast Pixel Plotting</h1>
+<p>During the late 1980s and early 1990s, PC game developers faced
+severe performance bottlenecks when drawing graphics in planar Video
+Graphics Array (VGA) and Enhanced Graphics Adapter (EGA) 16-color
+display modes. VGA Write Mode 2 provided an architectural hardware
+shortcut, enabling programmers to write single 4-bit color values across
+all four memory planes in a single memory access cycle. This technique
+was crucial for early 3D flight simulators, vector-based adventure game
+engines, and high-resolution strategy games that required fast Bresenham
+line drawing, rapid polygon rasterization, and single-pixel plotting
+without the severe overhead of standard planar read-modify-write
+operations.</p>
+<h3 id="the-planar-architecture-problem-and-write-mode-2">The Planar
+Architecture Problem and Write Mode 2</h3>
+<p>Standard 16-color graphics modes, such as the standard Mode 12h
+(640x480 at 16 colors) and Mode 0Eh (320x200 at 16 colors), do not
+arrange pixels sequentially in memory. Instead, they organize display
+memory across four distinct hardware bit planes, where each plane
+represents one bit of a pixel's 4-bit palette index.</p>
+<p>Under default writing modes (Write Mode 0), updating a single pixel
+requires setting up the VGA hardware sequencer or running four distinct
+CPU read-modify-write operations to change that pixel's bit in each
+plane. This process saturated the slow ISA bus, causing unplayable frame
+rates in dynamic games.</p>
+<p>VGA Write Mode 2 solves this by reconfiguring the VGA Graphics
+Controller:</p>
+<ul>
+<li>The CPU writes an 8-bit byte to display memory, but the hardware
+treats bits 0–3 as the 16-color palette index.</li>
+<li>The hardware automatically routes each bit of this color index to
+its respective plane (Bit 0 to Plane 0, Bit 1 to Plane 1, etc.).</li>
+<li>By programming the Bit Mask Register, developers could isolate a
+single pixel position within the targeted byte.</li>
+<li>A single memory write immediately plots the complete color of the
+pixel, reducing the bus transactions required for individual pixel
+updates by up to 75%.</li>
+</ul>
+<h3 id="sierra-on-lines-sci0-engine">Sierra On-Line's SCI0 Engine</h3>
+<p>One of the most widespread commercial deployments of fast pixel and
+vector plotting was in Sierra On-Line’s SCI (Sierra's Creative
+Interpreter) engine, specifically during the SCI0 era (<em>King's Quest
+IV</em>, <em>Space Quest III</em>, and <em>Leisure Suit Larry
+II</em>).</p>
+<p>Sierra’s artists did not store background screens as raw raster
+bitmaps to conserve floppy disk space; instead, backgrounds were stored
+as lists of vector drawing commands, lines, and flood fills. The runtime
+engine reconstructed these backgrounds dynamically by drawing thousands
+of vector lines and boundary-fill seeds. Implementing Write Mode 2
+allowed Sierra's engine to execute its Bresenham line-drawing and
+boundary-fill plotting routines rapidly, minimizing loading times as
+scenes were drawn into the backbuffer.</p>
+<h3 id="early-3d-flight-simulators-and-wireframe-renderers">Early 3D
+Flight Simulators and Wireframe Renderers</h3>
+<p>Before the adoption of 256-color linear Mode 13h, wireframe and
+flat-shaded 3D simulators operated primarily in 16-color EGA or VGA
+modes to maintain higher resolutions like 640x350 or 640x480.</p>
+<ul>
+<li><strong>SubLOGIC and Microsoft Flight Simulator (3.0 and
+4.0):</strong> To achieve usable refresh rates while drawing dynamic
+horizons, runway markings, and instrument needles, these flight
+simulators utilized Write Mode 2 for vector rendering.</li>
+<li><strong>MicroProse Combat Simulators:</strong> Early iterations of
+combat simulators (such as <em>F-19 Stealth Fighter</em> and <em>F-15
+Strike Eagle II</em>) running in 16-color modes relied on Write Mode 2
+to accelerate the drawing of vector HUDs, structural cockpit frames, and
+distant wireframe aircraft models.</li>
+</ul>
+<p>For arbitrary lines (where consecutive pixels rarely share the same
+byte address), Write Mode 2 eliminated the need to swap active write
+planes constantly between pixel coordinates.</p>
+<h3 id="polygon-fillers-and-boundary-tracing">Polygon Fillers and
+Boundary Tracing</h3>
+<p>In flat-shaded polygon rendering, the leftmost and rightmost edges of
+horizontal polygon scanlines rarely align neatly to 8-pixel byte
+boundaries.</p>
+<p>Renderers popularized by graphics programmers like Michael Abrash
+utilized Write Mode 2 to handle the non-aligned boundary edges of
+polygons:</p>
+<ol type="1">
+<li>The engine used Write Mode 2 to plot the partial odd pixels at the
+start of a horizontal span with a single write using a customized bit
+mask.</li>
+<li>The solid center of the horizontal span was filled using fast 32-bit
+CPU writes in Write Mode 0 or latch-copying in Write Mode 1.</li>
+<li>The terminating boundary pixels were closed off using Write Mode 2
+with a final bit mask.</li>
+</ol>
+<p>This hybrid approach allowed early software 3D renderers running in
+640x480 16-color environments to avoid visual artifacts and maximize
+throughput over the ISA bus.</p>
+<h3 id="high-resolution-strategy-and-simulation-games">High-Resolution
+Strategy and Simulation Games</h3>
+<p>Titles like <em>SimCity</em> (running in high-resolution 640x480
+16-color Mode 12h) used Write Mode 2 for interactive UI elements.
+Drawing mouse cursors, animated selection boxes, network power lines,
+and transit tracks over existing terrain maps required fast single-pixel
+modification. By setting the color once and simply updating the Bit Mask
+and destination byte, these games updated dynamic map layers smoothly
+without freezing the game's simulation loop.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

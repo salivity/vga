@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Causes VGA Split Screen Shake on Late Updates - vga</title>
+    <meta name="description" content="Split-screen shaking in Video Graphics Array (VGA) programming occurs when register modifications miss the critical timing window of the raster beam, specifically during horizontal blanking intervals. The VGA hardware relies on exact hardware counters an">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/what-causes-vga-split-screen-shake-on-late-updates">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Causes VGA Split Screen Shake on Late Updates - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/what-causes-vga-split-screen-shake-on-late-updates" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Split-screen shaking in Video Graphics Array (VGA) programming occurs when register modifications miss the critical timing window of the raster beam, specifically during horizontal blanking intervals. The VGA hardware relies on exact hardware counters an" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-causes-vga-split-screen-shake-on-late-updates">What Causes
+VGA Split Screen Shake on Late Updates</h1>
+<p>Split-screen shaking in Video Graphics Array (VGA) programming occurs
+when register modifications miss the critical timing window of the
+raster beam, specifically during horizontal blanking intervals. The VGA
+hardware relies on exact hardware counters and register comparisons on
+every scanline to divide the display. When software updates critical
+registers—such as the Line Compare register or the Display Start
+Address—too late in the scanline cycle, the Cathode Ray Tube Controller
+(CRTC) fails to process the new values for that intended line. Because
+execution timing slightly fluctuates between frames due to CPU cycles
+and system interrupts, the hardware unpredictably alternates between
+catching and missing this threshold, resulting in a visible, rapid
+vertical or horizontal jitter in the bottom half of the screen.</p>
+<h3 id="the-vga-split-screen-hardware-mechanism">The VGA Split-Screen
+Hardware Mechanism</h3>
+<p>The VGA CRTC generates display addresses sequentially as the electron
+beam traverses the screen from top to bottom, left to right. To achieve
+a hardware split screen, the VGA provides a feature controlled by the
+Line Compare register (CRTC Index 18h, extended by overflow bits in
+Index 07h and 09h).</p>
+<p>As the monitor draws each scanline, an internal vertical counter
+increments. When this counter equals the value stored in the Line
+Compare register, the CRTC automatically resets its internal memory
+address counter back to zero. This causes the monitor to begin drawing
+the remainder of the frame from the start of video memory, creating two
+distinct visual areas: a scrolling top window and an independent,
+usually static, bottom window.</p>
+<h3 id="the-race-condition-of-late-updates">The Race Condition of Late
+Updates</h3>
+<p>Shaking or jitter occurs primarily when developers attempt dynamic
+effects on the bottom section, such as scrolling the lower split or
+moving the split line dynamically. Because standard VGA lacks a fully
+shadow-buffered register architecture for all CRTC parameters, changes
+written to the I/O ports immediately affect the internal hardware state
+or latch at the next immediate horizontal clock.</p>
+<p>If the CPU writes an updated Line Compare value or Display Start
+Address while the electron beam is already processing the target
+scanline, a race condition occurs:</p>
+<ol type="1">
+<li><strong>Missed Scanline Comparison:</strong> The internal comparator
+checks the scanline counter against the Line Compare register at a
+specific clock cycle during the horizontal blanking (HBlank) interval or
+at the start of the active display line. If the write arrives a fraction
+of a microsecond after this check, the comparator does not fire for that
+scanline.</li>
+<li><strong>Address Counter Desynchronization:</strong> Because the
+match failed, the address counter does not reset to zero. The CRTC
+continues reading sequential display memory from the top screen instead
+of resetting for the bottom screen, or it delays the reset until an
+unintended line.</li>
+<li><strong>Partial Latching:</strong> If modifying multi-byte registers
+(such as Start Address High at Index 0Ch and Start Address Low at Index
+0Dh) to pan the lower screen, a late write often results in the CRTC
+reading the new high byte while retaining the old low byte for that
+single frame.</li>
+</ol>
+<h3 id="non-deterministic-frame-timing-and-jitter">Non-Deterministic
+Frame Timing and Jitter</h3>
+<p>The human eye perceives this timing miss as "shaking" rather than a
+permanent glitch because the CPU timing relative to the CRT beam drifts.
+DRAM refresh cycles, CPU instruction caching, and unmasked system
+interrupts cause tiny variations in how fast the software completes its
+register-writing loop.</p>
+<p>In one video frame, the CPU finishes the register update just before
+the raster beam reaches the trigger scanline, displaying the lower
+screen at the correct offset. In the subsequent frame, a minor delay
+causes the write to land just after the beam passes, causing the screen
+to render with the old offset or skip the address reset entirely. The
+rapid alternation between the correct state and the missed-timing state
+across 60 or 70 Hz refresh cycles creates high-frequency vibration and
+shaking in the lower split screen.</p>
+<h3 id="preventing-split-screen-instability">Preventing Split-Screen
+Instability</h3>
+<p>To eliminate the shake, register writes must strictly synchronize
+with the raster beam. Developers avoid this issue by polling Input
+Status Register 1 (port 03DAh) to detect the exact start of the
+Horizontal Blanking interval immediately preceding the split line, or by
+using cycle-timed interrupt service routines triggered by horizontal
+interrupts. Ensuring that all relevant CRTC index and data pairs are
+completely written before the active display line begins guarantees that
+the hardware comparator reliably catches the update on every single
+frame.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

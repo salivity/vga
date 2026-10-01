@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Load Custom Fonts into VGA Plane 2 - vga</title>
+    <meta name="description" content="Loading custom font bit patterns into Video Graphics Array (VGA) plane 2 memory space requires reconfiguring the VGA hardware registers to expose plane 2 to CPU memory writes, copying the glyph bitmaps, and restoring the registers to standard text mode o">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-to-load-custom-fonts-into-vga-plane-2">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Load Custom Fonts into VGA Plane 2 - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-to-load-custom-fonts-into-vga-plane-2" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Loading custom font bit patterns into Video Graphics Array (VGA) plane 2 memory space requires reconfiguring the VGA hardware registers to expose plane 2 to CPU memory writes, copying the glyph bitmaps, and restoring the registers to standard text mode o" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-load-custom-fonts-into-vga-plane-2">How to Load Custom
+Fonts into VGA Plane 2</h1>
+<p>Loading custom font bit patterns into Video Graphics Array (VGA)
+plane 2 memory space requires reconfiguring the VGA hardware registers
+to expose plane 2 to CPU memory writes, copying the glyph bitmaps, and
+restoring the registers to standard text mode operation. In standard VGA
+text modes (such as mode 03h), character generator patterns reside
+exclusively in bit plane 2 at memory segment <code>0xA000:0000</code>.
+Because text mode normally uses odd/even addressing across plane 0
+(character codes) and plane 1 (attributes) located at
+<code>0xB800:0000</code>, direct access to plane 2 requires manipulating
+the Sequencer and Graphics Controller registers to bypass the default
+text rendering pipeline.</p>
+<h3 id="step-1-reconfigure-the-sequencer">Step 1: Reconfigure the
+Sequencer</h3>
+<p>To isolate plane 2 for CPU writes, the Sequencer must be programmed
+to direct memory access specifically to that plane and disable odd/even
+memory addressing.</p>
+<ol type="1">
+<li><strong>Issue a Synchronous Reset:</strong> Write index
+<code>0x00</code> with data <code>0x01</code> to the Sequencer registers
+(Index port <code>0x3C4</code>, Data port <code>0x3C5</code>) to safely
+alter clocking and memory settings.</li>
+<li><strong>Set the Plane Write Mask:</strong> Write index
+<code>0x02</code> (Map Mask Register) with value <code>0x04</code> (bit
+2 set). This specifies that write operations to video memory only affect
+plane 2.</li>
+<li><strong>Disable Odd/Even Addressing:</strong> Write index
+<code>0x04</code> (Sequencer Memory Mode) with value <code>0x07</code>.
+Setting bit 2 disables odd/even addressing, allowing sequential linear
+access across video memory, while bit 1 enables extended memory.</li>
+<li><strong>Clear the Reset:</strong> Write index <code>0x00</code> with
+data <code>0x03</code> to resume normal sequencer operation.</li>
+</ol>
+<h3 id="step-2-configure-the-graphics-controller">Step 2: Configure the
+Graphics Controller</h3>
+<p>The Graphics Controller must be configured to map video memory
+linearly starting at segment <code>0xA000:0000</code> rather than the
+traditional text buffer segment <code>0xB800:0000</code>.</p>
+<ol type="1">
+<li><strong>Disable Odd/Even Addressing:</strong> Write index
+<code>0x05</code> (Graphics Mode Register) to port <code>0x3CE</code>
+with value <code>0x00</code> sent to port <code>0x3CF</code>. This puts
+the controller in standard write mode 0 and clears the odd/even
+bit.</li>
+<li><strong>Remap Memory to <code>0xA000:0000</code>:</strong> Write
+index <code>0x06</code> (Miscellaneous Graphics Register) with value
+<code>0x04</code>. This changes the base CPU memory map address from
+<code>0xB8000</code> (text mode default) to <code>0xA0000</code> (64 KB
+linear map) and disables odd/even addressing.</li>
+</ol>
+<h3 id="step-3-copy-the-glyph-patterns-to-video-memory">Step 3: Copy the
+Glyph Patterns to Video Memory</h3>
+<p>Once plane 2 is mapped sequentially to CPU address space at
+<code>0xA000:0000</code>, the custom font data can be transferred using
+standard memory copy instructions (such as <code>REP MOVSB</code> in x86
+assembly).</p>
+<ul>
+<li><strong>Slot Allocation:</strong> VGA font slots allocate 32 bytes
+per character, regardless of the active character height (for example,
+8x8, 8x14, or 8x16 fonts).</li>
+<li><strong>Glyph Storage:</strong> For an 8x16 font, write the 16 bytes
+of the bitmap sequentially, followed by 16 bytes of zero-padding before
+advancing to the next character index.</li>
+<li><strong>Font Blocks:</strong> Standard VGA supports multiple font
+blocks (character sets):
+<ul>
+<li><strong>Block 0:</strong> Base address <code>0xA000:0000</code></li>
+<li><strong>Block 1:</strong> Base address <code>0xA000:4000</code>
+(offset 16 KB)</li>
+<li><strong>Block 2:</strong> Base address <code>0xA000:8000</code>
+(offset 32 KB)</li>
+<li><strong>Block 3:</strong> Base address <code>0xA000:C000</code>
+(offset 48 KB)</li>
+</ul></li>
+</ul>
+<p>Iterate through the custom font array and write up to 256 characters
+(8,192 bytes total per character set) directly to the target block
+offset.</p>
+<h3 id="step-4-restore-standard-text-mode-settings">Step 4: Restore
+Standard Text Mode Settings</h3>
+<p>After the copy is complete, the registers must be restored to resume
+normal text display generation:</p>
+<ol type="1">
+<li><strong>Restore the Sequencer:</strong>
+<ul>
+<li>Write index <code>0x00</code>, value <code>0x01</code> (Synchronous
+Reset).</li>
+<li>Write index <code>0x02</code>, value <code>0x03</code> (Enable write
+access to planes 0 and 1).</li>
+<li>Write index <code>0x04</code>, value <code>0x03</code> (Restore
+odd/even addressing and standard text mode memory configuration).</li>
+<li>Write index <code>0x00</code>, value <code>0x03</code> (End
+Reset).</li>
+</ul></li>
+<li><strong>Restore the Graphics Controller:</strong>
+<ul>
+<li>Write index <code>0x05</code>, value <code>0x10</code> (Restore
+odd/even addressing in mode register).</li>
+<li>Write index <code>0x06</code>, value <code>0x0E</code> (Map memory
+back to segment <code>0xB800:0000</code> for color text modes).</li>
+</ul></li>
+</ol>
+<h3 id="bios-alternative">BIOS Alternative</h3>
+<p>For systems running in real mode or virtual 8086 mode, the VGA BIOS
+provides interrupt <code>10h</code>, service <code>AX = 1100h</code>,
+which automatically executes the above sequence. Supplying
+<code>ES:BP</code> with the pointer to the user font table,
+<code>CX</code> with the number of glyphs, <code>DX</code> with the
+character offset, <code>BL</code> with the font block, and
+<code>BH</code> with the bytes per character performs the register
+reconfiguration, memory copy to plane 2, and register restoration
+automatically.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

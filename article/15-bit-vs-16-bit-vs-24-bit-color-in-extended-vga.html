@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15-Bit vs 16-Bit vs 24-Bit Color in Extended VGA - vga</title>
+    <meta name="description" content="Extended Video Graphics Array (often referred to as Super VGA or EVGA) dramatically expanded the capabilities of the original IBM VGA standard by supporting higher display resolutions and greater color depths. The fundamental difference between 15-bit, 1">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/15-bit-vs-16-bit-vs-24-bit-color-in-extended-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="15-Bit vs 16-Bit vs 24-Bit Color in Extended VGA - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/15-bit-vs-16-bit-vs-24-bit-color-in-extended-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Extended Video Graphics Array (often referred to as Super VGA or EVGA) dramatically expanded the capabilities of the original IBM VGA standard by supporting higher display resolutions and greater color depths. The fundamental difference between 15-bit, 1" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="15-bit-vs-16-bit-vs-24-bit-color-in-extended-vga">15-Bit vs
+16-Bit vs 24-Bit Color in Extended VGA</h1>
+<p>Extended Video Graphics Array (often referred to as Super VGA or
+EVGA) dramatically expanded the capabilities of the original IBM VGA
+standard by supporting higher display resolutions and greater color
+depths. The fundamental difference between 15-bit, 16-bit, and 24-bit
+color representations lies in how many binary bits are allocated to
+define the color of each individual pixel. This bit allocation dictates
+the total number of simultaneously displayable colors, the distribution
+of color channels (Red, Green, and Blue), the degree of color banding,
+and the amount of video memory (VRAM) and bandwidth required by the
+display adapter.</p>
+<h3 id="15-bit-color-32768-colors">15-Bit Color (32,768 Colors)</h3>
+<p>In a 15-bit color setup, often categorized alongside 16-bit as "High
+Color," each pixel uses two bytes (16 bits) of video memory, but only 15
+of those bits define the color values:</p>
+<ul>
+<li><strong>Channel Distribution:</strong> The color channels are split
+evenly into a 5-5-5 format: 5 bits for Red, 5 bits for Green, and 5 bits
+for Blue.</li>
+<li><strong>Unused Bit:</strong> Because hardware handles data in
+byte-sized chunks, the 16th bit is either left unused, ignored, or
+occasionally reserved for overlay/transparency flags.</li>
+<li><strong>Color Depth:</strong> Each color channel can represent <span
+class="math inline">\(2^5 = 32\)</span> intensity levels, yielding a
+total of <span class="math inline">\(32 \times 32 \times 32 =
+32,768\)</span> possible colors.</li>
+<li><strong>Performance Impact:</strong> 15-bit provided a noticeable
+leap over 8-bit indexed color without requiring complex palette lookups,
+but slight color banding remains visible in subtle gradients.</li>
+</ul>
+<h3 id="16-bit-color-65536-colors">16-Bit Color (65,536 Colors)</h3>
+<p>Like 15-bit color, 16-bit color consumes exactly two bytes per pixel,
+but it fully utilizes all 16 bits to maximize visual fidelity:</p>
+<ul>
+<li><strong>Channel Distribution:</strong> It uses a 5-6-5 format: 5
+bits for Red, 6 bits for Green, and 5 bits for Blue.</li>
+<li><strong>The Green Channel Advantage:</strong> Human vision is
+naturally more sensitive to green wavelengths and variations in
+brightness. Allocating the extra bit to green provides twice as many
+gradations (<span class="math inline">\(2^6 = 64\)</span> levels) for
+green compared to red and blue (<span class="math inline">\(2^5 =
+32\)</span> levels each).</li>
+<li><strong>Color Depth:</strong> The total number of available colors
+doubles to <span class="math inline">\(32 \times 64 \times 32 =
+65,536\)</span> colors.</li>
+<li><strong>Performance Impact:</strong> 16-bit quickly superseded
+15-bit as the industry standard for High Color because it extracted
+better perceptual quality out of the same 2-byte-per-pixel memory
+footprint.</li>
+</ul>
+<h3 id="24-bit-color-16777216-colors">24-Bit Color (16,777,216
+Colors)</h3>
+<p>Known universally as "True Color," 24-bit color dedicates a full byte
+to each additive primary color channel:</p>
+<ul>
+<li><strong>Channel Distribution:</strong> It uses an 8-8-8 format: 8
+bits for Red, 8 bits for Green, and 8 bits for Blue.</li>
+<li><strong>Color Depth:</strong> Each channel has <span
+class="math inline">\(2^8 = 256\)</span> intensity levels, producing
+<span class="math inline">\(256 \times 256 \times 256 =
+16,777,216\)</span> distinct colors.</li>
+<li><strong>Visual Fidelity:</strong> The 16.7 million variations exceed
+the human eye's threshold for distinguishing color transitions,
+virtually eliminating noticeable banding in photographic imagery and
+complex shading.</li>
+<li><strong>Memory and Alignment:</strong> 24-bit color requires 3 bytes
+per pixel. Because unaligned 3-byte structures can create addressing
+inefficiencies on 32-bit computing architectures, extended graphics
+hardware often expanded this internally to 32 bits per pixel (8-8-8-8,
+where the remaining 8 bits are reserved or used for alpha channels),
+significantly increasing VRAM and bus bandwidth demands.</li>
+</ul>
+<h3 id="summary-comparison">Summary Comparison</h3>
+<ul>
+<li><strong>15-Bit (5-5-5):</strong> Uses 2 bytes per pixel, renders
+32,768 colors, leaves 1 bit unused.</li>
+<li><strong>16-Bit (5-6-5):</strong> Uses 2 bytes per pixel, renders
+65,536 colors, optimizes the extra bit for human green-light
+sensitivity.</li>
+<li><strong>24-Bit (8-8-8):</strong> Uses 3 (or 4 aligned) bytes per
+pixel, renders 16,777,216 colors, delivering photorealistic True Color
+at the cost of higher memory bandwidth.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

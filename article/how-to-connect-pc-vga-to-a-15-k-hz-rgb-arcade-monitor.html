@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Connect PC VGA to a 15 kHz RGB Arcade Monitor - vga</title>
+    <meta name="description" content="Driving a vintage 15 kHz standard-resolution arcade monitor from a PC VGA output requires modifying the video signal to match arcade hardware specifications. Standard PC VGA outputs operate at a minimum horizontal scan rate of 31.5 kHz with separate hori">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-to-connect-pc-vga-to-a-15-k-hz-rgb-arcade-monitor">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Connect PC VGA to a 15 kHz RGB Arcade Monitor - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-to-connect-pc-vga-to-a-15-k-hz-rgb-arcade-monitor" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Driving a vintage 15 kHz standard-resolution arcade monitor from a PC VGA output requires modifying the video signal to match arcade hardware specifications. Standard PC VGA outputs operate at a minimum horizontal scan rate of 31.5 kHz with separate hori" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-connect-pc-vga-to-a-15-khz-rgb-arcade-monitor">How to
+Connect PC VGA to a 15 kHz RGB Arcade Monitor</h1>
+<p>Driving a vintage 15 kHz standard-resolution arcade monitor from a PC
+VGA output requires modifying the video signal to match arcade hardware
+specifications. Standard PC VGA outputs operate at a minimum horizontal
+scan rate of 31.5 kHz with separate horizontal and vertical sync signals
+at 0.7V peak-to-peak RGB levels, whereas arcade monitors strictly
+require roughly 15.7 kHz, composite sync (C-Sync), and often higher
+signal voltages (around 2V to 5V). Successfully bridging these two
+systems involves forcing the PC's graphics card to output a 15 kHz
+signal, combining the sync signals, amplifying video levels, and
+protecting the monitor chassis from out-of-spec frequencies.</p>
+<h3 id="1-generating-a-15-khz-video-signal">1. Generating a 15 kHz Video
+Signal</h3>
+<p>Connecting a standard 31.5 kHz VGA signal directly to a 15 kHz arcade
+monitor can quickly destroy the monitor's horizontal output transistor
+(HOT) and flyback transformer. Therefore, the PC must be configured to
+output 15.7 kHz horizontal scan rates (240p or 480i) before connecting
+to the display.</p>
+<ul>
+<li><strong>Software Modification:</strong> CRT Emudriver (paired with
+compatible AMD/ATI Radeon graphics cards) is the standard software
+solution on Windows. It replaces standard display drivers to allow
+custom low-resolution modelines at native 15 kHz arcade refresh rates.
+On Linux, custom low-frequency modelines can be generated via
+<code>xrandr</code> or kernel mode setting (KMS).</li>
+<li><strong>Hardware Modification:</strong> Dedicated arcade graphics
+cards, such as the Ultimarc ArcadeVGA, natively broadcast a 15 kHz
+signal directly from the hardware BIOS, ensuring the PC never outputs an
+incompatible scan rate even during startup.</li>
+</ul>
+<h3 id="2-combining-sync-signals-rgbhv-to-rgbs">2. Combining Sync
+Signals (RGBHV to RGBS)</h3>
+<p>Standard VGA provides separate horizontal (H-Sync) and vertical
+(V-Sync) sync pulses (RGBHV) at TTL levels (5V). In contrast, most
+arcade monitors expect a single Composite Sync (C-Sync) signal (RGBS),
+typically with negative polarity.</p>
+<ul>
+<li><strong>Software Combining:</strong> If using CRT Emudriver, the
+graphics driver can often be configured via software to combine the sync
+signals internally, outputting pure C-Sync directly through Pin 13
+(H-Sync) of the VGA port.</li>
+<li><strong>Hardware Combining:</strong> If the GPU cannot combine sync
+via software, a hardware circuit is required. A dedicated logic circuit
+utilizing a 74LS86 (XOR gate) or a 74HC08 (AND gate) reliably combines
+the separate horizontal and vertical TTL pulses into a clean composite
+sync signal. Passive circuits using resistors and diodes can work in
+some setups, but active logic ICs provide significantly greater
+stability and noise immunity.</li>
+</ul>
+<h3 id="3-adjusting-color-signal-voltages">3. Adjusting Color Signal
+Voltages</h3>
+<p>Standard VGA outputs analog Red, Green, and Blue signals at 0.7V
+peak-to-peak into a 75-ohm load. Arcade monitors (such as Wells-Gardner,
+Electrohome, or Nanao chassis) were designed to receive higher input
+levels, typically ranging from 1.0V to 5.0V peak-to-peak.</p>
+<p>Plugging 0.7V VGA signals straight into an arcade chassis often
+results in a very dark or washed-out image, even with monitor contrast
+and brightness turned to maximum. To resolve this, install a video
+amplifier board (often based on high-speed operational amplifiers or
+video buffer chips like the THS7374) between the VGA output and the
+chassis input to boost the 0.7V signals to approximately 2.5V–4V.</p>
+<h3 id="4-wiring-and-boot-protection">4. Wiring and Boot Protection</h3>
+<p>To wire the modified VGA connection to the arcade monitor input
+header:</p>
+<ul>
+<li><strong>Red:</strong> Connect VGA Pin 1 to Monitor Red In.</li>
+<li><strong>Green:</strong> Connect VGA Pin 2 to Monitor Green In.</li>
+<li><strong>Blue:</strong> Connect VGA Pin 3 to Monitor Blue In.</li>
+<li><strong>Ground:</strong> Connect VGA Pins 5, 6, 7, 8, and 10 to the
+common Monitor Video Ground.</li>
+<li><strong>Sync:</strong> Connect the combined C-Sync line (VGA Pin 13
+if driver-combined, or the output of your sync combiner) to the Monitor
+Sync In.</li>
+</ul>
+<p>Because standard PCs output 31.5 kHz during the BIOS POST and
+operating system boot screen before software drivers load, an
+intermediary protection device is highly recommended. Commercial arcade
+interface boards (such as the Ultimarc J-PAC) contain
+frequency-detection circuitry that cuts off the sync signal if the
+frequency exceeds 15 kHz, preventing catastrophic chassis damage during
+the PC boot sequence.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

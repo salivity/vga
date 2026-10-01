@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA Mode 13h Was Best for Fast 3D Texture Mapping - vga</title>
+    <meta name="description" content="During the early 1990s, PC game developers faced severe hardware constraints while attempting to render real-time 3D worlds on Intel 386 and 486 processors. Video Graphics Array (VGA) Mode 13h emerged as the undisputed standard for groundbreaking titles">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-mode-13-h-was-best-for-fast-3-d-texture-mapping">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA Mode 13h Was Best for Fast 3D Texture Mapping - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-mode-13-h-was-best-for-fast-3-d-texture-mapping" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="During the early 1990s, PC game developers faced severe hardware constraints while attempting to render real-time 3D worlds on Intel 386 and 486 processors. Video Graphics Array (VGA) Mode 13h emerged as the undisputed standard for groundbreaking titles" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-mode-13h-was-best-for-fast-3d-texture-mapping">Why VGA
+Mode 13h Was Best for Fast 3D Texture Mapping</h1>
+<p>During the early 1990s, PC game developers faced severe hardware
+constraints while attempting to render real-time 3D worlds on Intel 386
+and 486 processors. Video Graphics Array (VGA) Mode 13h emerged as the
+undisputed standard for groundbreaking titles like <em>Wolfenstein
+3D</em>, <em>DOOM</em>, and <em>Quake</em>. Developers favored Mode 13h
+because its unique combination of a linear memory layout, single-byte
+pixel representation, and lower resolution drastically reduced CPU
+overhead, making real-time texture mapping computationally feasible on
+consumer hardware.</p>
+<h3 id="linear-memory-architecture">Linear Memory Architecture</h3>
+<p>Standard VGA high-resolution modes, such as Mode 12h (640x480, 16
+colors), relied on planar memory architecture. In planar modes, display
+memory was split across four separate hardware planes, requiring
+developers to write to slow hardware control registers simply to modify
+individual color components of a pixel.</p>
+<p>Mode 13h discarded this complexity by presenting an unchained, flat
+64,000-byte linear framebuffer mapped directly into CPU memory at
+physical address <code>0xA0000</code>. Because 320 multiplied by 200
+equals exactly 64,000 bytes, the entire display fit inside a single 64
+KB real-mode memory segment. Programmers did not need to perform
+expensive segment-register reloads or bank-switching operations to
+traverse the entire screen, allowing code to point directly to display
+memory without hardware paging bottlenecks.</p>
+<h3 id="one-byte-per-pixel-simplicity">One-Byte-Per-Pixel
+Simplicity</h3>
+<p>Mode 13h utilized an 8-bit color depth, delivering 256 colors
+selectable from an 18-bit master palette (262,144 colors). Crucially,
+this meant that exactly one byte in memory corresponded to exactly one
+pixel on the screen.</p>
+<p>For 3D texture mapping, this 1:1 ratio was transformative:</p>
+<ul>
+<li><strong>No Bit-Masking:</strong> Developers did not have to read
+existing memory, mask out specific bits, and write back updated values,
+as was required in 16-color or monochrome modes.</li>
+<li><strong>Direct Register Writes:</strong> A calculated texture pixel
+could be committed to memory with a single assembly instruction, such as
+<code>mov [di], al</code>.</li>
+<li><strong>Simplified Lookup Tables:</strong> Palettes allowed
+developers to implement dynamic lighting and distance-fog shading with
+fast precomputed lookup tables (color lookup tables, or Colormaps) that
+converted an 8-bit texture texel into an illuminated 8-bit screen pixel
+using a single indexed memory read.</li>
+</ul>
+<h3 id="optimized-inner-rendering-loops">Optimized Inner Rendering
+Loops</h3>
+<p>The performance of software-rendered 3D engines was dictated almost
+entirely by the efficiency of their inner texture-mapping loops. In
+affine texture mapping, the engine steps through texture coordinate
+space <span class="math inline">\((U, V)\)</span> as it steps along
+screen coordinates <span class="math inline">\((X, Y)\)</span>.</p>
+<p>Because Mode 13h treated screen memory as a contiguous block of
+bytes, the inner loop for a horizontal scanline or a vertical column
+required nothing more than incrementing a memory pointer. Developers
+wrote tight, hand-tuned assembly loops that kept texture coordinates in
+CPU registers, stepped coordinates using fixed-point math, fetched the
+texel, and stored it linearly. This eliminated branch instructions and
+memory-indexing math from the inner loops, allowing processors with
+single-digit megahertz clock speeds to process millions of pixel updates
+per second.</p>
+<h3 id="reduced-pixel-count-and-fill-rate-economics">Reduced Pixel Count
+and Fill-Rate Economics</h3>
+<p>Texture mapping is a fill-rate-limited process; every additional
+pixel on the screen requires memory bandwidth and mathematical
+interpolation. At 320x200, a frame contained only 64,000 pixels,
+compared to 307,200 pixels at 640x480.</p>
+<p>Early x86 CPUs lacked dedicated graphics processing units, meaning
+the main processor carried the burden of transformation, clipping,
+projection, and rasterization. The modest resolution of Mode 13h struck
+the perfect balance between visual clarity and computational cost,
+lowering the fill-rate requirement by nearly 80 percent compared to
+higher standard resolutions and making real-time 30-frame-per-second 3D
+graphics achievable.</p>
+<h3 id="efficient-double-buffering">Efficient Double-Buffering</h3>
+<p>Rendering complex 3D polygons directly to the active display buffer
+caused severe visual flickering and tearing. To solve this, developers
+used double-buffering: rendering a frame off-screen into system RAM and
+copying it to video memory once complete.</p>
+<p>Because a Mode 13h buffer was only 64,000 bytes, an entire frame
+could fit easily into standard system memory without exhausting the
+tight 640 KB conventional memory limit of MS-DOS. Once rendered, the
+off-screen buffer could be transferred to the VGA framebuffer at
+<code>0xA0000</code> using fast string-copy instructions like
+<code>rep movsw</code> (word copy) or <code>rep movsd</code> (dword copy
+on 386+ processors), completing the entire screen refresh during or
+aligned with the monitor's vertical blanking interval.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

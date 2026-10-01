@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Early ATI and Matrox Cards Output Component Video - vga</title>
+    <meta name="description" content="During the late 1990s and early 2000s, select graphics cards from ATI and Matrox achieved native component (YPbPr) video output without requiring expensive external signal transcoders. This functionality was made possible by flexible, programmable Random">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-early-ati-and-matrox-cards-output-component-video">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Early ATI and Matrox Cards Output Component Video - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-early-ati-and-matrox-cards-output-component-video" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="During the late 1990s and early 2000s, select graphics cards from ATI and Matrox achieved native component (YPbPr) video output without requiring expensive external signal transcoders. This functionality was made possible by flexible, programmable Random" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-early-ati-and-matrox-cards-output-component-video">How Early
+ATI and Matrox Cards Output Component Video</h1>
+<p>During the late 1990s and early 2000s, select graphics cards from ATI
+and Matrox achieved native component (YPbPr) video output without
+requiring expensive external signal transcoders. This functionality was
+made possible by flexible, programmable Random Access Memory
+Digital-to-Analog Converters (RAMDACs), integrated hardware color-space
+conversion matrices, and dedicated video encoders capable of embedding
+sync signals directly into analog video channels.</p>
+<h3 id="the-difference-between-vga-and-component-signals">The Difference
+Between VGA and Component Signals</h3>
+<p>Standard Video Graphics Array (VGA) interfaces transmit video using
+five separate lines: Red, Green, Blue, Horizontal Sync, and Vertical
+Sync (RGBHV). In contrast, analog component video (YPbPr) requires three
+lines: luma with embedded synchronization (Y), blue-difference (Pb), and
+red-difference (Pr). Because consumer high-definition televisions and
+high-end projectors of that era relied heavily on YPbPr RCA inputs,
+standard VGA signals could not be displayed on them without converting
+both the color format and the sync delivery.</p>
+<h3 id="programmable-ramdacs-and-color-space-conversion">Programmable
+RAMDACs and Color Space Conversion</h3>
+<p>To bridge this gap at the hardware level, ATI and Matrox incorporated
+hardware-level color-space conversion (CSC) logic directly into the
+graphics processing pipeline before the digital signal reached the
+analog stage.</p>
+<p>Instead of routing pure RGB values to the digital-to-analog
+converters, the graphics processor used hardware matrix multipliers to
+dynamically calculate YPbPr values from the source RGB frame buffer. The
+RAMDACs were designed with programmable output stages, allowing the red,
+green, and blue pins of a standard VGA or DVI-I port to be remapped to
+output Pr, Y, and Pb signals respectively.</p>
+<h3 id="sync-on-y-and-tri-level-sync-generation">Sync-on-Y and Tri-Level
+Sync Generation</h3>
+<p>A critical hardware obstacle in driving YPbPr displays was
+synchronization. While VGA isolates horizontal and vertical timing onto
+separate digital pins, component video requires synchronization pulses
+to be embedded directly into the luminance (Y) channel.</p>
+<p>Early ATI (such as the Radeon 7000, 8500, and 9000 series) and Matrox
+hardware featured timing controllers capable of multiplexing sync pulses
+into the green/luma DAC channel. For standard-definition resolutions
+(480i), the hardware generated negative-going bi-level sync pulses. For
+high-definition formats (480p, 720p, and 1080i), the hardware
+controllers supported tri-level synchronization, which was required by
+modern HDTV standards to maintain stable timing without color
+distortion.</p>
+<h3 id="dedicated-video-encoders-and-detection-adapters">Dedicated Video
+Encoders and Detection Adapters</h3>
+<p>In addition to programmable primary display engines, both
+manufacturers developed proprietary companion hardware to facilitate
+this output:</p>
+<ul>
+<li><strong>Matrox MAVEN:</strong> Matrox deployed the Matrox Video
+ENcoder (MAVEN) chip on cards like the Millennium G400 series. The MAVEN
+chip served as a secondary, fully independent hardware encoder capable
+of processing DVD-quality downscaling, flicker filtering, and native
+YPbPr component output via custom breakout cables.</li>
+<li><strong>ATI DDC Detection and Adapters:</strong> ATI designed
+passive and semi-active dongles (such as the ATI HDTV Component Video
+Adapter). The graphics card read an onboard EEPROM or resistor
+configuration over the I2C Display Data Channel (DDC) pins on the VGA or
+DVI-I connector. Once the adapter was identified, the graphics driver
+instructed the GPU's display controller to switch its internal DAC
+routing from RGBHV mode to YPbPr component mode.</li>
+</ul>
+<p>By handling color-space conversion, pin remapping, and sync injection
+entirely inside the GPU and its encoder architecture, early ATI and
+Matrox cards provided clean, high-bandwidth component video output using
+inexpensive passive adapters rather than active converters.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

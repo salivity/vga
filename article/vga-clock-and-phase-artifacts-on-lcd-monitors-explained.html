@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Clock and Phase Artifacts on LCD Monitors Explained - vga</title>
+    <meta name="description" content="Connecting an LCD monitor to a computer using an analog Video Graphics Array (VGA) cable often results in distracting visual noise, such as pixel shimmering, fuzzy text, and vertical banding. This phenomenon occurs because of the fundamental incompatibil">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-clock-and-phase-artifacts-on-lcd-monitors-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Clock and Phase Artifacts on LCD Monitors Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-clock-and-phase-artifacts-on-lcd-monitors-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Connecting an LCD monitor to a computer using an analog Video Graphics Array (VGA) cable often results in distracting visual noise, such as pixel shimmering, fuzzy text, and vertical banding. This phenomenon occurs because of the fundamental incompatibil" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-clock-and-phase-artifacts-on-lcd-monitors-explained">VGA
+Clock and Phase Artifacts on LCD Monitors Explained</h1>
+<p>Connecting an LCD monitor to a computer using an analog Video
+Graphics Array (VGA) cable often results in distracting visual noise,
+such as pixel shimmering, fuzzy text, and vertical banding. This
+phenomenon occurs because of the fundamental incompatibility between
+continuous analog signals and discrete digital pixel grids, requiring
+the monitor's internal Analog-to-Digital Converter (ADC) to precisely
+reconstruct the incoming image. When the monitor’s internal sampling
+frequency or timing deviates even slightly from the graphics card’s
+output, clock and phase artifacts appear on the screen.</p>
+<h3 id="the-core-problem-analog-to-digital-conversion">The Core Problem:
+Analog-to-Digital Conversion</h3>
+<p>Cathode Ray Tube (CRT) monitors were purely analog devices that swept
+an electron beam continuously across a phosphor screen, rendering the
+exact timing of individual pixel transitions relatively forgiving.
+Liquid Crystal Displays (LCDs), by contrast, consist of a rigid matrix
+of physical pixels with fixed coordinates.</p>
+<p>When a graphics card outputs a VGA signal, it converts digital frame
+data into an analog voltage waveform using a Digital-to-Analog Converter
+(DAC). The LCD monitor must then perform the reverse process using an
+ADC to sample this continuous voltage stream and map it back into
+individual, discrete pixel values. If this sampling is not perfectly
+synchronized in both rate (clock) and timing (phase), artifacts become
+visible.</p>
+<h3 id="clock-mismatch-and-vertical-banding">Clock Mismatch and Vertical
+Banding</h3>
+<p>The "clock" parameter determines the total number of samples the
+monitor takes across a single horizontal scanline. This includes not
+only the visible horizontal resolution (such as 1920 pixels) but also
+the non-visible blanking intervals dictated by the video timing
+standard.</p>
+<p>If the monitor's internal clock does not match the exact pixel clock
+generated by the graphics card, the sampling rate drifts:</p>
+<ul>
+<li><strong>Under-sampling:</strong> The monitor samples too few times
+per line, causing it to periodically miss pixels.</li>
+<li><strong>Over-sampling:</strong> The monitor samples too frequently,
+duplicating pixels.</li>
+</ul>
+<p>This frequency mismatch produces distinct, wide vertical bands or
+shimmering stripes across the display. In these bands, details appear
+stretched or compressed, and any high-contrast pattern—such as
+alternating single-pixel black and white lines—will display noticeable
+interference patterns resembling a moiré effect.</p>
+<h3 id="phase-misalignment-and-shimmering-noise">Phase Misalignment and
+Shimmering Noise</h3>
+<p>Even when the monitor's clock frequency accurately matches the
+graphics card's pixel clock, the samples must be taken at the precise
+moment each pixel’s voltage is stable. This timing offset is the
+"phase."</p>
+<p>An analog video signal does not instantly jump from one color or
+brightness value to another; the voltage requires a brief fraction of a
+nanosecond to rise or fall between adjacent pixels. Consequently, each
+pixel window consists of:</p>
+<ol type="1">
+<li>An unstable transition period (rise/fall time).</li>
+<li>A stable plateau representing the true color/brightness value.</li>
+</ol>
+<p>Phase adjustments shift the exact sampling instant forward or
+backward in time within the pixel window. If the phase is properly
+aligned, the ADC samples the signal dead-center on the stable plateau.
+If the phase is misaligned, the ADC samples the signal during the
+voltage transition. Because this transition region is volatile and
+subject to electrical noise, the ADC fluctuates between adjacent
+brightness values from frame to frame. This manifests as fine,
+high-frequency "fuzziness" or shimmering, most visible around text
+edges, high-contrast borders, and dithered backgrounds.</p>
+<h3 id="why-digital-connections-eliminate-the-issue">Why Digital
+Connections Eliminate the Issue</h3>
+<p>Modern digital interfaces, such as DVI, HDMI, and DisplayPort,
+transmit image data as discrete numerical values using high-speed
+digital protocols. Because the monitor receives exact binary numbers for
+each sub-pixel rather than a continuous voltage that must be
+re-digitized, there is no analog sampling stage. As a result, clock
+drift, phase misalignment, and the resulting shimmering artifacts are
+completely eliminated on digital connections.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

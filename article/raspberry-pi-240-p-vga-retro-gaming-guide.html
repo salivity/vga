@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspberry Pi 240p VGA Retro Gaming Guide - vga</title>
+    <meta name="description" content="A Raspberry Pi can natively output an authentic 240p video signal over a Video Graphics Array (VGA) interface using its GPIO pins and passive or active digital-to-analog adapters. By utilizing the Raspberry Pi's internal Display Parallel Interface (DPI),">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/raspberry-pi-240-p-vga-retro-gaming-guide">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Raspberry Pi 240p VGA Retro Gaming Guide - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/raspberry-pi-240-p-vga-retro-gaming-guide" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="A Raspberry Pi can natively output an authentic 240p video signal over a Video Graphics Array (VGA) interface using its GPIO pins and passive or active digital-to-analog adapters. By utilizing the Raspberry Pi's internal Display Parallel Interface (DPI)," />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="raspberry-pi-240p-vga-retro-gaming-guide">Raspberry Pi 240p VGA
+Retro Gaming Guide</h1>
+<p>A Raspberry Pi can natively output an authentic 240p video signal
+over a Video Graphics Array (VGA) interface using its GPIO pins and
+passive or active digital-to-analog adapters. By utilizing the Raspberry
+Pi's internal Display Parallel Interface (DPI), users can bypass modern
+digital scaling and HDMI conversion to send a true 15kHz progressive
+scan signal directly to CRT monitors, arcade chassis, and consumer
+televisions. This setup delivers original scanlines, eliminates motion
+artifacts, and reduces input latency for classic console and arcade
+emulation.</p>
+<h2 id="how-240p-over-vga-works">How 240p Over VGA Works</h2>
+<p>Standard HDMI ports on modern hardware do not natively support
+low-frequency analog resolutions like 240p (roughly 320x240 at 60Hz with
+a 15kHz horizontal scan rate). However, the Raspberry Pi's 40-pin GPIO
+header can be repurposed into a parallel RGB display interface
+(DPI).</p>
+<p>By attaching an adapter—such as the open-source Gert VGA 666, an
+RGB-Pi cable, or a Pi2SCART board—the digital color signals from the
+GPIO pins pass through a resistor ladder digital-to-analog converter
+(DAC). This produces a standard analog RGBHV signal transmitted through
+a VGA (D-Sub 15) connector.</p>
+<h2 id="display-compatibility-15khz-vs-31khz">Display Compatibility:
+15kHz vs. 31kHz</h2>
+<p>When outputting 240p over a standard VGA port, the display device
+must support the proper sync frequencies:</p>
+<ul>
+<li><strong>Consumer CRT TVs and Arcade Monitors (15kHz):</strong>
+Classic 240p requires a 15kHz horizontal refresh rate. Standard consumer
+PC VGA monitors will not sync to this low frequency (they typically
+require at least 31kHz for 480p). To display 240p from the Pi's VGA port
+on a consumer CRT, the signal usually needs to be routed to a display
+that accepts 15kHz RGB, such as a Sony PVM/BVM (via BNC), an arcade
+monitor, or a European CRT TV (via a VGA-to-SCART cable).</li>
+<li><strong>Multisync PC CRT Monitors:</strong> Certain rare PC CRT
+monitors can scan down to 15kHz natively over standard VGA cables.</li>
+<li><strong>Standard 31kHz PC CRTs:</strong> If using a common PC CRT,
+the Pi can alternatively output 480p at 60Hz or 120Hz with simulated
+scanlines, or double-scan lines to achieve a similar retro
+aesthetic.</li>
+</ul>
+<h2 id="hardware-requirements">Hardware Requirements</h2>
+<p>To set up a 240p VGA configuration, the following hardware is
+needed:</p>
+<ol type="1">
+<li><strong>Raspberry Pi:</strong> A model with a 40-pin GPIO header
+(Raspberry Pi 2, 3, 4, or Zero).</li>
+<li><strong>DPI-to-VGA Adapter:</strong> A Gert VGA 666 board or a
+dedicated retro gaming adapter designed for your specific display
+target.</li>
+<li><strong>Target CRT Display:</strong> A monitor or television capable
+of accepting a 15kHz RGB signal.</li>
+<li><strong>Appropriate Cabling:</strong> A standard VGA cable,
+VGA-to-BNC breakout cable, or VGA-to-SCART cable depending on the video
+inputs of the CRT.</li>
+</ol>
+<h2 id="software-configuration">Software Configuration</h2>
+<p>To enable the VGA output and force the 240p resolution, edit the
+<code>config.txt</code> file located in the boot partition of the
+Raspberry Pi's operating system (such as RetroPie or Lakka).</p>
+<p>Add the following base parameters to enable the DPI interface and
+load the VGA adapter overlay:</p>
+<pre class="text"><code>dtoverlay=vga666
+enable_dpi_lcd=1
+display_default_lcd=1
+dpi_group=2
+dpi_mode=87</code></pre>
+<p>Next, define the custom modeline using the <code>dpi_timings</code>
+parameter to generate a 320x240 progressive signal at 60Hz with a
+15.7kHz horizontal frequency:</p>
+<pre class="text"><code>dpi_timings=320 1 20 28 36 240 1 3 3 16 0 0 0 60 0 6400000 1</code></pre>
+<p>Once configured and rebooted, the Raspberry Pi will route all video
+through the GPIO pins directly to the VGA port, completely disabling the
+HDMI output and providing an authentic, zero-scale retro gaming
+signal.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

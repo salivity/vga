@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Pinout: Which Pin Carries the Blue Signal? - vga</title>
+    <meta name="description" content="This guide identifies the specific pin responsible for the blue analog video signal on a standard 15-pin DE-15 Video Graphics Array (VGA) connector. In addition to pinpointing the exact signal line, this article covers its dedicated ground return pin, si">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-pinout-which-pin-carries-the-blue-signal">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Pinout: Which Pin Carries the Blue Signal? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-pinout-which-pin-carries-the-blue-signal" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This guide identifies the specific pin responsible for the blue analog video signal on a standard 15-pin DE-15 Video Graphics Array (VGA) connector. In addition to pinpointing the exact signal line, this article covers its dedicated ground return pin, si" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-pinout-which-pin-carries-the-blue-signal">VGA Pinout: Which
+Pin Carries the Blue Signal?</h1>
+<p>This guide identifies the specific pin responsible for the blue
+analog video signal on a standard 15-pin DE-15 Video Graphics Array
+(VGA) connector. In addition to pinpointing the exact signal line, this
+article covers its dedicated ground return pin, signal specifications,
+and the primary RGB layout found on standard VGA interfaces.</p>
+<h2 id="the-blue-video-signal-pin-3">The Blue Video Signal: Pin 3</h2>
+<p>On a standard female or male DE-15 connector (commonly referred to
+simply as a VGA connector), <strong>Pin 3</strong> carries the analog
+blue video signal (often designated as PB or
+RED/GREEN/<strong>BLUE</strong>).</p>
+<p>Like the red (Pin 1) and green (Pin 2) channels, Pin 3 transmits an
+analog voltage typically ranging from 0 to 0.7 volts peak-to-peak into a
+75-ohm load. Variations within this voltage range dictate the intensity
+of the blue color displayed on the monitor.</p>
+<h2 id="the-dedicated-blue-ground-pin-8">The Dedicated Blue Ground: Pin
+8</h2>
+<p>High-frequency analog video signals require shielding and individual
+ground returns to prevent crosstalk and image ghosting.</p>
+<ul>
+<li><strong>Signal:</strong> Pin 3 (Blue Video)</li>
+<li><strong>Ground Return:</strong> Pin 8 (Blue Ground)</li>
+</ul>
+<p>Pin 8 serves as the specific coaxial shield ground return for the
+blue signal line. When wiring or troubleshooting a VGA cable, continuity
+between the shield of the blue internal coaxial wire and Pin 8 is
+critical for signal integrity.</p>
+<h2 id="primary-video-pin-overview">Primary Video Pin Overview</h2>
+<p>The top row of the three-row DE-15 connector handles the primary
+color components:</p>
+<ul>
+<li><strong>Pin 1:</strong> Red Video (Analog)</li>
+<li><strong>Pin 2:</strong> Green Video (Analog)</li>
+<li><strong>Pin 3:</strong> Blue Video (Analog)</li>
+<li><strong>Pin 6:</strong> Red Ground</li>
+<li><strong>Pin 7:</strong> Green Ground</li>
+<li><strong>Pin 8:</strong> Blue Ground</li>
+</ul>
+<p>If Pin 3 is damaged, bent, or disconnected, the display will lose all
+blue color information, causing the image to appear heavily tinted with
+yellow.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

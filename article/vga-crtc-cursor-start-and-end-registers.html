@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA CRTC Cursor Start and End Registers - vga</title>
+    <meta name="description" content="In IBM VGA-compatible hardware, the vertical size, position, and visibility of the hardware text-mode cursor are determined by two dedicated registers within the Cathode Ray Tube Controller (CRTC): the Cursor Start Register (Index 0Ah) and the Cursor End">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-crtc-cursor-start-and-end-registers">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA CRTC Cursor Start and End Registers - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-crtc-cursor-start-and-end-registers" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In IBM VGA-compatible hardware, the vertical size, position, and visibility of the hardware text-mode cursor are determined by two dedicated registers within the Cathode Ray Tube Controller (CRTC): the Cursor Start Register (Index 0Ah) and the Cursor End" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-crtc-cursor-start-and-end-registers">VGA CRTC Cursor Start
+and End Registers</h1>
+<p>In IBM VGA-compatible hardware, the vertical size, position, and
+visibility of the hardware text-mode cursor are determined by two
+dedicated registers within the Cathode Ray Tube Controller (CRTC): the
+Cursor Start Register (Index 0Ah) and the Cursor End Register (Index
+0Bh). This article explains how these two registers work together to
+define the cursor's starting and ending scan lines, their exact bit
+layouts, and how to access and modify them using low-level I/O
+ports.</p>
+<h3 id="accessing-crtc-registers">Accessing CRTC Registers</h3>
+<p>The CRTC registers are accessed indirectly via an index and data port
+pair. The exact I/O port addresses depend on whether the display adapter
+is configured for monochrome or color emulation:</p>
+<ul>
+<li><strong>Color Mode (Standard):</strong> Address/Index port is
+<code>0x3D4</code>, and Data port is <code>0x3D5</code>.</li>
+<li><strong>Monochrome Mode:</strong> Address/Index port is
+<code>0x3B4</code>, and Data port is <code>0x3B5</code>.</li>
+</ul>
+<p>To modify either the Cursor Start or Cursor End scan line, the
+programmer first writes the target index (<code>0x0A</code> or
+<code>0x0B</code>) to port <code>0x3D4</code> (or <code>0x3B4</code>),
+followed by the value byte to port <code>0x3D5</code> (or
+<code>0x3B5</code>).</p>
+<h3 id="cursor-start-register-index-0ah">Cursor Start Register (Index
+0Ah)</h3>
+<p>The Cursor Start Register controls the top scan line of the cursor
+within a character cell, as well as cursor visibility. Its bit layout is
+defined as follows:</p>
+<ul>
+<li><strong>Bits 0–4 (Cursor Start Scan Line):</strong> Specifies the
+vertical scan line coordinate (from 0 to 31) where the cursor begins
+drawing within the character cell.</li>
+<li><strong>Bit 5 (Cursor Disable):</strong> Controls cursor visibility.
+Setting this bit to <code>1</code> hides (disables) the cursor entirely,
+while setting it to <code>0</code> enables normal display.</li>
+<li><strong>Bits 6–7:</strong> Reserved.</li>
+</ul>
+<h3 id="cursor-end-register-index-0bh">Cursor End Register (Index
+0Bh)</h3>
+<p>The Cursor End Register defines the bottom scan line of the cursor
+and cursor skew timing. Its bit layout is:</p>
+<ul>
+<li><strong>Bits 0–4 (Cursor End Scan Line):</strong> Specifies the
+vertical scan line coordinate (from 0 to 31) where the cursor stops
+drawing. The line indicated by this value is included in the drawn
+cursor.</li>
+<li><strong>Bits 5–6 (Cursor Skew):</strong> Controls the delay of the
+cursor signal in character clock units to compensate for internal
+display pipeline delays. This is typically set to <code>00b</code> in
+standard modes.</li>
+<li><strong>Bit 7:</strong> Reserved.</li>
+</ul>
+<h3 id="scan-line-operation-and-shaping">Scan Line Operation and
+Shaping</h3>
+<p>A character matrix in standard VGA text modes (such as 80x25 mode) is
+typically 16 scan lines high, indexed from scan line 0 (top) to scan
+line 15 (bottom).</p>
+<ul>
+<li><strong>Underline Cursor:</strong> Setting the Cursor Start scan
+line to 14 and the Cursor End scan line to 15 produces a standard
+two-line underline cursor at the bottom of the character block.</li>
+<li><strong>Full-Block Cursor:</strong> Setting the Cursor Start scan
+line to 0 and the Cursor End scan line to 15 fills the entire character
+cell.</li>
+<li><strong>Wrap-Around Behavior:</strong> If the Cursor Start value is
+greater than the Cursor End value, the VGA hardware splits the cursor
+into two segments—one extending from the start scan line down to the
+bottom of the character box, and another wrapping around from scan line
+0 down to the end scan line.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

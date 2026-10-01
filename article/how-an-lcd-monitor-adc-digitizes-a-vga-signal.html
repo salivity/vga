@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How an LCD Monitor ADC Digitizes a VGA Signal - vga</title>
+    <meta name="description" content="Liquid Crystal Displays (LCDs) are inherently digital devices, yet legacy video interfaces like Video Graphics Array (VGA) transmit video as continuous analog waveforms. To display a VGA source on a modern panel, an LCD monitor uses a specialized analog-">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-an-lcd-monitor-adc-digitizes-a-vga-signal">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How an LCD Monitor ADC Digitizes a VGA Signal - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-an-lcd-monitor-adc-digitizes-a-vga-signal" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Liquid Crystal Displays (LCDs) are inherently digital devices, yet legacy video interfaces like Video Graphics Array (VGA) transmit video as continuous analog waveforms. To display a VGA source on a modern panel, an LCD monitor uses a specialized analog-" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-an-lcd-monitor-adc-digitizes-a-vga-signal">How an LCD
+Monitor ADC Digitizes a VGA Signal</h1>
+<p>Liquid Crystal Displays (LCDs) are inherently digital devices, yet
+legacy video interfaces like Video Graphics Array (VGA) transmit video
+as continuous analog waveforms. To display a VGA source on a modern
+panel, an LCD monitor uses a specialized analog-to-digital converter
+(ADC)—often integrated into a scalar chip—to sample incoming analog
+color voltages and synchronization pulses, converting them into precise
+digital binary values that control individual pixels. This conversion
+process relies on rapid clock synchronization, voltage sampling, and
+quantization across red, green, and blue color channels.</p>
+<h3 id="the-components-of-a-vga-signal">The Components of a VGA
+Signal</h3>
+<p>A standard VGA cable carries separate analog voltages for the three
+primary color channels: Red, Green, and Blue (RGB). These color signals
+typically vary continuously between 0 volts (complete black) and 0.7
+volts (full brightness). Alongside these color lines are two digital
+timing signals: Horizontal Sync (H-Sync), which marks the end of a line
+of pixels, and Vertical Sync (V-Sync), which marks the end of a complete
+frame. Because these color lines are continuous waves rather than
+discrete data points, the monitor must interpret where each individual
+pixel starts and ends.</p>
+<h3 id="clock-generation-and-synchronization">Clock Generation and
+Synchronization</h3>
+<p>Before sampling can occur, the monitor's processing unit must
+accurately determine the timing of the incoming pixels. It uses an
+internal circuit called a Phase-Locked Loop (PLL) locked to the incoming
+H-Sync signal.</p>
+<p>The PLL multiplies the frequency of the H-Sync pulse to match the
+estimated pixel clock of the incoming video resolution (for example,
+approximately 25.175 MHz for standard 640x480 at 60Hz, or 108 MHz for
+1280x1024). The monitor also adjusts "phase," which fine-tunes the exact
+instant the ADC reads the voltage during each pixel's duration. If the
+phase or clock is mistimed, the resulting image appears blurry, noisy,
+or displays vertical banding.</p>
+<h3 id="sampling-and-quantization">Sampling and Quantization</h3>
+<p>Once the pixel clock is synchronized, the signal reaches the ADC,
+which typically consists of three synchronized, high-speed flash
+ADCs—one dedicated to each color channel (Red, Green, and Blue).</p>
+<ol type="1">
+<li><strong>Sampling:</strong> At every pulse of the pixel clock, the
+ADC takes a momentary snapshot of the incoming analog voltage on each
+channel.</li>
+<li><strong>Quantization:</strong> The ADC compares this instantaneous
+voltage to internal reference levels. In most monitors, an 8-bit ADC is
+used for each channel, providing <span
+class="math inline">\(2^8\)</span> (256) discrete levels of intensity.
+An incoming voltage of 0.0V maps to digital <code>00000000</code> (0),
+while the maximum 0.7V maps to digital <code>11111111</code> (255).
+Intermediate voltages are rounded to the nearest discrete step.</li>
+</ol>
+<p>By quantizing the three 8-bit channels concurrently, the ADC produces
+a 24-bit digital color value for each pixel clock cycle, allowing for
+roughly 16.7 million possible colors.</p>
+<h3 id="scaling-and-frame-buffering">Scaling and Frame Buffering</h3>
+<p>The raw stream of digital pixel data output by the ADC rarely matches
+the physical grid of the LCD panel, as LCDs have a fixed native
+resolution. The digitized pixel stream is fed into the monitor's image
+scalar processor. The scalar stores the digitized lines in an internal
+memory buffer (frame buffer) and applies interpolation algorithms to
+scale the image up or down to fit the native matrix of the display.</p>
+<h3 id="transmission-to-the-lcd-panel">Transmission to the LCD
+Panel</h3>
+<p>Once scaled and aligned with the panel's native timing, the processed
+digital values are serialized and sent directly to the display’s column
+and row drivers, typically using internal digital interfaces such as
+Low-Voltage Differential Signaling (LVDS) or embedded DisplayPort (eDP).
+The driver circuits then apply the appropriate voltages to the liquid
+crystal sub-pixels, allowing the correct amount of backlight to pass
+through and recreating the original analog VGA image as a sharp digital
+picture.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

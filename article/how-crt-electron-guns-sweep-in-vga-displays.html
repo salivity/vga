@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How CRT Electron Guns Sweep in VGA Displays - vga</title>
+    <meta name="description" content="A Cathode Ray Tube (CRT) monitor running a Video Graphics Array (VGA) interface draws images by sweeping focused beams of electrons horizontally and vertically across a phosphor-coated glass faceplate. Controlled by electromagnetic coils known as the def">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-crt-electron-guns-sweep-in-vga-displays">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How CRT Electron Guns Sweep in VGA Displays - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-crt-electron-guns-sweep-in-vga-displays" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="A Cathode Ray Tube (CRT) monitor running a Video Graphics Array (VGA) interface draws images by sweeping focused beams of electrons horizontally and vertically across a phosphor-coated glass faceplate. Controlled by electromagnetic coils known as the def" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-crt-electron-guns-sweep-in-vga-displays">How CRT Electron
+Guns Sweep in VGA Displays</h1>
+<p>A Cathode Ray Tube (CRT) monitor running a Video Graphics Array (VGA)
+interface draws images by sweeping focused beams of electrons
+horizontally and vertically across a phosphor-coated glass faceplate.
+Controlled by electromagnetic coils known as the deflection yoke, the
+electron beams scan line-by-line from left to right and top to bottom in
+a continuous raster pattern. This movement is strictly governed by
+analog VGA horizontal and vertical synchronization pulses, translating
+electrical signals from a graphics card into real-time physical beam
+trajectories that generate a visible progressive display.</p>
+<h3 id="the-role-of-the-electron-gun-and-deflection-yoke">The Role of
+the Electron Gun and Deflection Yoke</h3>
+<p>The base of a color CRT contains three electron guns (one for each
+primary color: red, green, and blue). Heated cathodes emit electrons
+through thermionic emission, which are then focused into tight beams and
+accelerated by high positive voltage toward the screen's anode.</p>
+<p>Before reaching the screen, the beams pass through the deflection
+yoke positioned on the neck of the CRT. The yoke contains two
+independent sets of copper electromagnetic coils: one for horizontal
+deflection and one for vertical deflection. Passing an electric current
+through these coils generates magnetic fields that bend the path of the
+negatively charged electrons via the Lorentz force.</p>
+<h3 id="horizontal-sweeping">Horizontal Sweeping</h3>
+<p>The horizontal sweep draws individual scan lines across the
+screen.</p>
+<ol type="1">
+<li><strong>Active Trace (Left to Right):</strong> A linearly ramping
+"sawtooth" electric current passes through the horizontal deflection
+coils. As current increases, the magnetic field strength changes
+smoothly, pushing the electron beams horizontally from the far-left edge
+of the visible screen to the far-right edge. As the beams travel,
+varying analog voltages on the VGA red, green, and blue pins modulate
+the beam intensity, illuminating phosphors at different brightness
+levels to draw pixels.</li>
+<li><strong>Horizontal Blanking and Retrace (Right to Left):</strong>
+Once the beam reaches the right edge, the graphics adapter sends a
+Horizontal Sync (HSync) pulse. The deflection circuit rapidly reverses
+the current, snapping the beam back to the left edge of the screen—a
+process called horizontal retrace or flyback. During this brief transit,
+the electron gun is switched off (horizontal blanking) so no visible
+line is drawn backward across the display.</li>
+</ol>
+<p>In standard VGA mode (640x480 resolution at 60 Hz), the horizontal
+sweep operates at a frequency of approximately 31.468 kHz. This means
+the beam executes over 31,400 horizontal sweeps every second, completing
+one full scan line in roughly 31.77 microseconds.</p>
+<h3 id="vertical-sweeping">Vertical Sweeping</h3>
+<p>While the horizontal coils sweep the beam rapidly across the screen,
+the vertical deflection coils slowly pull the beam downward.</p>
+<ol type="1">
+<li><strong>Vertical Downward Trace:</strong> A secondary, much slower
+sawtooth current feeds the vertical deflection coils. This field
+steadily shifts the horizontal sweep lines downward, one after another,
+creating a tight stack of parallel lines that form a full frame
+(raster).</li>
+<li><strong>Vertical Blanking and Retrace:</strong> After the beam
+finishes drawing the bottom-most line (line 480 in standard VGA), the
+graphics card sends a Vertical Sync (VSync) pulse. The vertical circuit
+quickly collapses and reverses its magnetic field, returning the beam to
+the top-left corner of the display. Just like horizontal retrace, the
+beam is blanked during this vertical retrace period to prevent visible
+diagonal lines across the image.</li>
+</ol>
+<p>In a standard 60 Hz VGA setup, the vertical sweep repeats 60 times
+per second, drawing 525 total lines per frame (480 visible active lines
+plus 45 blanked lines reserved for timing stabilization and vertical
+retrace).</p>
+<h3 id="vga-synchronization">VGA Synchronization</h3>
+<p>A standard VGA connection uses separate physical lines for Horizontal
+Sync (pin 13) and Vertical Sync (pin 14). Unlike older composite video
+systems where synchronization signals were combined with video
+information, standard VGA feeds discrete TTL timing pulses to the
+monitor's internal deflection circuitry.</p>
+<p>These sync pulses act as precise triggers for the flyback circuits.
+The HSync pulse signals the horizontal oscillator to initiate flyback to
+the left, while the VSync pulse triggers the vertical oscillator to
+reset to the top. By locking the sawtooth magnetic deflection to these
+incoming pulses, the monitor ensures that the beam lands on the correct
+phosphor dot at the exact microsecond the graphics card transmits the
+corresponding RGB color voltages.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intel Extreme Graphics and Legacy VGA Emulation - vga</title>
+    <meta name="description" content="Intel Extreme Graphics was an integrated graphics solution introduced by Intel in the early 2000s to provide cost-effective display capabilities for mainstream desktop and mobile computers. This article explores the architecture of Intel Extreme Graphics">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/intel-extreme-graphics-and-legacy-vga-emulation">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Intel Extreme Graphics and Legacy VGA Emulation - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/intel-extreme-graphics-and-legacy-vga-emulation" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Intel Extreme Graphics was an integrated graphics solution introduced by Intel in the early 2000s to provide cost-effective display capabilities for mainstream desktop and mobile computers. This article explores the architecture of Intel Extreme Graphics" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="intel-extreme-graphics-and-legacy-vga-emulation">Intel Extreme
+Graphics and Legacy VGA Emulation</h1>
+<p>Intel Extreme Graphics was an integrated graphics solution introduced
+by Intel in the early 2000s to provide cost-effective display
+capabilities for mainstream desktop and mobile computers. This article
+explores the architecture of Intel Extreme Graphics and examines the
+hardware and firmware mechanisms it used to emulate legacy Video
+Graphics Array (VGA) functionality, ensuring backward compatibility with
+older operating systems and real-mode environments.</p>
+<h3 id="what-was-intel-extreme-graphics">What Was Intel Extreme
+Graphics?</h3>
+<p>Debuting with chipsets like the Intel 845G and later the 865G series,
+Intel Extreme Graphics (and its successor, Extreme Graphics 2) was an
+integrated graphics processor (IGP) embedded directly into the
+motherboard's Memory Controller Hub (MCH), also known as the
+Northbridge. Rather than utilizing expensive dedicated video memory
+(VRAM), the architecture pioneered Dynamic Video Memory Technology
+(DVMT). DVMT dynamically allocated a portion of system RAM for graphics
+tasks, scaling memory consumption based on the needs of the operating
+system and applications. While targeted at productivity tasks, digital
+media playback, and entry-level 3D acceleration, the architecture needed
+to maintain strict compatibility with the broader x86 hardware
+ecosystem.</p>
+<h3 id="the-challenge-of-legacy-vga-support">The Challenge of Legacy VGA
+Support</h3>
+<p>Modern operating systems rely on protected-mode display drivers, but
+the PC boot process, BIOS setup utilities, and older operating systems
+such as MS-DOS require standard IBM VGA compatibility. Legacy VGA
+hardware depends on fixed memory spaces—specifically
+<code>0xA0000</code> through <code>0xBFFFF</code>—and fixed I/O port
+addresses between <code>0x3B0</code> and <code>0x3DF</code>. Because
+integrated graphics cores operate across modern bus architectures like
+internal AGP or PCI interfaces using flat memory addressing, they cannot
+natively execute legacy code without dedicated compatibility
+hardware.</p>
+<h3 id="hardware-register-and-bus-decoding">Hardware Register and Bus
+Decoding</h3>
+<p>To emulate legacy VGA, Intel integrated dedicated decoding logic
+directly into the chipset's memory controller. When the system booted
+into real mode, the host bridge monitored the processor bus for
+transactions directed toward the legacy VGA I/O and memory spaces.</p>
+<p>Instead of routing these requests out to external expansion buses,
+the internal decoder trapped accesses to the standard VGA range
+(<code>0xA0000–0xBFFFF</code>) and redirected them to the system memory
+pre-allocated for the graphics core's frame buffer. Similarly, reads and
+writes to legacy I/O ports were forwarded directly to the integrated
+core's legacy execution logic.</p>
+<h3 id="hardware-level-compatibility-logic">Hardware-Level Compatibility
+Logic</h3>
+<p>Intel Extreme Graphics did not emulate VGA purely through software
+virtualization. Instead, it incorporated the classic IBM VGA register
+architecture in hardware. The graphics core implemented:</p>
+<ul>
+<li><strong>Standard Register Blocks:</strong> Hardware registers
+corresponding to the standard VGA Sequencer, Cathode Ray Tube Controller
+(CRTC), Graphics Controller, and Attribute Controller.</li>
+<li><strong>Palette Compatibility:</strong> A dedicated hardware Color
+Look-Up Table (CLUT) that mirrored the legacy 256-color DAC
+(Digital-to-Analog Converter) palette registers.</li>
+<li><strong>Plane and Banking Logic:</strong> Support for traditional
+planar memory configurations (such as Mode 12h and Mode 13h),
+translating 4-plane bitmapped operations into writes within the unified
+system RAM.</li>
+</ul>
+<h3 id="video-bios-vbios-integration">Video BIOS (VBIOS)
+Integration</h3>
+<p>Software-level interaction was managed through the Intel Video BIOS
+(VBIOS), which was integrated directly into the system's motherboard
+BIOS ROM. During the Power-On Self-Test (POST), the system initialized
+this VBIOS, establishing the standard real-mode interrupt handler
+(<code>INT 10h</code>).</p>
+<p>The VBIOS translated high-level video requests—such as switching to
+standard text mode (Mode 03h) or setting display resolutions—into
+low-level register states within the Intel Extreme Graphics hardware.
+This ensured that boot loaders, diagnostic tools, and legacy operating
+systems interacted with the display adapter as if it were a physical IBM
+VGA card.</p>
+<h3 id="transition-to-native-modes">Transition to Native Modes</h3>
+<p>Legacy emulation remained active until a modern operating system
+initialized its native graphics driver. Once the Intel graphics driver
+loaded, the system disabled legacy I/O and memory trapping,
+transitioning the core into native mode. In native mode, the GPU relied
+on Memory-Mapped I/O (MMIO) and modern flat linear framebuffers, leaving
+legacy VGA emulation dormant until the next system reboot or text-mode
+event.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

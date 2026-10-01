@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Circuit for 640x480 VGA Sync Signal - vga</title>
+    <meta name="description" content="Generating a stable 640x480 Video Graphics Array (VGA) synchronization signal requires producing precise horizontal (HSync) and vertical (VSync) timing pulses that conform to standard display timings. While discrete logic architectures require multiple c">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/minimal-circuit-for-640-x-480-vga-sync-signal">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Minimal Circuit for 640x480 VGA Sync Signal - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/minimal-circuit-for-640-x-480-vga-sync-signal" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Generating a stable 640x480 Video Graphics Array (VGA) synchronization signal requires producing precise horizontal (HSync) and vertical (VSync) timing pulses that conform to standard display timings. While discrete logic architectures require multiple c" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="minimal-circuit-for-640x480-vga-sync-signal">Minimal Circuit for
+640x480 VGA Sync Signal</h1>
+<p>Generating a stable 640x480 Video Graphics Array (VGA)
+synchronization signal requires producing precise horizontal (HSync) and
+vertical (VSync) timing pulses that conform to standard display timings.
+While discrete logic architectures require multiple counters and logic
+gates, the absolute minimal physical circuit consists of a single 8-pin
+microcontroller coupled with a single decoupling capacitor. This article
+breaks down the standard timing requirements, the hardware
+implementation using both a single-chip micro-architecture and a minimal
+discrete logic alternative, and the electrical connections necessary to
+drive a standard VGA monitor.</p>
+<h3 id="standard-640x480--60hz-timing-specifications">Standard 640x480 @
+60Hz Timing Specifications</h3>
+<p>Modern monitors expect standard analog VGA timing for a 640x480
+resolution at 60 Hz. The sync pulses use negative polarity (active-low
+TTL levels):</p>
+<ul>
+<li><strong>Pixel Clock Frequency:</strong> ~25.175 MHz (25.0 MHz is
+widely tolerated by modern monitors).</li>
+<li><strong>Horizontal Line Timing (31.468 kHz total):</strong>
+<ul>
+<li>Active Video: 640 pixels (25.42 µs)</li>
+<li>Front Porch: 16 pixels (0.64 µs)</li>
+<li>Sync Pulse (HSync): 96 pixels (3.81 µs)</li>
+<li>Back Porch: 48 pixels (1.91 µs)</li>
+<li>Total Line Period: 800 pixels (31.77 µs)</li>
+</ul></li>
+<li><strong>Vertical Frame Timing (59.94 Hz total):</strong>
+<ul>
+<li>Active Video: 480 lines (15.25 ms)</li>
+<li>Front Porch: 10 lines (0.32 ms)</li>
+<li>Sync Pulse (VSync): 2 lines (0.064 ms)</li>
+<li>Back Porch: 33 lines (1.05 ms)</li>
+<li>Total Frame Period: 525 lines (16.68 ms)</li>
+</ul></li>
+</ul>
+<h3 id="the-absolute-minimal-circuit-single-microcontroller">The
+Absolute Minimal Circuit: Single Microcontroller</h3>
+<p>The most compact circuit to generate these signals comprises only two
+physical components:</p>
+<ol type="1">
+<li><strong>Integrated Circuit:</strong> An 8-pin microcontroller, such
+as an ATtiny85, PIC12F, or Raspberry Pi RP2040 running an internal or
+crystal-driven clock.</li>
+<li><strong>Decoupling Capacitor:</strong> A single 0.1 µF ceramic
+capacitor placed across <span class="math inline">\(V_{CC}\)</span> and
+<span class="math inline">\(GND\)</span> to prevent supply noise from
+introducing signal jitter.</li>
+</ol>
+<h4 id="microcontroller-operation">Microcontroller Operation</h4>
+<ul>
+<li><strong>Clocking:</strong> The microcontroller is configured to run
+at an integer multiple of the line rate or pixel clock (e.g., 20 MHz or
+25 MHz).</li>
+<li><strong>Horizontal Sync:</strong> Hardware Timer/Counter modules
+generate a 31.468 kHz square wave configured for a 3.81 µs low pulse
+output directly to an I/O pin.</li>
+<li><strong>Vertical Sync:</strong> An internal counter triggered by
+each HSync cycle counts lines up to 525. When the counter reaches line
+490, it pulls the VSync pin low for exactly 2 lines (63.55 µs) before
+driving it high again at line 492.</li>
+</ul>
+<p>This implementation requires no external resistors, buffers, or
+transistors, as the microcontroller's push-pull I/O pins output standard
+TTL-compatible logic levels.</p>
+<h3 id="minimal-discrete-logic-alternative-no-firmware">Minimal Discrete
+Logic Alternative (No Firmware)</h3>
+<p>If programmable logic is excluded, the minimal circuit requires three
+main stages:</p>
+<ol type="1">
+<li><strong>Master Clock:</strong> A 25.175 MHz packaged canned crystal
+oscillator.</li>
+<li><strong>Horizontal Generator:</strong>
+<ul>
+<li>A 10-bit binary ripple counter (such as a single 74HC4040 or a dual
+74HC393) driven by the oscillator.</li>
+<li>Decoding logic (a dual 4-input NAND gate like the 74HC20, or basic
+diode-resistor AND gates) configured to reset the counter at 800 counts
+and generate the 96-pixel active-low pulse between counts 656 and
+752.</li>
+</ul></li>
+<li><strong>Vertical Generator:</strong>
+<ul>
+<li>A secondary counter (74HC4040) clocked by the HSync signal.</li>
+<li>Decoding logic set to reset the counter at 525 lines and assert
+VSync low between lines 490 and 492.</li>
+</ul></li>
+</ol>
+<p>While functionally identical to the microcontroller solution, this
+approach increases the chip count to 4–5 discrete ICs.</p>
+<h3 id="vga-connector-pin-connections">VGA Connector Pin
+Connections</h3>
+<p>To display the sync signal on a female DE-15 (VGA) connector, wire
+the outputs directly:</p>
+<ul>
+<li><strong>Pin 13 (HSync):</strong> Connect to the HSync output
+pin.</li>
+<li><strong>Pin 14 (VSync):</strong> Connect to the VSync output
+pin.</li>
+<li><strong>Pins 5, 6, 7, 8, 10 (Ground):</strong> Tie together and
+connect to the circuit's <span class="math inline">\(GND\)</span>.</li>
+<li><strong>Pins 1, 2, 3 (Red, Green, Blue):</strong> Ground them for a
+stable black screen, or pull them high to <span
+class="math inline">\(0.7\text{ V}\)</span> using a resistor divider to
+verify active display area sizing.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

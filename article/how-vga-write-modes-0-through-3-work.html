@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Write Modes 0 Through 3 Work - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) architecture relies on a specialized Graphics Controller to translate standard 8-bit CPU memory writes across four parallel 64 KB memory planes (Planes 0 through 3). Because a single CPU write addresses multiple planes simu">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-write-modes-0-through-3-work">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Write Modes 0 Through 3 Work - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-write-modes-0-through-3-work" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) architecture relies on a specialized Graphics Controller to translate standard 8-bit CPU memory writes across four parallel 64 KB memory planes (Planes 0 through 3). Because a single CPU write addresses multiple planes simu" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-write-modes-0-through-3-work">How VGA Write Modes 0
+Through 3 Work</h1>
+<p>The Video Graphics Array (VGA) architecture relies on a specialized
+Graphics Controller to translate standard 8-bit CPU memory writes across
+four parallel 64 KB memory planes (Planes 0 through 3). Because a single
+CPU write addresses multiple planes simultaneously, the VGA provides
+four distinct hardware write modes—Modes 0, 1, 2, and 3—selected via
+bits 0–1 of the Graphics Mode Register (Index 05h). Each mode alters the
+data pipeline between the CPU, the 32-bit internal latches, and the
+color planes, enabling optimized operations ranging from general-purpose
+updates and high-speed memory copies to packed-pixel manipulation and
+fast font rendering.</p>
+<hr />
+<h3 id="internal-architecture-overview">Internal Architecture
+Overview</h3>
+<p>Every byte-level write passes through several functional hardware
+blocks within the VGA Graphics Controller:</p>
+<ul>
+<li><strong>Internal 32-Bit Latches:</strong> When the CPU reads a VRAM
+address, one byte from each of the four planes is loaded into four
+internal 8-bit latches. These latches can mix with incoming CPU write
+data.</li>
+<li><strong>Data Rotate Block:</strong> Rotates CPU data right by 0–7
+bits, determined by the Data Rotate Register (Index 03h).</li>
+<li><strong>Arithmetic Logic Unit (ALU):</strong> Performs bitwise
+operations (NOP, AND, OR, XOR) between the target data and the contents
+of the latches (configured via Index 03h).</li>
+<li><strong>Bit Mask Register (Index 08h):</strong> Selects whether each
+bit position in a plane byte receives the ALU output (bit set to 1) or
+retains the latch value (bit set to 0).</li>
+<li><strong>Sequencer Map Mask (Index 02h):</strong> Acts as a global
+gatekeeper, choosing which of the four planes are updated during the
+write cycle.</li>
+</ul>
+<hr />
+<h3
+id="write-mode-0-direct-write-with-rotation-and-alu-operations">Write
+Mode 0: Direct Write with Rotation and ALU Operations</h3>
+<p>Write Mode 0 is the default and most versatile mode, commonly used
+for standard rendering, bit-blitting, and partial updates.</p>
+<ol type="1">
+<li><strong>CPU Input &amp; Rotation:</strong> The CPU writes an 8-bit
+value, which is rotated right by the value in the Data Rotate
+Register.</li>
+<li><strong>Set/Reset Multiplexer:</strong> For each plane, the Graphics
+Controller checks the Enable Set/Reset Register (Index 01h):
+<ul>
+<li>If disabled (0), the rotated CPU byte is passed forward to that
+plane.</li>
+<li>If enabled (1), the corresponding bit from the Set/Reset Register
+(Index 00h) is expanded across all 8 bits (e.g., bit value
+<code>1</code> becomes <code>0xFF</code>, <code>0</code> becomes
+<code>0x00</code>), discarding the CPU data for that plane.</li>
+</ul></li>
+<li><strong>ALU Operation:</strong> The selected byte passes through the
+ALU, combining logically with the existing byte in that plane's latch
+according to the configured raster operation (NOP, AND, OR, XOR).</li>
+<li><strong>Bit Masking:</strong> The Bit Mask Register selects on a
+per-bit basis between the output of the ALU and the byte held in the
+latch.</li>
+<li><strong>Plane Write:</strong> The resulting byte is committed to
+memory for any plane enabled by the Sequencer Map Mask.</li>
+</ol>
+<hr />
+<h3 id="write-mode-1-high-speed-vram-to-vram-copy">Write Mode 1:
+High-Speed VRAM-to-VRAM Copy</h3>
+<p>Write Mode 1 bypasses the CPU data bus entirely to achieve rapid
+memory-to-memory block transfers.</p>
+<ol type="1">
+<li><strong>Latch Retention:</strong> A preceding CPU read from source
+VRAM populates the four 8-bit internal latches with 32 bits of total
+plane data.</li>
+<li><strong>Direct Latch Write:</strong> When the CPU issues a write to
+destination VRAM in Mode 1, the CPU's written byte value is completely
+ignored.</li>
+<li><strong>Plane Write:</strong> The latched data is written directly
+into Planes 0 through 3 at the target address, controlled strictly by
+the Sequencer Map Mask.</li>
+</ol>
+<p>Because Write Mode 1 does not use the ALU, Data Rotate, or Bit Mask
+units, it can duplicate 4 bytes of planar data in a single CPU write
+cycle, effectively quadrupling copy throughput.</p>
+<hr />
+<h3 id="write-mode-2-color-fill-and-packed-pixel-expansion">Write Mode
+2: Color Fill and Packed-Pixel Expansion</h3>
+<p>Write Mode 2 maps packed 4-bit color values to individual planes,
+making it ideal for drawing solid-color pixels or horizontal spans
+without manually splitting colors across planes in software.</p>
+<ol type="1">
+<li><strong>Bit Expansion:</strong> The CPU writes an 8-bit value, but
+only bits 0 through 3 are used. Each bit represents a color index for a
+specific plane:
+<ul>
+<li>Bit 0 expands across all 8 bits for Plane 0 (<code>0x00</code> or
+<code>0xFF</code>).</li>
+<li>Bit 1 expands across all 8 bits for Plane 1.</li>
+<li>Bit 2 expands across all 8 bits for Plane 2.</li>
+<li>Bit 3 expands across all 8 bits for Plane 3.</li>
+</ul></li>
+<li><strong>ALU Operation:</strong> Each expanded 8-bit plane value is
+processed through the ALU alongside its corresponding latch
+contents.</li>
+<li><strong>Bit Masking:</strong> The Bit Mask Register determines which
+horizontal pixel positions receive the expanded color versus retaining
+their existing latch values.</li>
+<li><strong>Plane Write:</strong> Planes enabled by the Sequencer Map
+Mask write the masked results to VRAM.</li>
+</ol>
+<p>This mode enables 8 pixels to be updated to a uniform 16-color value
+in one CPU write by setting the desired pixel locations in the Bit Mask
+Register.</p>
+<hr />
+<h3 id="write-mode-3-patterned-bitmask-and-font-rendering">Write Mode 3:
+Patterned Bitmask and Font Rendering</h3>
+<p>Write Mode 3 is tailored for font expansion and pattern drawing,
+combining incoming CPU data directly into the masking logic.</p>
+<ol type="1">
+<li><strong>CPU Rotation and Mask Generation:</strong> The CPU writes an
+8-bit byte (such as a font character row), which is rotated by the Data
+Rotate Register and then bitwise ANDed with the Bit Mask Register. This
+generated value becomes the active bit mask for the operation.</li>
+<li><strong>Data Source:</strong> Unlike Mode 0, the data written to the
+planes does not originate from the CPU. Instead, the 8-bit value for
+each plane is derived entirely from that plane's bit in the Set/Reset
+Register (Index 00h), expanded across all 8 bits.</li>
+<li><strong>ALU Operation:</strong> The expanded Set/Reset data is
+combined with the latches via the ALU.</li>
+<li><strong>Dynamic Masking:</strong> The active bit mask generated in
+Step 1 selects between the ALU output and the original latch data for
+each bit.</li>
+<li><strong>Plane Write:</strong> Enabled planes write the combined
+result to memory.</li>
+</ol>
+<p>Write Mode 3 allows software to apply arbitrary foreground colors to
+monochrome glyphs or stencils in a single write operation without having
+to rewrite the Bit Mask Register for every byte.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

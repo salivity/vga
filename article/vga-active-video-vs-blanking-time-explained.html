@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Active Video vs Blanking Time Explained - vga</title>
+    <meta name="description" content="In standard Video Graphics Array (VGA) architecture, video signals are transmitted line by line across a display. Every single horizontal line period is fundamentally split into two distinct operational phases: active video time and blanking time. Active">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-active-video-vs-blanking-time-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Active Video vs Blanking Time Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-active-video-vs-blanking-time-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In standard Video Graphics Array (VGA) architecture, video signals are transmitted line by line across a display. Every single horizontal line period is fundamentally split into two distinct operational phases: active video time and blanking time. Active" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-active-video-vs-blanking-time-explained">VGA Active Video vs
+Blanking Time Explained</h1>
+<p>In standard Video Graphics Array (VGA) architecture, video signals
+are transmitted line by line across a display. Every single horizontal
+line period is fundamentally split into two distinct operational phases:
+active video time and blanking time. Active video time represents the
+exact duration during which visible color data is transmitted to render
+pixels on the screen, while blanking time is an invisible, non-display
+interval that allows the display hardware to synchronize and reset its
+scanning position before drawing the subsequent line.</p>
+<h3 id="active-video-time">Active Video Time</h3>
+<p>Active video time is the operational window where the display
+controller outputs the actual visual payload. During this period, three
+separate analog signals (Red, Green, and Blue) vary between 0.0V (black)
+and 0.7V (maximum brightness) to paint each pixel across the horizontal
+line.</p>
+<p>In an industry-standard 640x480 VGA signal running at a 60 Hz refresh
+rate:</p>
+<ul>
+<li>The pixel clock runs at 25.175 MHz (approximately 39.72 nanoseconds
+per pixel).</li>
+<li>Exactly 640 pixels are drawn horizontally during the active
+phase.</li>
+<li>The total duration of active video time per line is approximately
+25.42 microseconds.</li>
+<li>During this phase, synchronization signals are inactive, and the
+display panel or cathode-ray tube (CRT) renders the visible image from
+left to right.</li>
+</ul>
+<h3 id="blanking-time-horizontal-blanking-interval">Blanking Time
+(Horizontal Blanking Interval)</h3>
+<p>Blanking time, also known as the Horizontal Blanking Interval (HBI),
+immediately follows the active video phase. Historically required by CRT
+monitors, this interval turned off (blanked) the electron beam to
+prevent visible diagonal lines while the beam deflected back to the left
+edge of the screen—a process known as horizontal retrace. While modern
+flat panels do not utilize physical deflection beams, digital receivers
+and FPGA controllers still require this interval to align clock phases
+and decode line boundaries.</p>
+<p>During the blanking interval, the RGB analog signals are driven to
+0.0V to prevent any light output. The blanking time comprises three
+sequential sub-phases:</p>
+<ol type="1">
+<li><strong>Front Porch:</strong> A brief idle period directly after the
+active video line finishes (typically 16 pixel clocks or ~0.64
+microseconds). It provides a temporal buffer ensuring the display
+circuitry stabilizes before the synchronization trigger occurs.</li>
+<li><strong>Horizontal Sync Pulse (HSync):</strong> An active-low pulse
+that commands the display hardware to initiate the retrace to the left
+edge (typically 96 pixel clocks or ~3.81 microseconds).</li>
+<li><strong>Back Porch:</strong> A settling period after the sync pulse
+terminates (typically 48 pixel clocks or ~1.91 microseconds). The
+display uses this window to calibrate its black-level voltage reference
+before the next line of pixel data begins.</li>
+</ol>
+<p>In total, standard VGA horizontal blanking lasts for 160 pixel
+clocks, equating to roughly 6.36 microseconds.</p>
+<h3 id="core-differences-summary">Core Differences Summary</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Active Video Time</th>
+<th style="text-align: left;">Blanking Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Visibility</strong></td>
+<td style="text-align: left;">Completely visible to the user.</td>
+<td style="text-align: left;">Non-visible (electron beam or pixel output
+turned off).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>RGB Signal State</strong></td>
+<td style="text-align: left;">Active analog voltages between 0.0V and
+0.7V.</td>
+<td style="text-align: left;">Suppressed strictly to 0.0V (black
+level).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Primary Function</strong></td>
+<td style="text-align: left;">Renders pixel colors and graphics.</td>
+<td style="text-align: left;">Provides hardware reset, line
+synchronization, and calibration.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Standard Timing (640x480 @
+60Hz)</strong></td>
+<td style="text-align: left;">640 pixel clocks (~25.42 µs; 80% of total
+line time).</td>
+<td style="text-align: left;">160 pixel clocks (~6.36 µs; 20% of total
+line time).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sub-Components</strong></td>
+<td style="text-align: left;">Pixel sequence (Pixel 0 to Pixel
+639).</td>
+<td style="text-align: left;">Front Porch, Sync Pulse, and Back
+Porch.</td>
+</tr>
+</tbody>
+</table></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

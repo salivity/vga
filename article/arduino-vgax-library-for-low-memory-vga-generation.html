@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino VGAX Library for Low-Memory VGA Generation - vga</title>
+    <meta name="description" content="The VGAX library is an open-source graphics library designed to generate a Video Graphics Array (VGA) video signal directly from an 8-bit AVR microcontroller, such as the ATmega328P found on the Arduino Uno and Nano. This article explains the primary pur">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/arduino-vgax-library-for-low-memory-vga-generation">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Arduino VGAX Library for Low-Memory VGA Generation - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/arduino-vgax-library-for-low-memory-vga-generation" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The VGAX library is an open-source graphics library designed to generate a Video Graphics Array (VGA) video signal directly from an 8-bit AVR microcontroller, such as the ATmega328P found on the Arduino Uno and Nano. This article explains the primary pur" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="arduino-vgax-library-for-low-memory-vga-generation">Arduino VGAX
+Library for Low-Memory VGA Generation</h1>
+<p>The VGAX library is an open-source graphics library designed to
+generate a Video Graphics Array (VGA) video signal directly from an
+8-bit AVR microcontroller, such as the ATmega328P found on the Arduino
+Uno and Nano. This article explains the primary purpose of the VGAX
+library, how it overcomes the severe memory constraints of low-power
+microcontrollers, its technical specifications, and its common practical
+applications.</p>
+<p>The fundamental purpose of the VGAX library is to produce a valid VGA
+video output without requiring external graphic cards, dedicated display
+controllers, or extra video RAM (VRAM). Standard microcontrollers like
+the ATmega328P possess only 2 KB of internal Static RAM (SRAM). A
+standard VGA frame buffer at minimal modern resolutions would consume
+dozens to hundreds of kilobytes, far exceeding the Arduino's total
+capacity. VGAX bypasses this limitation by radically reducing the
+resolution and color depth to fit an entire video frame directly inside
+the microcontroller’s native 2 KB memory space.</p>
+<p>VGAX achieves this by providing a fixed resolution of 120x60 pixels
+with 4 colors per pixel (a 2-bit color depth). Calculating the memory
+footprint: 120 multiplied by 60 equals 7,200 pixels; at 2 bits per
+pixel, the entire frame buffer requires precisely 1,800 bytes of RAM.
+This leaves approximately 248 bytes of SRAM for the stack, program
+variables, and execution logic, making direct video generation feasible
+on low-end hardware.</p>
+<p>To maintain a stable video output, VGAX relies on tightly optimized
+AVR assembly routines driven by internal hardware timers. The library
+continuously generates standard horizontal synchronization (HSYNC) and
+vertical synchronization (VSYNC) signals, outputting pixel data line by
+line to standard VGA monitors. Wiring requires only a few standard
+resistors connected to digital output pins to form a simple
+digital-to-analog converter (DAC) that matches the standard 0.7V
+peak-to-peak VGA voltage levels. Additionally, the library includes a
+built-in routine for basic audio generation synced to the video
+signal.</p>
+<p>The primary trade-off of the VGAX library is processor overhead.
+Because generating VGA signals requires cycle-accurate timing, the
+microcontroller spends the vast majority of its processing cycles inside
+interrupt routines drawing scanlines. Despite these CPU and memory
+limits, the library enables developers to create retro games, simple
+user interfaces, system monitors, and terminal outputs using minimal,
+low-cost hardware.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

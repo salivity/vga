@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Sequencer Toggles 8 and 9 Dot Characters - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) architecture toggles between 8-dot and 9-dot character widths using the Sequencer's Clocking Mode register. By altering a single control bit within this register, the VGA hardware changes the frequency division of the maste">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-sequencer-toggles-8-and-9-dot-characters">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Sequencer Toggles 8 and 9 Dot Characters - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-sequencer-toggles-8-and-9-dot-characters" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) architecture toggles between 8-dot and 9-dot character widths using the Sequencer's Clocking Mode register. By altering a single control bit within this register, the VGA hardware changes the frequency division of the maste" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-sequencer-toggles-8-and-9-dot-characters">How VGA
+Sequencer Toggles 8 and 9 Dot Characters</h1>
+<p>The Video Graphics Array (VGA) architecture toggles between 8-dot and
+9-dot character widths using the Sequencer's Clocking Mode register. By
+altering a single control bit within this register, the VGA hardware
+changes the frequency division of the master dot clock, determining
+whether each text column spans eight or nine horizontal pixels, which
+directly alters the active horizontal resolution and text
+appearance.</p>
+<h3 id="accessing-the-clocking-mode-register">Accessing the Clocking
+Mode Register</h3>
+<p>The Sequencer controls the internal timing and character clock
+generation of the VGA subsystem. Accessing the Clocking Mode register
+requires writing to two distinct I/O port addresses:</p>
+<ol type="1">
+<li><strong>Sequencer Index Register (<code>0x3C4</code>):</strong>
+Write the index value <code>0x01</code> to point to the Clocking Mode
+register.</li>
+<li><strong>Sequencer Data Register (<code>0x3C5</code>):</strong> Read
+or write the configuration byte for the Clocking Mode register.</li>
+</ol>
+<h3 id="the-role-of-bit-0">The Role of Bit 0</h3>
+<p>Bit 0 of Sequencer Register <code>0x01</code> controls the 8/9 Dot
+Clocks mode:</p>
+<ul>
+<li><strong>Bit 0 = 0 (9 Dot Clocks):</strong> The Sequencer divides the
+dot clock by 9 to generate each character clock cycle. This mode is the
+standard default for monochrome and 720×400 color text modes (such as
+standard VGA 80×25 text mode), resulting in a full 720-pixel horizontal
+display width (80 columns × 9 pixels).</li>
+<li><strong>Bit 0 = 1 (8 Dot Clocks):</strong> The Sequencer divides the
+dot clock by 8 for each character clock cycle. This setting reduces the
+active display width to 640 horizontal pixels (80 columns × 8 pixels),
+commonly used in 640×480 graphics modes or legacy 640-pixel text
+modes.</li>
+</ul>
+<h3 id="generation-of-the-9th-dot">Generation of the 9th Dot</h3>
+<p>VGA character font bitmaps are natively stored in font memory as 8
+bits (1 byte) wide per scanline. When 9-dot mode is engaged (Bit 0 = 0),
+the hardware must synthesize the missing ninth pixel:</p>
+<ul>
+<li><strong>Standard Characters:</strong> For most ASCII characters
+(specifically character codes <code>0x00</code> through
+<code>0xBF</code> and <code>0xE0</code> through <code>0xFF</code>), the
+hardware automatically sets the 9th dot to the current background color,
+creating horizontal spacing between adjacent glyphs.</li>
+<li><strong>Line-Drawing Characters:</strong> For box-drawing characters
+in the range <code>0xC0</code> through <code>0xDF</code>, horizontal
+lines must connect seamlessly. If Bit 2 (Line Graphics Enable) of the
+Attribute Controller Mode Control Register
+(<code>0x3C0</code>/<code>0x3C1</code>, Index <code>0x10</code>) is set
+to 1, the hardware automatically replicates the value of the 8th pixel
+into the 9th pixel position instead of using the background color.</li>
+</ul>
+<h3 id="clock-and-timing-impact">Clock and Timing Impact</h3>
+<p>Toggling Bit 0 directly alters how many pixel pulses constitute a
+character block without modifying the master pixel oscillator frequency.
+Switching from 9-dot to 8-dot mode without adjusting the horizontal
+display timings in the Cathode Ray Tube Controller (CRTC) increases the
+visual refresh rate slightly and shrinks the overall width of the
+displayed image on an analog display.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

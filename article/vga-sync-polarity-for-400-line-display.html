@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Sync Polarity for 400-Line Display - vga</title>
+    <meta name="description" content="In the standard Video Graphics Array (VGA) interface, monitors determine the active vertical resolution of an incoming analog signal by detecting the polarity of its synchronization signals. To signal a 400-line active display, the VGA standard utilizes">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-sync-polarity-for-400-line-display">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Sync Polarity for 400-Line Display - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-sync-polarity-for-400-line-display" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the standard Video Graphics Array (VGA) interface, monitors determine the active vertical resolution of an incoming analog signal by detecting the polarity of its synchronization signals. To signal a 400-line active display, the VGA standard utilizes" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-sync-polarity-for-400-line-display">VGA Sync Polarity for
+400-Line Display</h1>
+<p>In the standard Video Graphics Array (VGA) interface, monitors
+determine the active vertical resolution of an incoming analog signal by
+detecting the polarity of its synchronization signals. To signal a
+400-line active display, the VGA standard utilizes a <strong>negative
+Horizontal Sync (H-Sync)</strong> and a <strong>positive Vertical Sync
+(V-Sync)</strong> polarity combination.</p>
+<h3 id="the-400-line-sync-polarity-combination">The 400-Line Sync
+Polarity Combination</h3>
+<p>For a 400-line vertical display mode—most commonly encountered in
+text-mode interfaces like 720×400 at 70 Hz or 640×400 graphics modes—the
+sync polarities are:</p>
+<ul>
+<li><strong>Horizontal Sync (H-Sync):</strong> Negative (−)</li>
+<li><strong>Vertical Sync (V-Sync):</strong> Positive (+)</li>
+</ul>
+<p>A "negative" polarity indicates that the sync pulse transitions from
+high (active voltage, roughly +5V TTL) to low (0V ground) for the
+duration of the sync pulse. A "positive" polarity indicates that the
+pulse remains at ground (0V) and pulses high (+5V TTL).</p>
+<h3 id="how-vga-sync-polarity-signaling-works">How VGA Sync Polarity
+Signaling Works</h3>
+<p>During the development of the IBM VGA standard in 1987, multisync
+cathode-ray tube (CRT) monitors lacked modern digital communication
+protocols like DDC (Display Data Channel) or EDID (Extended Display
+Identification Data). To automatically adjust the vertical deflection
+amplifier and maintain the correct display height across varying
+resolutions, monitors decoded the polarity combinations of the two
+hardware synchronization lines.</p>
+<p>The original standard defined three primary vertical line counts
+using these polarities:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Vertical Resolution</th>
+<th style="text-align: left;">Horizontal Sync (H-Sync)</th>
+<th style="text-align: left;">Vertical Sync (V-Sync)</th>
+<th style="text-align: left;">Common Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>350 Lines</strong></td>
+<td style="text-align: left;">Positive (+)</td>
+<td style="text-align: left;">Negative (−)</td>
+<td style="text-align: left;">EGA compatibility modes (e.g., 640×350,
+720×350)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>400 Lines</strong></td>
+<td style="text-align: left;">Negative (−)</td>
+<td style="text-align: left;">Positive (+)</td>
+<td style="text-align: left;">Text modes (720×400) and low-res graphics
+(640×400)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>480 Lines</strong></td>
+<td style="text-align: left;">Negative (−)</td>
+<td style="text-align: left;">Negative (−)</td>
+<td style="text-align: left;">Standard VGA graphics mode (640×480)</td>
+</tr>
+</tbody>
+</table>
+<p>A positive/positive (+/+) combination was originally reserved, though
+later VESA standards adapted it for alternative resolutions such as
+800×600.</p>
+<h3 id="purpose-of-polarity-detection">Purpose of Polarity
+Detection</h3>
+<p>When a multisync monitor detects a negative H-Sync paired with a
+positive V-Sync, internal analog circuitry automatically adjusts the
+vertical scan amplitude. This compensation stretches the 400 active scan
+lines across the entire physical face of a standard 4:3 CRT screen,
+preventing letterboxing and ensuring that text and graphics fill the
+display correctly.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

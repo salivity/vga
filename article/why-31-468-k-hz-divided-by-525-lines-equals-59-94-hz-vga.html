@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why 31.468 kHz Divided by 525 Lines Equals 59.94 Hz VGA - vga</title>
+    <meta name="description" content="The 59.94 Hz refresh rate in standard Video Graphics Array (VGA) displays is the mathematical result of dividing a 31.468 kHz horizontal line frequency by 525 total vertical lines. While standard 640x480 VGA is commonly referred to as a 60 Hz display for">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-31-468-k-hz-divided-by-525-lines-equals-59-94-hz-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why 31.468 kHz Divided by 525 Lines Equals 59.94 Hz VGA - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-31-468-k-hz-divided-by-525-lines-equals-59-94-hz-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The 59.94 Hz refresh rate in standard Video Graphics Array (VGA) displays is the mathematical result of dividing a 31.468 kHz horizontal line frequency by 525 total vertical lines. While standard 640x480 VGA is commonly referred to as a 60 Hz display for" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-31468-khz-divided-by-525-lines-equals-5994-hz-vga">Why
+31.468 kHz Divided by 525 Lines Equals 59.94 Hz VGA</h1>
+<p>The 59.94 Hz refresh rate in standard Video Graphics Array (VGA)
+displays is the mathematical result of dividing a 31.468 kHz horizontal
+line frequency by 525 total vertical lines. While standard 640x480 VGA
+is commonly referred to as a 60 Hz display format, its underlying timing
+architecture was engineered around legacy broadcast compatibility,
+master oscillator division, and precise signal blanking intervals. This
+calculation establishes how electronic scanning lines translate directly
+into full screen refreshes per second.</p>
+<h3 id="the-fundamental-refresh-rate-equation">The Fundamental Refresh
+Rate Equation</h3>
+<p>In cathode-ray tube (CRT) displays and legacy video timings, an
+electron beam scans across the screen from left to right, creating one
+horizontal line at a time. Once a line is drawn, the beam returns to the
+left edge to begin the next line. After scanning all lines from top to
+bottom, the beam resets to the top-left corner to draw the next
+frame.</p>
+<p>The frame refresh rate (<span class="math inline">\(f_V\)</span>) is
+determined strictly by how many horizontal lines (<span
+class="math inline">\(f_H\)</span>) the display can scan per second
+divided by the total number of lines required to construct a full frame
+(<span class="math inline">\(V_{total}\)</span>):</p>
+<p><span class="math display">\[f_V = \frac{f_H}{V_{total}}\]</span></p>
+<p>Plugging in the standard VGA values:</p>
+<p><span class="math display">\[f_V = \frac{31,468.75 \text{ Hz}}{525
+\text{ lines}} \approx 59.9405 \text{ Hz}\]</span></p>
+<h3 id="where-the-31468-khz-horizontal-rate-originates">Where the 31.468
+kHz Horizontal Rate Originates</h3>
+<p>The horizontal scanning frequency (<span
+class="math inline">\(f_H\)</span>) does not exist in isolation; it is
+derived directly from the master pixel clock. Standard 640x480 VGA uses
+a nominal pixel clock frequency of approximately <strong>25.175
+MHz</strong> (more accurately 25.174828 MHz).</p>
+<p>A single horizontal line consists not only of the visible 640 pixels,
+but also of non-visible periods known as "blanking" intervals, which
+allow the electron beam to reset:</p>
+<ul>
+<li><strong>Visible area:</strong> 640 pixels</li>
+<li><strong>Front porch:</strong> 16 pixels</li>
+<li><strong>Sync pulse:</strong> 96 pixels</li>
+<li><strong>Back porch:</strong> 48 pixels</li>
+<li><strong>Total horizontal pixels per line:</strong> 800 pixels</li>
+</ul>
+<p>Dividing the master pixel clock by the total pixel duration of a line
+gives the horizontal line frequency:</p>
+<p><span class="math display">\[f_H = \frac{25,175,000 \text{ Hz}}{800
+\text{ pixels}} = 31,468.75 \text{ Hz} \text{ (or } 31.468 \text{
+kHz)}\]</span></p>
+<h3 id="where-the-525-total-lines-originate">Where the 525 Total Lines
+Originate</h3>
+<p>Although VGA produces an active resolution of 480 vertical lines, the
+beam requires time to travel back to the top of the screen (vertical
+blanking interval). Therefore, invisible lines must be appended to the
+vertical frame cycle:</p>
+<ul>
+<li><strong>Visible display:</strong> 480 lines</li>
+<li><strong>Vertical front porch:</strong> 10 lines</li>
+<li><strong>Vertical sync pulse:</strong> 2 lines</li>
+<li><strong>Vertical back porch:</strong> 33 lines</li>
+<li><strong>Total vertical lines:</strong> 525 lines</li>
+</ul>
+<p>This total of 525 lines was intentionally chosen to mirror the
+525-line standard of NTSC broadcast television. By running at double the
+NTSC horizontal scan rate (~15.734 kHz doubled to ~31.468 kHz), VGA
+retained hardware harmony with existing video chipsets while rendering
+525 progressive lines instead of 525 interlaced half-lines.</p>
+<h3 id="why-5994-hz-instead-of-6000-hz">Why 59.94 Hz Instead of 60.00
+Hz</h3>
+<p>Dividing 31,468.75 Hz by 525 lines produces roughly 59.94 Hz,
+directly aligning VGA with the precise field rate of NTSC color
+television. When color was introduced to NTSC broadcasts, the standard
+60 Hz rate was shifted down by a factor of <span
+class="math inline">\(1000/1001\)</span> (<span
+class="math inline">\(\approx 59.940059 \text{ Hz}\)</span>) to
+eliminate audio carrier interference.</p>
+<p>Because IBM designed the VGA standard using oscillator frequencies
+linked to broadcast components—specifically derived from the ubiquitous
+14.31818 MHz NTSC color-burst crystal—dividing the resulting 31.468 kHz
+line rate by the 525 line count precisely matches the legacy 59.94 Hz
+timing standard.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

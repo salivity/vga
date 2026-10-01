@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enable VGA Output in Raspberry Pi config.txt - vga</title>
+    <meta name="description" content="Enabling direct Video Graphics Array (VGA) output on a Raspberry Pi requires configuring the Display Parallel Interface (DPI) via the config.txt file, typically using a passive adapter board such as the Gert VGA 666. This article details the specific par">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/enable-vga-output-in-raspberry-pi-config-txt">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Enable VGA Output in Raspberry Pi config.txt - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/enable-vga-output-in-raspberry-pi-config-txt" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Enabling direct Video Graphics Array (VGA) output on a Raspberry Pi requires configuring the Display Parallel Interface (DPI) via the config.txt file, typically using a passive adapter board such as the Gert VGA 666. This article details the specific par" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="enable-vga-output-in-raspberry-pi-configtxt">Enable VGA Output
+in Raspberry Pi config.txt</h1>
+<p>Enabling direct Video Graphics Array (VGA) output on a Raspberry Pi
+requires configuring the Display Parallel Interface (DPI) via the
+<code>config.txt</code> file, typically using a passive adapter board
+such as the Gert VGA 666. This article details the specific parameters,
+device tree overlays, and display timings needed to activate direct
+RGB-to-VGA signal generation without an active HDMI converter.</p>
+<h3 id="required-software-directives">Required Software Directives</h3>
+<p>To output a native VGA signal, the Raspberry Pi repurposes its GPIO
+pins into a parallel display bus. Edit the boot configuration file
+(located at <code>/boot/firmware/config.txt</code> on newer Raspberry Pi
+OS releases, or <code>/boot/config.txt</code> on legacy versions) and
+add the following core directives:</p>
+<pre class="text"><code>dtoverlay=vga666
+enable_dpi_lcd=1
+display_default_lcd=1
+dpi_group=2
+dpi_mode=16</code></pre>
+<h3 id="parameter-breakdown">Parameter Breakdown</h3>
+<ul>
+<li><strong><code>dtoverlay=vga666</code></strong>: Loads the Device
+Tree overlay that maps the GPIO pins to the 6-bit RGB parallel bus
+(RGB666 mode) and assigns horizontal/vertical synchronization
+signals.</li>
+<li><strong><code>enable_dpi_lcd=1</code></strong>: Tells the VideoCore
+firmware to enable the internal DPI display hardware block.</li>
+<li><strong><code>display_default_lcd=1</code></strong>: Sets the
+parallel LCD/DPI output as the primary display target instead of the
+default HDMI interface.</li>
+<li><strong><code>dpi_group=2</code></strong>: Specifies the standard
+timing group. Group <code>2</code> corresponds to DMT (Display Monitor
+Timings), which is the standard format used by computer monitors and VGA
+displays.</li>
+<li><strong><code>dpi_mode=16</code></strong>: Selects the specific
+screen resolution and refresh rate from the DMT specification. Mode
+<code>16</code> sets a standard resolution of 1024x768 at a 60 Hz
+refresh rate.</li>
+</ul>
+<h3 id="common-resolution-modes">Common Resolution Modes</h3>
+<p>You can change the <code>dpi_mode</code> value to match the native
+resolution of your VGA monitor:</p>
+<ul>
+<li><strong><code>dpi_mode=4</code></strong>: 640x480 @ 60 Hz</li>
+<li><strong><code>dpi_mode=9</code></strong>: 800x600 @ 60 Hz</li>
+<li><strong><code>dpi_mode=16</code></strong>: 1024x768 @ 60 Hz</li>
+<li><strong><code>dpi_mode=35</code></strong>: 1280x1024 @ 60 Hz</li>
+<li><strong><code>dpi_mode=82</code></strong>: 1920x1080 @ 60 Hz</li>
+</ul>
+<h3 id="custom-dpi-timings">Custom DPI Timings</h3>
+<p>For retro displays, arcade monitors, or CRT screens with non-standard
+resolutions, use <code>dpi_group=2</code> with <code>dpi_mode=87</code>
+(custom mode), and define a precise <code>dpi_timings</code> string:</p>
+<pre class="text"><code>dpi_group=2
+dpi_mode=87
+dpi_timings=640 0 16 96 48 480 0 10 2 33 0 0 0 60 0 25175000 1</code></pre>
+<p>Once the configuration file is saved, reboot the system with
+<code>sudo reboot</code> to apply the changes and initialize the direct
+VGA output.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

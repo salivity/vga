@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Cable Crosstalk Degrades Image Quality - vga</title>
+    <meta name="description" content="Video Graphics Array (VGA) cables transmit video data through separate analog lines for red, green, and blue (RGB) color channels. In poorly constructed cables that lack adequate shielding, electromagnetic interference between these channels—known as c">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-cable-crosstalk-degrades-image-quality">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Cable Crosstalk Degrades Image Quality - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-cable-crosstalk-degrades-image-quality" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Video Graphics Array (VGA) cables transmit video data through separate analog lines for red, green, and blue (RGB) color channels. In poorly constructed cables that lack adequate shielding, electromagnetic interference between these channels—known as c" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-cable-crosstalk-degrades-image-quality">How VGA Cable
+Crosstalk Degrades Image Quality</h1>
+<p>Video Graphics Array (VGA) cables transmit video data through
+separate analog lines for red, green, and blue (RGB) color channels. In
+poorly constructed cables that lack adequate shielding, electromagnetic
+interference between these channels—known as crosstalk—causes signal
+energy to leak across adjacent wires. This article explains the
+electrical mechanisms behind VGA crosstalk, the resulting visual defects
+such as ghosting, fringing, and color smearing, and why signal
+degradation becomes more severe at higher display resolutions.</p>
+<h2 id="the-electrical-nature-of-vga-signals">The Electrical Nature of
+VGA Signals</h2>
+<p>VGA is fundamentally an analog interface. Unlike digital standards
+that interpret discrete binary states (ones and zeros), VGA relies on
+continuous voltage levels ranging from 0 to 0.7 volts to dictate the
+brightness and intensity of individual red, green, and blue
+subpixels.</p>
+<p>Because the display interprets raw voltage fluctuations directly as
+visual output, any electrical disturbance along the transmission line
+alters the resulting image. When a cable lacks sufficient build quality,
+the high-frequency alternating currents traveling down these lines
+radiate electromagnetic fields, directly affecting adjacent
+conductors.</p>
+<h2 id="how-crosstalk-occurs-in-substandard-cables">How Crosstalk Occurs
+in Substandard Cables</h2>
+<p>Crosstalk in a VGA cable is primarily caused by capacitive and
+inductive coupling:</p>
+<ul>
+<li><strong>Capacitive Coupling:</strong> When two conductors run
+parallel in close proximity with inadequate dielectric insulation, they
+act as a small capacitor. Rapid voltage changes in one color wire
+transfer charge to neighboring wires.</li>
+<li><strong>Inductive Coupling:</strong> High-frequency currents moving
+through a conductor create magnetic fields that induce an unwanted
+secondary current in nearby conductors.</li>
+</ul>
+<p>High-quality VGA cables prevent this coupling by encasing each
+primary color channel in its own miniature coaxial line complete with a
+dedicated ground shield. Poor-quality cables cut manufacturing costs by
+running the RGB lines as basic unshielded wires or simple twisted pairs
+grouped loosely inside a single outer foil wrap. Without individual
+coaxial isolation, the electromagnetic fields generated by each color
+channel freely corrupt the neighboring lines.</p>
+<h2 id="visual-symptoms-of-color-crosstalk">Visual Symptoms of Color
+Crosstalk</h2>
+<p>When crosstalk occurs, the display hardware receives corrupted
+voltage signals, resulting in distinct visual artifacts:</p>
+<h3 id="color-fringing-and-smearing">Color Fringing and Smearing</h3>
+<p>Sharp edges with high color contrast—such as pure red graphics
+displayed against a neutral background—suffer the most. As the red
+line's voltage spikes to illuminate the red subpixels, capacitive
+coupling induces an unwanted voltage surge in the adjacent green and
+blue lines. This results in color fringing, where colors appear to bleed
+horizontally past their intended borders, creating a blurry, smeared
+appearance.</p>
+<h3 id="ghosting-and-shadowing">Ghosting and Shadowing</h3>
+<p>Crosstalk frequently manifests as "ghosting," where faint, offset
+duplicates of text, windows, or icons appear directly to the right of
+high-contrast elements. Because the induced voltage arrives at the
+display slightly out of phase with the original signal, the monitor
+draws secondary, low-intensity copies of the image.</p>
+<h3 id="loss-of-contrast-and-washed-out-colors">Loss of Contrast and
+Washed-Out Colors</h3>
+<p>Continuous signal leakage between the RGB channels raises the
+baseline voltage of lines that should otherwise be inactive. When a
+scene calls for pure black, the color lines should carry 0 volts.
+Crosstalk from nearby synchronization or active color lines elevates
+this baseline voltage, causing deep blacks to look gray or tinted,
+thereby reducing the dynamic range and overall sharpness of the
+picture.</p>
+<h2 id="the-impact-of-resolution-and-cable-length">The Impact of
+Resolution and Cable Length</h2>
+<p>The severity of crosstalk correlates directly with screen resolution,
+refresh rate, and cable length:</p>
+<ul>
+<li><strong>Pixel Clock Speeds:</strong> Higher resolutions (such as
+1920x1080) and higher refresh rates require the analog signal to
+alternate at frequencies exceeding 100 MHz. Higher frequencies
+dramatically amplify capacitive coupling, making crosstalk far more
+aggressive than at low resolutions like 800x600.</li>
+<li><strong>Cable Length:</strong> Longer cable runs increase the
+physical surface area where conductors run parallel to each other. Over
+several meters, an unshielded cable accumulates progressively higher
+levels of interference, culminating in severe loss of image
+definition.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VESA DDC Enabled Automatic VGA Monitor Detection - vga</title>
+    <meta name="description" content="The VESA Display Data Channel (DDC) standard revolutionized personal computing by allowing graphics cards and operating systems to automatically detect connected monitor specifications, paving the way for true display "Plug and Play." Before DDC, Video G">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vesa-ddc-enabled-automatic-vga-monitor-detection">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VESA DDC Enabled Automatic VGA Monitor Detection - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vesa-ddc-enabled-automatic-vga-monitor-detection" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The VESA Display Data Channel (DDC) standard revolutionized personal computing by allowing graphics cards and operating systems to automatically detect connected monitor specifications, paving the way for true display "Plug and Play." Before DDC, Video G" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vesa-ddc-enabled-automatic-vga-monitor-detection">How VESA
+DDC Enabled Automatic VGA Monitor Detection</h1>
+<p>The VESA Display Data Channel (DDC) standard revolutionized personal
+computing by allowing graphics cards and operating systems to
+automatically detect connected monitor specifications, paving the way
+for true display "Plug and Play." Before DDC, Video Graphics Array (VGA)
+displays were passive analog devices that could not communicate their
+capabilities back to the computer, often forcing users to manually
+select display resolutions and refresh rates at the risk of damaging
+hardware. By establishing dedicated communication lines within the VGA
+connector and pairing them with a standardized metadata structure called
+Extended Display Identification Data (EDID), VESA DDC enabled the host
+system to query the display directly and apply optimal, safe
+configurations automatically.</p>
+<p>Before the introduction of DDC in 1994, the standard 15-pin DE-15 VGA
+port lacked a standard protocol for two-way communication. Early
+implementations relied on primitive "ID pins" (pins 4, 11, and 12) that
+were either left floating or grounded to signal a few predetermined
+monitor categories, such as monochrome or basic color. This mechanism
+was insufficient as cathode-ray tube (CRT) monitors began supporting
+wide ranges of resolutions and dynamic refresh rates. If a user
+configured their graphics card to output a timing signal outside of the
+monitor's horizontal or vertical scan range, the monitor could suffer
+hardware failure or enter an unusable state.</p>
+<p>The Video Electronics Standards Association (VESA) resolved this
+limitation by repurposing previously unassigned or grounding pins inside
+the DE-15 connector to establish a digital serial channel between the
+display and the graphics adapter:</p>
+<ul>
+<li><strong>DDC1 (Unidirectional Transmission):</strong> The first
+iteration used pin 12 as a serial data line (SDA) clocked by the
+vertical sync signal on pin 14. Once powered, the monitor continuously
+broadcast a 128-byte data block to the graphics card. Because
+communication was strictly one-way and tied to the vertical refresh
+pulse, it was slow and limited in flexibility.</li>
+<li><strong>DDC2B (Bidirectional Transmission):</strong> DDC2B replaced
+continuous transmission with a standard <span
+class="math inline">\(I^2C\)</span> serial bus protocol. It repurposed
+pin 12 for the serial data line (SDA), pin 15 for the serial clock line
+(SCL), and pin 9 to supply a +5V DC power line from the host computer.
+This allowed the host system to read an electrically erasable
+programmable read-only memory (EEPROM) chip housed inside the
+monitor—even when the monitor was powered off—by supplying power over
+pin 9.</li>
+</ul>
+<p>The data payload transmitted across this channel was standardized as
+Extended Display Identification Data (EDID). The EDID data block
+contained a 128-byte array structured to provide a comprehensive profile
+of the monitor's hardware specifications. This included:</p>
+<ul>
+<li>Manufacturer identity, product ID, and serial number.</li>
+<li>The physical dimensions and aspect ratio of the display.</li>
+<li>Phosphor or color characteristic chromaticity coordinates.</li>
+<li>Factory-supported timings, including standard Video Electronics
+Standards Association resolutions (such as 640x480 at 60Hz or 1024x768
+at 75Hz).</li>
+<li>Maximum horizontal and vertical frequency boundaries, preventing
+graphics cards from generating unsupported scan rates.</li>
+</ul>
+<p>Operating systems, notably beginning with Windows 95 and contemporary
+Unix-based X Window System servers, integrated DDC query routines
+directly into their display driver architectures. During the boot
+sequence or upon hot-plugging a monitor, the graphics driver initiated a
+read request over the <span class="math inline">\(I^2C\)</span> bus at a
+reserved address. Upon receiving the monitor's EDID block, the operating
+system parsed the supported modes, cross-referenced them with the
+graphics card's own memory and rendering limits, and automatically
+surfaced only the safe, compatible display resolutions and refresh rates
+to the end user.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

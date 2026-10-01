@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Resistor Ladder DACs Work in DIY VGA Circuits - vga</title>
+    <meta name="description" content="This article explains how resistor ladder digital-to-analog converters (DACs) convert digital microcontroller pins into analog RGB signals for DIY Video Graphics Array (VGA) displays. You will learn the core operational principles of resistor ladders, ho">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-resistor-ladder-da-cs-work-in-diy-vga-circuits">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Resistor Ladder DACs Work in DIY VGA Circuits - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-resistor-ladder-da-cs-work-in-diy-vga-circuits" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how resistor ladder digital-to-analog converters (DACs) convert digital microcontroller pins into analog RGB signals for DIY Video Graphics Array (VGA) displays. You will learn the core operational principles of resistor ladders, ho" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-resistor-ladder-dacs-work-in-diy-vga-circuits">How Resistor
+Ladder DACs Work in DIY VGA Circuits</h1>
+<p>This article explains how resistor ladder digital-to-analog
+converters (DACs) convert digital microcontroller pins into analog RGB
+signals for DIY Video Graphics Array (VGA) displays. You will learn the
+core operational principles of resistor ladders, how VGA electrical
+standards dictate component values, and the exact methods used to
+allocate digital pins to generate 8-bit (RGB332) and 16-bit (RGB565)
+color palettes.</p>
+<h2 id="what-is-a-resistor-ladder-dac">What is a Resistor Ladder
+DAC?</h2>
+<p>A resistor ladder DAC is a passive electrical circuit that converts
+discrete digital binary values into an analog voltage output using a
+network of precision resistors. In digital circuits, outputs are binary
+states—typically high (3.3V or 5V) or low (0V). Because cathode-ray tube
+(CRT) and modern analog VGA displays require a continuously variable
+voltage to determine the brightness of an electron beam or pixel
+sub-element, a DAC is required to bridge the digital and analog
+domains.</p>
+<p>Two primary topologies exist for resistor ladder DACs:</p>
+<ol type="1">
+<li><strong>Binary-Weighted Ladder:</strong> Uses resistors whose values
+double with each increasing bit of significance (<span
+class="math inline">\(R\)</span>, <span
+class="math inline">\(2R\)</span>, <span
+class="math inline">\(4R\)</span>, <span
+class="math inline">\(8R\)</span>, etc.). The most significant bit (MSB)
+connects through the smallest resistance to allow maximum current, while
+the least significant bit (LSB) connects through the largest
+resistance.</li>
+<li><strong>R-2R Ladder:</strong> Uses only two resistor values (<span
+class="math inline">\(R\)</span> and <span
+class="math inline">\(2R\)</span>) arranged in a repeating ladder
+structure. This eliminates the need for numerous odd-value precision
+resistors and provides consistent output impedance.</li>
+</ol>
+<p>In DIY VGA circuits, both configurations are common. Binary-weighted
+ladders are often favored for low bit depths (2 to 5 bits per channel)
+due to their low component count, while R-2R ladders are preferred when
+higher bit depths demand matched temperature coefficients and tighter
+tolerances.</p>
+<h2 id="vga-signal-standards-and-electrical-constraints">VGA Signal
+Standards and Electrical Constraints</h2>
+<p>To properly design a resistor ladder for VGA, the circuit must adhere
+strictly to the VGA electrical specification:</p>
+<ul>
+<li><strong>Voltage Range:</strong> The color lines (Red, Green, Blue)
+expect an analog voltage between <span
+class="math inline">\(0.0\text{V}\)</span> (black/off) and <span
+class="math inline">\(0.7\text{V}\)</span> peak-to-peak (maximum
+saturation). Exceeding <span class="math inline">\(0.7\text{V}\)</span>
+can cause image clipping or damage the monitor's input stages.</li>
+<li><strong>Termination Impedance:</strong> Inside the monitor, each
+color channel is terminated to ground with a <span
+class="math inline">\(75\,\Omega\)</span> resistor.</li>
+<li><strong>Source Impedance:</strong> The video cable and driving
+circuit are designed for a characteristic impedance of <span
+class="math inline">\(75\,\Omega\)</span> to prevent signal reflections
+and ghosting artifacts.</li>
+</ul>
+<p>Because the monitor's internal <span
+class="math inline">\(75\,\Omega\)</span> resistor forms the bottom half
+of a voltage divider network with the DAC, all resistor calculations
+must account for this load.</p>
+<h2 id="calculating-resistor-values-for-the-dac">Calculating Resistor
+Values for the DAC</h2>
+<p>When all digital output pins for a single color channel are driven
+high, the parallel combination of the DAC resistors alongside the
+monitor's <span class="math inline">\(75\,\Omega\)</span> termination
+must produce exactly <span class="math inline">\(0.7\text{V}\)</span> at
+the input of the display.</p>
+<p>Given a microcontroller output voltage <span
+class="math inline">\(V_{OH}\)</span> (typically <span
+class="math inline">\(3.3\text{V}\)</span> or <span
+class="math inline">\(5.0\text{V}\)</span>), the required equivalent
+source resistance <span class="math inline">\(R_{eq}\)</span> of the
+ladder can be calculated using the standard voltage divider
+equation:</p>
+<p><span class="math display">\[V_{out} = V_{OH} \times
+\frac{75\,\Omega}{R_{eq} + 75\,\Omega}\]</span></p>
+<p>Rearranging to solve for <span class="math inline">\(R_{eq}\)</span>
+when targeting <span class="math inline">\(V_{out} =
+0.7\text{V}\)</span>:</p>
+<p><span class="math display">\[R_{eq} = 75 \times \left(\frac{V_{OH} -
+0.7}{0.7}\right)\]</span></p>
+<p>For a <span class="math inline">\(3.3\text{V}\)</span>
+microcontroller (such as an ESP32 or Raspberry Pi Pico): <span
+class="math display">\[R_{eq} = 75 \times \left(\frac{3.3 -
+0.7}{0.7}\right) \approx 278.57\,\Omega\]</span></p>
+<p>For a <span class="math inline">\(5.0\text{V}\)</span>
+microcontroller (such as an ATmega328P): <span
+class="math display">\[R_{eq} = 75 \times \left(\frac{5.0 -
+0.7}{0.7}\right) \approx 460.71\,\Omega\]</span></p>
+<p>The individual resistors assigned to each bit are then chosen such
+that their parallel resistance equals <span
+class="math inline">\(R_{eq}\)</span>, with conductances scaled in
+powers of two.</p>
+<h2 id="generating-8-bit-color-rgb332">Generating 8-Bit Color
+(RGB332)</h2>
+<p>An 8-bit color setup assigns one full byte to represent a single
+pixel, yielding <span class="math inline">\(2^8 = 256\)</span> possible
+colors. Because human vision is unevenly sensitive to different light
+wavelengths—most sensitive to green, moderately to red, and least to
+blue—the 8 bits are partitioned using the <strong>RGB332</strong>
+standard:</p>
+<ul>
+<li><strong>Red:</strong> 3 bits (<span class="math inline">\(2^3 =
+8\)</span> voltage levels, from <span
+class="math inline">\(0.0\text{V}\)</span> to <span
+class="math inline">\(0.7\text{V}\)</span>)</li>
+<li><strong>Green:</strong> 3 bits (<span class="math inline">\(2^3 =
+8\)</span> voltage levels, from <span
+class="math inline">\(0.0\text{V}\)</span> to <span
+class="math inline">\(0.7\text{V}\)</span>)</li>
+<li><strong>Blue:</strong> 2 bits (<span class="math inline">\(2^2 =
+4\)</span> voltage levels, from <span
+class="math inline">\(0.0\text{V}\)</span> to <span
+class="math inline">\(0.7\text{V}\)</span>)</li>
+</ul>
+<h3 id="implementation">Implementation:</h3>
+<p>For a 3-bit channel (Red or Green), three GPIO pins connect to the
+color line through three binary-weighted resistors (<span
+class="math inline">\(R\)</span>, <span
+class="math inline">\(2R\)</span>, <span
+class="math inline">\(4R\)</span>). For a 3.3V system targeting an
+equivalent resistance of <span class="math inline">\(\approx
+278\,\Omega\)</span>:</p>
+<ul>
+<li>Bit 2 (MSB): <span class="math inline">\(\approx
+487\,\Omega\)</span> (Standard E96 value: <span
+class="math inline">\(487\,\Omega\)</span> or parallel pairs)</li>
+<li>Bit 1: <span class="math inline">\(\approx 974\,\Omega\)</span>
+(Standard value: <span
+class="math inline">\(1\,\text{k}\Omega\)</span>)</li>
+<li>Bit 0 (LSB): <span class="math inline">\(\approx
+1948\,\Omega\)</span> (Standard value: <span
+class="math inline">\(2\,\text{k}\Omega\)</span>)</li>
+</ul>
+<p>For the 2-bit Blue channel, two pins connect through values
+calculated to provide equivalent <span
+class="math inline">\(0.7\text{V}\)</span> scaling across four discrete
+states (<span class="math inline">\(00\)</span>, <span
+class="math inline">\(01\)</span>, <span
+class="math inline">\(10\)</span>, <span
+class="math inline">\(11\)</span>).</p>
+<h2 id="generating-16-bit-color-rgb565">Generating 16-Bit Color
+(RGB565)</h2>
+<p>A 16-bit color setup uses two bytes per pixel, yielding <span
+class="math inline">\(2^{16} = 65,536\)</span> colors. This format is
+universally known as <strong>RGB565</strong>:</p>
+<ul>
+<li><strong>Red:</strong> 5 bits (<span class="math inline">\(2^5 =
+32\)</span> voltage levels)</li>
+<li><strong>Green:</strong> 6 bits (<span class="math inline">\(2^6 =
+64\)</span> voltage levels)</li>
+<li><strong>Blue:</strong> 5 bits (<span class="math inline">\(2^5 =
+32\)</span> voltage levels)</li>
+</ul>
+<p>Green receives the extra bit due to the human eye's peak spectral
+sensitivity around <span
+class="math inline">\(555\,\text{nm}\)</span>.</p>
+<h3 id="implementation-1">Implementation:</h3>
+<p>Implementing RGB565 via discrete binary-weighted resistors requires
+16 high-speed digital output pins on the microcontroller and 16
+individual resistors:</p>
+<ul>
+<li><strong>Red Channel (5 bits):</strong> Five resistors scaled as
+<span class="math inline">\(R, 2R, 4R, 8R, 16R\)</span>.</li>
+<li><strong>Green Channel (6 bits):</strong> Six resistors scaled as
+<span class="math inline">\(R, 2R, 4R, 8R, 16R, 32R\)</span>.</li>
+<li><strong>Blue Channel (5 bits):</strong> Five resistors scaled
+identically to the Red channel.</li>
+</ul>
+<p>At 5 and 6 bits of resolution, resistor tolerances become critical.
+Standard <span class="math inline">\(5\%\)</span> tolerance resistors
+introduce non-linearities and monotonic errors (where an increment in
+digital value results in a lower analog voltage). Designs utilizing
+16-bit color should use metal-film resistors with <span
+class="math inline">\(1\%\)</span> or <span
+class="math inline">\(0.1\%\)</span> tolerance to preserve color
+fidelity and prevent visual banding across gradients.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

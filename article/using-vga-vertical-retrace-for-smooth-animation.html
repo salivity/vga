@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using VGA Vertical Retrace for Smooth Animation - vga</title>
+    <meta name="description" content="Synchronizing software rendering with the display hardware is fundamental to achieving fluid visual motion on legacy systems. In Video Graphics Array (VGA) programming, software developers rely on the vertical retrace interrupt—also known as the Vertic">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/using-vga-vertical-retrace-for-smooth-animation">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Using VGA Vertical Retrace for Smooth Animation - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/using-vga-vertical-retrace-for-smooth-animation" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Synchronizing software rendering with the display hardware is fundamental to achieving fluid visual motion on legacy systems. In Video Graphics Array (VGA) programming, software developers rely on the vertical retrace interrupt—also known as the Vertic" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="using-vga-vertical-retrace-for-smooth-animation">Using VGA
+Vertical Retrace for Smooth Animation</h1>
+<p>Synchronizing software rendering with the display hardware is
+fundamental to achieving fluid visual motion on legacy systems. In Video
+Graphics Array (VGA) programming, software developers rely on the
+vertical retrace interrupt—also known as the Vertical Blanking Interval
+(VBLANK)—to update frame data and display pointers without interrupting
+active screen rendering. By aligning memory updates with this brief
+hardware pause, developers eliminate visual artifacts like screen
+tearing, stabilize frame rates, and execute flicker-free palette
+animations.</p>
+<h2 id="the-vertical-retrace-mechanism">The Vertical Retrace
+Mechanism</h2>
+<p>Cathode Ray Tube (CRT) monitors display images by sweeping an
+electron beam horizontally across the screen, line by line, from top to
+bottom. Once the beam reaches the bottom-right corner, it must be turned
+off (blanked) and repositioned back to the top-left corner to begin
+drawing the next frame. This reset period is the vertical retrace.</p>
+<p>During active display time, reading and writing directly to the VGA
+video memory (VRAM) while the beam reads from the same memory causes
+"tearing"—a visual artifact where portions of two different frames
+appear simultaneously on screen. The vertical retrace provides a brief
+window where the electron beam is inactive, allowing developers to
+modify video hardware registers or alter video memory safely.</p>
+<h2 id="hardware-interrupts-vs-register-polling">Hardware Interrupts vs.
+Register Polling</h2>
+<p>Developers primarily interface with vertical retrace using two
+techniques: hardware interrupts or register polling.</p>
+<h3 id="1-polling-the-input-status-register">1. Polling the Input Status
+Register</h3>
+<p>The most common approach in PC game development involves reading bit
+3 of the VGA Input Status #1 Register (port <code>0x3DA</code> on color
+displays). When this bit is set to 1, the hardware is in the vertical
+retrace period.</p>
+<p>Developers implement a tight loop that first waits for any ongoing
+retrace to finish, and then waits for the new retrace to begin:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Wait until any existing retrace finishes</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">((</span>inportb<span class="op">(</span><span class="bn">0x3DA</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x08</span><span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Wait until the new vertical retrace begins</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">((</span>inportb<span class="op">(</span><span class="bn">0x3DA</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x08</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span></code></pre></div>
+<p>While this method wastes CPU cycles, it is straightforward and
+guaranteed to work across virtually all PC-compatible clones.</p>
+<h3 id="2-using-the-vertical-retrace-interrupt-irq-9--irq-2">2. Using
+the Vertical Retrace Interrupt (IRQ 9 / IRQ 2)</h3>
+<p>VGA hardware can also trigger an interrupt at the start of the
+vertical retrace (typically routed via IRQ 2/IRQ 9 on IBM PC/AT
+architecture). To use this, developers program the VGA's Cathode Ray
+Tube Controller (CRTC) registers—specifically clearing the interrupt
+flip-flop and enabling the vertical interrupt enable bit in the Vertical
+Retrace End Register (<code>Index 0x11</code>).</p>
+<p>Using an interrupt service routine (ISR) frees the CPU from
+busy-waiting. When the interrupt fires, the ISR executes critical
+display-switching logic immediately, leaving the remaining frame time
+for calculations, physics, and off-screen rendering.</p>
+<h2 id="techniques-enabled-by-vertical-retrace">Techniques Enabled by
+Vertical Retrace</h2>
+<p>Developers use the vertical retrace window to implement several
+visual techniques:</p>
+<h3 id="page-flipping-hardware-double-buffering">Page Flipping (Hardware
+Double Buffering)</h3>
+<p>Instead of copying full frame data to VRAM during the retrace—which
+often exceeds the duration of the retrace window—developers configure
+the VGA hardware with multiple display pages.</p>
+<ol type="1">
+<li>One buffer is displayed on the monitor while the application draws
+to the secondary, hidden buffer.</li>
+<li>When drawing finishes, the program waits for the vertical
+retrace.</li>
+<li>During the retrace, the program updates the CRTC Start Address
+registers (<code>Index 0x0C</code> and <code>0x0D</code>) to point to
+the memory location of the newly drawn frame.</li>
+<li>When the beam begins scanning from the top, it immediately displays
+the new buffer without any tearing.</li>
+</ol>
+<h3 id="palette-modifications-and-copper-style-effects">Palette
+Modifications and Copper-Style Effects</h3>
+<p>In standard 256-color modes (such as Mode 13h), the Digital-to-Analog
+Converter (DAC) contains the color lookup table. Modifying the DAC
+during active scanning causes visible visual noise or "snow." By
+updating the palette registers (<code>0x3C8</code> and
+<code>0x3C9</code>) during vertical retrace, developers achieve smooth
+color cycling, fading effects, or screen-wide lighting changes with no
+visual distortion.</p>
+<h3 id="fixed-rate-frame-synchronization">Fixed-Rate Frame
+Synchronization</h3>
+<p>Because vertical retrace occurs at deterministic hardware intervals
+(typically 60 Hz or 70 Hz depending on the resolution), synchronizing
+game loops to the retrace provides an automatic, hardware-level clock.
+This eliminates the need for complex software timers to normalize game
+speed across different processor architectures.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

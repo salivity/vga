@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multisync VGA Fail-Safe Circuits for Invalid Sync Rates - vga</title>
+    <meta name="description" content="Later multisync Video Graphics Array (VGA) cathode-ray tube (CRT) monitors introduced active fail-safe circuits to prevent catastrophic hardware damage caused by invalid horizontal and vertical synchronization rates. Unlike early fixed-frequency displays">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/multisync-vga-fail-safe-circuits-for-invalid-sync-rates">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Multisync VGA Fail-Safe Circuits for Invalid Sync Rates - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/multisync-vga-fail-safe-circuits-for-invalid-sync-rates" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Later multisync Video Graphics Array (VGA) cathode-ray tube (CRT) monitors introduced active fail-safe circuits to prevent catastrophic hardware damage caused by invalid horizontal and vertical synchronization rates. Unlike early fixed-frequency displays" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="multisync-vga-fail-safe-circuits-for-invalid-sync-rates">Multisync
+VGA Fail-Safe Circuits for Invalid Sync Rates</h1>
+<p>Later multisync Video Graphics Array (VGA) cathode-ray tube (CRT)
+monitors introduced active fail-safe circuits to prevent catastrophic
+hardware damage caused by invalid horizontal and vertical
+synchronization rates. Unlike early fixed-frequency displays or
+first-generation multiscan models that could burn out their deflection
+circuitry when exposed to unsupported video modes, later monitors
+actively measured incoming sync pulses using integrated microcontrollers
+and analog comparators. Upon detecting out-of-spec frequencies, these
+protective circuits immediately shut down the high-voltage deflection
+stages, muted video inputs, and safely placed the display into standby
+or triggered an on-screen warning.</p>
+<h3 id="the-risk-of-unchecked-sync-rates">The Risk of Unchecked Sync
+Rates</h3>
+<p>In a CRT monitor, the horizontal deflection system operates in
+resonance with the flyback transformer to steer the electron beam across
+the screen and generate the high anode voltage (often 20 to 30 kV)
+required for the display. The Horizontal Output Transistor (HOT) acts as
+a high-speed switch driving this circuit.</p>
+<p>If a video card delivered an invalid horizontal sync (<span
+class="math inline">\(H\)</span>-sync) frequency—either too high, too
+low, or unstable—the switching timing of the HOT would desynchronize
+from the resonant flyback tank circuit. A frequency that was too low
+would keep the transistor saturated for too long, causing extreme
+current draw, core saturation of the flyback transformer, and thermal
+runaway. An excessively high frequency could exceed the switching speed
+of the transistor, resulting in massive switching losses and
+instantaneous collector-emitter breakdown.</p>
+<h3 id="microcontroller-based-frequency-detection">Microcontroller-Based
+Frequency Detection</h3>
+<p>To detect improper signals before damage occurred, manufacturers
+integrated microcontrollers (typically derived from architectures like
+the 8051 or 68HC05) directly onto the monitor's control board.</p>
+<ol type="1">
+<li><strong>Pulse Timing and Counting:</strong> The microcontroller
+received the separate <span class="math inline">\(H\)</span>-sync and
+<span class="math inline">\(V\)</span>-sync lines routed from the
+standard 15-pin D-sub VGA connector. Internal hardware timers measured
+the period and pulse width of incoming sync pulses to calculate the
+exact horizontal and vertical refresh rates.</li>
+<li><strong>Firmware Look-Up Tables:</strong> The detected frequencies
+were compared against a hardcoded lookup table stored in ROM or EEPROM.
+This table defined the monitor’s safe operating envelope (for example,
+30–95 kHz horizontal, 50–160 Hz vertical).</li>
+<li><strong>Signal Quality Validation:</strong> In addition to frequency
+limits, the logic verified sync signal stability, duty cycle, and
+polarity. Highly jittery or floating sync inputs were classified as
+invalid signals.</li>
+</ol>
+<p>In models bridging the gap between discrete analog logic and full
+digital control, frequency-to-voltage converters (such as the LM2917)
+and window comparators were used. These analog circuits converted
+incoming sync frequencies into proportional DC voltages, which were
+compared against upper and lower voltage reference thresholds via
+operational amplifiers.</p>
+<h3 id="deflection-processor-interlocks">Deflection Processor
+Interlocks</h3>
+<p>If the frequency fell outside safe operating tolerances, the
+fail-safe system initiated an instantaneous hardware interlock rather
+than waiting for software intervention.</p>
+<p>Later monitors relied on highly integrated deflection processor ICs
+(such as the TDA485X or STV688X series). These ICs handled horizontal
+frequency synthesis, geometry correction, and phase control,
+communicating with the system microcontroller over an I²C bus. The
+deflection processor featured built-in hardware protection circuits:</p>
+<ul>
+<li><strong>Drive Pulse Invalidation:</strong> If the sync signal was
+lost or deemed invalid, the processor instantly grounded or disabled its
+internal horizontal drive pulse output pin. Without this drive signal,
+the pre-driver and the main Horizontal Output Transistor ceased
+switching entirely, preventing destructive currents.</li>
+<li><strong>Overvoltage Protection (OVP):</strong> A feedback winding on
+the flyback transformer monitored the generated high voltage. If the
+high-voltage rail surged due to abnormal deflection frequencies, the OVP
+latch inside the deflection processor grounded the oscillator within
+microseconds.</li>
+</ul>
+<h3 id="power-rail-isolation-and-relays">Power Rail Isolation and
+Relays</h3>
+<p>Disabling the driver stage was complemented by isolating the power
+delivery systems.</p>
+<ul>
+<li><strong>Switched B+ Rails:</strong> The high-voltage B+ power rail
+(often between 50V and 200V, dynamically adjusted according to
+resolution) was routed through a switching regulator or a power relay.
+When an out-of-range signal was detected, the microcontroller signaled
+the Switch Mode Power Supply (SMPS) controller to deactivate or reduce
+the B+ rail to minimum voltage.</li>
+<li><strong>Filament and Video Blanking:</strong> The video
+pre-amplifiers were clamped to ground to prevent cathode electron
+emission, preventing the electron beam from burning a concentrated spot
+into the tube's phosphor surface if horizontal sweep collapsed while the
+tube was energized.</li>
+</ul>
+<h3
+id="display-power-management-signaling-dpms-and-osd-feedback">Display
+Power Management Signaling (DPMS) and OSD Feedback</h3>
+<p>The final tier of protection was user-facing and power-efficient. By
+the mid-1990s, the Video Electronics Standards Association (VESA) DPMS
+standard formalized how monitors reacted to missing or invalid sync
+lines.</p>
+<p>When invalid sync was detected:</p>
+<ol type="1">
+<li>The microcontroller flagged the condition to the On-Screen Display
+(OSD) controller, generating a persistent overlay message such as "Input
+Signal Out of Range" or "Check Signal Cable."</li>
+<li>The deflection stages remained completely disabled while the
+low-voltage logic powered the OSD for a predetermined period (typically
+a few seconds).</li>
+<li>If valid sync rates were not restored, the microcontroller commanded
+the main power supply into a safe standby or suspend state, shutting off
+the CRT heaters and remaining deflection circuitry until compatible sync
+timings were detected.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

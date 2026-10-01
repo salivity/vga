@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA Uses a 28.322 MHz Dot Clock for Text Mode - vga</title>
+    <meta name="description" content="When IBM introduced the Video Graphics Array (VGA) in 1987, it established two primary hardware pixel clocks: 25.175 MHz for 640-pixel graphic modes and 28.322 MHz for 720-pixel text modes. The selection of the 28.322 MHz dot clock was the mathematical c">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-uses-a-28-322-m-hz-dot-clock-for-text-mode">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA Uses a 28.322 MHz Dot Clock for Text Mode - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-uses-a-28-322-m-hz-dot-clock-for-text-mode" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When IBM introduced the Video Graphics Array (VGA) in 1987, it established two primary hardware pixel clocks: 25.175 MHz for 640-pixel graphic modes and 28.322 MHz for 720-pixel text modes. The selection of the 28.322 MHz dot clock was the mathematical c" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-uses-a-28322-mhz-dot-clock-for-text-mode">Why VGA Uses a
+28.322 MHz Dot Clock for Text Mode</h1>
+<p>When IBM introduced the Video Graphics Array (VGA) in 1987, it
+established two primary hardware pixel clocks: 25.175 MHz for 640-pixel
+graphic modes and 28.322 MHz for 720-pixel text modes. The selection of
+the 28.322 MHz dot clock was the mathematical consequence of preserving
+high-readability 9-pixel-wide text characters while matching the display
+monitor’s fixed 31.46875 kHz horizontal scanning frequency at a 70 Hz
+vertical refresh rate.</p>
+<p>To understand the clock frequency, one must look at the display
+requirements IBM carried over from the earlier Monochrome Display
+Adapter (MDA). MDA text was praised for its crispness because it used
+character cells that were 9 pixels wide by 14 scanlines tall. Over an
+80-column display, this produced an active horizontal resolution of 720
+pixels (80 columns × 9 pixels). When designing VGA, IBM aimed to improve
+upon this standard by implementing a 9×16 character box across 400
+active scanlines, creating a 720×400 text resolution.</p>
+<p>CRT monitors of the era required strict timing signals to steer the
+electron beam across the screen. VGA standardized on a horizontal line
+frequency of approximately 31.46875 kHz (often referred to as 31.5 kHz,
+which was double the traditional NTSC television line rate). For text
+display, the vertical refresh rate was set to 70.087 Hz across a frame
+composed of 449 total vertical lines, including the active display
+lines, front porch, vertical sync pulse, and back porch:</p>
+<p><span class="math display">\[\text{Horizontal Frequency} =
+70.087\text{ Hz} \times 449\text{ lines} = 31,468.75\text{
+Hz}\]</span></p>
+<p>For the horizontal beam to return to the left side of the screen
+safely, an analog monitor also requires horizontal blanking intervals
+(front porch, sync, and back porch). IBM structured the text mode timing
+around a total horizontal frame of 100 character clocks per line.</p>
+<p>Because each character was 9 dots wide, every horizontal scanline
+required 900 total pixel dots:</p>
+<p><span class="math display">\[\text{Total Dots per Line} = 100\text{
+characters} \times 9\text{ pixels} = 900\text{ dots}\]</span></p>
+<p>Of these 900 dots, 720 dots (80 characters) were visible, and the
+remaining 180 dots (20 characters) served as the horizontal blanking and
+sync interval.</p>
+<p>Multiplying the total horizontal dots per line by the required
+horizontal line frequency determines the exact pixel clock required to
+paint those pixels:</p>
+<p><span class="math display">\[\text{Pixel Clock} = 900\text{ dots}
+\times 31,468.75\text{ lines per second} = 28,321,875\text{
+Hz}\]</span></p>
+<p>This calculated value of 28.321875 MHz is the precise origin of the
+rounded 28.322 MHz oscillator.</p>
+<p>By placing both a 25.175 MHz crystal oscillator (which generated 800
+total dots at 8 pixels per character for 640-pixel graphics) and a
+28.322 MHz crystal oscillator on the original VGA adapter, IBM enabled
+the hardware to switch between graphics and 9-dot-wide text modes
+without changing the monitor's horizontal sweep rate. The electron beam
+scanned across the screen at the exact same speed in both modes,
+ensuring stable, flicker-free display transitions.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Interleaved Memory Solved VGA Bus Contention - vga</title>
+    <meta name="description" content="Interleaved memory architectures on advanced Video Graphics Array (VGA) and Super VGA (SVGA) cards resolved memory bus contention by dividing video memory into independent, alternating banks. In traditional unified architectures, the host CPU and the Cat">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-interleaved-memory-solved-vga-bus-contention">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Interleaved Memory Solved VGA Bus Contention - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-interleaved-memory-solved-vga-bus-contention" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Interleaved memory architectures on advanced Video Graphics Array (VGA) and Super VGA (SVGA) cards resolved memory bus contention by dividing video memory into independent, alternating banks. In traditional unified architectures, the host CPU and the Cat" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-interleaved-memory-solved-vga-bus-contention">How
+Interleaved Memory Solved VGA Bus Contention</h1>
+<p>Interleaved memory architectures on advanced Video Graphics Array
+(VGA) and Super VGA (SVGA) cards resolved memory bus contention by
+dividing video memory into independent, alternating banks. In
+traditional unified architectures, the host CPU and the Cathode Ray Tube
+Controller (CRTC) constantly fought for access to the same dynamic RAM
+(DRAM), causing severe processing wait states and screen flicker. By
+staggering memory access across even and odd banks, interleaved memory
+allowed the graphics controller to prefetch display data while leaving
+parallel windows open for the CPU, effectively multiplying available
+bandwidth and eliminating access bottlenecks without requiring expensive
+dual-ported VRAM.</p>
+<h3 id="the-memory-bus-contention-bottleneck">The Memory Bus Contention
+Bottleneck</h3>
+<p>Standard VGA architectures relied on a single shared pool of DRAM to
+store frame data. This design created a fundamental conflict between two
+distinct hardware masters:</p>
+<ol type="1">
+<li><strong>The Display Controller (CRTC):</strong> Required continuous,
+predictable, high-priority read access to stream pixel data to the
+digital-to-analog converter (RAMDAC) in synchronization with the
+monitor’s raster beam.</li>
+<li><strong>The Host CPU:</strong> Required write and read access to
+update frame buffers, render 2D graphics, and execute software
+instructions.</li>
+</ol>
+<p>Because conventional single-bank DRAM could only serve one address at
+a time, the CRTC claimed priority during active display scans. When the
+CPU attempted to access video memory during this active period, the
+graphics chipset was forced to insert CPU wait states, severely
+degrading system performance. Alternatively, if CPU writes were
+prioritized, the display controller experienced data starvation,
+producing visible display artifacts known as "snow."</p>
+<h3 id="the-mechanism-of-interleaved-memory">The Mechanism of
+Interleaved Memory</h3>
+<p>Interleaved memory resolved this conflict by splitting physical DRAM
+into two or more distinct banks (typically an "even" bank and an "odd"
+bank) mapped to alternating sequential memory addresses. Instead of a
+single 16-bit or 32-bit bus accessing a single bank, the memory
+controller managed separate control lines (such as Row Address Strobe
+and Column Address Strobe) across these parallel banks.</p>
+<p>DRAM requires a specific recovery and precharge cycle after every
+read or write before it can be accessed again. By alternating access
+between banks:</p>
+<ul>
+<li>While Bank 0 was actively transferring data, Bank 1 could undergo
+precharging.</li>
+<li>While the display controller read sequential pixel data across the
+alternating banks, it could fetch wide words (e.g., 32-bit or 64-bit
+blocks) in a single burst by cycling between banks faster than the
+access cycle time of an individual DRAM chip.</li>
+</ul>
+<h3 id="resolving-the-contention">Resolving the Contention</h3>
+<p>Advanced VGA chipsets (such as the Tseng Labs ET4000 series and
+Cirrus Logic controllers) leveraged memory interleaving to overcome
+contention through three specific techniques:</p>
+<h4 id="1-faster-display-fifo-filling">1. Faster Display FIFO
+Filling</h4>
+<p>Because the CRTC read contiguous horizontal pixels, sequential raster
+lines hit alternating memory banks. This allowed the display controller
+to utilize page-mode or interleaved bursting to fill internal First-In,
+First-Out (FIFO) buffer queues in roughly half the clock cycles required
+by a non-interleaved design.</p>
+<h4 id="2-expanded-cpu-access-windows">2. Expanded CPU Access
+Windows</h4>
+<p>Once the graphics controller rapidly filled its internal FIFOs using
+interleaved bursts, it released the memory bus. This created extended
+idle windows on the video memory bus during active display cycles. The
+memory controller utilized these free cycles to grant the CPU immediate
+access to RAM, dramatically reducing or entirely removing CPU wait
+states.</p>
+<h4 id="3-low-cost-dual-port-emulation">3. Low-Cost Dual-Port
+Emulation</h4>
+<p>True dual-ported video RAM (VRAM) physically featured two separate
+access ports—a serial port for the CRTC and a parallel port for the
+CPU—allowing simultaneous access without contention. However, VRAM was
+prohibitively expensive for standard consumer cards. Interleaving
+dynamic RAM delivered performance comparable to dual-ported VRAM by
+using fast time-division multiplexing across alternating low-cost DRAM
+banks.</p>
+<p>By eliminating the wait states caused by bus collisions, interleaved
+memory architectures unlocked the higher resolutions (800x600, 1024x768)
+and 16-bit or 24-bit color depths that defined the SVGA era, ensuring
+smooth rendering without starving the display hardware of critical video
+data.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

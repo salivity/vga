@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How SGRAM Improved 1990s VGA Memory Bandwidth - vga</title>
+    <meta name="description" content="In the late 1990s, the rapid adoption of 3D acceleration and high-resolution 2D desktop environments created severe memory bottlenecks for personal computer graphics cards. Synchronous Graphics RAM (SGRAM) solved this issue by modernizing traditional vid">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-sgram-improved-1990-s-vga-memory-bandwidth">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How SGRAM Improved 1990s VGA Memory Bandwidth - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-sgram-improved-1990-s-vga-memory-bandwidth" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the late 1990s, the rapid adoption of 3D acceleration and high-resolution 2D desktop environments created severe memory bottlenecks for personal computer graphics cards. Synchronous Graphics RAM (SGRAM) solved this issue by modernizing traditional vid" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-sgram-improved-1990s-vga-memory-bandwidth">How SGRAM
+Improved 1990s VGA Memory Bandwidth</h1>
+<p>In the late 1990s, the rapid adoption of 3D acceleration and
+high-resolution 2D desktop environments created severe memory
+bottlenecks for personal computer graphics cards. Synchronous Graphics
+RAM (SGRAM) solved this issue by modernizing traditional video memory
+architecture. By synchronizing operations with the system clock,
+introducing dual-bank designs to reduce latency, and incorporating
+specialized graphics features like block writes and masked writes, SGRAM
+significantly increased effective throughput. This article explains the
+technical advancements that allowed SGRAM to dramatically improve video
+graphics array (VGA) memory bandwidth during this pivotal era in PC
+gaming and computing.</p>
+<h3 id="synchronous-clocking-and-pipelining">Synchronous Clocking and
+Pipelining</h3>
+<p>Prior to the widespread use of SGRAM, graphics cards primarily relied
+on asynchronous memory types such as Fast Page Mode (FPM) DRAM, Extended
+Data Out (EDO) DRAM, or expensive dual-ported VRAM. Asynchronous memory
+relied on control signals that required overhead time to stabilize,
+limiting operational clock frequencies and creating wait states for the
+graphics processor.</p>
+<p>SGRAM adopted a synchronous interface tied to a dedicated clock
+signal, matching the operating principles of standard SDRAM. This
+synchronization allowed memory read and write requests to be pipelined.
+Instead of waiting for a full read/write cycle to conclude before
+issuing the next command, the graphics chip could feed instructions on
+every single clock cycle. This architectural shift enabled stable clock
+frequencies exceeding 100 MHz to 143 MHz, vastly outperforming the
+memory bus speeds of conventional EDO RAM.</p>
+<h3 id="internal-multi-banking">Internal Multi-Banking</h3>
+<p>SGRAM incorporated a multi-bank internal architecture, typically
+utilizing two independent memory banks. In traditional single-bank
+memory, accessing data in a new memory row forced the controller to
+endure a precharge delay, temporarily freezing data transfer.</p>
+<p>With SGRAM's dual-bank setup, the graphics controller could
+interleave memory access. While data was being actively transferred from
+one bank, the other bank could be precharged and readied for access. By
+alternating between the two banks, memory controllers effectively hid
+latency, maintaining an uninterrupted stream of data across the memory
+bus.</p>
+<h3 id="block-write-acceleration">Block Write Acceleration</h3>
+<p>One of SGRAM's defining features over standard SDRAM was its
+hardware-level support for block writes. Standard memory architectures
+required the graphics processor to write data sequentially, sending
+pixel data across the bus one memory address at a time.</p>
+<p>Block write allowed the graphics controller to broadcast a single
+32-bit color pattern across multiple memory columns simultaneously in a
+single clock cycle. This dramatically reduced the bandwidth required for
+common rendering tasks:</p>
+<ul>
+<li><strong>Buffer Clearing:</strong> Clearing the color framebuffer or
+Z-buffer between rendering frames was one of the most bandwidth-heavy
+tasks in early 3D rendering. Block writes allowed entire regions to be
+reset almost instantly.</li>
+<li><strong>2D Acceleration:</strong> Solid color fills, background
+redraws, and window rendering in operating systems like Windows 95 and
+98 required significantly fewer clock cycles.</li>
+</ul>
+<h3
+id="masked-writes-and-elimination-of-read-modify-write-cycles">Masked
+Writes and Elimination of Read-Modify-Write Cycles</h3>
+<p>Before SGRAM, modifying individual pixels or components within a
+larger data word required a time-consuming "read-modify-write"
+operation. The graphics processor had to read the existing memory word,
+modify the targeted bits on-die, and write the entire word back to
+memory.</p>
+<p>SGRAM integrated internal write-mask registers, allowing the graphics
+chip to modify specific bits or bytes of data directly in memory in a
+single step without reading the original data first. This capability
+provided major performance advantages:</p>
+<ul>
+<li><strong>Transparency and 2D Sprites:</strong> Only the visible
+pixels of a sprite needed to be drawn; masked writing allowed invisible
+transparent pixels to be skipped without accessing the framebuffer
+beforehand.</li>
+<li><strong>Text Rendering:</strong> Font rendering and cursor movement
+could be executed with zero read overhead on overlapping regions.</li>
+</ul>
+<h3 id="impact-on-late-1990s-graphics-cards">Impact on Late-1990s
+Graphics Cards</h3>
+<p>By combining the raw speed of synchronous pipelining with
+graphics-specific logic, SGRAM provided bandwidth that approached the
+functional performance of costly dual-ported VRAM while maintaining the
+lower manufacturing cost of single-ported dynamic RAM.</p>
+<p>This balance made SGRAM the preferred memory standard for
+performance-oriented VGA cards of the era, including the Matrox
+Millennium series, the ATI 3D Rage Pro, and early NVIDIA RIVA
+accelerators. It provided the necessary throughput to handle 32-bit
+true-color desktop resolutions and paved the way for the real-time 3D
+consumer graphics boom.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

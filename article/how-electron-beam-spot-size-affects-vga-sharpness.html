@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Electron Beam Spot Size Affects VGA Sharpness - vga</title>
+    <meta name="description" content="In high-resolution Cathode Ray Tube (CRT) monitors utilizing the Video Graphics Array (VGA) interface, image clarity is governed by the precision of the electron gun assembly. The electron beam spot size—the diameter of the focused stream of electrons">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-electron-beam-spot-size-affects-vga-sharpness">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Electron Beam Spot Size Affects VGA Sharpness - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-electron-beam-spot-size-affects-vga-sharpness" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In high-resolution Cathode Ray Tube (CRT) monitors utilizing the Video Graphics Array (VGA) interface, image clarity is governed by the precision of the electron gun assembly. The electron beam spot size—the diameter of the focused stream of electrons" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-electron-beam-spot-size-affects-vga-sharpness">How Electron
+Beam Spot Size Affects VGA Sharpness</h1>
+<p>In high-resolution Cathode Ray Tube (CRT) monitors utilizing the
+Video Graphics Array (VGA) interface, image clarity is governed by the
+precision of the electron gun assembly. The electron beam spot size—the
+diameter of the focused stream of electrons when it strikes the phosphor
+screen—serves as the primary physical limiter of display sharpness. As
+resolution increases, smaller and more tightly focused spot sizes are
+required to prevent pixel overlap, preserve high-frequency contrast, and
+maintain legibility across the screen.</p>
+<h3 id="the-physics-of-spot-size-and-addressability">The Physics of Spot
+Size and Addressability</h3>
+<p>A CRT generates an image by sweeping one or more electron beams
+horizontally across the screen in sequential raster scanlines. The
+intensity of the beam is modulated rapidly to produce varying brightness
+levels at each addressable pixel location.</p>
+<p>Because an electron beam exhibits a Gaussian energy
+distribution—where the center has the highest electron density and the
+edges taper off—the "spot size" is typically measured at a specific
+intensity threshold (often 50% of the peak value). If this diameter is
+smaller than the target pixel dimension, each point of light remains
+distinct. When the spot size exceeds the distance between adjacent
+pixels or scanlines, adjacent areas are unintentionally stimulated.</p>
+<h3 id="resolution-scaling-and-beam-overlap">Resolution Scaling and Beam
+Overlap</h3>
+<p>At standard VGA resolution (640x480), individual pixels and scanlines
+are relatively wide, allowing a moderately sized electron beam to
+illuminate distinct points without encroaching on neighboring pixels.
+However, higher-resolution VGA modes—such as 1024x768 (XGA), 1280x1024
+(SXGA), or 1600x1200 (UXGA)—pack far more pixels into the same physical
+screen area.</p>
+<p>When the spot size is too large for these higher resolutions, two
+issues emerge:</p>
+<ol type="1">
+<li><strong>Horizontal Smearing:</strong> Along a single scanline, the
+electron beam cannot switch off or change intensity quickly enough
+relative to its width. Rapid transitions between dark and light pixels
+blend together, degrading fine horizontal details such as thin vertical
+lines or text serifs.</li>
+<li><strong>Vertical Scanline Blurring:</strong> If the beam diameter is
+thicker than the vertical distance between adjacent scanlines, the beam
+overlaps the line above or below it. This overlap eliminates the
+distinct separation between lines, leading to a hazy, soft image.</li>
+</ol>
+<h3 id="modulation-transfer-function-and-contrast-loss">Modulation
+Transfer Function and Contrast Loss</h3>
+<p>Sharpness is mathematically tied to the Modulation Transfer Function
+(MTF), which measures the display's ability to maintain contrast as
+spatial frequency increases (i.e., alternating single-pixel black and
+white lines). A large electron beam spot causes light to spill into
+adjacent dark areas. This light pollution elevates the black level and
+reduces the peak white level of neighboring elements, substantially
+lowering the MTF. The resulting display output lacks crispness,
+appearing muddy and low-contrast even if the monitor's brightness is set
+high.</p>
+<h3 id="edge-deflection-and-dynamic-focus-challenges">Edge Deflection
+and Dynamic Focus Challenges</h3>
+<p>Maintaining a uniform spot size across the entire screen is an
+inherent challenge in CRT design. When the beam is deflected toward the
+corners and edges of the tube, the distance from the electron gun to the
+screen increases, and the beam strikes the glass at an oblique
+angle.</p>
+<p>Without compensation, geometric projection elongates the circular
+spot into an oval, significantly increasing its effective area. High-end
+VGA displays mitigate this by using dynamic focus and dynamic
+astigmatism correction circuits. These systems adjust electrostatic or
+electromagnetic focusing fields in real time according to the beam's
+deflection angle, keeping the spot compact and round to preserve
+edge-to-edge sharpness.</p>
+<h3 id="relationship-with-the-physical-mask-pitch">Relationship with the
+Physical Mask Pitch</h3>
+<p>The electron beam spot size must also coordinate with the monitor’s
+physical aperture grille or shadow mask pitch. The mask acts as a
+mechanical filter to ensure the correct beams strike only their
+corresponding red, green, or blue phosphors.</p>
+<p>If the electron spot is too large, it wastes energy on the metal mask
+and risks causing visual moiré patterns—interference fringes that occur
+when the periodic frequency of the raster scan beats against the
+physical spacing of the mask holes. Conversely, an optimized spot size
+covers just enough of the mask to efficiently activate the intended
+phosphor triads without spilling excess energy into adjacent groupings,
+producing a stable, razor-sharp picture.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

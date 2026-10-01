@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syncing Doom's 35 Hz Game Loop to 70 Hz VGA - vga</title>
+    <meta name="description" content="When id Software developed DOOM, they faced the challenge of aligning a fixed 35 Hz game logic simulation with the PC's standard 70 Hz Video Graphics Array (VGA) vertical refresh rate. Because 70 Hz is exactly double 35 Hz, id Software established an exa">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/syncing-doom-s-35-hz-game-loop-to-70-hz-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Syncing Doom's 35 Hz Game Loop to 70 Hz VGA - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/syncing-doom-s-35-hz-game-loop-to-70-hz-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When id Software developed DOOM, they faced the challenge of aligning a fixed 35 Hz game logic simulation with the PC's standard 70 Hz Video Graphics Array (VGA) vertical refresh rate. Because 70 Hz is exactly double 35 Hz, id Software established an exa" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="syncing-dooms-35-hz-game-loop-to-70-hz-vga">Syncing Doom's 35 Hz
+Game Loop to 70 Hz VGA</h1>
+<p>When id Software developed <em>DOOM</em>, they faced the challenge of
+aligning a fixed 35 Hz game logic simulation with the PC's standard 70
+Hz Video Graphics Array (VGA) vertical refresh rate. Because 70 Hz is
+exactly double 35 Hz, id Software established an exact 2:1 cadence
+between the display's vertical retrace and the engine's physics updates.
+By reprogramming the PC’s internal hardware timer to advance the logic
+and monitoring the VGA controller's raster beam, the engine ensured
+smooth motion, tear-free rendering, and deterministic game mechanics on
+standard DOS hardware.</p>
+<h3 id="the-21-hardware-ratio">The 2:1 Hardware Ratio</h3>
+<p>Standard VGA mode 320x200 (including Mode 13h and tweaked planar
+variations like "Mode Y") operates with a vertical refresh frequency of
+approximately 70.086 Hz. This means the electron gun of a CRT monitor
+redraws the entire screen roughly every 14.28 milliseconds.</p>
+<p>John Carmack designed <em>DOOM</em> to run its physics, world
+simulation, and player inputs at 35 frames (or "tics") per second,
+giving each game tick a fixed duration of roughly 28.57 milliseconds.
+Because 70 divided by 35 equals 2, every game simulation tick maps
+directly to two full vertical refreshes of the VGA monitor.</p>
+<h3 id="reprogramming-the-programmable-interval-timer-pit">Reprogramming
+the Programmable Interval Timer (PIT)</h3>
+<p>To manage game logic independently of rendering, id Software hooked
+into the Intel 8253/8254 Programmable Interval Timer (PIT) via IRQ
+0.</p>
+<p>Normally, the PC BIOS configures PIT Channel 0 to trigger an
+interrupt at roughly 18.2 Hz. id Software reprogrammed the PIT's
+frequency divisor to fire at 35 Hz (or a multiple thereof, such as 70 Hz
+or 140 Hz depending on the version and DOS extender used) using the base
+clock oscillator frequency of 1.193182 MHz.</p>
+<p>Each time the timer fired, it updated a global counter called
+<code>gametic</code>. The main loop evaluated this counter in a
+<code>while</code> loop:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>maketic <span class="op">-</span> gametic <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    G_Ticker<span class="op">();</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    gametic<span class="op">++;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>If rendering took longer than expected, this fixed-step loop
+processed multiple simulation ticks back-to-back to ensure the game
+world never slowed down or lost synchronization.</p>
+<h3 id="polling-the-vertical-retrace">Polling the Vertical Retrace</h3>
+<p>To avoid visible visual tearing, buffer flips had to occur during the
+vertical blanking interval (VBLANK)—the period when the CRT's electron
+beam turned off to travel from the bottom right of the screen back up to
+the top left.</p>
+<p>DOS games typically lacked hardware-level synchronization APIs,
+requiring developers to poll the VGA Input Status Register 1 at I/O port
+<code>0x3DA</code>. Specifically, Bit 3 of register <code>0x3DA</code>
+indicates the retrace status:</p>
+<ul>
+<li>If Bit 3 is <code>1</code>, the display is in a vertical
+retrace.</li>
+<li>If Bit 3 is <code>0</code>, the display is actively scanning active
+video.</li>
+</ul>
+<p>A standard assembly routine to wait for the next clean vertical
+blanking cycle looked like this:</p>
+<pre class="assembly"><code>mov dx, 03DAh
+WaitNotVsync:
+    in al, dx
+    test al, 08h
+    jnz WaitNotVsync
+WaitVsync:
+    in al, dx
+    test al, 08h
+    jz WaitVsync</code></pre>
+<p>First, the code waited for any ongoing retrace to finish, then it
+waited for the next retrace to begin.</p>
+<h3 id="page-flipping-vs-memory-blitting">Page Flipping vs. Memory
+Blitting</h3>
+<p>Depending on the engine revision and rendering mode:</p>
+<ol type="1">
+<li><strong>Double Buffering:</strong> The engine drew the 3D scene to
+an off-screen frame buffer located in main system memory. Once the
+render finished and the 35 Hz tick arrived, the engine waited for the 70
+Hz VBLANK signal via port <code>0x3DA</code> and copied the buffer into
+VGA Video RAM (located at segment <code>0xA000</code>).</li>
+<li><strong>Page Flipping (Mode Y):</strong> When using tweaked 320x200
+planar modes, the 256 KB of VGA memory was large enough to hold multiple
+frame buffers. Instead of copying all 64,000 pixels across the slow ISA
+bus every frame, the engine drew into an inactive video page and
+reprogrammed the VGA Start Address Register (<code>0x3D4</code> index
+<code>0x0C</code> and <code>0x0D</code>) during the vertical retrace,
+instantly switching the display pointer with zero bus copy
+overhead.</li>
+</ol>
+<p>By binding the page switch or blit to the start of a retrace cycle
+while running the tick accumulator at 35 Hz, the frame was consistently
+displayed for exactly two CRT scans, locking the gameplay to a smooth,
+predictable cadence.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

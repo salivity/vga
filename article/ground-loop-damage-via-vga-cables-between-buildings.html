@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ground Loop Damage via VGA Cables Between Buildings - vga</title>
+    <meta name="description" content="Connecting computers located in different buildings using an unisolated Video Graphics Array (VGA) cable can cause severe, permanent hardware damage. This risk arises from differences in electrical grounding systems between separate structures, which cre">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/ground-loop-damage-via-vga-cables-between-buildings">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Ground Loop Damage via VGA Cables Between Buildings - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/ground-loop-damage-via-vga-cables-between-buildings" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Connecting computers located in different buildings using an unisolated Video Graphics Array (VGA) cable can cause severe, permanent hardware damage. This risk arises from differences in electrical grounding systems between separate structures, which cre" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="ground-loop-damage-via-vga-cables-between-buildings">Ground Loop
+Damage via VGA Cables Between Buildings</h1>
+<p>Connecting computers located in different buildings using an
+unisolated Video Graphics Array (VGA) cable can cause severe, permanent
+hardware damage. This risk arises from differences in electrical
+grounding systems between separate structures, which create destructive
+electrical currents known as ground loops. This article explains the
+electrical principles behind ground potential differences, how
+unshielded or unisolated VGA cables become conduits for dangerous
+current, the exact mechanisms of hardware failure, and the methods used
+to prevent this damage.</p>
+<h2 id="understanding-ground-potential-differences">Understanding Ground
+Potential Differences</h2>
+<p>Every building connected to municipal power possesses its own
+dedicated grounding system, typically consisting of copper ground rods
+driven into the earth. The electrical potential of "ground" is not
+universally zero volts; it varies based on local soil conductivity, the
+building's electrical load, phase imbalances, and proximity to utility
+transformers.</p>
+<p>Because of these variables, the ground potential of Building A rarely
+matches the ground potential of Building B. A constant voltage
+differential—ranging from a few volts to dozens of volts, or even
+thousands during electrical faults and nearby lightning strikes—often
+exists between the electrical systems of the two buildings.</p>
+<h2 id="the-vga-cable-as-a-bridge">The VGA Cable as a Bridge</h2>
+<p>Standard VGA connections are entirely analog and lack built-in
+galvanic isolation. A standard 15-pin VGA cable features:</p>
+<ul>
+<li>Individual ground lines for the Red, Green, and Blue color channels
+(Pins 6, 7, and 8).</li>
+<li>Digital and sync grounds (Pins 5 and 10).</li>
+<li>A metal shield surrounding the internal conductors, connected
+directly to the metal housing of the DE-15 connector.</li>
+</ul>
+<p>When a computer in Building A and a computer or display in Building B
+are both grounded via standard three-prong power outlets, their chassis
+and internal motherboards are tied to their respective building grounds.
+Connecting an unisolated VGA cable between them bridges the two
+independent electrical systems. The VGA ground pins and outer shield
+become an unintended, low-resistance path attempting to equalize the
+voltage difference between the two buildings.</p>
+<h2 id="mechanisms-of-computer-damage">Mechanisms of Computer
+Damage</h2>
+<p>The equalizing current flowing through the cable can cause immediate
+or progressive damage to both connected devices through several failure
+modes:</p>
+<ul>
+<li><strong>Overcurrent on Motherboard Traces:</strong> VGA ground pins
+connect directly to the printed circuit board (PCB) traces of graphics
+cards and motherboards. These copper traces are designed to handle tiny
+signaling currents (milliamps). When a ground potential difference
+forces several amperes of current across the connection, the thin PCB
+traces act like fuses, rapidly overheating and vaporizing.</li>
+<li><strong>Component Burnout:</strong> VGA video signals operate at low
+signal levels (0.7 volts peak-to-peak). A shifted ground reference
+elevates the voltage seen by the digital-to-analog converters (DACs),
+video scalar chips, and graphics processing units (GPUs). Exposing these
+low-voltage semiconductors to excessive common-mode voltage instantly
+punctures the delicate silicon junctions, permanently destroying the
+chips.</li>
+<li><strong>Connector and Cable Melting:</strong> The heat generated by
+continuous high current through small contact pins (Pins 6, 7, and 8)
+can melt the plastic housing of the VGA port, fuse the connector to the
+computer chassis, and melt the insulation of the cable, creating an
+immediate fire hazard.</li>
+<li><strong>Damage from Transient Events:</strong> If lightning strikes
+near either building, thousands of volts can travel across the
+inter-building VGA cable before building circuit breakers can trip,
+obliterating the connected computers and posing an electrocution hazard
+to anyone touching them.</li>
+</ul>
+<h2 id="prevention-and-safe-inter-building-connections">Prevention and
+Safe Inter-Building Connections</h2>
+<p>Direct copper video cables should never be run between separate
+buildings. To safely transmit video between detached structures, use the
+following isolation methods:</p>
+<ul>
+<li><strong>Fiber-Optic Extenders:</strong> Convert the video signal to
+light using VGA-to-fiber or HDMI-to-fiber transceivers. Because
+fiber-optic glass does not conduct electricity, it provides complete
+electrical isolation and immune transmission over long distances.</li>
+<li><strong>Galvanic Video Isolators:</strong> Install a dedicated VGA
+ground loop isolator containing internal isolation transformers, which
+break the physical DC electrical path while permitting AC video signals
+to pass.</li>
+<li><strong>Network-Based Streaming:</strong> Route the video over an
+isolated local area network using IP encoders and decoders, utilizing
+fiber-optic network runs or Ethernet connections isolated with certified
+telecommunications surge suppressors.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

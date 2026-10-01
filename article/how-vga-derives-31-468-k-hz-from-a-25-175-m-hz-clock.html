@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Derives 31.468 kHz From a 25.175 MHz Clock - vga</title>
+    <meta name="description" content="The classic 640x480 Video Graphics Array (VGA) standard relies on rigid electronic timing to draw images onto a display. At the core of this standard is the relationship between the pixel clock frequency and the horizontal scanline structure. By dividing">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-derives-31-468-k-hz-from-a-25-175-m-hz-clock">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Derives 31.468 kHz From a 25.175 MHz Clock - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-derives-31-468-k-hz-from-a-25-175-m-hz-clock" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The classic 640x480 Video Graphics Array (VGA) standard relies on rigid electronic timing to draw images onto a display. At the core of this standard is the relationship between the pixel clock frequency and the horizontal scanline structure. By dividing" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-derives-31468-khz-from-a-25175-mhz-clock">How VGA
+Derives 31.468 kHz From a 25.175 MHz Clock</h1>
+<p>The classic 640x480 Video Graphics Array (VGA) standard relies on
+rigid electronic timing to draw images onto a display. At the core of
+this standard is the relationship between the pixel clock frequency and
+the horizontal scanline structure. By dividing the base 25.175 MHz pixel
+clock by the 800 total clock cycles allocated to draw and reset a single
+scanline, the display controller establishes the standard 31.468 kHz
+horizontal sync frequency.</p>
+<h3 id="the-fundamental-mathematical-formula">The Fundamental
+Mathematical Formula</h3>
+<p>Frequency measures the number of occurrences of a repeating event per
+second, expressed in Hertz (Hz). To find the frequency of a completed
+horizontal line (<span class="math inline">\(f_H\)</span>), divide the
+master clock rate (<span class="math inline">\(f_{pixel}\)</span>) by
+the total number of clock cycles required to complete one entire
+horizontal line (<span class="math inline">\(T_{total}\)</span>):</p>
+<p><span class="math display">\[f_H =
+\frac{f_{pixel}}{T_{total}}\]</span></p>
+<p>Plugging in the standard VGA values:</p>
+<p><span class="math display">\[f_H = \frac{25,175,000 \text{ Hz}}{800
+\text{ clocks}} = 31,468.75 \text{ Hz}\]</span></p>
+<p>Expressed in kilohertz (kHz), this results in approximately 31.46875
+kHz (commonly truncated or rounded in specifications to 31.468 kHz or
+31.469 kHz). In terms of time, this means each horizontal line takes
+exactly 31.777 microseconds to complete:</p>
+<p><span class="math display">\[T_H = \frac{1}{31,468.75 \text{ Hz}}
+\approx 31.777 \times 10^{-6} \text{ seconds}\]</span></p>
+<h3 id="why-800-clocks-per-line-for-a-640-pixel-display">Why 800 Clocks
+per Line for a 640-Pixel Display?</h3>
+<p>A standard VGA mode displays 640 visible pixels per row, but the
+electron beam in a Cathode Ray Tube (CRT) monitor—the hardware for which
+VGA was originally designed—cannot instantaneously jump from the end of
+one line back to the beginning of the next. The system requires
+non-visible buffer intervals known as blanking periods.</p>
+<p>The 800 total clock cycles per line are broken down into four
+distinct stages:</p>
+<ol type="1">
+<li><strong>Active Video (640 clocks):</strong> The visible pixels
+output to the display screen.</li>
+<li><strong>Front Porch (16 clocks):</strong> A brief pause after the
+active display area where the video signal drops to black, preparing the
+monitor for synchronization.</li>
+<li><strong>Horizontal Sync Pulse (96 clocks):</strong> A dedicated
+synchronization signal that commands the monitor's deflection circuits
+to steer the electron beam back toward the left edge of the screen
+(horizontal retrace).</li>
+<li><strong>Back Porch (48 clocks):</strong> A stabilization period that
+allows the beam to settle into position at the left margin before active
+video data resumes.</li>
+</ol>
+<p>Adding these segments together yields the line total:</p>
+<p><span class="math display">\[640 + 16 + 96 + 48 = 800 \text{
+clocks}\]</span></p>
+<h3 id="deriving-the-60-hz-vertical-refresh-rate">Deriving the 60 Hz
+Vertical Refresh Rate</h3>
+<p>The 31.468 kHz horizontal frequency directly drives the overall
+vertical frame rate. Just as horizontal lines require blanking
+intervals, the entire frame requires vertical blanking periods to return
+the beam from the bottom of the screen to the top.</p>
+<p>A 640x480 frame includes extra vertical scanlines:</p>
+<ul>
+<li><strong>Active Display:</strong> 480 lines</li>
+<li><strong>Front Porch:</strong> 10 lines</li>
+<li><strong>Vertical Sync Pulse:</strong> 2 lines</li>
+<li><strong>Back Porch:</strong> 33 lines</li>
+<li><strong>Total Frame Height:</strong> 525 lines</li>
+</ul>
+<p>Dividing the horizontal line frequency by the total number of lines
+per frame yields the final vertical refresh rate:</p>
+<p><span class="math display">\[\frac{31,468.75 \text{
+lines/second}}{525 \text{ lines/frame}} \approx 59.94 \text{
+Hz}\]</span></p>
+<p>This 59.94 Hz figure represents the standard nominal "60 Hz" refresh
+rate that defines modern compatible VGA output.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

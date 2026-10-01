@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Mode 13h: 320x200 256-Color BIOS Graphics - vga</title>
+    <meta name="description" content="This article examines BIOS Mode 13h, the foundational standard that brought 320x200 resolution and 256 simultaneous colors to IBM-compatible personal computers. It outlines the technical specifications of this video mode, explains how it is initialized v">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-mode-13-h-320-x-200-256-color-bios-graphics">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Mode 13h: 320x200 256-Color BIOS Graphics - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-mode-13-h-320-x-200-256-color-bios-graphics" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines BIOS Mode 13h, the foundational standard that brought 320x200 resolution and 256 simultaneous colors to IBM-compatible personal computers. It outlines the technical specifications of this video mode, explains how it is initialized v" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-mode-13h-320x200-256-color-bios-graphics">VGA Mode 13h:
+320x200 256-Color BIOS Graphics</h1>
+<p>This article examines BIOS Mode 13h, the foundational standard that
+brought 320x200 resolution and 256 simultaneous colors to IBM-compatible
+personal computers. It outlines the technical specifications of this
+video mode, explains how it is initialized via BIOS interrupts, and
+details why its linear memory architecture made it the primary graphics
+standard for PC gaming throughout the late 1980s and early 1990s.</p>
+<h2 id="the-mode-number-mode-13h">The Mode Number: Mode 13h</h2>
+<p>The BIOS mode number corresponding to the 320x200 256-color Video
+Graphics Array (VGA) mode is <strong>Mode 13h</strong> (hexadecimal),
+which equals <strong>Mode 19</strong> in decimal notation.</p>
+<p>To initialize this mode on an x86 processor, software issues a BIOS
+interrupt call using <code>INT 10h</code> with the processor register
+<code>AH</code> set to <code>00h</code> (Set Video Mode) and
+<code>AL</code> set to <code>13h</code>.</p>
+<pre class="assembly"><code>mov ah, 00h
+mov al, 13h
+int 10h</code></pre>
+<h2 id="technical-specifications">Technical Specifications</h2>
+<p>Introduced by IBM in 1987 alongside the PS/2 series, Mode 13h became
+the de facto standard for graphical computing. Its primary technical
+characteristics include:</p>
+<ul>
+<li><strong>Horizontal Resolution:</strong> 320 pixels</li>
+<li><strong>Vertical Resolution:</strong> 200 pixels</li>
+<li><strong>Aspect Ratio:</strong> 4:3 (yielding tall, rectangular
+pixels with an aspect ratio of 1:1.2)</li>
+<li><strong>Color Depth:</strong> 8 bits per pixel (bpp)</li>
+<li><strong>Simultaneous Colors:</strong> 256 colors on-screen at
+once</li>
+<li><strong>Color Palette:</strong> Selected from an 18-bit RGB color
+palette (262,144 total possible colors via the VGA Digital-to-Analog
+Converter)</li>
+<li><strong>Memory Buffer Address:</strong> Linear mapping starting at
+physical address <code>0xA0000</code> (segment
+<code>0xA000:0000</code>)</li>
+</ul>
+<h2 id="why-mode-13h-revolutionized-pc-gaming">Why Mode 13h
+Revolutionized PC Gaming</h2>
+<p>Prior to Mode 13h, standards such as CGA and EGA relied on complex
+bit-planar memory layouts, requiring multiple processor instructions to
+modify a single pixel. Mode 13h altered this paradigm through linear
+addressing and a single-byte-per-pixel design.</p>
+<h3 id="linear-memory-mapping">Linear Memory Mapping</h3>
+<p>A resolution of 320x200 contains exactly 64,000 pixels. Because each
+pixel is represented by a single byte (8 bits), the entire frame buffer
+requires exactly 64,000 bytes. This fits entirely inside a single
+64-kilobyte real-mode memory segment (65,536 bytes).</p>
+<p>Programmers did not need to switch memory banks to draw a full
+screen. Setting or reading a pixel at coordinates <code>(X, Y)</code>
+required a direct memory offset calculation:</p>
+<p><span class="math display">\[\text{Memory Offset} = (Y \times 320) +
+X\]</span></p>
+<p>Writing a pixel was as simple as placing an 8-bit color index
+directly into the memory location at <code>0xA0000 + Offset</code>.</p>
+<h3 id="impact-on-software">Impact on Software</h3>
+<p>This straightforward byte-to-pixel mapping enabled rapid software
+rendering directly in CPU memory or straight to the video buffer.
+Legendary titles of the MS-DOS era—such as <em>Wolfenstein 3D</em>,
+<em>DOOM</em>, <em>UFO: Enemy Unknown</em>, and LucasArts adventure
+games—depended on Mode 13h to achieve high frame rates and vibrant
+visuals without specialized 3D acceleration hardware. Later, developers
+learned to tweak the VGA registers to bypass the default 64KB
+limitation, creating custom "Mode X" variants for page flipping and
+smooth scrolling.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

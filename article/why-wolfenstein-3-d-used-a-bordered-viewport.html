@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Wolfenstein 3D Used a Bordered Viewport - vga</title>
+    <meta name="description" content="When id Software released Wolfenstein 3D in 1992, the game targeted standard 320x200 Video Graphics Array (VGA) displays, but the hardware of the era—specifically Intel 80286 and early 80386 systems—often struggled to maintain playable frame rates. T">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-wolfenstein-3-d-used-a-bordered-viewport">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Wolfenstein 3D Used a Bordered Viewport - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-wolfenstein-3-d-used-a-bordered-viewport" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When id Software released Wolfenstein 3D in 1992, the game targeted standard 320x200 Video Graphics Array (VGA) displays, but the hardware of the era—specifically Intel 80286 and early 80386 systems—often struggled to maintain playable frame rates. T" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-wolfenstein-3d-used-a-bordered-viewport">Why Wolfenstein 3D
+Used a Bordered Viewport</h1>
+<p>When id Software released <em>Wolfenstein 3D</em> in 1992, the game
+targeted standard 320x200 Video Graphics Array (VGA) displays, but the
+hardware of the era—specifically Intel 80286 and early 80386
+systems—often struggled to maintain playable frame rates. To solve this
+performance bottleneck, lead programmer John Carmack implemented an
+adjustable, bordered viewport that allowed players to shrink the active
+3D rendering window. By reducing the number of pixels the CPU needed to
+calculate and push to video memory each frame, the game could run
+smoothly across a wide range of low-end and midrange personal computers
+without altering the underlying hardware video mode.</p>
+<h3 id="the-hardware-bottleneck-mode-13h-and-isa-bus-limits">The
+Hardware Bottleneck: Mode 13h and ISA Bus Limits</h3>
+<p><em>Wolfenstein 3D</em> operated in VGA Mode 13h, which provided a
+resolution of 320x200 pixels with 256 colors. A full-screen frame
+required updating 64,000 bytes of memory per refresh cycle.</p>
+<p>On 286 and early 386 systems, moving this data was a major system
+bottleneck:</p>
+<ul>
+<li><strong>Slow Bus Speeds:</strong> Most PCs of that era relied on the
+16-bit ISA bus, which ran at roughly 8 MHz. Writing to video RAM (VRAM)
+over the ISA bus was substantially slower than manipulating system
+RAM.</li>
+<li><strong>Lack of 3D Hardware Acceleration:</strong> The CPU had to
+perform every calculation: raycasting wall distances, looking up
+textures, scaling column heights, and writing individual byte values to
+memory.</li>
+<li><strong>Cycle Limitations:</strong> A 286 processor simply lacked
+the clock cycles and processing bandwidth to perform raycasting and push
+64,000 pixels at an acceptable target rate of 20 to 30 frames per
+second.</li>
+</ul>
+<h3 id="how-the-scalable-viewport-solved-the-problem">How the Scalable
+Viewport Solved the Problem</h3>
+<p>Carmack’s raycasting algorithm worked on a column-by-column basis.
+The engine fired a ray for each vertical column of the viewport to
+detect wall hits, then drew a vertical strip of textured pixels scaled
+to represent distance.</p>
+<p>The computational cost of this engine was directly tied to the
+dimensions of the viewport:</p>
+<ul>
+<li><strong>Fewer Rays:</strong> Shrinking the width reduced the number
+of ray calculations per frame.</li>
+<li><strong>Fewer Pixels:</strong> Shrinking both the width and height
+exponentially reduced the total fill rate required of the CPU and the
+amount of data written across the ISA bus.</li>
+</ul>
+<p>By using the F5 key (or the plus and minus keys), players could scale
+down the active rendering view. A smaller window was framed by a static,
+solid-colored or patterned border. Because the border was static, it did
+not need to be updated or redrawn each frame.</p>
+<h3 id="performance-impact">Performance Impact</h3>
+<p>At its maximum default size, the viewport sat above the static status
+bar (which consumed the bottom 40 scanlines, reducing the 3D view to
+320x160). Shrinking the viewport further to smaller presets allowed
+players to cut the rendered pixel count by 50% or more.</p>
+<p>For a 286 machine running at 12 MHz, this downscaling transformed
+<em>Wolfenstein 3D</em> from an unplayable slideshow into a fluid,
+highly responsive first-person shooter. It allowed the game to achieve
+widespread commercial adoption by ensuring compatibility with aging
+hardware while still taking full advantage of faster 386 and 486
+computers.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

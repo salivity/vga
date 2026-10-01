@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Scan Lines in a Standard 640x480 VGA Signal - vga</title>
+    <meta name="description" content="A standard 640x480 Video Graphics Array (VGA) signal operating at 60 Hz contains exactly 525 total horizontal scan lines per frame when including the vertical blanking interval. While only 480 of these lines are utilized to render active picture data on">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/total-scan-lines-in-a-standard-640-x-480-vga-signal">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Total Scan Lines in a Standard 640x480 VGA Signal - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/total-scan-lines-in-a-standard-640-x-480-vga-signal" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="A standard 640x480 Video Graphics Array (VGA) signal operating at 60 Hz contains exactly 525 total horizontal scan lines per frame when including the vertical blanking interval. While only 480 of these lines are utilized to render active picture data on" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="total-scan-lines-in-a-standard-640x480-vga-signal">Total Scan
+Lines in a Standard 640x480 VGA Signal</h1>
+<p>A standard 640x480 Video Graphics Array (VGA) signal operating at 60
+Hz contains exactly 525 total horizontal scan lines per frame when
+including the vertical blanking interval. While only 480 of these lines
+are utilized to render active picture data on the screen, the remaining
+45 lines are dedicated to the vertical synchronization process, ensuring
+legacy cathode-ray tube (CRT) monitors and modern digital controllers
+properly align and frame the incoming image.</p>
+<h3 id="vertical-timing-breakdown">Vertical Timing Breakdown</h3>
+<p>The vertical timing of the industry-standard 640x480 @ 60 Hz timing
+specification (originally established by IBM and standardized by VESA)
+is partitioned into four distinct phases:</p>
+<ul>
+<li><strong>Active Display:</strong> 480 lines (the visible image)</li>
+<li><strong>Vertical Front Porch:</strong> 10 lines</li>
+<li><strong>Vertical Sync Pulse:</strong> 2 lines</li>
+<li><strong>Vertical Back Porch:</strong> 33 lines</li>
+</ul>
+<p>Adding these intervals together results in the total frame
+height:</p>
+<p><span class="math display">\[\text{Total Vertical Lines} = 480 + 10 +
+2 + 33 = 525\text{ lines}\]</span></p>
+<h3 id="the-role-of-blanking-lines">The Role of Blanking Lines</h3>
+<p>The 45 non-visible lines constitute the vertical blanking interval
+(VBI). During this period, the video signal is pulled down to a blanking
+level so the electron beam in a traditional CRT monitor can travel from
+the bottom-right corner of the screen back up to the top-left corner
+(vertical retrace) without drawing stray lines across the visible
+display area.</p>
+<ul>
+<li>The <strong>front porch</strong> provides a short delay after the
+final visible line before triggering the sync signal, preventing
+premature synchronization.</li>
+<li>The <strong>sync pulse</strong> commands the display hardware to
+initiate the vertical retrace.</li>
+<li>The <strong>back porch</strong> provides settling time after the
+sync pulse to stabilize the deflection circuitry before the next frame's
+active video lines begin.</li>
+</ul>
+<h3 id="impact-on-overall-signal-frequency">Impact on Overall Signal
+Frequency</h3>
+<p>The 525 total lines directly determine the scan rates of a standard
+VGA interface. With a frame refresh rate of approximately 59.94 Hz
+(often rounded to 60 Hz), the horizontal line frequency is calculated by
+multiplying the total lines by the refresh rate:</p>
+<p><span class="math display">\[525\text{ lines} \times 59.94\text{ Hz}
+\approx 31.469\text{ kHz}\]</span></p>
+<p>A total of 525 horizontal lines scanned 59.94 times per second yields
+the classic 31.469 kHz horizontal scan rate, supported by a 25.175 MHz
+pixel clock to accommodate 800 total horizontal pixel clocks per
+line.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Character Cell Width and Dot Clock Register - vga</title>
+    <meta name="description" content="In Video Graphics Array (VGA) architecture, the Sequencer Clocking Mode Register is the primary register responsible for configuring character cell width and dot duplication behavior. This article explains how this specific hardware register operates, th">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-character-cell-width-and-dot-clock-register">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Character Cell Width and Dot Clock Register - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-character-cell-width-and-dot-clock-register" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In Video Graphics Array (VGA) architecture, the Sequencer Clocking Mode Register is the primary register responsible for configuring character cell width and dot duplication behavior. This article explains how this specific hardware register operates, th" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-character-cell-width-and-dot-clock-register">VGA Character
+Cell Width and Dot Clock Register</h1>
+<p>In Video Graphics Array (VGA) architecture, the Sequencer Clocking
+Mode Register is the primary register responsible for configuring
+character cell width and dot duplication behavior. This article explains
+how this specific hardware register operates, the exact bit flags used
+to switch between 8-dot and 9-dot character widths, and how clock
+division enables horizontal dot duplication across various display
+modes.</p>
+<h3 id="the-sequencer-clocking-mode-register">The Sequencer Clocking
+Mode Register</h3>
+<p>The register controlling both horizontal dot sizing and pixel
+doubling is the <strong>Clocking Mode Register</strong>, located at
+<strong>Index 01h</strong> within the VGA Sequencer register group.</p>
+<p>To access or modify this register:</p>
+<ol type="1">
+<li>Write the value <code>0x01</code> to the <strong>Sequencer Index
+Port</strong> (<code>0x3C4</code>).</li>
+<li>Read from or write to the <strong>Sequencer Data Port</strong>
+(<code>0x3C5</code>).</li>
+</ol>
+<h3 id="controlling-character-cell-width-bit-0">Controlling Character
+Cell Width (Bit 0)</h3>
+<p>Bit 0 of the Clocking Mode Register specifies the <strong>8/9 Dot
+Clocks</strong> setting. This bit dictates whether characters are
+rendered using an 8-dot or 9-dot wide matrix:</p>
+<ul>
+<li><strong>Bit 0 = 0 (9-Dot Mode):</strong> The sequencer generates 9
+dot clocks per character cell. This mode is typically used in standard
+alphanumeric modes (such as 80x25 text mode on monochrome and color
+displays) to achieve a 720-pixel horizontal resolution (80 characters ×
+9 dots = 720 pixels). In this mode, the ninth column of characters is
+either blank or duplicated from the eighth column depending on the font
+configuration.</li>
+<li><strong>Bit 0 = 1 (8-Dot Mode):</strong> The sequencer generates 8
+dot clocks per character cell. This is standard for 640-pixel graphics
+modes (such as Mode 12h) and 40-column text modes (40 characters × 8
+dots = 320 pixels).</li>
+</ul>
+<h3 id="controlling-dot-duplication-bit-3">Controlling Dot Duplication
+(Bit 3)</h3>
+<p>Bit 3 of the Clocking Mode Register specifies the <strong>Dot Clock
+Divide</strong> (or Halve) behavior, directly controlling dot
+duplication:</p>
+<ul>
+<li><strong>Bit 3 = 0 (Normal Dot Clock):</strong> Master clock cycles
+directly advance the video output shift registers at normal speed,
+drawing one distinct dot per clock cycle.</li>
+<li><strong>Bit 3 = 1 (Dot Clock Divided by 2):</strong> The sequencer
+divides the dot clock frequency by two before applying it to the display
+logic. Consequently, each pixel or dot is held on the screen for twice
+the normal duration. This creates horizontal dot duplication, doubling
+the effective width of pixels.</li>
+</ul>
+<p>This dot duplication feature is critical for standard low-resolution
+graphics modes, such as Mode 13h (320x200), allowing a 320-pixel
+horizontal raster to be driven using standard 640-pixel monitor scan
+timings.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

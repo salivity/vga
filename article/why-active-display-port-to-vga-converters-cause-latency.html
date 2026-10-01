@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Active DisplayPort to VGA Converters Cause Latency - vga</title>
+    <meta name="description" content="Active DisplayPort to VGA converters inherently introduce measurable input latency because they must bridge two fundamentally incompatible display technologies. Unlike passive adapters that merely reroute pinouts, an active converter contains an integrat">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-active-display-port-to-vga-converters-cause-latency">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Active DisplayPort to VGA Converters Cause Latency - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-active-display-port-to-vga-converters-cause-latency" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Active DisplayPort to VGA converters inherently introduce measurable input latency because they must bridge two fundamentally incompatible display technologies. Unlike passive adapters that merely reroute pinouts, an active converter contains an integrat" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-active-displayport-to-vga-converters-cause-latency">Why
+Active DisplayPort to VGA Converters Cause Latency</h1>
+<p>Active DisplayPort to VGA converters inherently introduce measurable
+input latency because they must bridge two fundamentally incompatible
+display technologies. Unlike passive adapters that merely reroute
+pinouts, an active converter contains an integrated circuit that
+actively processes, recalculates, and transforms high-speed digital
+packet data into continuous analog RGB voltages and synchronization
+pulses. This overview details the primary technical mechanisms driving
+this conversion delay, including digital-to-analog decoding, buffer
+management, clock domain crossing, and electrical signal shaping.</p>
+<h3 id="the-fundamental-architectural-divide">The Fundamental
+Architectural Divide</h3>
+<p>DisplayPort transmits audiovisual data digitally using micro-packets
+across fixed-speed differential lanes, similar to modern networking
+protocols. In contrast, VGA relies on continuous, varying analog voltage
+levels (0 to 0.7V) to drive the red, green, and blue electron guns or
+pixel elements of a display, timed strictly by horizontal and vertical
+synchronization pulses. Because an analog monitor cannot read digital
+data packets directly, an active converter must completely reconstruct
+the image frame step by step.</p>
+<h3 id="packet-de-serialization-and-depacketization">Packet
+De-serialization and Depacketization</h3>
+<p>Before any analog conversion can happen, the converter’s internal
+receiver chip must capture the DisplayPort Main Link data stream. This
+involves:</p>
+<ul>
+<li><strong>8b/10b or 128b/132b Decoding:</strong> The converter decodes
+the serialized bitstream to recover the original raw pixel values.</li>
+<li><strong>Header and Payload Separation:</strong> The chip separates
+the Video Stream Address and Main Stream Attribute data from the active
+pixel data.</li>
+<li><strong>Reassembling the Stream:</strong> Pixel values must be
+organized sequentially from packet payloads back into an unbroken stream
+of color coordinates.</li>
+</ul>
+<p>This computational parsing requires dedicated clock cycles inside the
+converter's Application-Specific Integrated Circuit (ASIC), creating an
+initial hardware delay.</p>
+<h3 id="buffer-queuing-and-clock-synchronization">Buffer Queuing and
+Clock Synchronization</h3>
+<p>DisplayPort and VGA operate under independent timing clocks. The
+source device sends DisplayPort data at fixed link rates (e.g., 1.62
+Gbps, 2.7 Gbps, or 5.4 Gbps per lane), whereas VGA output requires a
+continuous pixel clock precisely matched to the specific resolution and
+refresh rate (such as 148.5 MHz for 1080p at 60 Hz).</p>
+<p>To transfer data between these two asynchronous clock domains, the
+converter employs First-In, First-Out (FIFO) line buffers. The converter
+writes incoming digital pixels to the buffer at the DisplayPort clock
+rate and reads them out at the target VGA pixel clock rate. Because the
+converter must store a minimum threshold of horizontal line data to
+prevent buffer underruns, this buffering stage introduces a latency
+penalty ranging from several scan lines to a full frame, depending on
+the converter's firmware and memory constraints.</p>
+<h3 id="digital-to-analog-conversion-dac">Digital-to-Analog Conversion
+(DAC)</h3>
+<p>Once the digital pixel stream is synchronized, high-speed
+Digital-to-Analog Converters (DACs) convert the numeric color values
+(typically 8 bits per channel) into proportional analog voltages.</p>
+<p>While modern DACs operate very quickly, the transition is not
+instantaneous. Settling time—the period required for the analog output
+voltage to stabilize within an acceptable error band after a digital
+code change—along with low-pass reconstruction filtering to smooth out
+high-frequency digital switching noise, imposes slight physical phase
+delays on the analog video output.</p>
+<h3 id="internal-scaling-and-signal-processing">Internal Scaling and
+Signal Processing</h3>
+<p>Many budget-friendly or multi-format active converters include basic
+internal scalers or resolution-locking hardware to ensure compatibility
+with older VGA monitors. If the input resolution or timing from the
+source does not cleanly match the native timing modes programmed into
+the converter's internal firmware, the device may buffer entire frames
+to perform frame-rate conversion or spatial scaling. This frame-level
+processing causes the most severe latency, often adding 16 milliseconds
+or more to the display pipeline.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

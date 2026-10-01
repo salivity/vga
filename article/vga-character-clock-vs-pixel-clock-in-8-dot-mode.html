@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Character Clock vs Pixel Clock in 8-Dot Mode - vga</title>
+    <meta name="description" content="In standard 8-dot Video Graphics Array (VGA) modes, the relationship between the character clock and the pixel clock is defined by a fixed 1:8 frequency ratio. The pixel clock—also referred to as the dot clock—drives the emission of individual pixels">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-character-clock-vs-pixel-clock-in-8-dot-mode">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Character Clock vs Pixel Clock in 8-Dot Mode - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-character-clock-vs-pixel-clock-in-8-dot-mode" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In standard 8-dot Video Graphics Array (VGA) modes, the relationship between the character clock and the pixel clock is defined by a fixed 1:8 frequency ratio. The pixel clock—also referred to as the dot clock—drives the emission of individual pixels" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-character-clock-vs-pixel-clock-in-8-dot-mode">VGA Character
+Clock vs Pixel Clock in 8-Dot Mode</h1>
+<p>In standard 8-dot Video Graphics Array (VGA) modes, the relationship
+between the character clock and the pixel clock is defined by a fixed
+1:8 frequency ratio. The pixel clock—also referred to as the dot
+clock—drives the emission of individual pixels on the screen, while the
+character clock governs the internal timing and memory access cycles of
+the VGA hardware. Because each character cell in this mode is eight
+pixels wide, the pixel clock runs exactly eight times faster than the
+character clock.</p>
+<h2 id="the-frequency-relationship">The Frequency Relationship</h2>
+<p>The mathematical formula governing these two signals in an 8-dot
+configuration is:</p>
+<p><span class="math display">\[\text{Pixel Clock Frequency} =
+\text{Character Clock Frequency} \times 8\]</span></p>
+<p>Conversely:</p>
+<p><span class="math display">\[\text{Character Clock Frequency} =
+\frac{\text{Pixel Clock Frequency}}{8}\]</span></p>
+<p>For example, in standard VGA 640×480 graphics mode at 60 Hz, the
+master pixel clock runs at approximately 25.175 MHz. Because standard
+graphics modes treat pixels in 8-dot units, the internal character clock
+operates at approximately 3.147 MHz (25.175 MHz ÷ 8).</p>
+<h2 id="hardware-implementation-and-sequencing">Hardware Implementation
+and Sequencing</h2>
+<p>The division between these two clocks occurs inside the VGA
+Sequencer. The Sequencer accepts the raw pixel clock from the master
+oscillator and routes it through an internal clock divider controlled by
+the Clocking Mode Register (Index <code>0x01</code>, Bit 0). Setting
+this bit to <code>1</code> sets an 8-dot character clock; clearing it to
+<code>0</code> sets a 9-dot character clock commonly used in monochrome
+emulation and standard 720×400 text modes.</p>
+<p>The two clocks serve distinct functional roles within the graphics
+pipeline:</p>
+<ul>
+<li><strong>Pixel Clock:</strong> Powers the output shift registers and
+the digital-to-analog converter (DAC). On every rising edge of the pixel
+clock, a single pixel’s color information is shifted out and displayed
+on the CRT or flat-panel monitor.</li>
+<li><strong>Character Clock:</strong> Drives the internal Cathode Ray
+Tube Controller (CRTC) and video memory address counters. On every
+character clock pulse, the VGA sequencer fetches a byte (or set of plane
+bytes) from Video RAM (VRAM) and loads it into the parallel-to-serial
+shift registers.</li>
+</ul>
+<h2 id="impact-on-video-timing-and-resolution">Impact on Video Timing
+and Resolution</h2>
+<p>The CRT Controller tracks scanline progress, blanking intervals, and
+synchronization pulses using character clock ticks rather than
+individual pixel clock cycles. In an 8-dot mode, horizontal timing
+registers (such as Horizontal Total, Horizontal Display End, and
+Horizontal Sync Start) count in units of 8 pixels.</p>
+<p>A standard 640-pixel horizontal display line requires 80 character
+clocks (<span class="math inline">\(80 \times 8 = 640\)</span>). When 8
+bits of plane data are fetched into the shift registers during one
+character clock cycle, the shift registers serialize those 8 bits across
+the next 8 pixel clock cycles, producing a seamless, continuous image
+without memory bus bottlenecks.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

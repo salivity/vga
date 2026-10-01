@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Parallax Propeller Generates VGA Video - vga</title>
+    <meta name="description" content="The Parallax Propeller microcontroller generates Video Graphics Array (VGA) signals without dedicated external graphics chips by leveraging its unique multi-core architecture, built-in hardware video generators, and deterministic timing. Through a combin">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-parallax-propeller-generates-vga-video">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Parallax Propeller Generates VGA Video - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-parallax-propeller-generates-vga-video" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Parallax Propeller microcontroller generates Video Graphics Array (VGA) signals without dedicated external graphics chips by leveraging its unique multi-core architecture, built-in hardware video generators, and deterministic timing. Through a combin" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-parallax-propeller-generates-vga-video">How Parallax
+Propeller Generates VGA Video</h1>
+<p>The Parallax Propeller microcontroller generates Video Graphics Array
+(VGA) signals without dedicated external graphics chips by leveraging
+its unique multi-core architecture, built-in hardware video generators,
+and deterministic timing. Through a combination of dedicated 32-bit
+cores (called "Cogs"), shared Hub RAM, and cycle-exact software
+instructions, the Propeller can compute complex application logic on
+certain cores while simultaneously streaming pixel data and
+synchronization pulses directly to a monitor via simple resistor-ladder
+digital-to-analog converters (DACs).</p>
+<h3 id="dedicated-video-hardware-per-cog">Dedicated Video Hardware per
+Cog</h3>
+<p>Each of the Propeller's eight Cogs contains its own independent video
+generator module alongside two phase-locked loop (PLL) counters. This
+internal hardware is capable of shifting out 2-bit or 4-bit color data
+at high frequencies matching standard VGA pixel clocks (typically
+derived from an 80 MHz system clock).</p>
+<p>The instruction at the heart of this process is <code>WAITVID</code>
+(Wait for Video). When a Cog executes <code>WAITVID</code>, it pauses
+execution until the Cog's video generator is ready for the next slice of
+pixels, then feeds it a 32-bit pixel pattern and a corresponding color
+palette. Because this process is integrated into the silicon of every
+Cog, video generation incurs minimal processing overhead compared to
+purely software bit-banged approaches.</p>
+<h3 id="multi-core-division-of-labor">Multi-Core Division of Labor</h3>
+<p>Traditional single-core microcontrollers struggle with VGA output
+because handling timing-critical scanlines, vertical sync (VSync), and
+horizontal sync (HSync) leaves little to no processing time for user
+code, often causing visual jitter when interrupts fire.</p>
+<p>The Propeller resolves this by designating dedicated Cogs strictly
+for video timing:</p>
+<ul>
+<li><strong>The Display Cog:</strong> One Cog is isolated to run a
+continuous loop that calculates scanline timings, asserts HSync and
+VSync pulses on designated I/O pins, and loads pixel buffers into the
+Cog's video hardware. Because Propeller Cogs run without conventional
+operating-system interrupts, the timing remains completely
+jitter-free.</li>
+<li><strong>The Application Cogs:</strong> The remaining Cogs handle
+distinct tasks such as reading user inputs, running game logic, or
+computing physics engines independently, completely isolated from the
+display routine.</li>
+</ul>
+<h3 id="shared-hub-ram-for-frame-and-tile-buffers">Shared Hub RAM for
+Frame and Tile Buffers</h3>
+<p>Data sharing between the logic cores and the video core takes place
+in the Propeller's shared 32 KB Hub RAM. A round-robin arbiter gives
+each Cog deterministic, interleaved access to this memory every 16 clock
+cycles.</p>
+<p>Depending on the memory constraints, the video Cog typically reads
+from the Hub in one of two ways:</p>
+<ul>
+<li><strong>Bitmap Mode:</strong> For lower resolutions (e.g., 256×240
+or 320×240), an entire framebuffer can reside in the Hub. Application
+Cogs draw pixels into this memory, and the video Cog continuously reads
+and displays it.</li>
+<li><strong>Tile/Character Mode:</strong> To conserve RAM at higher
+resolutions (such as 640×480 text modes), the Hub stores a character map
+and font ROM. The video Cog fetches character pointers and reads font
+pixel lines on the fly as it renders each scanline.</li>
+</ul>
+<h3 id="multi-cog-interleaving-for-higher-performance">Multi-Cog
+Interleaving for Higher Performance</h3>
+<p>While a single Cog is sufficient for standard text modes and
+low-resolution graphics, developers can gang multiple Cogs together to
+push higher resolutions or richer color depths. In dual-Cog VGA
+configurations, one Cog processes even scanlines while a second Cog
+processes odd scanlines. This parallel pipeline effectively doubles the
+available processing window per line, allowing the system to achieve
+higher pixel clock rates, render complex sprites, or generate
+higher-depth color outputs using standard 8-pin or 16-pin I/O resistor
+networks.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

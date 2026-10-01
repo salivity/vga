@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Many Color Planes Does VGA Hardware Use? - vga</title>
+    <meta name="description" content="The classic Video Graphics Array (VGA) hardware architecture uses 4 color planes (Planes 0 through 3) in its native physical memory arrangement. Introduced by IBM in 1987 with the PS/2 series, the standard 256 KB VGA frame buffer is structured as four pa">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-many-color-planes-does-vga-hardware-use">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Many Color Planes Does VGA Hardware Use? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-many-color-planes-does-vga-hardware-use" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The classic Video Graphics Array (VGA) hardware architecture uses 4 color planes (Planes 0 through 3) in its native physical memory arrangement. Introduced by IBM in 1987 with the PS/2 series, the standard 256 KB VGA frame buffer is structured as four pa" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-many-color-planes-does-vga-hardware-use">How Many Color
+Planes Does VGA Hardware Use?</h1>
+<p>The classic Video Graphics Array (VGA) hardware architecture uses
+<strong>4 color planes</strong> (Planes 0 through 3) in its native
+physical memory arrangement. Introduced by IBM in 1987 with the PS/2
+series, the standard 256 KB VGA frame buffer is structured as four
+parallel 64 KB memory banks. Understanding how these planes interact
+with display modes, CPU memory windows, and internal shift registers is
+central to grasping how legacy PC graphics functioned.</p>
+<h2 id="the-physical-architecture-of-vga-memory">The Physical
+Architecture of VGA Memory</h2>
+<p>A standard VGA adapter contains 256 KB of video RAM. Rather than
+organizing this memory in a single flat, linear block—which would exceed
+the real-mode 64 KB or 128 KB memory windows accessible through the PC's
+memory map—IBM split the RAM across four 64 KB parallel planes:</p>
+<ul>
+<li><strong>Plane 0:</strong> Typically holds Blue channel data or
+lower-order intensity bits.</li>
+<li><strong>Plane 1:</strong> Typically holds Green channel data.</li>
+<li><strong>Plane 2:</strong> Typically holds Red channel data (and
+character font definitions in text modes).</li>
+<li><strong>Plane 3:</strong> Typically holds Intensity data or
+attribute bits.</li>
+</ul>
+<p>Because all four planes occupy the exact same base address range in
+the host CPU address space (most commonly <code>0xA0000</code> to
+<code>0xAFFFF</code>), specialized hardware registers—specifically the
+Sequencer and the Graphics Controller—determine how reads and writes
+route to and from the individual planes.</p>
+<h2 id="planar-organization-in-16-color-graphics-modes">Planar
+Organization in 16-Color Graphics Modes</h2>
+<p>The four-plane design is most clearly visible in the standard
+16-color graphics modes, such as Mode 12h (640×480 resolution, 16
+colors) and Mode 0Eh (640×200 resolution, 16 colors).</p>
+<p>In these modes, each pixel's color is represented by a 4-bit index
+into a palette register (<span class="math inline">\(2^4 = 16\)</span>
+possible colors). Instead of packing these 4 bits together inside one
+byte of system memory, the bits are distributed across the four
+planes:</p>
+<ol type="1">
+<li>Bit 0 of the pixel index resides in <strong>Plane 0</strong>.</li>
+<li>Bit 1 of the pixel index resides in <strong>Plane 1</strong>.</li>
+<li>Bit 2 of the pixel index resides in <strong>Plane 2</strong>.</li>
+<li>Bit 3 of the pixel index resides in <strong>Plane 3</strong>.</li>
+</ol>
+<p>A single CPU byte write to address <code>0xA0000</code> can update a
+specific bit across eight contiguous horizontal pixels simultaneously,
+provided the Graphics Controller's write mask and plane enable registers
+are configured to allow it.</p>
+<h2 id="internal-registers-and-memory-access-modes">Internal Registers
+and Memory Access Modes</h2>
+<p>Because four bytes share a single memory address, the VGA Graphics
+Controller provides specific read and write modes to manipulate the
+planes without requiring four separate bus transactions:</p>
+<h3 id="write-modes">Write Modes</h3>
+<ul>
+<li><strong>Write Mode 0:</strong> The default mode where CPU data is
+rotated, logical operations are applied via latch registers, and the
+result is written across enabled planes.</li>
+<li><strong>Write Mode 1:</strong> Directly copies internal 32-bit
+latched data (8 bits from each of the four planes) from a previous read
+into a new destination address, enabling fast planar screen-to-screen
+blits.</li>
+<li><strong>Write Mode 2:</strong> Allows the host CPU to supply a 4-bit
+color value in the lower nibble of a byte. The hardware expands this
+value across all four planes for the targeted pixels.</li>
+<li><strong>Write Mode 3:</strong> Combines expansion data with a
+bitmask, frequently used for fast patterned line drawing and font
+rendering.</li>
+</ul>
+<h3 id="read-modes">Read Modes</h3>
+<ul>
+<li><strong>Read Mode 0:</strong> The CPU reads directly from one
+designated plane, selected via the Read Map Select Register.</li>
+<li><strong>Read Mode 1:</strong> The CPU performs a color comparison.
+The VGA hardware evaluates all four planes simultaneously against a
+Color Compare Register and returns a byte where each bit indicates
+whether that pixel matched the comparison criteria.</li>
+</ul>
+<h2 id="how-256-color-modes-use-the-planes">How 256-Color Modes Use the
+Planes</h2>
+<p>In the famous Mode 13h (320×200 resolution, 256 colors), each pixel
+requires 8 bits (1 byte) to index into the 256-color DAC palette. While
+the programmer interacts with Mode 13h as if it were a linear array of
+bytes from <code>0xA0000</code> to <code>0xAFA00</code>, the underlying
+hardware still contains only the four physical planes.</p>
+<p>To accommodate this, the VGA hardware uses a mode known as
+"Chain-4":</p>
+<ul>
+<li>The lowest two address bits select the physical plane: Address
+modulo 4 determines whether a byte routes to Plane 0, 1, 2, or 3.</li>
+<li>Consecutive horizontal pixels are distributed cyclically across
+Plane 0, Plane 1, Plane 2, and Plane 3.</li>
+<li>The CPU address lines are shifted by two bits so each plane stores
+every fourth pixel.</li>
+</ul>
+<p>While Chain-4 simplified programming by providing a linear memory
+abstraction, it wasted memory bandwidth and limited available video
+memory to 64 KB.</p>
+<p>By disabling Chain-4, programmers unlocked "Mode X" (or unchained
+modes). In unchained 256-color modes, developers manually selected which
+plane to write to, allowing full access to all 256 KB of video memory
+for double buffering, page flipping, and hardware-accelerated planar
+operations.</p>
+<h2 id="text-modes-and-plane-allocation">Text Modes and Plane
+Allocation</h2>
+<p>The planar architecture also manages alphanumeric display modes, such
+as standard 80×25 text (Mode 03h):</p>
+<ul>
+<li><strong>Plane 0:</strong> Stores ASCII character codes.</li>
+<li><strong>Plane 1:</strong> Stores character attributes (foreground
+and background color combinations, blinking, and underline flags).</li>
+<li><strong>Plane 2:</strong> Stores the font glyph bitmap patterns (up
+to eight distinct 256-character fonts can be loaded
+simultaneously).</li>
+<li><strong>Plane 3:</strong> Remains unused in basic text display, or
+serves as extended attribute storage in specific custom
+configurations.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

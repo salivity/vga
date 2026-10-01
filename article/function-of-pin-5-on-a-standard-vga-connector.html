@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function of Pin 5 on a Standard VGA Connector - vga</title>
+    <meta name="description" content="This article provides an overview of pin 5 on a standard 15-pin Video Graphics Array (VGA) connector, detailing its technical role in video transmission. You will learn about its primary assignment as a ground connection, how modern graphics adapters uti">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/function-of-pin-5-on-a-standard-vga-connector">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Function of Pin 5 on a Standard VGA Connector - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/function-of-pin-5-on-a-standard-vga-connector" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of pin 5 on a standard 15-pin Video Graphics Array (VGA) connector, detailing its technical role in video transmission. You will learn about its primary assignment as a ground connection, how modern graphics adapters uti" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="function-of-pin-5-on-a-standard-vga-connector">Function of Pin 5
+on a Standard VGA Connector</h1>
+<p>This article provides an overview of pin 5 on a standard 15-pin Video
+Graphics Array (VGA) connector, detailing its technical role in video
+transmission. You will learn about its primary assignment as a ground
+connection, how modern graphics adapters utilize it for cable detection,
+and its integration within VESA display standards.</p>
+<h3 id="primary-role-digital-ground">Primary Role: Digital Ground</h3>
+<p>On a standard 15-pin DE-15 VGA connector, pin 5 is designated as a
+ground connection, specifically referred to as <strong>Digital
+Ground</strong> or <strong>Ground (GND)</strong>. While pins 6, 7, and 8
+serve as analog grounds dedicated to shielding the individual Red,
+Green, and Blue color channels from interference, pin 5 provides a
+return path for digital logic and synchronization circuitry.</p>
+<h3 id="cable-detection-and-monitor-self-test">Cable Detection and
+Monitor Self-Test</h3>
+<p>Beyond acting as a passive ground, pin 5 plays a crucial role in
+hardware detection:</p>
+<ul>
+<li><strong>Connection Detection:</strong> Many graphics cards use pin 5
+to detect whether a display cable is physically plugged into the port.
+By monitoring the electrical state of pin 5, the graphics controller can
+identify if a display is present.</li>
+<li><strong>Self-Test Loop:</strong> In several monitor designs, pin 5
+is tied directly to ground internally. When a computer sends a
+low-voltage test signal through this pin, the grounded return allows the
+system—or the monitor itself—to run a basic self-test routine to confirm
+that a valid connection exists before initiating full signal
+transmission.</li>
+</ul>
+<h3 id="integration-with-vesa-ddc">Integration with VESA DDC</h3>
+<p>Under the Video Electronics Standards Association (VESA) Display Data
+Channel (DDC) specifications, pin 5 functions as the <strong>DDC
+Ground</strong> (or DDC Return). The DDC protocol allows the monitor to
+send its Extended Display Identification Data (EDID)—such as supported
+resolutions, refresh rates, and color profiles—back to the host computer
+using pins 12 (SDA) and 15 (SCL). Pin 5 supplies the necessary reference
+ground for this I²C-based digital communication, ensuring reliable data
+exchange between the graphics card and the monitor.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

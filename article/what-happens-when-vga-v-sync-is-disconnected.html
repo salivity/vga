@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Happens When VGA V-Sync Is Disconnected - vga</title>
+    <meta name="description" content="When the vertical sync (V-sync) line of a Video Graphics Array (VGA) monitor is disconnected, the display loses the timing signal required to determine where a frame begins and ends vertically. On traditional analog CRT monitors, this disruption causes t">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/what-happens-when-vga-v-sync-is-disconnected">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Happens When VGA V-Sync Is Disconnected - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/what-happens-when-vga-v-sync-is-disconnected" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When the vertical sync (V-sync) line of a Video Graphics Array (VGA) monitor is disconnected, the display loses the timing signal required to determine where a frame begins and ends vertically. On traditional analog CRT monitors, this disruption causes t" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-happens-when-vga-v-sync-is-disconnected">What Happens When
+VGA V-Sync Is Disconnected</h1>
+<p>When the vertical sync (V-sync) line of a Video Graphics Array (VGA)
+monitor is disconnected, the display loses the timing signal required to
+determine where a frame begins and ends vertically. On traditional
+analog CRT monitors, this disruption causes the picture to roll
+continuously and uncontrollably down or up the screen. On modern LCD or
+flat-panel monitors, the absence of this critical timing pulse typically
+causes the display controller to fail signal acquisition entirely,
+resulting in an "Out of Range," "Check Signal Cable," or "No Signal"
+message.</p>
+<h3 id="the-role-of-vertical-sync-in-vga">The Role of Vertical Sync in
+VGA</h3>
+<p>A standard VGA interface uses separate lines for video data and
+timing: red, green, and blue color channels carry the image brightness
+data, while horizontal sync (Pin 13) and vertical sync (Pin 14) regulate
+the scanning timing.</p>
+<p>The vertical sync line sends a periodic pulse that tells the display
+to reset its electron gun or digital line buffer back to the top-left
+corner of the screen to begin drawing the next frame. When transmitting
+a 60 Hz signal, this pulse occurs 60 times per second. Without it, the
+monitor has horizontal information (drawing lines from left to right)
+but no reference for where the vertical frame boundaries lie.</p>
+<h3 id="behavior-on-analog-crt-monitors">Behavior on Analog CRT
+Monitors</h3>
+<p>On older Cathode Ray Tube (CRT) monitors, video is drawn directly by
+sweeping an electron beam across a phosphor-coated screen:</p>
+<ul>
+<li><strong>Vertical Rolling (Tearing):</strong> The vertical deflection
+circuit relies on the V-sync pulse to trigger the vertical flyback
+(moving the beam back to the top of the screen). Without an external
+pulse, the internal vertical oscillator "free-runs" at an unsynchronized
+frequency. Because the monitor's refresh rate and the graphics card's
+frame rate are no longer matched, the picture rolls rapidly and
+continuously across the vertical axis.</li>
+<li><strong>Partial Image Wrapping:</strong> The frame may appear split
+horizontally, with the bottom half of the image appearing at the top of
+the screen and the top half appearing at the bottom, shifting as the
+frequency drifts.</li>
+<li><strong>Vertical Collapse (Rare):</strong> In certain analog
+displays where the deflection amplifier relies entirely on an active
+sync pulse to oscillate, losing the vertical signal causes the vertical
+sweep to stop altogether, collapsing the entire picture into a single,
+bright, distorted horizontal line across the middle of the screen.</li>
+</ul>
+<h3 id="behavior-on-digital-lcd-and-flat-panel-monitors">Behavior on
+Digital LCD and Flat-Panel Monitors</h3>
+<p>Unlike CRTs, modern LCD and LED displays do not draw images directly
+via an electron beam. Instead, an internal scalar chip converts the
+incoming analog VGA signal into a digital frame buffer:</p>
+<ul>
+<li><strong>"No Signal" or "Out of Range" Error:</strong> The digital
+scaler requires both horizontal and vertical sync pulses to lock onto a
+valid resolution and refresh rate (such as 1024x768 at 60 Hz). If Pin 14
+is disconnected, the timing parameters become invalid. Most modern
+monitors will refuse to display the corrupted image and will shut off
+the backlight or display an on-screen warning stating that the input
+signal is missing or unsupported.</li>
+<li><strong>Flickering Blank Screen:</strong> If the monitor attempts to
+interpret the signal without V-sync, it will intermittently flash black,
+cycle through power-saving modes, or display erratic, jumping horizontal
+blocks before going into standby.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

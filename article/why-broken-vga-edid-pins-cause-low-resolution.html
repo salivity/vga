@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Broken VGA EDID Pins Cause Low Resolution - vga</title>
+    <meta name="description" content="When a Video Graphics Array (VGA) cable suffers from broken or severed Extended Display Identification Data (EDID) pins, the connected computer loses its ability to identify the display's native capabilities. Without this essential two-way communication">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-broken-vga-edid-pins-cause-low-resolution">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Broken VGA EDID Pins Cause Low Resolution - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-broken-vga-edid-pins-cause-low-resolution" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When a Video Graphics Array (VGA) cable suffers from broken or severed Extended Display Identification Data (EDID) pins, the connected computer loses its ability to identify the display's native capabilities. Without this essential two-way communication" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-broken-vga-edid-pins-cause-low-resolution">Why Broken VGA
+EDID Pins Cause Low Resolution</h1>
+<p>When a Video Graphics Array (VGA) cable suffers from broken or
+severed Extended Display Identification Data (EDID) pins, the connected
+computer loses its ability to identify the display's native
+capabilities. Without this essential two-way communication channel,
+modern operating systems and graphics drivers cannot detect the
+monitor’s supported resolutions, color profiles, or refresh rates. As an
+automated fail-safe designed to guarantee a visible image without
+damaging the hardware, the system defaults to a baseline, generic low
+resolution—often 640x480 or 1024x768.</p>
+<h3 id="the-role-of-edid-and-the-ddc-channel">The Role of EDID and the
+DDC Channel</h3>
+<p>VGA cables rely on the Display Data Channel (DDC) protocol, which
+utilizes the I2C bus standard to send EDID information from the monitor
+to the graphics card (GPU). Inside a standard 15-pin VGA connector,
+specific pins handle this interaction:</p>
+<ul>
+<li><strong>Pin 12 (SDA):</strong> Serial Data Line, used to transmit
+the actual EDID data package.</li>
+<li><strong>Pin 15 (SCL):</strong> Serial Clock Line, used to
+synchronize data transmission.</li>
+<li><strong>Pin 4 and Pin 11:</strong> Frequently used as ID bits or
+reserved lines in older iterations.</li>
+<li><strong>Pin 10:</strong> Sync Ground, ensuring a clean electrical
+return path.</li>
+</ul>
+<p>When the GPU boots or detects a connection, it sends an electrical
+query across Pin 15 (SCL) to read the 128-byte or 256-byte metadata
+block stored in the monitor’s internal EEPROM via Pin 12 (SDA).</p>
+<h3 id="what-happens-when-pins-break">What Happens When Pins Break</h3>
+<p>If either Pin 12 or Pin 15 is bent, pushed back, or severed, the I2C
+circuit breaks. The GPU sends the clock pulse or request, but receives
+no acknowledgment (ACK) or data stream in return.</p>
+<p>Because the handshake fails:</p>
+<ol type="1">
+<li><strong>PnP Fails:</strong> The operating system fails to register a
+"Plug and Play" (PnP) monitor and reclassifies the screen as a "Generic
+Non-PnP Monitor."</li>
+<li><strong>Timing Details are Lost:</strong> High resolutions (like
+1920x1080) rely on precise timing parameters, including horizontal and
+vertical blanking intervals and pixel clock frequencies. Without the
+EDID payload, the GPU does not know which timings are safe.</li>
+</ol>
+<h3 id="why-fall-back-to-low-resolution">Why Fall Back to Low
+Resolution?</h3>
+<p>The drop to low resolution is a deliberate safety feature rooted in
+legacy display technology. Older Cathode Ray Tube (CRT) monitors could
+suffer permanent physical damage—such as blown deflection circuits or
+overheating flyback transformers—if fed signals at frequencies beyond
+their physical tolerance.</p>
+<p>To prevent hardware destruction, the Video Electronics Standards
+Association (VESA) established rigid fallback standards. Standard VGA
+(640x480 at 60Hz) is universally recognized by all display controllers,
+converters, and monitors as an absolute baseline. If the graphics driver
+cannot confirm that a higher resolution is safe, it deliberately caps
+the video output to this universal, lowest-common-denominator standard
+to protect the display hardware while still delivering a basic,
+functional interface to the user.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

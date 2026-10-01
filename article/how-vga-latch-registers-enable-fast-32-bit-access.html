@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Latch Registers Enable Fast 32-Bit Access - vga</title>
+    <meta name="description" content="This article explains how the Video Graphics Array (VGA) architecture utilizes internal latch registers to overcome the bandwidth limitations of an 8-bit expansion bus. By loading and writing data across four parallel memory planes simultaneously, these">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-latch-registers-enable-fast-32-bit-access">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Latch Registers Enable Fast 32-Bit Access - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-latch-registers-enable-fast-32-bit-access" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how the Video Graphics Array (VGA) architecture utilizes internal latch registers to overcome the bandwidth limitations of an 8-bit expansion bus. By loading and writing data across four parallel memory planes simultaneously, these" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-latch-registers-enable-fast-32-bit-access">How VGA Latch
+Registers Enable Fast 32-Bit Access</h1>
+<p>This article explains how the Video Graphics Array (VGA) architecture
+utilizes internal latch registers to overcome the bandwidth limitations
+of an 8-bit expansion bus. By loading and writing data across four
+parallel memory planes simultaneously, these hardware latches allow the
+host CPU to manipulate 32 bits of video memory during standard 8-bit
+read and write cycles, accelerating operations like block transfers,
+masking, and color fills.</p>
+<h3 id="the-planar-architecture-bottleneck">The Planar Architecture
+Bottleneck</h3>
+<p>Standard VGA graphics modes, such as the classic 640x480 16-color
+mode (Mode 12h), organize video memory into a planar structure. Memory
+is divided into four distinct 64 KB banks called "planes" (Planes 0
+through 3), where each plane corresponds to a specific color bit for a
+pixel. To render a single 16-color pixel, the display hardware combines
+one bit from each of the four planes at the same memory address.</p>
+<p>Because the standard Industry Standard Architecture (ISA) bus
+historically handled transfers in 8-bit (or 16-bit) widths, updating all
+four planes sequentially would normally require the CPU to execute four
+separate read-modify-write bus cycles. Switching between planes via
+controller registers added severe latency, creating a major performance
+bottleneck for real-time graphics rendering.</p>
+<h3 id="the-role-of-internal-vga-latch-registers">The Role of Internal
+VGA Latch Registers</h3>
+<p>To bypass this bus bottleneck, IBM integrated four 8-bit internal
+latch registers directly onto the VGA board—one latch dedicated to each
+memory plane. Combined, these four latches hold 32 bits of data (4
+planes × 8 bits).</p>
+<p>These latches sit between the external CPU bus and the internal video
+RAM. Whenever the CPU initiates a read cycle to any address in the VGA
+memory space, the VGA hardware reads the byte at that address from
+<strong>all four planes simultaneously</strong> and stores all 32 bits
+into the internal latches. Although the CPU only receives the single
+8-bit byte from the plane specified by the Read Map Select register, the
+hardware latches retain the full 32-bit state of that memory
+location.</p>
+<h3 id="rapid-data-manipulation-mechanisms">Rapid Data Manipulation
+Mechanisms</h3>
+<p>Once the 32 bits of data reside inside the latches, the CPU can
+manipulate video memory across all four planes in a single bus cycle
+using VGA Write Modes:</p>
+<ul>
+<li><strong>Write Mode 1 (High-Speed BitBLT):</strong> In this mode,
+whenever the CPU performs a write operation to a video memory address,
+the VGA ignores the CPU’s data byte entirely. Instead, it immediately
+writes the 32 bits currently stored in the internal latches into the
+target address across all four planes simultaneously. This allows the
+CPU to perform high-speed block copies (BitBLT) by reading one address
+(loading 32 bits into the latches) and writing to another address
+(dumping 32 bits out), transferring 32 bits of graphics data using just
+two 8-bit bus cycles.</li>
+<li><strong>Write Mode 0 and Internal ALUs:</strong> The VGA Graphics
+Controller contains internal logic units (ALUs) that operate on each
+plane in parallel. When writing new data, the VGA can perform bitwise
+operations (AND, OR, XOR) between the incoming CPU data and the existing
+data held inside the 32-bit latches before committing the result back to
+memory. This eliminates the need for the CPU to fetch, compute, and
+rewrite planes individually.</li>
+<li><strong>Bit Masking and Plane Enable Registers:</strong> The VGA's
+Bit Mask and Map Mask registers work in tandem with the latches. The Bit
+Mask register allows the CPU to alter specific pixels within a byte
+while leaving adjacent pixels unchanged. The latches supply the original
+background bits, while the new data overrides only the masked bits
+across all planes concurrently.</li>
+</ul>
+<p>By using internal latch registers as a high-bandwidth staging ground,
+the VGA hardware offloads multi-plane synchronization from the host CPU,
+allowing complex 32-bit pixel manipulations through narrow 8-bit bus
+transfers.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

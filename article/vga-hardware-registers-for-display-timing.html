@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Hardware Registers for Display Timing - vga</title>
+    <meta name="description" content="In the standard Video Graphics Array (VGA) architecture, dedicated hardware register blocks manage everything from color palettes to memory mapping. This article identifies the specific register block responsible for horizontal and vertical timing, expla">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-hardware-registers-for-display-timing">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Hardware Registers for Display Timing - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-hardware-registers-for-display-timing" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the standard Video Graphics Array (VGA) architecture, dedicated hardware register blocks manage everything from color palettes to memory mapping. This article identifies the specific register block responsible for horizontal and vertical timing, expla" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-hardware-registers-for-display-timing">VGA Hardware
+Registers for Display Timing</h1>
+<p>In the standard Video Graphics Array (VGA) architecture, dedicated
+hardware register blocks manage everything from color palettes to memory
+mapping. This article identifies the specific register block responsible
+for horizontal and vertical timing, explains how it functions to
+generate synchronization signals, and details the primary parameters
+used to synchronize the display with monitor refresh cycles.</p>
+<h3 id="the-crt-controller-crtc">The CRT Controller (CRTC)</h3>
+<p>The Cathode Ray Tube Controller, commonly abbreviated as the
+<strong>CRTC</strong>, is the hardware register block that controls
+horizontal and vertical timing in a VGA system. While the Graphics
+Controller, Sequencer, Attribute Controller, and DAC handle pixel data
+and color translation, the CRTC dictates the physical scanning process
+and raster timing.</p>
+<p>The CRTC is accessed through an index-data register pair via I/O
+ports. In color emulation mode, the index register is at port
+<code>0x3D4</code> and the data register is at <code>0x3D5</code>. In
+monochrome compatibility mode, the index register sits at
+<code>0x3B4</code> and the data register is at <code>0x3B5</code>.</p>
+<h3 id="horizontal-timing-control">Horizontal Timing Control</h3>
+<p>The CRTC controls horizontal scanning by counting character clocks.
+The primary registers governing horizontal timing include:</p>
+<ul>
+<li><strong>Horizontal Total (Index 0x00):</strong> Defines the total
+number of character clocks per scanline, including active display time,
+blanking, and retrace intervals.</li>
+<li><strong>Horizontal Display End (Index 0x01):</strong> Specifies the
+end of the active display portion of the scanline where pixels are
+visible.</li>
+<li><strong>Start Horizontal Blanking (Index 0x02):</strong> Determines
+the character clock count where the beam blanks to prevent visual
+artifacts as it nears the screen edge.</li>
+<li><strong>End Horizontal Blanking (Index 0x03):</strong> Specifies the
+conclusion of the blanking interval.</li>
+<li><strong>Start Horizontal Retrace (Index 0x04):</strong> Triggers the
+horizontal synchronization pulse, signaling the monitor's beam to return
+to the left side of the display.</li>
+<li><strong>End Horizontal Retrace (Index 0x05):</strong> Dictates the
+width of the horizontal sync pulse.</li>
+</ul>
+<h3 id="vertical-timing-control">Vertical Timing Control</h3>
+<p>Vertical timing operates similarly to horizontal timing but counts
+complete scanlines rather than individual character clocks. Key vertical
+timing registers include:</p>
+<ul>
+<li><strong>Vertical Total (Index 0x06):</strong> Dictates the total
+number of horizontal scanlines comprising a complete frame, including
+visible lines and blanking periods.</li>
+<li><strong>Vertical Display End (Index 0x12):</strong> Sets the final
+scanline of active display data.</li>
+<li><strong>Start Vertical Blanking (Index 0x15):</strong> Marks the
+scanline where the beam is deactivated after drawing the bottom of the
+image.</li>
+<li><strong>End Vertical Blanking (Index 0x16):</strong> Designates
+where the vertical blanking period concludes.</li>
+<li><strong>Vertical Retrace Start (Index 0x10):</strong> Sets the
+scanline at which the vertical synchronization pulse begins, signaling
+the beam to reposition from bottom to top.</li>
+<li><strong>Vertical Retrace End (Index 0x11):</strong> Controls the
+pulse width of the vertical sync signal and contains protection bits to
+prevent software from accidentally overwriting critical timing
+parameters.</li>
+</ul>
+<p>Together, these CRTC registers ensure proper synchronization between
+the VGA hardware and the connected display monitor.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

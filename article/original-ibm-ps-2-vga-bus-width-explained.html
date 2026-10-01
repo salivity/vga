@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Original IBM PS/2 VGA Bus Width Explained - vga</title>
+    <meta name="description" content="When IBM introduced the Video Graphics Array (VGA) standard alongside the Personal System/2 (PS/2) computer line in 1987, it fundamentally changed PC display standards. This article examines the hardware architecture of the original integrated VGA implem">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/original-ibm-ps-2-vga-bus-width-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Original IBM PS/2 VGA Bus Width Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/original-ibm-ps-2-vga-bus-width-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When IBM introduced the Video Graphics Array (VGA) standard alongside the Personal System/2 (PS/2) computer line in 1987, it fundamentally changed PC display standards. This article examines the hardware architecture of the original integrated VGA implem" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="original-ibm-ps2-vga-bus-width-explained">Original IBM PS/2 VGA
+Bus Width Explained</h1>
+<p>When IBM introduced the Video Graphics Array (VGA) standard alongside
+the Personal System/2 (PS/2) computer line in 1987, it fundamentally
+changed PC display standards. This article examines the hardware
+architecture of the original integrated VGA implementation on the IBM
+PS/2 planar (motherboard), focusing specifically on its host bus width,
+internal memory bus configuration, and the performance implications of
+those architectural choices.</p>
+<h3 id="the-host-bus-width-an-8-bit-interface">The Host Bus Width: An
+8-Bit Interface</h3>
+<p>The original integrated VGA chip on the IBM PS/2 motherboard utilized
+an <strong>8-bit bus width</strong> to communicate with the host
+system.</p>
+<p>Even though the high-end IBM PS/2 models featured advanced 16-bit or
+32-bit Micro Channel Architecture (MCA) system buses, the onboard VGA
+subsystem was wired to the processor via an 8-bit data path. The
+decision was rooted in backward compatibility with earlier display
+standards like the Color Graphics Adapter (CGA) and Enhanced Graphics
+Adapter (EGA), as well as cost and complexity constraints during the
+design phase of the original PS/2 planar.</p>
+<p>Because the host connection was restricted to 8 bits, the CPU had to
+transfer graphical data in single-byte chunks. This made
+host-to-video-memory transfers a notable bottleneck in early PS/2
+machines, especially when updating full-screen graphics in real
+time.</p>
+<h3 id="internal-video-memory-bus-width-32-bits">Internal Video Memory
+Bus Width: 32 Bits</h3>
+<p>While the host-facing interface was limited to 8 bits, the internal
+architecture between the VGA controller and its video RAM (VRAM)
+operated differently:</p>
+<ul>
+<li><strong>Video Memory Configuration:</strong> The standard PS/2 VGA
+system included 256 KB of dynamic RAM.</li>
+<li><strong>Plane Organization:</strong> This memory was divided into
+four separate 64 KB memory banks, known as "planes."</li>
+<li><strong>Internal Data Path:</strong> The VGA controller accessed all
+four planes simultaneously, creating an effective <strong>32-bit
+internal memory bus width</strong> (4 planes × 8 bits).</li>
+</ul>
+<p>This 32-bit internal architecture allowed the display circuitry to
+serialize and output pixels rapidly enough to support 640×480 resolution
+at 16 colors and 320×200 resolution at 256 colors at a 60 Hz or 70 Hz
+refresh rate, without starving the digital-to-analog converter (DAC) of
+bandwidth.</p>
+<h3 id="legacy-and-evolution">Legacy and Evolution</h3>
+<p>The 8-bit host limitation of the integrated PS/2 VGA directly
+influenced the broader graphics market. Third-party add-in card
+manufacturers quickly recognized that IBM’s 8-bit bottleneck restricted
+graphics performance. By the late 1980s and early 1990s, clone
+manufacturers introduced 16-bit ISA VGA cards, followed by 32-bit VESA
+Local Bus (VLB) and PCI graphics adapters, which finally matched the
+host bus width to the graphics processor's full capabilities.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

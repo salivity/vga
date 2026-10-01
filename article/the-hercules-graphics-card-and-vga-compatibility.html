@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hercules Graphics Card and VGA Compatibility - vga</title>
+    <meta name="description" content="The Hercules Graphics Card (HGC) was a pioneering third-party video controller that defined high-resolution monochrome graphics for early personal computers, bridging the gap between business text processing and bitmapped display capabilities. While IBM">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/the-hercules-graphics-card-and-vga-compatibility">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The Hercules Graphics Card and VGA Compatibility - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/the-hercules-graphics-card-and-vga-compatibility" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Hercules Graphics Card (HGC) was a pioneering third-party video controller that defined high-resolution monochrome graphics for early personal computers, bridging the gap between business text processing and bitmapped display capabilities. While IBM" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="the-hercules-graphics-card-and-vga-compatibility">The Hercules
+Graphics Card and VGA Compatibility</h1>
+<p>The Hercules Graphics Card (HGC) was a pioneering third-party video
+controller that defined high-resolution monochrome graphics for early
+personal computers, bridging the gap between business text processing
+and bitmapped display capabilities. While IBM later introduced the Video
+Graphics Array (VGA) as a new universal standard with native backward
+compatibility for IBM's own display adapters, compatibility with the
+Hercules standard was sustained through architectural memory mapping,
+register-level hardware emulation by third-party chipmakers, and
+software translation utilities.</p>
+<h3 id="what-was-the-hercules-graphics-card">What Was the Hercules
+Graphics Card?</h3>
+<p>Introduced in 1982 by Hercules Computer Technology, the Hercules
+Graphics Card was developed by Van Suwannukul to enable him to write his
+doctoral thesis in the Thai alphabet on an IBM PC. At the time, IBM PC
+users had to choose between two mutually exclusive display standards:
+the Monochrome Display Adapter (MDA), which provided crisp, readable
+80-column text at 720x350 resolution but lacked graphics capability, and
+the Color Graphics Adapter (CGA), which supported bitmapped graphics but
+suffered from low resolution (up to 640x200 monochrome or 320x200 in
+four colors) and poor text clarity.</p>
+<p>The Hercules card solved this dilemma by combining full MDA text
+compatibility with an addressable bitmapped monochrome graphics mode of
+720x348 pixels at a 50 Hz refresh rate. It achieved this by equipping
+the card with 64 KB of video RAM—four times the memory of MDA—divided
+into two selectable 32 KB display pages. This resolution allowed users
+to display sharp, detailed diagrams, technical charts, and complex
+characters on standard, inexpensive monochrome TTL monitors.</p>
+<p>Because of its superior resolution and text quality, the HGC became
+an overwhelming commercial success and a de facto industry standard.
+Major business software, including Lotus 1-2-3, AutoCAD, and Microsoft
+Flight Simulator, quickly integrated dedicated display drivers
+specifically designed for Hercules graphics.</p>
+<h3 id="how-vga-maintained-compatibility-with-hercules">How VGA
+Maintained Compatibility with Hercules</h3>
+<p>In 1987, IBM introduced the Video Graphics Array (VGA) alongside the
+PS/2 series. VGA introduced color graphics up to 640x480 and enhanced
+text modes at 720x400. While IBM natively integrated hardware-level
+compatibility for its own legacy standards (MDA and CGA), it did not
+formally license or build native 720x348 Hercules graphics modes into
+the official IBM VGA specification. Despite this, compatibility with
+Hercules software was maintained across several fronts:</p>
+<h4 id="1-monochrome-memory-mapping-and-dual-display-coexistence">1.
+Monochrome Memory Mapping and Dual-Display Coexistence</h4>
+<p>IBM PC architecture designated the memory address range
+<code>B0000h–B7FFFh</code> for monochrome display buffers and
+<code>B8000h–BFFFFh</code> for color buffers. VGA preserved this
+hardware memory division. By default, Hercules used
+<code>B0000h–B7FFFh</code> for its primary graphics page. Because VGA
+could be configured to operate strictly in the color memory space, users
+and developers could install both a VGA card and an original Hercules
+card simultaneously in the same system without hardware address
+conflicts, allowing simultaneous dual-monitor workflows common in
+debugging and CAD.</p>
+<h4 id="2-third-party-chipset-emulation">2. Third-Party Chipset
+Emulation</h4>
+<p>While IBM’s official VGA implementation omitted the proprietary
+720x348 graphics mode, third-party graphics silicon vendors—such as
+Tseng Labs (ET3000/ET4000), Paradise Systems, ATI, and Oak
+Technology—dominated the clone PC market. These manufacturers
+incorporated register-level Hercules emulation modes directly into their
+Super VGA (SVGA) chipsets. When Hercules software accessed standard
+Hercules registers or attempted to switch display pages, the SVGA
+hardware recognized the commands, adjusted the timing signals to match
+standard CRT scanning frequencies, and displayed the 720x348 output
+seamlessly within a 640x480 or 720x400 frame.</p>
+<h4 id="3-software-emulation-and-driver-redirection">3. Software
+Emulation and Driver Redirection</h4>
+<p>For systems running standard IBM VGA hardware without proprietary
+chipset-level Hercules trapping, compatibility was handled at the
+software layer:</p>
+<ul>
+<li><strong>BIOS and Software Updates:</strong> Popular application
+developers updated their software suites to include native VGA drivers,
+migrating user workflows directly to VGA's native 640x480 monochrome or
+16-color modes.</li>
+<li><strong>TSR Emulators:</strong> Memory-resident programs (such as
+<code>SIMCGA</code>, <code>VGAHERC</code>, and later utilities like
+<code>HGCBIOS</code>) intercepted direct writes to Hercules I/O ports
+and redirected frame data into VGA-supported graphic modes,
+automatically scaling or centering the 720x348 canvas onto the VGA
+display.</li>
+</ul>
+<p>Through these combined hardware adaptations and software bridges,
+users were able to transition from the Hercules standard to the VGA
+standard without sacrificing access to their existing software
+library.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

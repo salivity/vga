@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Vertical Sync Pulse Timing and Duration - vga</title>
+    <meta name="description" content="In the Video Graphics Array (VGA) standard, the duration of the vertical synchronization (VSync) pulse is defined in terms of complete horizontal scan lines rather than discrete units of absolute time. For the baseline 640x480 resolution running at 60 Hz">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-vertical-sync-pulse-timing-and-duration">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Vertical Sync Pulse Timing and Duration - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-vertical-sync-pulse-timing-and-duration" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the Video Graphics Array (VGA) standard, the duration of the vertical synchronization (VSync) pulse is defined in terms of complete horizontal scan lines rather than discrete units of absolute time. For the baseline 640x480 resolution running at 60 Hz" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-vertical-sync-pulse-timing-and-duration">VGA Vertical Sync
+Pulse Timing and Duration</h1>
+<p>In the Video Graphics Array (VGA) standard, the duration of the
+vertical synchronization (VSync) pulse is defined in terms of complete
+horizontal scan lines rather than discrete units of absolute time. For
+the baseline 640x480 resolution running at 60 Hz, the specification
+designates the vertical sync pulse width as exactly two horizontal line
+intervals. This mechanism provides the display hardware with a distinct,
+measurable timing window to reset the cathode-ray tube electron beam—or
+internal digital raster counters—from the bottom of the screen back to
+the top.</p>
+<h3 id="horizontal-line-units-in-vertical-timing">Horizontal Line Units
+in Vertical Timing</h3>
+<p>VGA relies on a hierarchical timing structure where horizontal timing
+dictates vertical timing. The master pixel clock (nominally 25.175 MHz
+for standard 640x480) drives individual pixels and horizontal lines.
+Each complete horizontal line requires 800 pixel clock cycles, resulting
+in a horizontal line period (<span class="math inline">\(T_H\)</span>)
+of roughly 31.778 microseconds:</p>
+<p><span class="math display">\[\frac{800 \text{ pixels}}{25.175 \text{
+MHz}} \approx 31.778 \text{ }\mu\text{s}\]</span></p>
+<p>Because vertical timing is measured in horizontal lines, the duration
+of any vertical interval—including the vertical sync pulse—directly
+depends on this horizontal scan line frequency (approximately 31.469
+kHz).</p>
+<h3 id="frame-structure-and-sync-duration-for-640x480-at-60-hz">Frame
+Structure and Sync Duration for 640x480 at 60 Hz</h3>
+<p>A standard 640x480 VGA frame consists of 525 total vertical lines
+partitioned into four sequential stages:</p>
+<ol type="1">
+<li><strong>Active Video:</strong> 480 lines where image data is
+drawn.</li>
+<li><strong>Vertical Front Porch:</strong> 10 lines of inactive blanking
+before the sync pulse begins.</li>
+<li><strong>Vertical Sync Pulse:</strong> 2 lines where the sync signal
+is asserted.</li>
+<li><strong>Vertical Back Porch:</strong> 33 lines of blanking that
+allow the raster position to settle before the next active frame
+begins.</li>
+</ol>
+<p>With the pulse duration fixed at 2 scan lines, the physical duration
+in microseconds is calculated by multiplying the line count by the
+horizontal line period:</p>
+<p><span class="math display">\[2 \times 31.778 \text{ }\mu\text{s}
+\approx 63.556 \text{ }\mu\text{s}\]</span></p>
+<p>During these 63.556 microseconds, the VSync pin remains asserted,
+signaling the display to transition between frames.</p>
+<h3 id="polarity-and-display-detection">Polarity and Display
+Detection</h3>
+<p>The VGA specification also defines the electrical polarity of the
+vertical sync pulse. For the 640x480 mode at 60 Hz, both horizontal and
+vertical sync pulses are active-low (negative polarity). In standard
+operation, the VSync line idles at a high logic level (+5V or +3.3V
+depending on the implementation) and transitions to a low logic level
+(0V) for the exact duration of the 2-line pulse.</p>
+<p>Historically, multi-sync CRT monitors used combinations of positive
+and negative polarities across HSync and VSync to automatically detect
+the vertical resolution (such as 350, 400, or 480 lines) and adjust the
+vertical deflection circuits accordingly.</p>
+<h3 id="variations-across-vga-derived-standards">Variations Across
+VGA-Derived Standards</h3>
+<p>While the classic 640x480 @ 60 Hz standard sets the vertical sync
+pulse strictly at 2 horizontal lines, other VESA and extended VGA
+standards define different durations depending on the refresh rate and
+total frame size:</p>
+<ul>
+<li><strong>640x400 and 720x400 (Text Modes at 70 Hz):</strong> Use a
+2-line vertical sync pulse with positive polarity on VSync.</li>
+<li><strong>640x480 at 72 Hz / 75 Hz:</strong> Use a 3-line vertical
+sync pulse.</li>
+<li><strong>800x600 (SVGA at 60 Hz):</strong> Uses a 4-line vertical
+sync pulse over a 628-line total frame.</li>
+</ul>
+<p>Regardless of the target resolution or refresh rate, the core design
+principle remains unchanged: the VGA specification always anchors the
+vertical sync pulse duration to an exact integer count of horizontal
+scan lines.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

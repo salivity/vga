@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA Became the Standard Instead of 8514/A - vga</title>
+    <meta name="description" content="In 1987, IBM introduced both the Video Graphics Array (VGA) and the 8514/A graphics adapter alongside its Personal System/2 (PS/2) computer line. Although 8514/A offered superior resolution and hardware acceleration designed for professional applications">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-became-the-standard-instead-of-8514-a">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA Became the Standard Instead of 8514/A - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-became-the-standard-instead-of-8514-a" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In 1987, IBM introduced both the Video Graphics Array (VGA) and the 8514/A graphics adapter alongside its Personal System/2 (PS/2) computer line. Although 8514/A offered superior resolution and hardware acceleration designed for professional applications" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-became-the-standard-instead-of-8514a">Why VGA Became the
+Standard Instead of 8514/A</h1>
+<p>In 1987, IBM introduced both the Video Graphics Array (VGA) and the
+8514/A graphics adapter alongside its Personal System/2 (PS/2) computer
+line. Although 8514/A offered superior resolution and hardware
+acceleration designed for professional applications, VGA became the
+immortal baseline display standard for the personal computer industry
+while 8514/A quickly faded into obscurity. VGA triumphed because of its
+integration directly onto motherboards, widespread reverse engineering
+by clone manufacturers, gaming support via direct register access, and
+the subsequent emergence of Super VGA (SVGA), which rendered 8514/A
+redundant.</p>
+<h3 id="targeted-markets-and-cost-differences">Targeted Markets and Cost
+Differences</h3>
+<p>IBM designed the two standards for entirely different market tiers.
+VGA was engineered as an affordable, general-purpose graphics system
+integrated directly onto the motherboards of entry-level and mid-range
+PS/2 computers. It offered a maximum resolution of 640x480 with 16
+colors, or 320x200 with 256 colors, which was sufficient for standard
+office productivity, early GUI software, and consumer applications.</p>
+<p>In contrast, 8514/A was a high-end, optional upgrade targeted at
+computer-aided design (CAD) professionals and niche workstation users.
+It delivered a 1024x768 resolution and built-in 2D hardware drawing
+acceleration (such as line drawing, bit-block transfers, and area
+fills). However, achieving this performance required expensive dedicated
+video memory and a specialized IBM 8514 multisync monitor. The high
+price floor prevented 8514/A from ever achieving mass-market consumer
+adoption.</p>
+<h3 id="open-cloning-vs-proprietary-micro-channel-architecture">Open
+Cloning vs. Proprietary Micro Channel Architecture</h3>
+<p>A critical factor in VGA’s dominance was its availability to
+third-party clone manufacturers. The original 8514/A card was built
+around IBM’s proprietary Micro Channel Architecture (MCA) bus, a
+licensed technology that most clone makers refused to adopt due to high
+royalty fees. Although ISA-bus clones of 8514/A eventually surfaced
+(such as the Chips and Technologies 82C480 and Western Digital Paradise
+8514/A), they arrived too late to gain traction.</p>
+<p>VGA, on the other hand, was easily adapted to the standard ISA bus
+found in IBM-compatible PCs. Semiconductor companies like Cirrus Logic,
+Tseng Labs, and Trident swiftly cloned VGA down to the silicon register
+level. This created a competitive market of low-cost add-in graphics
+cards that could be installed in any PC, guaranteeing VGA hardware a
+presence in nearly every new system shipped.</p>
+<h3 id="software-architecture-and-the-pc-gaming-boom">Software
+Architecture and the PC Gaming Boom</h3>
+<p>VGA and 8514/A handled software interaction in fundamentally opposing
+ways:</p>
+<ul>
+<li><strong>Direct Register Access:</strong> VGA allowed software
+developers to manipulate hardware registers directly. Its "Mode 13h"
+(320x200 at 256 colors) provided an unbanked, linear memory model that
+made fast software-rendering practical. This became the gold standard
+for PC game developers, enabling the golden era of DOS gaming with
+titles like <em>DOOM</em> and <em>Wolfenstein 3D</em>.</li>
+<li><strong>The Adapter Interface (AI):</strong> 8514/A blocked direct
+register programming, forcing developers to use IBM’s Adapter Interface
+(AI) software driver to execute drawing commands. While this suited
+high-level CAD software and early Windows environments, it added
+overhead, limited creative developer control, and made real-time video
+games practically impossible to run smoothly.</li>
+</ul>
+<p>Because gaming and consumer software prioritized direct hardware
+control over high-resolution productivity routines, developer support
+overwhelmingly consolidated around VGA.</p>
+<h3 id="interlacing-issues-and-display-quirks">Interlacing Issues and
+Display Quirks</h3>
+<p>The 8514/A achieved its flagship 1024x768 resolution using an
+interlaced scan rate at 43.5 Hz. Interlacing refreshed alternate lines
+on each pass, which caused noticeable, eye-straining screen flicker on
+common CRT phosphors. To avoid this, users were required to buy
+exceptionally high-grade non-interlaced monitors, driving total setup
+costs higher. VGA’s 640x480 resolution, by contrast, ran as a clean,
+flicker-free non-interlaced signal at 60 Hz on standard analog RGB
+monitors.</p>
+<h3 id="the-rise-of-super-vga">The Rise of Super VGA</h3>
+<p>By the early 1990s, third-party graphics manufacturers had begun
+enhancing the standard VGA core with additional memory and custom
+registers, creating "Super VGA" (SVGA). These cards maintained full
+backward compatibility with VGA register calls while matching or
+exceeding the 1024x768 resolution and 256-color palette of 8514/A.</p>
+<p>When manufacturers like S3 Graphics introduced fixed-function 2D
+acceleration directly to SVGA chipsets (starting with the S3 911), they
+absorbed the single remaining advantage held by 8514/A. SVGA was faster,
+cheaper, backward-compatible with the entire VGA software library, and
+independent of IBM’s proprietary licensing. As SVGA established itself
+as the new standard, 8514/A was abandoned, leaving the base VGA
+specification as the permanent fallback display mode for virtually all
+personal computing hardware.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

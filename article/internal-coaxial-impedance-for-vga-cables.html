@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Coaxial Impedance for VGA Cables - vga</title>
+    <meta name="description" content="This article covers the electrical standards governing Video Graphics Array (VGA) cables, specifically identifying the characteristic impedance required for their internal coaxial lines. It explains why a precise impedance value is critical for preservin">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/internal-coaxial-impedance-for-vga-cables">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Internal Coaxial Impedance for VGA Cables - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/internal-coaxial-impedance-for-vga-cables" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article covers the electrical standards governing Video Graphics Array (VGA) cables, specifically identifying the characteristic impedance required for their internal coaxial lines. It explains why a precise impedance value is critical for preservin" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="internal-coaxial-impedance-for-vga-cables">Internal Coaxial
+Impedance for VGA Cables</h1>
+<p>This article covers the electrical standards governing Video Graphics
+Array (VGA) cables, specifically identifying the characteristic
+impedance required for their internal coaxial lines. It explains why a
+precise impedance value is critical for preserving analog signal
+integrity and preventing common visual artifacts like ghosting and
+signal attenuation on analog displays.</p>
+<h3 id="the-required-characteristic-impedance">The Required
+Characteristic Impedance</h3>
+<p>The characteristic impedance required for the internal coaxial lines
+within a standard Video Graphics Array (VGA) cable is <strong>75 ohms
+(75 Ω)</strong>.</p>
+<h3 id="purpose-of-the-75-ohm-standard">Purpose of the 75-Ohm
+Standard</h3>
+<p>VGA is an analog display standard that carries separate
+high-frequency video signals for the primary color channels: Red, Green,
+and Blue (RGB). For analog video transmission to function correctly
+without loss of quality, the entire transmission line must be
+impedance-matched:</p>
+<ol type="1">
+<li><strong>Source:</strong> The digital-to-analog converter (DAC) on
+the graphics card outputs at a nominal impedance of 75 ohms.</li>
+<li><strong>Medium:</strong> The internal coaxial conductors inside the
+VGA cable are engineered to maintain a 75-ohm characteristic
+impedance.</li>
+<li><strong>Load:</strong> The display device (monitor or projector)
+terminates the incoming RGB lines with 75-ohm load resistors.</li>
+</ol>
+<h3 id="internal-cable-architecture">Internal Cable Architecture</h3>
+<p>A high-quality VGA cable uses true miniature 75-ohm coaxial lines for
+the three primary video signals:</p>
+<ul>
+<li><strong>Pin 1 (Red Video)</strong> paired with <strong>Pin 6 (Red
+Ground)</strong></li>
+<li><strong>Pin 2 (Green Video)</strong> paired with <strong>Pin 7
+(Green Ground)</strong></li>
+<li><strong>Pin 3 (Blue Video)</strong> paired with <strong>Pin 8 (Blue
+Ground)</strong></li>
+</ul>
+<p>Each of these three lines features a central signal conductor
+surrounded by a dielectric insulator, a conductive braided or foil
+shield (which acts as the dedicated ground return), and an outer
+protective jacket. The physical dimensions of the conductor, the
+dielectric constant of the insulating material, and the shield diameter
+are specifically manufactured to achieve the uniform 75-ohm rating.</p>
+<p>The remaining pins in a standard 15-pin DE-15 connector carry
+low-frequency signals—such as Horizontal Sync (Pin 13), Vertical Sync
+(Pin 14), and I2C/DDC data lines for EDID communication (Pins 12 and
+15). These timing and digital communication lines do not require 75-ohm
+coaxial construction and typically use unshielded or standard
+twisted-pair wiring.</p>
+<h3 id="effects-of-incorrect-impedance">Effects of Incorrect
+Impedance</h3>
+<p>Deviations from the 75-ohm standard create an impedance mismatch
+along the transmission path. When an electrical signal reaches an
+interface with mismatched impedance, a portion of the signal energy
+reflects backward toward the source.</p>
+<p>In an analog video system, these reflections produce distinct visual
+flaws:</p>
+<ul>
+<li><strong>Ghosting:</strong> Faint, duplicate images appearing to the
+right of high-contrast text or edges.</li>
+<li><strong>Ringing and Smearing:</strong> Halos, streaks, or blurry
+transitions between contrasting colors.</li>
+<li><strong>Signal Attenuation:</strong> Loss of brightness, color
+depth, or contrast, which becomes progressively worse at higher
+resolutions (such as 1920×1080) and longer cable distances.</li>
+</ul>
+<p>Low-cost or poorly manufactured VGA cables often omit individual
+75-ohm coaxial lines for the color channels, substituting them with
+generic unshielded twisted pairs. While these cables may function at
+basic resolutions like 640×480 or 800×600, maintaining a continuous
+75-ohm characteristic impedance across all RGB coaxial paths is
+mandatory for stable, high-definition analog video output.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

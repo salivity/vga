@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Original IBM VGA Hardware Pixel Clock Frequencies - vga</title>
+    <meta name="description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987 with the PS/2 line of computers, it established a foundational display specification that endured for decades. This article explores the internal timing architecture of the original IBM">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/original-ibm-vga-hardware-pixel-clock-frequencies">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Original IBM VGA Hardware Pixel Clock Frequencies - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/original-ibm-vga-hardware-pixel-clock-frequencies" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When IBM introduced the Video Graphics Array (VGA) standard in 1987 with the PS/2 line of computers, it established a foundational display specification that endured for decades. This article explores the internal timing architecture of the original IBM" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="original-ibm-vga-hardware-pixel-clock-frequencies">Original IBM
+VGA Hardware Pixel Clock Frequencies</h1>
+<p>When IBM introduced the Video Graphics Array (VGA) standard in 1987
+with the PS/2 line of computers, it established a foundational display
+specification that endured for decades. This article explores the
+internal timing architecture of the original IBM VGA hardware,
+specifically examining the two dedicated hardware crystal oscillators
+that provided its native pixel clock frequencies, how the hardware
+selected between them, and the iconic display modes each frequency
+supported.</p>
+<p>The original IBM VGA adapter integrated two primary native crystal
+oscillators to drive its pixel clocks: <strong>25.175 MHz</strong> and
+<strong>28.322 MHz</strong>. These fixed frequencies allowed the
+hardware to maintain standard horizontal scan rates of 31.469 kHz across
+different horizontal pixel counts while targeting the analog CRT
+monitors of the era.</p>
+<h3 id="the-25175-mhz-clock-standard-graphics-modes">The 25.175 MHz
+Clock: Standard Graphics Modes</h3>
+<p>The 25.175 MHz pixel clock was designed to support modes with a
+horizontal resolution of 640 pixels (or 320 pixels using horizontal
+clock doubling). Operating with a total horizontal line period of 800
+pixel clocks, this frequency yields the standard VGA horizontal sync
+frequency of approximately 31.469 kHz (25.175 MHz ÷ 800 ≈ 31.46875
+kHz).</p>
+<p>This clock frequency primarily drove:</p>
+<ul>
+<li><strong>Mode 12h (640×480, 16 colors):</strong> The flagship VGA
+graphics mode, running at a 60 Hz vertical refresh rate with 525 total
+scanlines.</li>
+<li><strong>Mode 13h (320×200, 256 colors):</strong> A popular standard
+for PC gaming that used pixel doubling horizontally and scanline
+doubling vertically to refresh at 70 Hz with 449 total scanlines.</li>
+<li><strong>Mode 11h (640×480, 2 colors):</strong> A monochrome
+high-resolution fallback mode.</li>
+</ul>
+<h3 id="the-28322-mhz-clock-enhanced-text-modes">The 28.322 MHz Clock:
+Enhanced Text Modes</h3>
+<p>The 28.322 MHz pixel clock was implemented to provide backward
+compatibility with older text modes while improving readability. IBM
+designed its standard text display to present 80 columns of characters,
+each 9 pixels wide, requiring 720 horizontal pixels across the active
+display area. Running 900 total pixel clocks per line at 28.322 MHz
+produces the identical horizontal scan rate of 31.469 kHz (28.322 MHz ÷
+900 ≈ 31.46889 kHz).</p>
+<p>This clock frequency primarily drove:</p>
+<ul>
+<li><strong>Mode 03h (720×400, 16 colors text):</strong> The default DOS
+command-line text environment, displaying 80×25 characters within 9×16
+character matrix cells at a 70 Hz vertical refresh rate.</li>
+<li><strong>Mode 07h (720×400 monochrome text):</strong> Emulated the
+high-quality character sharpness of the older Monochrome Display Adapter
+(MDA).</li>
+</ul>
+<h3 id="hardware-clock-selection">Hardware Clock Selection</h3>
+<p>Switching between these two oscillators was managed through software
+via the VGA Miscellaneous Output Register (located at I/O port
+<code>0x3C2</code> for writes and <code>0x3CC</code> for reads). Bits 2
+and 3 of this register formed the Clock Select field:</p>
+<ul>
+<li>Setting the bits to <code>00</code> selected the <strong>25.175
+MHz</strong> clock.</li>
+<li>Setting the bits to <code>01</code> selected the <strong>28.322
+MHz</strong> clock.</li>
+<li>Setting the bits to <code>10</code> was reserved for an external
+clock source provided through the feature connector, while
+<code>11</code> was unused on original hardware.</li>
+</ul>
+<p>By pairing these two precise frequencies to a unified horizontal scan
+rate, the original IBM VGA hardware delivered sharp 720-pixel text
+alongside flexible 640-pixel graphics without requiring multi-frequency
+monitor adjustments.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

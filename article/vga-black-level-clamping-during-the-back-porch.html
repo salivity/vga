@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Black Level Clamping During the Back Porch - vga</title>
+    <meta name="description" content="This article explains how black level clamping is established during the back porch interval of an analog Video Graphics Array (VGA) signal. It details the necessity of DC restoration in AC-coupled video systems, the role of horizontal blanking timing, a">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-black-level-clamping-during-the-back-porch">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Black Level Clamping During the Back Porch - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-black-level-clamping-during-the-back-porch" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how black level clamping is established during the back porch interval of an analog Video Graphics Array (VGA) signal. It details the necessity of DC restoration in AC-coupled video systems, the role of horizontal blanking timing, a" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-black-level-clamping-during-the-back-porch">VGA Black Level
+Clamping During the Back Porch</h1>
+<p>This article explains how black level clamping is established during
+the back porch interval of an analog Video Graphics Array (VGA) signal.
+It details the necessity of DC restoration in AC-coupled video systems,
+the role of horizontal blanking timing, and the circuit-level
+mechanisms—such as sample-and-hold switches and clamping capacitors—used
+by display receivers to lock the video signal to a reliable reference
+voltage before active display lines begin.</p>
+<h3 id="the-need-for-dc-restoration">The Need for DC Restoration</h3>
+<p>In analog VGA transmission, the Red, Green, and Blue (RGB) video
+signals carry luminance and color information via variable voltages,
+typically ranging from 0.0V (fully black) to 0.7V (maximum brightness).
+Graphics hardware and display receivers often incorporate series
+capacitors along these RGB signal lines to provide AC coupling. AC
+coupling prevents damaging DC offsets caused by ground potential
+differences between the host computer and the display.</p>
+<p>However, passing a video signal through a series capacitor strips
+away its absolute DC component. The voltage drifts dynamically based on
+the Average Picture Level (APL). High-brightness scenes shift the
+average voltage upward, causing subsequent dark areas to dip below the
+expected reference, while dark scenes lower the voltage baseline.
+Without correcting this drift, the display cannot determine what voltage
+truly represents pure black, resulting in unstable contrast, color
+shifts, and washed-out dark scenes.</p>
+<h3 id="the-role-of-the-horizontal-back-porch">The Role of the
+Horizontal Back Porch</h3>
+<p>To restore the missing DC baseline, the monitor must regularly
+re-calibrate its zero-voltage reference. The horizontal blanking
+period—the time during which the cathode ray tube's electron beam
+re-traces from the right side of the screen back to the left, or the
+digital scaler buffers the next line—provides this opportunity.</p>
+<p>Horizontal blanking is divided into three distinct phases:</p>
+<ol type="1">
+<li><strong>Front Porch:</strong> A brief quiet interval following
+active video.</li>
+<li><strong>Horizontal Synchronization (HSync) Pulse:</strong> A timing
+pulse indicating the end of the line.</li>
+<li><strong>Back Porch:</strong> The period between the trailing edge of
+the HSync pulse and the onset of the next line's active video.</li>
+</ol>
+<p>The back porch is the ideal calibration window. During this quiet
+period, the graphics card’s digital-to-analog converters (DACs) are
+explicitly driven to output a true zero-luminance signal (0.0V). Because
+the signal is guaranteed to contain no active picture data and is free
+from the high-frequency transitions of the sync pulse edge, it offers a
+pristine window for baseline measurement.</p>
+<h3 id="circuit-implementation-of-the-clamping-mechanism">Circuit
+Implementation of the Clamping Mechanism</h3>
+<p>Display receivers use a clamping circuit—often integrated into the
+video pre-amplifier or an analog front-end (AFE) analog-to-digital
+converter (ADC)—to force the signal back to the black baseline during
+the back porch.</p>
+<ol type="1">
+<li><strong>Pulse Generation:</strong> The receiver's synchronization
+processor monitors the dedicated TTL-level HSync line. Once it detects
+the trailing (rising or falling, depending on polarity) edge of the
+HSync pulse, it triggers a brief "clamp pulse" delayed slightly to avoid
+ringing artifacts from the sync transition.</li>
+<li><strong>Switch Activation:</strong> The clamp pulse activates an
+electronic analog switch (typically a MOSFET or transmission gate)
+placed after the input AC-coupling capacitor.</li>
+<li><strong>Capacitor Charging:</strong> Closing this switch connects
+the display side of the coupling capacitor directly to a stable internal
+reference voltage—usually ground (0.0V) or a precision low-noise DC bias
+level. Because the source side is holding the video signal at 0.0V
+during the back porch, any charge offset accumulated across the
+capacitor due to AC-coupling drift is rapidly charged or
+discharged.</li>
+<li><strong>Baseline Lock:</strong> Before active video begins, the
+clamp pulse ends, opening the switch. The coupling capacitor retains
+this newly set charge across its plates throughout the duration of the
+active line.</li>
+</ol>
+<p>By repeatedly grounding or biasing the capacitor during every single
+back porch interval, the system recalculates and locks the true black
+level thousands of times per second (e.g., at 31.5 kHz for standard
+640x480 at 60 Hz). This ensures that any input voltage representing 0.0V
+accurately translates to the darkest black the display can produce,
+maintaining consistent image contrast and color balance across every
+frame.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

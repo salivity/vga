@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where Are VGA Text-Mode Fonts Stored in ROM? - vga</title>
+    <meta name="description" content="Default Video Graphics Array (VGA) text-mode font bitmaps are stored within the VGA adapter’s dedicated Video BIOS ROM, which is mapped into system memory starting at address C000:0000 (0xC0000). While original IBM architecture historically referenced">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/where-are-vga-text-mode-fonts-stored-in-rom">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Where Are VGA Text-Mode Fonts Stored in ROM? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/where-are-vga-text-mode-fonts-stored-in-rom" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Default Video Graphics Array (VGA) text-mode font bitmaps are stored within the VGA adapter’s dedicated Video BIOS ROM, which is mapped into system memory starting at address C000:0000 (0xC0000). While original IBM architecture historically referenced" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="where-are-vga-text-mode-fonts-stored-in-rom">Where Are VGA
+Text-Mode Fonts Stored in ROM?</h1>
+<p>Default Video Graphics Array (VGA) text-mode font bitmaps are stored
+within the VGA adapter’s dedicated Video BIOS ROM, which is mapped into
+system memory starting at address <code>C000:0000</code>
+(<code>0xC0000</code>). While original IBM architecture historically
+referenced basic character tables in the motherboard's System BIOS ROM
+at segment <code>F000h</code>, standard VGA hardware relies on its own
+on-board firmware to supply the 8x8, 8x14, and standard 8x16 pixel font
+sets. This article explains the exact memory locations, ROM
+organization, and access mechanisms for these default text-mode
+bitmaps.</p>
+<h3 id="the-video-bios-adapter-rom-location">The Video BIOS Adapter ROM
+Location</h3>
+<p>Unlike older display standards such as the Color Graphics Adapter
+(CGA), which used a dedicated, hardwired hardware character generator
+ROM, VGA integrates font data directly into the Video BIOS software
+code. The VGA Video BIOS is located physically on the graphics adapter
+(or integrated within modern system firmware) and is shadowed or mapped
+into the PC's Upper Memory Area (UMA) at:</p>
+<ul>
+<li><strong>Base Segment Address:</strong> <code>C000h</code></li>
+<li><strong>Linear Physical Range:</strong> <code>0x000C0000</code>
+through <code>0x000C7FFF</code> (typically a 32 KB range, though some
+implementations extend to 64 KB ending at <code>0x000CFFFF</code>).</li>
+</ul>
+<p>The exact offset of the font tables inside the <code>C000h</code>
+segment varies across different BIOS manufacturers (such as IBM,
+Phoenix, Award, or modern emulators like SeaBIOS), meaning software
+should not rely on fixed hardcoded offsets.</p>
+<h3 id="default-font-sets-stored-in-rom">Default Font Sets Stored in
+ROM</h3>
+<p>The VGA BIOS contains multiple font bitmap tables to support
+different display resolutions and compatibility modes:</p>
+<ul>
+<li><strong>8x16 Font:</strong> The primary VGA text font used in
+standard 80x25 text mode (Mode 03h/07h), which operates at a 720x400
+screen resolution using 9x16 character cells (the 9th pixel column is
+generated dynamically by the hardware).</li>
+<li><strong>8x14 Font:</strong> Preserved primarily for backward
+compatibility with Enhanced Graphics Adapter (EGA) text modes.</li>
+<li><strong>8x8 Font:</strong> Preserved for CGA compatibility,
+low-resolution graphics modes, or 80x50 text modes (where 400 vertical
+scan lines are divided into 8-pixel-high rows).</li>
+</ul>
+<p>Each character in these tables is stored as a sequential series of
+1-byte horizontal scanlines, where a set bit (<code>1</code>) represents
+a foreground pixel and a clear bit (<code>0</code>) represents a
+background pixel. For example, a complete 256-character 8x16 font table
+requires exactly 4,096 bytes (256 characters × 16 bytes) in ROM.</p>
+<h3 id="reading-font-pointers-via-bios-interrupts">Reading Font Pointers
+via BIOS Interrupts</h3>
+<p>Because the internal offsets within the <code>C000h</code> segment
+vary, software accesses the locations of these ROM font tables through
+BIOS interrupts:</p>
+<ul>
+<li><strong>INT 10h, Function 11h, Subfunction 30h
+(<code>AX=1130h</code>):</strong> The primary standard interface to
+query ROM font locations. By passing the desired font identifier in
+register <code>BH</code> (e.g., <code>BH=06h</code> for the 8x16 font,
+<code>BH=02h</code> for the 8x14 font, or <code>BH=03h</code> for the
+8x8 font), the BIOS returns the segment and offset address of that table
+directly in <code>ES:BP</code>.</li>
+<li><strong>Interrupt Vector 43h (<code>INT 43h</code>):</strong> Used
+on EGA and VGA systems to store the pointer to the currently active
+character generator graphics table.</li>
+</ul>
+<h3 id="font-deployment-to-video-ram-plane-2">Font Deployment to Video
+RAM Plane 2</h3>
+<p>While the bitmap tables are permanently stored in the Video BIOS ROM
+at <code>C000h</code>, the VGA display hardware does not render text
+characters directly from ROM during active operation.</p>
+<p>Instead, during a video mode initialization (via
+<code>INT 10h, AH=00h</code>), the BIOS routine reads the selected font
+bitmap from the ROM at <code>C000h</code> and copies it into
+<strong>Plane 2</strong> of the VGA Video RAM (located at base address
+<code>0xA0000</code>). The VGA character generator hardware then reads
+glyph bitmaps directly from Plane 2 memory to render text onto the
+screen.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

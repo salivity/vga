@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Polling the VGA Retrace Bit Wastes CPU Cycles - vga</title>
+    <meta name="description" content="In classic DOS game and graphics programming, developers frequently polled the Video Graphics Array (VGA) vertical retrace bit in a tight loop to synchronize frame updates and prevent visual tearing. While effective for synchronizing rendering with the c">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-polling-the-vga-retrace-bit-wastes-cpu-cycles">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Polling the VGA Retrace Bit Wastes CPU Cycles - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-polling-the-vga-retrace-bit-wastes-cpu-cycles" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In classic DOS game and graphics programming, developers frequently polled the Video Graphics Array (VGA) vertical retrace bit in a tight loop to synchronize frame updates and prevent visual tearing. While effective for synchronizing rendering with the c" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-polling-the-vga-retrace-bit-wastes-cpu-cycles">Why Polling
+the VGA Retrace Bit Wastes CPU Cycles</h1>
+<p>In classic DOS game and graphics programming, developers frequently
+polled the Video Graphics Array (VGA) vertical retrace bit in a tight
+loop to synchronize frame updates and prevent visual tearing. While
+effective for synchronizing rendering with the cathode-ray tube (CRT)
+beam, this busy-wait approach monopolizes the processor, running
+millions of redundant instructions, stalling execution pipelines, and
+consuming unnecessary power instead of allowing the hardware to perform
+other tasks or enter low-power states.</p>
+<p>The standard VGA architecture provides the display status via Input
+Status Register 1, located at I/O port <code>0x3DA</code>. Bit 3 of this
+register transitions to high (<code>1</code>) when the electron beam
+finishes drawing the active display and moves back to the top of the
+screen—a phase known as the Vertical Blanking Interval (VBI). Because
+writing to video memory during the active scan causes visible flicker
+and horizontal tearing, programmers implemented a routine using two
+successive tight loops: first waiting for any ongoing retrace to end,
+and then waiting for the new retrace to begin.</p>
+<pre class="assembly"><code>mov dx, 03DAh
+WaitNotRetrace:
+    in al, dx
+    test al, 8
+    jnz WaitNotRetrace
+WaitRetrace:
+    in al, dx
+    test al, 8
+    jz WaitRetrace</code></pre>
+<p>This method wastes CPU cycles primarily because of the extreme
+disparity between CPU clock speeds and the monitor’s refresh rate. A
+standard VGA monitor refreshes at roughly 60 Hz or 70 Hz, meaning a
+single frame takes approximately 14 to 16.6 milliseconds. During this
+window, the vertical blanking interval lasts for only about 1 to 1.5
+milliseconds. If a program finishes rendering a frame in 4 milliseconds,
+the CPU spends the remaining 10 to 12 milliseconds trapped in the
+polling loop, doing nothing productive except querying the I/O port
+repeatedly.</p>
+<p>Furthermore, reading from an I/O port via the <code>IN</code>
+instruction is an inherently slow operation. Port <code>0x3DA</code>
+resides on the external system bus (such as the ISA or PCI bus), which
+runs at a fraction of modern or even late-era 486/Pentium CPU
+frequencies. Every <code>IN</code> instruction forces the processor to
+stall its internal execution pipeline while waiting for bus arbitration
+and peripheral acknowledgement. These bus delays turn the polling loop
+into an artificial bottleneck that generates electrical heat and
+consumes maximum power without advancing program logic.</p>
+<p>The architecture of real-mode MS-DOS exacerbated this waste. Because
+DOS is a single-tasking operating system without a native preemptive
+scheduler, a busy-waiting process locks the entire machine. The
+processor does not switch to background threads, nor does it halt
+execution via the <code>HLT</code> instruction to conserve energy.</p>
+<p>Although the VGA standard technically supported an interrupt on
+vertical retrace (typically mapped to IRQ 2 or IRQ 9), clone hardware
+and PC BIOS implementations frequently left this interrupt line
+disconnected or disabled to avoid hardware conflicts. Consequently,
+software polling became the universally compatible, albeit deeply
+inefficient, standard for smooth frame presentation in early PC
+software.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

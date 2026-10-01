@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spatial and Temporal Dithering in VGA Displays - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) standard revolutionized personal computer graphics in the late 1980s, but it was fundamentally constrained by video memory and digital-to-analog converter (DAC) capabilities, often limiting displays to just 16 or 256 simult">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/spatial-and-temporal-dithering-in-vga-displays">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Spatial and Temporal Dithering in VGA Displays - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/spatial-and-temporal-dithering-in-vga-displays" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) standard revolutionized personal computer graphics in the late 1980s, but it was fundamentally constrained by video memory and digital-to-analog converter (DAC) capabilities, often limiting displays to just 16 or 256 simult" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="spatial-and-temporal-dithering-in-vga-displays">Spatial and
+Temporal Dithering in VGA Displays</h1>
+<p>The Video Graphics Array (VGA) standard revolutionized personal
+computer graphics in the late 1980s, but it was fundamentally
+constrained by video memory and digital-to-analog converter (DAC)
+capabilities, often limiting displays to just 16 or 256 simultaneous
+colors. To overcome these limitations, software developers and hardware
+engineers relied on spatial and temporal dithering. These rendering
+techniques exploited the limits of human visual perception to simulate a
+significantly wider spectrum of shades and smooth gradients, effectively
+bridging the gap between low-color hardware and photorealistic
+imagery.</p>
+<h3 id="the-vga-color-bottleneck">The VGA Color Bottleneck</h3>
+<p>Standard VGA architecture offered several modes, most notably Mode
+13h (320x200 resolution with 256 simultaneous colors chosen from an
+18-bit palette) and high-resolution modes like 640x480, which were
+restricted to only 16 colors. Storing and processing true 24-bit color
+("truecolor") was impossible due to the standard 256 KB video RAM limit
+and the processing overhead on contemporary CPUs. Without intervention,
+rendering continuous-tone images or dynamic 3D lighting produced severe
+color banding and harsh transitions. Dithering solved this problem
+without requiring additional memory.</p>
+<h3 id="spatial-dithering-exploiting-visual-acuity">Spatial Dithering:
+Exploiting Visual Acuity</h3>
+<p>Spatial dithering relies on the eye's inability to resolve
+microscopic details at normal viewing distances. Instead of rendering a
+single flat color, the algorithm arranges patterns of pixels using two
+or more available palette colors within a small area. The human visual
+system blends these adjacent pixels into an intermediate perceived
+color.</p>
+<p>Two primary forms of spatial dithering were commonly used on VGA
+systems:</p>
+<ul>
+<li><strong>Ordered Dithering:</strong> This technique applies a
+predetermined threshold matrix (such as a Bayer matrix) across the image
+grid. Depending on the intended brightness of an area, specific pixels
+are toggled to a secondary color according to the matrix values. Because
+ordered dithering relies on fixed mathematical patterns, it required
+minimal CPU cycles, making it ideal for real-time 3D games and animated
+sequences in the early PC era.</li>
+<li><strong>Error Diffusion:</strong> Pioneered by Robert Floyd and
+Louis Steinberg, error diffusion dynamically pushes the quantization
+error of a pixel—the mathematical difference between the desired color
+and the closest available palette color—onto neighboring pixels that
+have not yet been rendered. This produces an organic, pseudo-random
+stippling effect that virtually eliminates repetitive cross-hatch
+artifacts. While computationally heavier than ordered dithering, it
+became the gold standard for displaying static digital photographs and
+digitized video on 256-color VGA screens.</li>
+</ul>
+<h3 id="temporal-dithering-exploiting-persistence-of-vision">Temporal
+Dithering: Exploiting Persistence of Vision</h3>
+<p>Temporal dithering, often referred to as Frame Rate Control (FRC),
+operates across time rather than space. Because human vision exhibits
+persistence—the optical illusion where an image lingers on the retina
+for a fraction of a second—rapidly alternating a pixel between two
+different colors causes the viewer to perceive an intermediate third
+shade.</p>
+<p>VGA monitors operated at relatively high refresh rates, typically 60
+Hz or 70 Hz. Programmers took advantage of this speed by toggling pixels
+between two palette entries on alternate frames:</p>
+<ol type="1">
+<li>To generate a shade halfway between dark blue and light blue, a
+pixel was drawn dark blue on odd frames and light blue on even
+frames.</li>
+<li>By varying the duty cycle (for instance, showing Color A for three
+frames and Color B for one frame), developers could generate multiple
+fractional shades between existing palette entries.</li>
+</ol>
+<p>Because cathode-ray tube (CRT) phosphors had natural decay times,
+they naturally smoothed out these transitions. However, temporal
+dithering required precise synchronization with the monitor's vertical
+blanking interval (VBLANK) to prevent visual tearing, and if the frame
+rate dipped below roughly 60 frames per second, the illusion would break
+down into visible flicker.</p>
+<h3 id="the-legacy-of-vga-dithering">The Legacy of VGA Dithering</h3>
+<p>By combining spatial patterns with temporal modulation, developers
+turned strict 16- and 256-color modes into visual environments capable
+of representing intricate lighting, transparent surfaces, and
+photorealistic skin tones. These perceptual illusions enabled multimedia
+CD-ROMs, graphical user interfaces, and early 3D gaming to thrive years
+before 16-bit "high color" and 24-bit "truecolor" hardware became
+ubiquitous standards.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

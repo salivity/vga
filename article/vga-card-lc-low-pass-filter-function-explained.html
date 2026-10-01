@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Card LC Low-Pass Filter Function Explained - vga</title>
+    <meta name="description" content="This article examines the purpose and operation of the passive low-pass inductor-capacitor (LC) filter installed on the analog output lines of a Video Graphics Array (VGA) graphics card. It covers how this filter functions as an anti-imaging reconstructi">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-card-lc-low-pass-filter-function-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Card LC Low-Pass Filter Function Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-card-lc-low-pass-filter-function-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines the purpose and operation of the passive low-pass inductor-capacitor (LC) filter installed on the analog output lines of a Video Graphics Array (VGA) graphics card. It covers how this filter functions as an anti-imaging reconstructi" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-card-lc-low-pass-filter-function-explained">VGA Card LC
+Low-Pass Filter Function Explained</h1>
+<p>This article examines the purpose and operation of the passive
+low-pass inductor-capacitor (LC) filter installed on the analog output
+lines of a Video Graphics Array (VGA) graphics card. It covers how this
+filter functions as an anti-imaging reconstruction filter, suppresses
+high-frequency digital noise, curtails electromagnetic interference
+(EMI), and preserves analog video signal integrity before transmission
+across the display cable.</p>
+<h3 id="1-dac-reconstruction-and-anti-imaging">1. DAC Reconstruction and
+Anti-Imaging</h3>
+<p>VGA displays rely on analog RGB (Red, Green, Blue) signals driven by
+a digital-to-analog converter (DAC), historically known as the RAMDAC.
+Because a DAC translates digital values into analog signals via discrete
+voltage steps, the raw output resembles a staircase waveform rather than
+a continuous curve.</p>
+<p>According to the Nyquist–Shannon sampling theorem, this discrete
+conversion produces unwanted high-frequency image frequencies and
+harmonics centered around the pixel clock rate and its multiples. The
+passive LC low-pass filter acts as a reconstruction (or anti-imaging)
+filter. By setting a cutoff frequency just above the maximum intended
+video bandwidth, the filter attenuates these higher-order harmonics and
+smooths the stepped waveform into a continuous, accurate analog
+voltage.</p>
+<h3 id="2-suppression-of-digital-switching-noise-and-clock-bleed">2.
+Suppression of Digital Switching Noise and Clock Bleed</h3>
+<p>Graphics processing units and high-speed memory chips generate
+significant high-frequency electrical noise across common ground and
+power planes. Digital clock signals can easily capacitively or
+inductively couple into the analog video paths.</p>
+<p>Passive LC filters, consisting of series inductors and shunt
+capacitors, create a steep attenuation slope for high frequencies
+without requiring active, noisy power components. The inductors resist
+rapid changes in current, while the capacitors shunt high-frequency
+ripples directly to ground. This prevents clock bleed and board-level
+digital switching noise from contaminating the sensitive RGB video
+channels.</p>
+<h3 id="3-electromagnetic-interference-emi-mitigation">3.
+Electromagnetic Interference (EMI) Mitigation</h3>
+<p>A standard VGA cable consists of multiple unshielded or partially
+shielded conductors spanning several feet. High-frequency signals
+traveling down these conductors cause the cable to act as an unintended
+antenna, radiating electromagnetic energy into the surrounding
+environment.</p>
+<p>Sharp signal transitions (rapid rise and fall times) consist of
+Fourier harmonics that extend well into the hundreds of megahertz or
+gigahertz range. By filtering out these super-Nyquist frequencies, the
+LC network rounds off excessively steep signal transitions, keeping
+emissions within standard regulatory limits set by agencies such as the
+FCC and CE.</p>
+<h3 id="4-impedance-matching-and-ringing-prevention">4. Impedance
+Matching and Ringing Prevention</h3>
+<p>VGA transmission lines are standardized to a characteristic impedance
+of 75 ohms. Mismatches along the trace can cause signal reflections,
+visible on an analog monitor as ghosting, shadowing, or ringing around
+high-contrast edges.</p>
+<p>The passive LC network is carefully designed to complement the output
+impedance of the DAC and the 75-ohm load termination at the monitor. The
+reactive values of the inductors and capacitors are calculated to
+maintain a flat frequency response throughout the visible passband while
+avoiding parasitic ringing that could degrade image sharpness.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

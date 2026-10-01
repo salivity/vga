@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can VGA Be Adapted to YPbPr Component Video? - vga</title>
+    <meta name="description" content="A Video Graphics Array (VGA) port can be electrically adapted to transmit YPbPr component video, but whether it works with a simple passive adapter depends entirely on the hardware transmitting and receiving the signal. Because both VGA and YPbPr are ana">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/can-vga-be-adapted-to-y-pb-pr-component-video">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Can VGA Be Adapted to YPbPr Component Video? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/can-vga-be-adapted-to-y-pb-pr-component-video" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="A Video Graphics Array (VGA) port can be electrically adapted to transmit YPbPr component video, but whether it works with a simple passive adapter depends entirely on the hardware transmitting and receiving the signal. Because both VGA and YPbPr are ana" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="can-vga-be-adapted-to-ypbpr-component-video">Can VGA Be Adapted
+to YPbPr Component Video?</h1>
+<p>A Video Graphics Array (VGA) port can be electrically adapted to
+transmit YPbPr component video, but whether it works with a simple
+passive adapter depends entirely on the hardware transmitting and
+receiving the signal. Because both VGA and YPbPr are analog formats
+sharing similar voltage levels and bandwidth capabilities, passive
+pin-to-pin wiring is physically and electrically possible. However,
+because standard VGA outputs RGBHV signals while component video relies
+on a YPbPr color matrix with embedded synchronization, an active
+transcoder is required unless the host or display hardware natively
+supports YPbPr transmission over the DE-15 (VGA) connector.</p>
+<h3 id="the-signal-differences-rgbhv-vs-ypbpr">The Signal Differences:
+RGBHV vs. YPbPr</h3>
+<p>To understand how the two interfaces interact, it helps to
+distinguish the standard signal types:</p>
+<ul>
+<li><strong>VGA (RGBHV):</strong> Transmits video across five separate
+lines: Red, Green, and Blue color channels, alongside separate
+Horizontal Sync (H-Sync) and Vertical Sync (V-Sync) channels.</li>
+<li><strong>Component (YPbPr):</strong> Transmits video across three
+lines: Luma (<span class="math inline">\(Y\)</span>), which carries
+black-and-white brightness along with combined synchronization pulses,
+and two color-difference channels, Blue minus Luma (<span
+class="math inline">\(Pb\)</span>) and Red minus Luma (<span
+class="math inline">\(Pr\)</span>).</li>
+</ul>
+<p>Because the color encoding and synchronization methods differ, an
+unaltered RGBHV signal cannot be decoded by a standard YPbPr input, even
+if the electrical lines are connected.</p>
+<h3 id="passive-adapters-and-hardware-support">Passive Adapters and
+Hardware Support</h3>
+<p>Inexpensive, passive VGA-to-RCA (Component) cables and adapters
+contain no electronic circuitry; they merely map the VGA pins to RCA
+jacks:</p>
+<ul>
+<li>Pin 1 (Red) connects to the <span class="math inline">\(Pr\)</span>
+jack.</li>
+<li>Pin 2 (Green) connects to the <span class="math inline">\(Y\)</span>
+jack.</li>
+<li>Pin 3 (Blue) connects to the <span class="math inline">\(Pb\)</span>
+jack.</li>
+<li>Pins 6, 7, and 8 provide the ground references for each
+corresponding channel.</li>
+</ul>
+<p>A passive adapter functions <strong>only</strong> if the transmitting
+device (such as a specific PC graphics card, media player, or projector)
+has a multi-format VGA port capable of switching its internal DAC
+(digital-to-analog converter) to output a native YPbPr signal over those
+pins. Conversely, some displays feature VGA inputs capable of accepting
+YPbPr directly through display settings. If neither device has built-in
+YPbPr-over-VGA capability, a passive cable will yield an unreadable or
+distorted image.</p>
+<h3 id="when-active-transcoding-is-required">When Active Transcoding Is
+Required</h3>
+<p>If the video source outputs only a standard analog RGBHV signal and
+the destination accepts only YPbPr, an active transcoder is
+necessary.</p>
+<p>An active converter performs two real-time electronic tasks:</p>
+<ol type="1">
+<li><strong>Color Space Matrixing:</strong> It electronically calculates
+the difference values to convert the Red, Green, and Blue color levels
+into <span class="math inline">\(Y\)</span>, <span
+class="math inline">\(Pb\)</span>, and <span
+class="math inline">\(Pr\)</span> values.</li>
+<li><strong>Sync Combination:</strong> It merges the separate H-Sync and
+V-Sync signals from the VGA interface directly into the Green (<span
+class="math inline">\(Y\)</span>/Luma) channel.</li>
+</ol>
+<h3 id="summary">Summary</h3>
+<p>Direct electrical adaptation between a VGA port and YPbPr inputs is
+viable through passive wiring, provided the source video hardware is
+engineered to toggle its output mode to YPbPr. In all standard PC
+applications where the VGA output remains strictly RGBHV, a powered
+active transcoder must be used to adapt the signal successfully.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

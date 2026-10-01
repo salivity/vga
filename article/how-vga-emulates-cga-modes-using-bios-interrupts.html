@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Emulates CGA Modes Using BIOS Interrupts - vga</title>
+    <meta name="description" content="This article explains how the Video Graphics Array (VGA) maintains backward compatibility with the Color Graphics Adapter (CGA) through BIOS interrupts. When legacy software requests a CGA display mode, the VGA BIOS intervenes via Interrupt 10h (INT 10h)">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-emulates-cga-modes-using-bios-interrupts">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Emulates CGA Modes Using BIOS Interrupts - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-emulates-cga-modes-using-bios-interrupts" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how the Video Graphics Array (VGA) maintains backward compatibility with the Color Graphics Adapter (CGA) through BIOS interrupts. When legacy software requests a CGA display mode, the VGA BIOS intervenes via Interrupt 10h (INT 10h)" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-emulates-cga-modes-using-bios-interrupts">How VGA
+Emulates CGA Modes Using BIOS Interrupts</h1>
+<p>This article explains how the Video Graphics Array (VGA) maintains
+backward compatibility with the Color Graphics Adapter (CGA) through
+BIOS interrupts. When legacy software requests a CGA display mode, the
+VGA BIOS intervenes via Interrupt 10h (INT 10h) to configure the VGA
+hardware. It accomplishes this compatibility by redirecting video memory
+addresses, reprogramming the VGA controller registers, doubling
+scanlines to match modern refresh rates, and translating fixed CGA
+colors into the programmable VGA palette.</p>
+<h2 id="the-role-of-bios-interrupt-10h">The Role of BIOS Interrupt
+10h</h2>
+<p>Legacy DOS programs do not access display hardware drivers through an
+operating system abstraction layer; instead, they interact with the
+hardware directly or issue software interrupts to the system BIOS. The
+primary video service is <code>INT 10h</code>.</p>
+<p>To initialize a display mode, a program places the value
+<code>00h</code> (Set Video Mode) into register <code>AH</code> and the
+desired mode number into register <code>AL</code>, then calls
+<code>INT 10h</code>. The original CGA modes include:</p>
+<ul>
+<li><strong>Mode 04h:</strong> 320x200 graphics, 4 colors</li>
+<li><strong>Mode 05h:</strong> 320x200 graphics, 4 colors
+(alternate/monochrome palette)</li>
+<li><strong>Mode 06h:</strong> 640x200 graphics, 2 colors
+(monochrome)</li>
+</ul>
+<p>When a system with a VGA adapter receives this call, the VGA BIOS
+intercepts the interrupt instead of original CGA firmware,
+reinterpreting the mode request and translating it into register-level
+configurations suited for the VGA architecture.</p>
+<h2 id="memory-mapping-and-addressing-emulation">Memory Mapping and
+Addressing Emulation</h2>
+<p>CGA hardware mapped video memory to segment <code>B800h</code>
+(spanning <code>B800:0000</code> to <code>B800:3FFF</code>).
+Furthermore, CGA graphics modes arranged display memory in an interlaced
+structure: even scanlines were stored at offset <code>0000h</code>,
+while odd scanlines were stored at offset <code>2000h</code> (an 8 KB
+offset).</p>
+<p>Because many games and applications bypassed the BIOS to write pixel
+data directly to segment <code>B800h</code>, the VGA hardware had to
+replicate this arrangement:</p>
+<ol type="1">
+<li><strong>Base Address Routing:</strong> The VGA BIOS programs the VGA
+Graphics Controller Miscellaneous Register to map its physical frame
+buffer into CPU address space starting at <code>0xB8000</code> rather
+than the default VGA graphics base of <code>0xA0000</code>.</li>
+<li><strong>Odd/Even Addressing:</strong> The BIOS enables the VGA's
+internal odd/even addressing logic. This hardware mechanism
+automatically routes alternate memory addresses to different physical
+banks, maintaining complete compatibility with software that relies on
+CGA's native 8 KB line-interleaving.</li>
+</ol>
+<h2 id="register-configuration-and-scan-doubling">Register Configuration
+and Scan Doubling</h2>
+<p>CGA operated at a horizontal scan rate of 15.75 kHz to drive
+composite monitors and 200-line digital RGB displays. VGA monitors,
+however, require a minimum 31.5 kHz horizontal scan rate and display a
+standard 400 or 480 lines per frame.</p>
+<p>To bridge this physical display gap, the VGA BIOS sets up the VGA
+Cathode Ray Tube Controller (CRTC):</p>
+<ul>
+<li><strong>Scan Doubling:</strong> The BIOS sets the "Double Scan" bit
+in the CRTC Maximum Scan Line Register (index <code>09h</code>). When
+enabled, the VGA hardware reads each line of pixel data from memory
+twice before advancing to the next address. This turns a 200-line CGA
+image into a 400-line display on a VGA monitor, preserving the correct
+vertical aspect ratio without altering how software interacts with video
+RAM.</li>
+<li><strong>Timing Adjustments:</strong> The horizontal and vertical
+sync, blanking, and retrace registers are loaded with values that match
+the VGA's 31.5 kHz scanning frequency rather than CGA's legacy
+timings.</li>
+</ul>
+<h2 id="palette-and-dac-translation">Palette and DAC Translation</h2>
+<p>The original CGA card had a fixed color palette hardwired into its
+logic circuits, capable of selecting predefined sets of 4 colors from a
+total of 16 colors. Conversely, VGA uses an Attribute Controller paired
+with a programmable Digital-to-Analog Converter (DAC) with 256,144
+possible colors.</p>
+<p>When Mode 04h, 05h, or 06h is set via <code>INT 10h</code>:</p>
+<ol type="1">
+<li>The VGA BIOS sets the Attribute Controller registers to route 2-bit
+(for 4-color modes) or 1-bit (for 2-color modes) pixel values to
+specific internal palette registers.</li>
+<li>The BIOS loads the VGA DAC color registers with exact 18-bit RGB
+color equivalents matching the original CGA palettes (such as the
+standard cyan, magenta, and white, or the green, red, and brown palette
+options).</li>
+<li>Subsequent BIOS calls to <code>INT 10h, AH=0Bh</code> (Set Color
+Palette) change the contents of the Attribute Controller or DAC
+registers on the fly, replicating the palette-switching behavior of the
+physical CGA color select register.</li>
+</ol>
+<p>Through this combination of BIOS-level interrupt handling, memory
+remapping, hardware scan-doubling, and DAC palette translation, the VGA
+architecture executes legacy CGA software without requiring hardware
+modifications or CPU emulation overhead.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

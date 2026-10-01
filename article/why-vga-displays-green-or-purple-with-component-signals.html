@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why VGA Displays Green or Purple With Component Signals - vga</title>
+    <meta name="description" content="When a Video Graphics Array (VGA) display is incorrectly fed an analog component video signal, the resulting image often suffers from an intense green or purple (magenta) color cast. This article explains the technical reasons behind this visual error, b">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/why-vga-displays-green-or-purple-with-component-signals">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why VGA Displays Green or Purple With Component Signals - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/why-vga-displays-green-or-purple-with-component-signals" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When a Video Graphics Array (VGA) display is incorrectly fed an analog component video signal, the resulting image often suffers from an intense green or purple (magenta) color cast. This article explains the technical reasons behind this visual error, b" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-vga-displays-green-or-purple-with-component-signals">Why VGA
+Displays Green or Purple With Component Signals</h1>
+<p>When a Video Graphics Array (VGA) display is incorrectly fed an
+analog component video signal, the resulting image often suffers from an
+intense green or purple (magenta) color cast. This article explains the
+technical reasons behind this visual error, breaking down the
+fundamental differences between RGB and YPbPr color spaces, how passive
+adapters fail to translate these formats, and how to resolve the
+mismatch.</p>
+<h3 id="rgb-vs-ypbpr-color-encoding">RGB vs. YPbPr Color Encoding</h3>
+<p>The root cause of the tint is an encoding mismatch between two
+completely different analog video standards:</p>
+<ul>
+<li><strong>RGBHV (VGA):</strong> Standard VGA operates using discrete
+color channels: Red, Green, and Blue, alongside separate Horizontal and
+Vertical synchronization signals (H-Sync and V-Sync). Each color channel
+carries only the brightness level for that specific primary color.</li>
+<li><strong>YPbPr (Component):</strong> Component video splits the
+picture into luminance and color difference channels:
+<ul>
+<li><strong>Y:</strong> Carries the total luminance (brightness and
+detail) as well as embedded synchronization pulses
+(Sync-on-Green/Luma).</li>
+<li><strong>Pb:</strong> Carries the difference between blue and
+luminance (<span class="math inline">\(B - Y\)</span>).</li>
+<li><strong>Pr:</strong> Carries the difference between red and
+luminance (<span class="math inline">\(R - Y\)</span>).</li>
+</ul></li>
+</ul>
+<h3 id="why-the-screen-turns-green">Why the Screen Turns Green</h3>
+<p>When a standard passive VGA-to-RCA adapter cable is used, it
+physically routes the three component RCA lines directly into the VGA
+pinout:</p>
+<ul>
+<li><strong>Y (Luma)</strong> connects to the VGA <strong>Green</strong>
+pin (Pin 2).</li>
+<li><strong>Pr</strong> connects to the VGA <strong>Red</strong> pin
+(Pin 1).</li>
+<li><strong>Pb</strong> connects to the VGA <strong>Blue</strong> pin
+(Pin 3).</li>
+</ul>
+<p>Because the display's VGA port expects pure green data on Pin 2, it
+interprets the Y (luminance) channel as green light. Luminance carries
+the full brightness data of the entire image (mathematically weighted as
+roughly 59% green, 30% red, and 11% blue). Consequently, the green
+electron guns or subpixels fire at full strength across the entire
+scene, washing out the picture in a vibrant green tint. The Red and Blue
+pins only receive color difference offsets, which are far weaker and
+unable to counterbalance the overwhelming luminance signal on the green
+channel.</p>
+<h3 id="why-the-screen-turns-purple-or-magenta">Why the Screen Turns
+Purple or Magenta</h3>
+<p>A purple or magenta tint occurs under two common scenarios:</p>
+<ol type="1">
+<li><strong>Reversed Mismatch (RGB sent to Component):</strong> If an
+RGB signal is mistakenly fed into a display expecting YPbPr, the display
+expects luminance on the middle channel. Instead, it receives raw green.
+The display's internal matrix calculates the missing colors by
+subtracting and adding values based on the assumption that the first and
+third channels are difference signals (<span class="math inline">\(R -
+Y\)</span> and <span class="math inline">\(B - Y\)</span>). Because the
+math fails entirely on raw RGB inputs, green is suppressed or
+subtracted, leaving only red and blue (<span class="math inline">\(Red +
+Blue = Magenta\)</span>).</li>
+<li><strong>Missing or Misrouted Luminance (Y) Channel:</strong> If the
+physical cables are misconnected—such as swapping the Green (Y) cable
+with the Red (<span class="math inline">\(P_r\)</span>) or Blue (<span
+class="math inline">\(P_b\)</span>) cable—the VGA monitor receives
+color-difference data on the green channel and full luminance on either
+the red or blue channel. Without proper luminance in the center channel,
+the red and blue receptors dominate, producing a deep purple or violet
+image.</li>
+</ol>
+<h3 id="the-role-of-passive-cables">The Role of Passive Cables</h3>
+<p>Many users encounter this problem after purchasing a cheap, passive
+"VGA to Component" adapter cable. These cables contain no internal
+circuitry; they simply redirect physical copper pins to RCA jacks. They
+rely on the source device or the display having specialized hardware
+capable of manually toggling its VGA port between RGB and YPbPr modes.
+If neither device supports this internal switching, the color data
+passes through untranslated, leading directly to the color cast.</p>
+<h3 id="how-to-fix-the-color-cast">How to Fix the Color Cast</h3>
+<ul>
+<li><strong>Enable Component Mode on the Monitor:</strong> Check the
+display's on-screen display (OSD) settings. Some multi-sync monitors
+allow the VGA input color format to be toggled manually from
+<strong>RGB</strong> to <strong>YPbPr</strong> (or
+<strong>YCbCr</strong>).</li>
+<li><strong>Adjust the Source Output:</strong> Ensure the source device
+(such as a game console, set-top box, or media player) is set to output
+<strong>RGB</strong> over its analog port rather than
+<strong>YPbPr</strong>.</li>
+<li><strong>Use an Active Transcoder:</strong> If the display only
+accepts RGBHV and the source only outputs YPbPr, a passive cable will
+not work. An active component-to-VGA converter (transcoder) is required
+to mathematically decode the YPbPr matrix back into separate Red, Green,
+Blue, and sync signals in real time.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

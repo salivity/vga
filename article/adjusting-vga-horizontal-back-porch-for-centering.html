@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adjusting VGA Horizontal Back Porch for Centering - vga</title>
+    <meta name="description" content="Adjusting the horizontal back porch on an analog Video Graphics Array (VGA) source fixes display centering by altering the timing delay between the horizontal synchronization pulse and the start of the visible video signal. Because analog video signals r">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/adjusting-vga-horizontal-back-porch-for-centering">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Adjusting VGA Horizontal Back Porch for Centering - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/adjusting-vga-horizontal-back-porch-for-centering" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Adjusting the horizontal back porch on an analog Video Graphics Array (VGA) source fixes display centering by altering the timing delay between the horizontal synchronization pulse and the start of the visible video signal. Because analog video signals r" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="adjusting-vga-horizontal-back-porch-for-centering">Adjusting VGA
+Horizontal Back Porch for Centering</h1>
+<p>Adjusting the horizontal back porch on an analog Video Graphics Array
+(VGA) source fixes display centering by altering the timing delay
+between the horizontal synchronization pulse and the start of the
+visible video signal. Because analog video signals rely on strict timing
+intervals rather than digital metadata to align each scanline, modifying
+the duration of the back porch shifts the active image left or right.
+Understanding the mechanics of the horizontal blanking interval explains
+how tweaking this value resolves alignment and clipping issues on both
+cathode-ray tube (CRT) and liquid-crystal display (LCD) monitors.</p>
+<h2 id="the-anatomy-of-an-analog-horizontal-line">The Anatomy of an
+Analog Horizontal Line</h2>
+<p>An analog VGA video signal transmits images line by line from top to
+bottom. Each horizontal line consists of active video data surrounded by
+a blanking period that allows the display time to prepare for the next
+line. The line is divided into four main components:</p>
+<ol type="1">
+<li><strong>Active Video:</strong> The period where voltage levels
+represent actual pixel colors drawn on screen.</li>
+<li><strong>Horizontal Front Porch:</strong> A brief blank period
+immediately following the active video data, signaling the end of the
+visible line.</li>
+<li><strong>Horizontal Sync (HSync) Pulse:</strong> A synchronization
+signal that instructs the display to reset its horizontal scanning
+mechanism to the left side of the screen.</li>
+<li><strong>Horizontal Back Porch:</strong> The blanking period
+immediately following the HSync pulse that lasts until the first visible
+pixel of the next line begins.</li>
+</ol>
+<p>Together, the front porch, sync pulse, and back porch form the
+horizontal blanking interval.</p>
+<h2 id="the-function-of-the-horizontal-back-porch">The Function of the
+Horizontal Back Porch</h2>
+<p>The horizontal back porch establishes a calibrated time buffer
+between the end of the sync pulse and the rendering of active video
+data. In CRT monitors, this period gives the electron gun sufficient
+time to travel back to the left margin and stabilize before emitting
+electrons for the next visible line. In modern flat-panel displays, the
+analog-to-digital converter (ADC) uses this period to establish
+black-level voltage references (clamping) and prepare its sampling
+clock.</p>
+<p>Displays do not automatically know where pixel 0 starts; instead,
+they establish the left edge of the visible image by counting a fixed
+duration from the trailing edge of the HSync pulse. The duration of that
+wait corresponds directly to the expected length of the horizontal back
+porch.</p>
+<h2 id="how-adjusting-the-back-porch-corrects-centering">How Adjusting
+the Back Porch Corrects Centering</h2>
+<p>When a VGA source and a display disagree on standard timing
+definitions—such as when using non-standard resolutions, custom refresh
+rates, or hardware with slight timing drift—the image appears
+off-center. Adjusting the back porch timing at the source corrects this
+discrepancy:</p>
+<ul>
+<li><strong>Increasing the Back Porch:</strong> Lengthening the back
+porch extends the time between the HSync pulse and the first active
+pixel. Because the display waits longer before drawing pixel data, the
+entire visible area moves to the <strong>right</strong>.</li>
+<li><strong>Decreasing the Back Porch:</strong> Shortening the back
+porch reduces the delay following the HSync pulse. The video signal
+transmits pixel data sooner, shifting the visible area to the
+<strong>left</strong>.</li>
+</ul>
+<p>To maintain a constant overall refresh rate and line frequency, any
+adjustment to the back porch duration is typically counterbalanced by
+adjusting the horizontal front porch. This ensures the total line time
+(total horizontal pixel clocks) remains unchanged while shifting the
+position of the active video window inside that total frame.</p>
+<h2 id="back-porch-adjustments-on-digital-displays">Back Porch
+Adjustments on Digital Displays</h2>
+<p>On LCD monitors using VGA inputs, proper back porch adjustment is
+critical for correct pixel mapping. Digital displays sample incoming
+analog waveforms into discrete pixels using an internal phase-locked
+loop (PLL) clock.</p>
+<p>If the source's back porch does not match the display's internal
+timing table, the monitor may begin sampling before the active video
+starts or after it has already begun. This causes the image to appear
+shifted horizontally, frequently cutting off the left or right edges of
+the screen and introducing phase noise or blurring. Fine-tuning the
+horizontal back porch on the host device (via graphics driver control
+panels, modelines, or custom resolution utilities) aligns the active
+video transmission precisely with the ADC's sampling window, yielding a
+centered, crisp picture.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

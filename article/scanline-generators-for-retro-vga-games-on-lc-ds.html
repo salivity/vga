@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanline Generators for Retro VGA Games on LCDs - vga</title>
+    <meta name="description" content="A scanline generator plays a crucial role in modern retro gaming setups by recreating the visual characteristics of vintage cathode-ray tube (CRT) monitors on modern liquid crystal displays (LCDs). Video Graphics Array (VGA) games from the late 1980s and">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/scanline-generators-for-retro-vga-games-on-lc-ds">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Scanline Generators for Retro VGA Games on LCDs - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/scanline-generators-for-retro-vga-games-on-lc-ds" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="A scanline generator plays a crucial role in modern retro gaming setups by recreating the visual characteristics of vintage cathode-ray tube (CRT) monitors on modern liquid crystal displays (LCDs). Video Graphics Array (VGA) games from the late 1980s and" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="scanline-generators-for-retro-vga-games-on-lcds">Scanline
+Generators for Retro VGA Games on LCDs</h1>
+<p>A scanline generator plays a crucial role in modern retro gaming
+setups by recreating the visual characteristics of vintage cathode-ray
+tube (CRT) monitors on modern liquid crystal displays (LCDs). Video
+Graphics Array (VGA) games from the late 1980s and 1990s were designed
+around the physical properties of CRTs, which naturally softened raw
+pixels and added horizontal blanking lines. On modern flat panels, these
+low-resolution signals appear unnaturally sharp, blocky, and washed out.
+A scanline generator bridges this technological gap by physically or
+digitally inserting horizontal blank lines into the image, restoring the
+intended aesthetic, contrast, and depth of classic VGA titles.</p>
+<h3 id="the-display-disconnect-between-crts-and-lcds">The Display
+Disconnect Between CRTs and LCDs</h3>
+<p>During the golden era of PC and arcade gaming, standard VGA output
+operated primarily at resolutions such as 320x200, 320x240, and 640x480.
+CRT monitors drew these images line by line using an electron beam. In
+lower resolution modes, the beam skipped physical space between each
+active horizontal sweep, creating visible, dark gaps known as scanlines.
+Game artists relied heavily on these gaps and phosphor bloom to blend
+dithered colors, smooth jagged edges, and create an illusion of higher
+detail.</p>
+<p>Modern LCDs function fundamentally differently. Instead of an analog
+beam, LCDs utilize a fixed matrix of physical pixels. When fed a
+low-resolution VGA signal, an LCD scales the image up to fit its native
+resolution—such as 1080p or 4K. This process renders every individual
+source pixel as a harsh, uniform square. Without the natural blending of
+a CRT, art assets lose their intended coherence, dithering looks like
+static noise, and colors often appear flat.</p>
+<h3 id="how-a-scanline-generator-operates">How a Scanline Generator
+Operates</h3>
+<p>A scanline generator is typically an inline hardware device connected
+directly to the analog VGA cable between the gaming hardware and the
+display, though software shaders can emulate the process. In hardware
+implementations, the device intercepts the RGB color signals and sync
+lines.</p>
+<p>When active, the generator blanks out or dims alternating horizontal
+lines of the video feed:</p>
+<ul>
+<li><strong>Signal Interception:</strong> The device monitors the
+horizontal synchronization (H-Sync) signal to track which line of the
+image is currently being drawn.</li>
+<li><strong>Line Blanking:</strong> On alternating lines (typically odd
+or even lines, depending on the configuration), the generator grounds or
+heavily attenuates the red, green, and blue analog color lines.</li>
+<li><strong>Real-Time Output:</strong> The result is a consistent
+pattern of dark horizontal lines running through the scaled image,
+delivered instantly to the monitor without digital frame buffering.</li>
+</ul>
+<h3 id="performance-and-visual-benefits">Performance and Visual
+Benefits</h3>
+<p>Using a dedicated scanline generator offers several practical
+advantages for retro computing and arcade enthusiasts:</p>
+<ul>
+<li><strong>Zero Input Latency:</strong> Hardware scanline generators
+modify the analog signal in real time using passive or low-power active
+circuitry. Unlike complex digital post-processing filters, they do not
+store frames in memory, ensuring that gameplay remains responsive.</li>
+<li><strong>Perceived Sharpness and Contrast:</strong> By reintroducing
+black gaps between pixels, the human eye perceives increased contrast.
+The dark gaps break up the large, solid blocks of color that make up
+upscaled 240p or 480p imagery.</li>
+<li><strong>Artifact Masking:</strong> Vintage games frequently used
+checkerboard dithering patterns to simulate transparency or extended
+color palettes. Scanlines mask these patterns, causing the eye to blend
+the colors naturally rather than perceiving distinct dots.</li>
+<li><strong>Customization:</strong> Most hardware generators feature
+switches to adjust line width, choose between odd and even lines, or
+utilize potentiometers to control the darkness of the scanlines,
+allowing players to match the look to different eras of CRT
+monitors.</li>
+</ul>
+<p>By reintroducing the native display properties that game artists
+originally designed for, a scanline generator transforms flat, clinical
+LCD presentations into authentic, visually balanced retro gaming
+experiences.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

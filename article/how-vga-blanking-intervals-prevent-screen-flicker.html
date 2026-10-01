@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Blanking Intervals Prevent Screen Flicker - vga</title>
+    <meta name="description" content="This article explains the critical role of the Video Graphics Array (VGA) blanking interval in maintaining visual stability on display devices. It examines how horizontal and vertical blanking periods originated in cathode-ray tube (CRT) technology, how">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-blanking-intervals-prevent-screen-flicker">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Blanking Intervals Prevent Screen Flicker - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-blanking-intervals-prevent-screen-flicker" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the critical role of the Video Graphics Array (VGA) blanking interval in maintaining visual stability on display devices. It examines how horizontal and vertical blanking periods originated in cathode-ray tube (CRT) technology, how" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-blanking-intervals-prevent-screen-flicker">How VGA
+Blanking Intervals Prevent Screen Flicker</h1>
+<p>This article explains the critical role of the Video Graphics Array
+(VGA) blanking interval in maintaining visual stability on display
+devices. It examines how horizontal and vertical blanking periods
+originated in cathode-ray tube (CRT) technology, how these intervals
+eliminate visual artifacts such as screen flicker and "snow," and why
+they served as an essential synchronization mechanism between video
+memory and active display rendering.</p>
+<h3 id="the-mechanics-of-the-blanking-interval">The Mechanics of the
+Blanking Interval</h3>
+<p>In traditional analog display technology, an image is drawn on a
+screen line by line using an electron beam that excites phosphors on a
+glass panel. Once the beam finishes scanning a horizontal line from left
+to right, it must reposition itself to the left edge to start the next
+line. Similarly, once it reaches the bottom-right corner of the screen,
+it must travel back up to the top-left corner to begin the next
+frame.</p>
+<p>The blanking interval consists of two distinct phases designed to
+accommodate this physical movement:</p>
+<ul>
+<li><strong>Horizontal Blanking (HBlank):</strong> The brief pause when
+the beam turns off while moving from the end of one scanline to the
+beginning of the next.</li>
+<li><strong>Vertical Blanking (VBlank):</strong> The longer pause when
+the beam turns off while returning from the bottom of the screen back to
+the top.</li>
+</ul>
+<p>During both periods, the beam’s intensity is dropped to zero
+(blanked) so that the retrace path is completely invisible to the
+viewer.</p>
+<h3 id="preventing-snow-and-memory-contention">Preventing "Snow" and
+Memory Contention</h3>
+<p>In early computing hardware using VGA architectures, visual "snow"—a
+static-like noise of flickering white or colored dots—occurred due to
+memory bus contention.</p>
+<p>Video display controllers constantly read data from video RAM (VRAM)
+to generate the signal sent to the monitor. Early VRAM was typically
+single-ported, meaning it could only handle one read or write operation
+at a time. If the central processing unit (CPU) attempted to write new
+image data to VRAM at the exact moment the display controller was
+reading from it to draw active pixels, a collision occurred. This
+collision disrupted the video signal, resulting in random, misplaced
+pixels appearing on the screen as snow.</p>
+<p>The blanking interval resolved this by providing a safe, dedicated
+window for memory access. Because the electron beam is inactive during
+HBlank and VBlank, the display controller does not need to fetch pixel
+data from VRAM. Software developers and hardware controllers utilized
+this downtime to update graphic buffers, palettes, and sprite
+coordinates without competing with the display output, effectively
+eliminating memory contention artifacts.</p>
+<h3 id="eliminating-screen-flicker-and-tearing">Eliminating Screen
+Flicker and Tearing</h3>
+<p>Screen flicker and tearing occur when display refreshes become
+desynchronized or incomplete. The vertical blanking interval plays an
+indispensable role in preventing these visual defects through
+synchronization:</p>
+<ul>
+<li><strong>Buffer Swapping:</strong> Modern graphic rendering
+frequently employs double buffering, where a back buffer is rendered
+while the front buffer is displayed. Swapping these buffers during the
+active drawing phase causes screen tearing, where portions of two
+different frames appear simultaneously. By restricting buffer swaps
+exclusively to the VBlank interval, the display updates only when no
+drawing is taking place, ensuring a seamless visual transition.</li>
+<li><strong>Consistent Refresh Timing:</strong> Flicker occurs when the
+timing between frame presentations becomes irregular, causing the eye to
+perceive drops in light output. The vertical sync pulse embedded within
+the VBlank interval locks the monitor and the graphics controller to a
+precise, repetitive frequency (typically 60Hz or higher in VGA),
+ensuring stable phosphor excitation and preventing perceived
+flicker.</li>
+</ul>
+<p>Through intentional signal suppression and precise timing, the VGA
+blanking interval ensures that hardware resets and memory modifications
+remain entirely imperceptible to the human eye.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

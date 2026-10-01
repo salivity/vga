@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGAX Fits a Framebuffer in ATmega328P SRAM - vga</title>
+    <meta name="description" content="The VGAX library allows an ATmega328P microcontroller—most commonly found on the Arduino Uno—to generate a live VGA video signal despite possessing only 2 KB (2,048 bytes) of SRAM. It accomplishes this feat through aggressive resolution scaling, low">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vgax-fits-a-framebuffer-in-a-tmega-328-p-sram">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGAX Fits a Framebuffer in ATmega328P SRAM - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vgax-fits-a-framebuffer-in-a-tmega-328-p-sram" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The VGAX library allows an ATmega328P microcontroller—most commonly found on the Arduino Uno—to generate a live VGA video signal despite possessing only 2 KB (2,048 bytes) of SRAM. It accomplishes this feat through aggressive resolution scaling, low" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vgax-fits-a-framebuffer-in-atmega328p-sram">How VGAX Fits a
+Framebuffer in ATmega328P SRAM</h1>
+<p>The VGAX library allows an ATmega328P microcontroller—most commonly
+found on the Arduino Uno—to generate a live VGA video signal despite
+possessing only 2 KB (2,048 bytes) of SRAM. It accomplishes this feat
+through aggressive resolution scaling, low color-depth packing, scanline
+repetition, and cycle-exact AVR assembly routines. By reducing the
+virtual screen to 120x60 pixels at 2 bits per pixel, VGAX shrinks the
+entire framebuffer to 1,800 bytes, leaving the remaining 248 bytes for
+system stack and application state.</p>
+<h3 id="the-memory-math-120x60-at-2-bits-per-pixel">The Memory Math:
+120x60 at 2 Bits Per Pixel</h3>
+<p>A standard 640x480 VGA display at 1 byte per pixel requires over 300
+KB of RAM, an impossible requirement for the ATmega328P. VGAX overcomes
+this by setting the effective resolution to 120 horizontal pixels by 60
+vertical pixels.</p>
+<p>To maximize the use of every bit, VGAX uses a 2-bit color depth,
+offering four possible colors per pixel (typically black, red, green,
+and a combined color like yellow, determined by the pin assignments on
+the resistor DAC). Because each byte holds 8 bits, a single byte
+represents 4 horizontal pixels:</p>
+<p><span class="math display">\[\frac{120 \text{ pixels}}{4 \text{
+pixels per byte}} = 30 \text{ bytes per scanline}\]</span></p>
+<p><span class="math display">\[30 \text{ bytes per scanline} \times 60
+\text{ lines} = 1,800 \text{ bytes}\]</span></p>
+<p>This allocation leaves 248 bytes of SRAM unoccupied, which is just
+enough memory to manage function calls, interrupt vectors, and user
+variables.</p>
+<h3 id="scanline-repetition-line-doubling">Scanline Repetition (Line
+Doubling)</h3>
+<p>Standard VGA monitors expect a 640x480 timing signal at a 60 Hz
+refresh rate with a horizontal sync frequency of approximately 31.47
+kHz. An ATmega328P running at 16 MHz does not have enough processing
+power or memory to generate 480 unique lines of video data.</p>
+<p>VGAX complies with standard VGA timing by repeating each stored pixel
+row across multiple monitor scanlines:</p>
+<ul>
+<li>A standard 480-line active display area is divided into the 60
+framebuffer lines.</li>
+<li>Each line of the 1,800-byte buffer is read and transmitted
+sequentially across 8 consecutive horizontal scanlines (<span
+class="math inline">\(60 \times 8 = 480\)</span>).</li>
+<li>The microcontroller outputs pixels for one scanline, then re-reads
+the exact same 30 bytes from SRAM for the next seven scanlines before
+advancing to the next row in memory.</li>
+</ul>
+<p>This approach creates tall, square pixels and satisfies the monitor's
+requirement for a standard 480p line count without requiring additional
+memory.</p>
+<h3 id="bit-packing-and-inline-assembly-transmission">Bit Packing and
+Inline Assembly Transmission</h3>
+<p>Fetching and shifting 2-bit pixels in standard C/C++ introduces too
+much overhead to meet the rigid timing requirements of a VGA pixel
+clock. At 16 MHz, the MCU executes one instruction every 62.5
+nanoseconds.</p>
+<p>VGAX uses inline AVR assembly during the active display portion of
+each scanline:</p>
+<ol type="1">
+<li><strong>Direct Memory Addressing:</strong> Pointer registers load
+packed bytes sequentially from the static array allocated in SRAM.</li>
+<li><strong>Shift and Mask:</strong> Dedicated assembly instructions
+unpack the two-bit values and map them directly to two digital output
+pins connected to the monitor's color lines.</li>
+<li><strong>Deterministic Timing:</strong> Every clock cycle is
+accounted for, ensuring that horizontal sync (HSYNC) and vertical sync
+(VSYNC) pulses maintain standard intervals managed by the ATmega328P's
+internal hardware timers.</li>
+</ol>
+<p>By combining an aggressive reduction in resolution, a packed 2-bit
+data structure, hardware-compatible line repeating, and cycle-counted
+assembly, VGAX successfully hosts an active video buffer entirely within
+the ATmega328P's 2 KB of SRAM.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

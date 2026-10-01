@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU and VGA CRTC Memory Contention Explained - vga</title>
+    <meta name="description" content="This article examines the memory access conflict that occurs when a system's central processing unit (CPU) and a Video Graphics Array (VGA) Cathode Ray Tube Controller (CRTC) attempt to read or write video memory simultaneously. It explores the hardware">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/cpu-and-vga-crtc-memory-contention-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CPU and VGA CRTC Memory Contention Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/cpu-and-vga-crtc-memory-contention-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines the memory access conflict that occurs when a system's central processing unit (CPU) and a Video Graphics Array (VGA) Cathode Ray Tube Controller (CRTC) attempt to read or write video memory simultaneously. It explores the hardware" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="cpu-and-vga-crtc-memory-contention-explained">CPU and VGA CRTC
+Memory Contention Explained</h1>
+<p>This article examines the memory access conflict that occurs when a
+system's central processing unit (CPU) and a Video Graphics Array (VGA)
+Cathode Ray Tube Controller (CRTC) attempt to read or write video memory
+simultaneously. It explores the hardware constraints of single-ported
+video RAM, the performance and visual implications of memory bus
+contention, and the mechanisms engineers implemented to resolve these
+simultaneous access requests.</p>
+<h3 id="the-root-cause-single-ported-memory">The Root Cause:
+Single-Ported Memory</h3>
+<p>Early PC graphics subsystems, including standard VGA adapters, relied
+primarily on conventional dynamic RAM (DRAM) rather than expensive
+dual-ported video RAM (VRAM). Single-ported DRAM possesses only one set
+of address and data buses. Consequently, it can only service one memory
+access cycle at any given fraction of time—it cannot physically read or
+write data for two independent controllers at the exact same
+instant.</p>
+<p>A fundamental conflict arises because the CPU and the CRTC have
+competing, asynchronous demands on this shared pool of memory:</p>
+<ul>
+<li><strong>The CRTC's Demands:</strong> The CRTC is bound to strict,
+real-time hardware timings. To output an image, it must sequentially and
+continuously fetch pixel data from memory to send to the palette
+digital-to-analog converter (RAMDAC). If the CRTC misses a cycle, the
+video raster beam continues to sweep across the monitor without the
+necessary pixel data, leading to display disruption.</li>
+<li><strong>The CPU's Demands:</strong> The CPU requires random read and
+write access to video memory to update the screen state, render
+primitives, move sprites, or manipulate framebuffers.</li>
+</ul>
+<h3 id="the-manifestation-of-the-conflict">The Manifestation of the
+Conflict</h3>
+<p>When both the CPU and the CRTC attempt to access video memory on the
+same clock cycle, bus contention occurs. In earlier hardware
+architectures like the Color Graphics Adapter (CGA), uncoordinated
+simultaneous access forced the memory bus to service the CPU during
+active raster sweeps, preventing the display circuitry from receiving
+valid character or pixel data. This manifested visually as
+"snow"—sparkling, random static across the display.</p>
+<p>In the VGA standard, the hardware architecture avoided visual snow by
+implementing strict bus arbitration, but this shift moved the penalty
+from the display output to CPU performance.</p>
+<h3 id="arbitration-and-wait-states">Arbitration and Wait States</h3>
+<p>To prevent display artifacts, the VGA memory controller generally
+gives the CRTC priority during active display cycles. When the CPU
+attempts to read or write to video memory while the CRTC is actively
+reading raster data:</p>
+<ol type="1">
+<li><strong>Assertion of Wait States:</strong> The VGA memory controller
+forces the host bus (typically the ISA bus) to delay the CPU by
+de-asserting the <code>I/O CH RDY</code> (I/O Channel Ready)
+signal.</li>
+<li><strong>CPU Stalling:</strong> The CPU is placed into a hardware
+wait state, pausing its execution pipeline until the video memory
+controller finishes servicing the CRTC's immediate request.</li>
+<li><strong>Bandwidth Throttling:</strong> As a result, reading from or
+writing to VGA memory during an active display period suffered from
+extreme latency compared to standard system RAM, creating a massive
+processing bottleneck for graphics-heavy applications.</li>
+</ol>
+<h3 id="architectural-solutions">Architectural Solutions</h3>
+<p>Engineers employed several hardware and software strategies to
+mitigate the simultaneous access conflict:</p>
+<ul>
+<li><strong>Time-Division Multiplexing (Interleaving):</strong> The VGA
+architecture interleaves access cycles within the pixel clock domain.
+The memory controller rapidly alternates between servicing the display
+pipeline and servicing CPU requests within specific clock phases.</li>
+<li><strong>FIFO Line Buffers:</strong> VGA implementations incorporate
+small First-In, First-Out (FIFO) buffers. The CRTC burst-reads pixel
+data into the buffer, allowing the display pipeline to run off the
+buffer for several cycles while freeing the memory bus entirely for the
+CPU.</li>
+<li><strong>Blanking Interval Access:</strong> Programmers minimized
+contention by synchronizing memory access with the CRTC's vertical
+blanking interval (VBLANK) and horizontal blanking interval (HBLANK).
+During these intervals, the electron beam is turned off while
+repositioning, meaning the CRTC requires zero memory bandwidth, allowing
+the CPU full, unhindered access to VRAM.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

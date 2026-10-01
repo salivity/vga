@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VGA Hardware Generates Blinking Text - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) hardware generates the blinking text attribute using a combination of dedicated video memory attribute bytes, an internal frame counter derived from the vertical sync signal, and digital multiplexing within the Attribute Co">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-vga-hardware-generates-blinking-text">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How VGA Hardware Generates Blinking Text - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-vga-hardware-generates-blinking-text" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) hardware generates the blinking text attribute using a combination of dedicated video memory attribute bytes, an internal frame counter derived from the vertical sync signal, and digital multiplexing within the Attribute Co" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vga-hardware-generates-blinking-text">How VGA Hardware
+Generates Blinking Text</h1>
+<p>The Video Graphics Array (VGA) hardware generates the blinking text
+attribute using a combination of dedicated video memory attribute bytes,
+an internal frame counter derived from the vertical sync signal, and
+digital multiplexing within the Attribute Controller. Instead of
+requiring the central processing unit (CPU) to continually rewrite video
+RAM to toggle characters on and off, the VGA display pipeline manages
+this effect entirely in silicon. This article explains the internal
+registers, timing counters, and pixel logic that make hardware text
+blinking possible in classic VGA architecture.</p>
+<h3 id="text-mode-memory-and-the-attribute-byte">Text Mode Memory and
+the Attribute Byte</h3>
+<p>In standard VGA text modes (such as 80x25 Mode 03h), video memory
+represents each onscreen character cell using two sequential bytes:</p>
+<ol type="1">
+<li><strong>Character Code:</strong> An 8-bit ASCII or font-index value
+stored at an even memory address.</li>
+<li><strong>Attribute Byte:</strong> An 8-bit metadata byte stored at
+the adjacent odd memory address.</li>
+</ol>
+<p>The 8-bit attribute byte defines the cell's visual properties:</p>
+<ul>
+<li><strong>Bits 0–3:</strong> Foreground color (16 selectable
+colors).</li>
+<li><strong>Bits 4–6:</strong> Background color (8 selectable
+colors).</li>
+<li><strong>Bit 7:</strong> Controls either high-intensity background or
+hardware blinking.</li>
+</ul>
+<h3 id="the-attribute-controller-mode-register">The Attribute Controller
+Mode Register</h3>
+<p>The behavior of Bit 7 in the attribute byte is governed by the
+Attribute Controller (ATC). The VGA programmer accesses the ATC through
+I/O port <code>0x3C0</code>. Within the ATC, <strong>Attribute Mode
+Control Register (Index 0x10)</strong> contains a dedicated toggle at
+<strong>Bit 3 (Blink / Intensity)</strong>:</p>
+<ul>
+<li>When Bit 3 is set to <code>0</code>, Bit 7 of the cell attribute
+acts as a high-intensity background selector, allowing 16 distinct
+background colors and disabling blinking entirely.</li>
+<li>When Bit 3 is set to <code>1</code>, Bit 7 is configured as the
+<strong>Blink Enable</strong> flag, restricting the background to 8
+colors and activating the hardware blink circuit for that
+character.</li>
+</ul>
+<h3 id="frame-counters-and-blink-timing">Frame Counters and Blink
+Timing</h3>
+<p>VGA hardware produces the blink rate by tapping into its internal
+timing logic. Standard VGA text mode operates at a refresh rate of
+approximately 70 Hz (720×400 resolution at 70.087 Hz).</p>
+<p>Inside the VGA Sequencer and Cathode Ray Tube Controller (CRTC), the
+vertical retrace interrupt (vertical sync) pulses once at the end of
+every rendered frame. A dedicated hardware counter divides this vertical
+sync frequency down by a factor of 16 or 32:</p>
+<ul>
+<li>A common VGA implementation toggles the internal blink state every
+16 or 32 vertical sync intervals.</li>
+<li>At 70 Hz, dividing by 32 produces a complete blink cycle (one "on"
+phase and one "off" phase) roughly every 0.9 to 1.8 seconds, yielding a
+standard blink frequency of approximately 1.88 Hz to 3.75 Hz.</li>
+</ul>
+<p>This counter generates a binary square-wave signal
+(<code>BLINK_CLK</code>), which alternates between logical high and
+logical low without consuming CPU cycles.</p>
+<h3 id="pixel-serialization-and-multiplexing">Pixel Serialization and
+Multiplexing</h3>
+<p>During screen refresh, the VGA pipeline simultaneously fetches the
+character byte and the attribute byte from video RAM:</p>
+<ol type="1">
+<li>The <strong>Character Generator</strong> uses the character byte and
+the current scanline row to extract a 1-byte row slice from the font
+glyph in memory.</li>
+<li>The <strong>Serializer (Shift Register)</strong> converts this byte
+into a stream of 1-bit pixel pulses (where <code>1</code> represents
+foreground and <code>0</code> represents background).</li>
+<li>The pixel stream and the attribute byte enter the <strong>Attribute
+Controller Color Multiplexer</strong>.</li>
+</ol>
+<p>When the multiplexer encounters a character cell where attribute Bit
+7 is set to <code>1</code> (and ATC Register 0x10, Bit 3 is active), it
+combines the pixel stream with the internal <code>BLINK_CLK</code>
+state:</p>
+<ul>
+<li><strong>When <code>BLINK_CLK</code> is HIGH (Blink Phase
+"On"):</strong> The multiplexer routes the foreground color index to the
+Palette RAM (DAC) whenever the serializer outputs a <code>1</code>. The
+character displays normally.</li>
+<li><strong>When <code>BLINK_CLK</code> is LOW (Blink Phase
+"Off"):</strong> The hardware logic gates the serializer output. Instead
+of passing the foreground color index to the DAC, the logic forces the
+foreground pixels to inherit the background color index stored in Bits
+4–6 of the attribute byte.</li>
+</ul>
+<p>Because the foreground pixels match the background color during the
+low phase of the clock, the character temporarily vanishes into the cell
+background. When <code>BLINK_CLK</code> returns to high, the foreground
+pixels are restored, producing a smooth, hardware-driven blinking effect
+across the screen.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

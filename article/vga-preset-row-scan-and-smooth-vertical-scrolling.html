@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Preset Row Scan and Smooth Vertical Scrolling - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) Preset Row Scan register provides the hardware-level mechanism required to scroll the display vertically by single-pixel scanlines rather than abrupt full-row increments. By specifying which internal scanline within a chara">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-preset-row-scan-and-smooth-vertical-scrolling">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Preset Row Scan and Smooth Vertical Scrolling - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-preset-row-scan-and-smooth-vertical-scrolling" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) Preset Row Scan register provides the hardware-level mechanism required to scroll the display vertically by single-pixel scanlines rather than abrupt full-row increments. By specifying which internal scanline within a chara" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-preset-row-scan-and-smooth-vertical-scrolling">VGA Preset
+Row Scan and Smooth Vertical Scrolling</h1>
+<p>The Video Graphics Array (VGA) Preset Row Scan register provides the
+hardware-level mechanism required to scroll the display vertically by
+single-pixel scanlines rather than abrupt full-row increments. By
+specifying which internal scanline within a character row or memory
+block the display hardware should start rendering at the top of the
+monitor, this register allows software to create fluid, tear-free
+vertical scrolling across both text and planar graphics modes.</p>
+<h3 id="coarse-scrolling-vs-fine-scrolling">Coarse Scrolling vs. Fine
+Scrolling</h3>
+<p>Standard hardware scrolling on the VGA adapter is typically achieved
+by altering the CRTC (Cathode Ray Tube Controller) Start Address
+registers (CRTC index <code>0Ch</code> and <code>0Dh</code>). These
+registers define the memory offset where the electron beam begins
+fetching visual data at the start of a vertical refresh cycle.</p>
+<p>However, altering only the Start Address produces "coarse" scrolling.
+In graphics modes or text modes, changing this memory pointer jumps the
+screen by an entire memory row (typically multiples of bytes, or entire
+8- to 16-pixel-tall character cells). This results in a choppy, jumping
+effect that moves several physical scanlines per frame. To achieve
+smooth scrolling, the VGA requires an additional register to control the
+sub-row vertical offset: the Preset Row Scan register.</p>
+<h3 id="the-preset-row-scan-register-crtc-index-08h">The Preset Row Scan
+Register (CRTC Index 08h)</h3>
+<p>The Preset Row Scan register is mapped to CRTC index <code>08h</code>
+(accessed via I/O port <code>0x3D4</code> for index and
+<code>0x3D5</code> for data in standard color modes).</p>
+<p>Bits 0 through 4 of this register represent the preset row scan count
+(values 0–31). When the VGA raster generator begins drawing a screen at
+the start of an active display cycle, its internal scanline counter
+normally resets to zero. When a value is written to the Preset Row Scan
+register, the hardware presets the internal row scan counter to that
+value for the very first row displayed at the top of the screen.</p>
+<p>Because the raster beam skips the scanlines prior to the preset value
+for that initial row, the entire display output shifts upward by that
+exact number of individual scanlines. After the first partial row is
+rendered, the internal row scan counter resets back to zero for all
+subsequent rows until the frame completes.</p>
+<h3
+id="implementation-process-for-smooth-vertical-scrolling">Implementation
+Process for Smooth Vertical Scrolling</h3>
+<p>Smooth vertical scrolling relies on synchronizing the Preset Row Scan
+register and the Start Address registers with the vertical retrace
+interval (VBLANK) to prevent visual tearing. The process operates as
+follows:</p>
+<ol type="1">
+<li><strong>Wait for Vertical Retrace:</strong> The software polls input
+status register 1 (<code>0x3DA</code>) to detect the vertical blanking
+interval, ensuring register updates do not occur while the beam is
+actively drawing visible pixels.</li>
+<li><strong>Increment Scanlines:</strong> To scroll down (moving the
+viewport down, visual elements up), the programmer increments the Preset
+Row Scan register value by 1 each frame. The hardware begins the top row
+at scanline 1, then scanline 2, and so forth, pushing the picture
+smoothly upward one physical raster line at a time.</li>
+<li><strong>Handle Row Boundaries:</strong> The maximum value for the
+register matches the height of the row minus one (defined in the Maximum
+Scan Line register, CRTC index <code>09h</code>). When the Preset Row
+Scan register reaches this limit:
+<ul>
+<li>The Preset Row Scan value is reset to 0.</li>
+<li>The CRTC Start Address register is simultaneously increased by the
+size of one complete row in video memory.</li>
+</ul></li>
+<li><strong>Repeat:</strong> The cycle restarts from scanline 0 at the
+new base memory address, creating a seamless and continuous single-pixel
+scrolling loop.</li>
+</ol>
+<p>By combining the sub-row scanline offset of the Preset Row Scan
+register with the larger byte jumps of the Start Address registers, VGA
+programs can scroll through megabytes of virtual display space with
+per-pixel vertical fluidity.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Attribute Controller Palette Lookups Explained - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) Attribute Controller serves as the critical intermediary in the display pipeline, bridging the raw pixel data stored in video memory with the digital-to-analog converter (RAMDAC). By utilizing a set of internal palette regi">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-attribute-controller-palette-lookups-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Attribute Controller Palette Lookups Explained - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-attribute-controller-palette-lookups-explained" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) Attribute Controller serves as the critical intermediary in the display pipeline, bridging the raw pixel data stored in video memory with the digital-to-analog converter (RAMDAC). By utilizing a set of internal palette regi" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-attribute-controller-palette-lookups-explained">VGA
+Attribute Controller Palette Lookups Explained</h1>
+<p>The Video Graphics Array (VGA) Attribute Controller serves as the
+critical intermediary in the display pipeline, bridging the raw pixel
+data stored in video memory with the digital-to-analog converter
+(RAMDAC). By utilizing a set of internal palette registers, mode control
+settings, and color select registers, the Attribute Controller
+translates multi-plane bit combinations into color indices. This article
+explains the exact hardware mechanics behind how these registers
+intercept framebuffer data, apply masking, and assemble final color
+addresses for DAC lookups.</p>
+<h3 id="the-position-in-the-display-pipeline">The Position in the
+Display Pipeline</h3>
+<p>In standard 16-color planar modes, the VGA graphics pipeline
+retrieves data across four parallel bit planes. The serializer converts
+these planes into continuous pixel streams, producing a 4-bit value per
+pixel. Rather than sending these 4 bits directly to the RAMDAC, the
+video subsystem routes them into the Attribute Controller.</p>
+<p>The Attribute Controller uses this 4-bit value as an address index
+into its internal palette memory. This decoupling allows applications to
+remap colors globally without altering the underlying data in video
+memory.</p>
+<h3 id="the-internal-palette-registers-0x000x0f">The Internal Palette
+Registers (0x00–0x0F)</h3>
+<p>The Attribute Controller contains sixteen 6-bit internal palette
+registers corresponding to indices <code>0x00</code> through
+<code>0x0F</code>.</p>
+<ol type="1">
+<li><strong>Pixel Input:</strong> The 4-bit serialized value from the
+video planes (bits 0 through 3) selects one of the 16 internal palette
+registers.</li>
+<li><strong>Plane Masking:</strong> Before reaching the palette index,
+the signal passes through the Color Plane Enable Register (Index
+<code>0x12</code>). If a bit plane is disabled here, its corresponding
+bit in the 4-bit index is forced to zero, allowing selective plane
+rendering.</li>
+<li><strong>6-bit Output:</strong> The selected internal palette
+register outputs a 6-bit value (bits 0 through 5).</li>
+</ol>
+<h3 id="constructing-the-dac-address">Constructing the DAC Address</h3>
+<p>The output from the internal palette registers is not always sent
+straight to the DAC. Instead, it is combined with values from the Mode
+Control Register (Index <code>0x10</code>) and the Color Select Register
+(Index <code>0x14</code>) to generate the final 8-bit address sent to
+the 256-entry RAMDAC.</p>
+<p>The 8-bit DAC index (<span class="math inline">\(P_7–P_0\)</span>) is
+assembled based on the state of the Attribute Mode Control Register:</p>
+<ul>
+<li><strong>Lower Bits (<span
+class="math inline">\(P_3–P_0\)</span>):</strong> Always sourced
+directly from bits 0–3 of the selected internal palette register.</li>
+<li><strong>Middle Bits (<span
+class="math inline">\(P_5–P_4\)</span>):</strong>
+<ul>
+<li>If Bit 7 of the Mode Control Register is set to <code>0</code>, bits
+4 and 5 originate from the internal palette register.</li>
+<li>If Bit 7 is set to <code>1</code>, bits 4 and 5 are supplied by bits
+0 and 1 of the Color Select Register (<code>0x14</code>). This allows
+rapid switching between different 16-color sets without reprogramming
+the 16 internal palette registers.</li>
+</ul></li>
+<li><strong>Upper Bits (<span
+class="math inline">\(P_7–P_6\)</span>):</strong> Sourced from bits 2
+and 3 of the Color Select Register (<code>0x14</code>). In 16-color
+modes, this extends the address space, enabling full access across the
+256-entry RAMDAC by functioning as a color page selector.</li>
+</ul>
+<h3 id="256-color-mode-13h-bypass">256-Color (Mode 13h) Bypass</h3>
+<p>In 256-color modes like Mode 13h, the Attribute Controller behaves
+differently:</p>
+<ul>
+<li>Bit 6 of the Mode Control Register is set to enable 8-bit pixel
+paths.</li>
+<li>The internal 16-entry palette registers are bypassed for color
+indexing.</li>
+<li>The serialized byte representing the pixel passes through the
+Attribute Controller directly as an 8-bit index to the RAMDAC, allowing
+simultaneous access to all 256 colors at the cost of plane-level palette
+flexibility.</li>
+</ul>
+<h3 id="the-final-lookup-stage">The Final Lookup Stage</h3>
+<p>Once the Attribute Controller combines the internal palette bits with
+the Color Select Register bits, it outputs the completed 8-bit color
+index over the pixel bus. The external RAMDAC receives this byte, uses
+it to index its internal color look-up table (CLUT), and retrieves the
+three 6-bit values representing Red, Green, and Blue analog voltages for
+the display monitor.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

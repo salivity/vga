@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Mode X vs Mode 13h: Memory Organization - vga</title>
+    <meta name="description" content="This article examines how IBM's standard VGA Mode 13h and the programmer-tweaked Mode X differ in their underlying video memory architectures. While standard Mode 13h offers a simple, linear framebuffer that limits the developer to a single 64 KB window,">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-mode-x-vs-mode-13-h-memory-organization">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Mode X vs Mode 13h: Memory Organization - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-mode-x-vs-mode-13-h-memory-organization" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines how IBM's standard VGA Mode 13h and the programmer-tweaked Mode X differ in their underlying video memory architectures. While standard Mode 13h offers a simple, linear framebuffer that limits the developer to a single 64 KB window," />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-mode-x-vs-mode-13h-memory-organization">VGA Mode X vs Mode
+13h: Memory Organization</h1>
+<p>This article examines how IBM's standard VGA Mode 13h and the
+programmer-tweaked Mode X differ in their underlying video memory
+architectures. While standard Mode 13h offers a simple, linear
+framebuffer that limits the developer to a single 64 KB window, Mode X
+unchains the VGA hardware to expose four parallel memory planes.
+Understanding this architectural shift highlights how Mode X overcomes
+the limitations of Mode 13h to provide access to all 256 KB of video
+RAM, multi-buffering, and accelerated graphics operations.</p>
+<h3 id="linear-chained-vs-planar-unchained-addressing">Linear (Chained)
+vs. Planar (Unchained) Addressing</h3>
+<p>The defining difference between the two modes lies in how the VGA
+sequencer maps CPU memory addresses to physical video RAM:</p>
+<ul>
+<li><p><strong>Mode 13h (Chained / Chain-4 Mode):</strong> Mode 13h
+configures the VGA hardware in "Chain-4" mode. The internal hardware
+interleaves bytes across the VGA’s four physical memory planes
+automatically: address 0 goes to Plane 0, address 1 to Plane 1, address
+2 to Plane 2, address 3 to Plane 3, address 4 to Plane 0, and so on. To
+the CPU, this presents a simple, contiguous 64 KB linear block starting
+at <code>0xA000:0000</code>. A pixel at coordinate <code>(x, y)</code>
+corresponds directly to memory offset
+<code>(y * 320) + x</code>.</p></li>
+<li><p><strong>Mode X (Unchained Mode):</strong> Mode X disables the
+Chain-4 bit in the Sequencer's Memory Mode register (<code>0x3C5</code>,
+index <code>0x04</code>). This removes the automatic hardware
+interleaving and reveals the true planar structure of the VGA hardware.
+The four memory planes now occupy the exact same 64 KB address space
+(<code>0xA000:0000</code> to <code>0xA000:FFFF</code>). A byte at
+address <code>offset</code> in CPU memory exists simultaneously on Plane
+0, Plane 1, Plane 2, and Plane 3. A pixel at <code>(x, y)</code> resides
+in Plane <code>(x mod 4)</code> at the memory offset
+<code>(y * 80) + (x / 4)</code>.</p></li>
+</ul>
+<h3 id="accessible-video-memory">Accessible Video Memory</h3>
+<ul>
+<li><p><strong>Mode 13h:</strong> Because the CPU can only view 64 KB
+through the chained mapping mechanism, Mode 13h can only utilize 64,000
+bytes out of the 262,144 bytes (256 KB) present on standard VGA cards.
+The remaining 192 KB remains inaccessible to the CPU, leaving just
+enough memory for a single 320×200 8-bit frame with no room for
+off-screen buffering.</p></li>
+<li><p><strong>Mode X:</strong> By switching to planar addressing, the
+CPU gains direct access to all four 64 KB planes individually, unlocking
+the full 256 KB of VGA memory. At the standard Mode X resolution of
+320×240 (or even 320×200), a single screen frame consumes only 19,200
+bytes per plane (76,800 bytes total). This leaves enough space to store
+up to three full 320×240 display pages or four 320×200 pages directly in
+video memory.</p></li>
+</ul>
+<h3 id="page-flipping-and-off-screen-storage">Page Flipping and
+Off-Screen Storage</h3>
+<ul>
+<li><p><strong>Mode 13h:</strong> With only one screen buffer fitting
+within the accessible 64 KB, developers must perform animations either
+directly on the visible screen—often introducing visual tearing—or
+compose frames in system RAM and copy them via the slow ISA bus during
+the vertical retrace interval.</p></li>
+<li><p><strong>Mode X:</strong> Because the full 256 KB is accessible,
+developers can maintain multiple framebuffers in video RAM
+simultaneously. Smooth, tear-free animation is achieved via hardware
+page flipping: while the monitor displays one page, the CPU draws to an
+off-screen page, and the CRTC Start Address registers
+(<code>0x3D4</code>, indices <code>0x0C</code> and <code>0x0D</code>)
+are updated to immediately swap the visible buffer during the vertical
+blanking interval. Unused video memory can also store sprites or tile
+graphics for fast copying.</p></li>
+</ul>
+<h3 id="cpu-read-and-write-operations">CPU Read and Write
+Operations</h3>
+<ul>
+<li><p><strong>Mode 13h:</strong> Reading and writing pixels requires
+minimal overhead. A single 8-bit CPU write puts a pixel on the screen,
+and standard linear pointer arithmetic applies. However, the CPU can
+only write one pixel per operation.</p></li>
+<li><p><strong>Mode X:</strong> To target a pixel, the CPU must specify
+which plane to access:</p>
+<ul>
+<li><strong>Writing:</strong> The CPU configures the VGA Map Mask
+register (<code>0x3C5</code>, index <code>0x02</code>) to enable one or
+more planes. While this adds overhead for drawing single scattered
+pixels, it enables hardware acceleration: by enabling all four planes
+simultaneously, a single 8-bit CPU write modifies four horizontal pixels
+at once, effectively quadrupling fill and clear speeds.</li>
+<li><strong>Reading:</strong> The CPU must set the Read Map Select
+register (<code>0x3CE</code>, index <code>0x04</code>) to choose which
+specific plane to read from before querying a byte.</li>
+</ul></li>
+</ul>
+<h3 id="resolution-and-pixel-aspect-ratio">Resolution and Pixel Aspect
+Ratio</h3>
+<p>While not strictly an internal memory mapping difference, Mode X
+alters the CRT controller timings to deliver a resolution of 320×240
+instead of 320×200. Because 320×240 matches the 4:3 physical aspect
+ratio of standard monitors, Mode X produces square pixels, eliminating
+the geometry distortion and scaling math inherent to Mode 13h's
+rectangular pixels.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

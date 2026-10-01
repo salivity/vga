@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How 8-Bit RAMDACs Achieved 16.7 Million Colors in VGA - vga</title>
+    <meta name="description" content="In the transition from early graphics standards to high-end Video Graphics Array (VGA) and Super VGA (SVGA), the integration of an 8-bit per channel RAMDAC (Random Access Memory Digital-to-Analog Converter) allowed personal computers to display 16.7 mill">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-8-bit-ramda-cs-achieved-16-7-million-colors-in-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How 8-Bit RAMDACs Achieved 16.7 Million Colors in VGA - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-8-bit-ramda-cs-achieved-16-7-million-colors-in-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the transition from early graphics standards to high-end Video Graphics Array (VGA) and Super VGA (SVGA), the integration of an 8-bit per channel RAMDAC (Random Access Memory Digital-to-Analog Converter) allowed personal computers to display 16.7 mill" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-8-bit-ramdacs-achieved-167-million-colors-in-vga">How 8-Bit
+RAMDACs Achieved 16.7 Million Colors in VGA</h1>
+<p>In the transition from early graphics standards to high-end Video
+Graphics Array (VGA) and Super VGA (SVGA), the integration of an 8-bit
+per channel RAMDAC (Random Access Memory Digital-to-Analog Converter)
+allowed personal computers to display 16.7 million distinct colors,
+commonly known as 24-bit "True Color." This milestone was achieved by
+expanding the precision of each primary color channel—red, green, and
+blue—from the original 6-bit standard to 8 bits, and by bypassing
+indexed palette limitations to stream raw digital color data directly
+into three high-speed digital-to-analog converters driving the
+monitor.</p>
+<h3 id="the-mathematics-of-24-bit-true-color">The Mathematics of 24-Bit
+True Color</h3>
+<p>The capability to render 16,777,216 distinct colors is a direct
+mathematical result of allocating 8 bits of data to each of the three
+additive primary color channels:</p>
+<ul>
+<li><strong>Red:</strong> 8 bits (<span class="math inline">\(2^8 =
+256\)</span> intensity levels)</li>
+<li><strong>Green:</strong> 8 bits (<span class="math inline">\(2^8 =
+256\)</span> intensity levels)</li>
+<li><strong>Blue:</strong> 8 bits (<span class="math inline">\(2^8 =
+256\)</span> intensity levels)</li>
+</ul>
+<p>Combining these three independent channels yields <span
+class="math inline">\(256 \times 256 \times 256 = 16,777,216\)</span>
+unique color combinations. Each unique 24-bit value represents an exact
+balance of red, green, and blue light.</p>
+<h3 id="evolution-from-6-bit-to-8-bit-ramdacs">Evolution from 6-Bit to
+8-Bit RAMDACs</h3>
+<p>The original IBM VGA specification (introduced in 1987) utilized an
+INMOS G171 or compatible RAMDAC that featured only 6 bits per channel.
+This limited the hardware to 64 intensity steps per channel, creating a
+master palette of 262,144 colors (<span class="math inline">\(64 \times
+64 \times 64\)</span>). Due to video memory and bus bandwidth
+constraints, original VGA also relied heavily on an indexed color
+architecture, mapping an 8-bit pixel value from memory to a 256-entry
+Look-Up Table (LUT).</p>
+<p>High-end VGA and SVGA cards eliminated this bottleneck by deploying
+advanced RAMDACs (produced by manufacturers such as Brooktree, Sierra,
+and later integrated into chipsets from S3, Tseng Labs, and Cirrus
+Logic) that featured full 8-bit digital-to-analog converters on all
+three channels.</p>
+<h3 id="direct-color-mode-and-palette-bypassing">Direct Color Mode and
+Palette Bypassing</h3>
+<p>To display 16.7 million colors simultaneously, high-end VGA
+architectures shifted from indexed color modes to "True Color" direct
+modes.</p>
+<p>In indexed mode, the RAMDAC uses the pixel data as an address to
+query its internal Look-Up Table. In True Color mode, the Look-Up Table
+is largely bypassed:</p>
+<ol type="1">
+<li><strong>Pixel Fetching:</strong> The graphics controller reads a
+24-bit (or 32-bit, where 8 bits are discarded or reserved for
+padding/alpha) pixel directly from Video RAM (VRAM).</li>
+<li><strong>Channel Splitting:</strong> The 24-bit word is split into
+three discrete 8-bit bytes corresponding to Red, Green, and Blue.</li>
+<li><strong>Parallel Feeding:</strong> Each 8-bit value is sent
+simultaneously into its respective internal DAC circuit within the
+RAMDAC chip.</li>
+</ol>
+<h3 id="digital-to-analog-conversion">Digital-to-Analog Conversion</h3>
+<p>The final stage of the RAMDAC is the conversion of these 8-bit
+digital values into analog signals that a CRT monitor can interpret.</p>
+<p>An 8-bit DAC contains an array of binary-weighted current sources or
+an R-2R resistor ladder network. When an 8-bit number (from 0 to 255)
+enters the converter:</p>
+<ul>
+<li>A value of <code>0</code> (<span
+class="math inline">\(00000000_2\)</span>) sets the output to full black
+reference voltage (typically 0.0 volts).</li>
+<li>A value of <code>255</code> (<span
+class="math inline">\(11111111_2\)</span>) sets the output to peak
+intensity (typically 0.7 volts across a standard 75-ohm termination
+load).</li>
+<li>The 254 intermediate digital values produce strictly linear voltage
+increments between 0.0V and 0.7V.</li>
+</ul>
+<p>Because this conversion happens on three isolated DACs simultaneously
+for every pixel clock cycle (dot clock), the monitor’s red, green, and
+blue electron guns receive continuous analog voltage curves. This
+process generates photorealistic images without visible color banding,
+fulfilling the capability of high-end VGA systems to produce the full
+16.7-million-color spectrum.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

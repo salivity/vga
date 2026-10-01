@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Ground Loops Affect VGA Signal Quality on Projectors - vga</title>
+    <meta name="description" content="Connecting a PC to a projector using an analog Video Graphics Array (VGA) cable often introduces ground loops, which severely degrade video quality. A ground loop occurs when interconnected devices are plugged into separate electrical outlets that have d">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/how-ground-loops-affect-vga-signal-quality-on-projectors">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Ground Loops Affect VGA Signal Quality on Projectors - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/how-ground-loops-affect-vga-signal-quality-on-projectors" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Connecting a PC to a projector using an analog Video Graphics Array (VGA) cable often introduces ground loops, which severely degrade video quality. A ground loop occurs when interconnected devices are plugged into separate electrical outlets that have d" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-ground-loops-affect-vga-signal-quality-on-projectors">How
+Ground Loops Affect VGA Signal Quality on Projectors</h1>
+<p>Connecting a PC to a projector using an analog Video Graphics Array
+(VGA) cable often introduces ground loops, which severely degrade video
+quality. A ground loop occurs when interconnected devices are plugged
+into separate electrical outlets that have different ground potentials,
+creating an unwanted electrical current along the VGA cable's shield.
+Because VGA relies on delicate, low-voltage analog signals, this stray
+alternating current (AC) alters the reference voltage levels,
+manifesting visually as rolling horizontal bars, image flickering,
+ghosting, and severe color distortions.</p>
+<h3 id="the-mechanism-of-vga-ground-loops">The Mechanism of VGA Ground
+Loops</h3>
+<p>A ground loop forms when there are multiple conductive paths to
+electrical ground. In a typical setup, both the PC and the projector are
+connected to building safety ground through their standard three-prong
+power cords. If the two devices are plugged into different wall outlets
+or electrical circuits, slight differences in electrical resistance and
+load cause a voltage potential difference between their respective
+grounds.</p>
+<p>When you connect the two devices with a VGA cable, the cable’s
+grounding shield completes a secondary circuit between the two different
+ground points. Stray current then flows through the shield to equalize
+this potential difference. Because standard alternating current (AC)
+power operates at 50 Hz or 60 Hz, this unwanted current oscillates at
+that exact frequency directly across the video transmission line.</p>
+<h3 id="why-analog-vga-is-particularly-vulnerable">Why Analog VGA Is
+Particularly Vulnerable</h3>
+<p>Unlike digital standards like HDMI or DisplayPort, which transmit
+binary data via differential signaling, VGA is an entirely analog
+standard. It transmits video information as varying voltage levels:</p>
+<ul>
+<li><strong>Voltage Sensitivity:</strong> The red, green, and blue (RGB)
+color channels transmit visual data using an amplitude between 0 and 0.7
+volts peak-to-peak.</li>
+<li><strong>Ground as a Reference Point:</strong> The projector reads
+these tiny voltage fluctuations relative to the ground reference
+provided by the cable.</li>
+<li><strong>Signal Corruption:</strong> When a ground loop injects even
+a fraction of a volt of AC interference onto that reference line, the
+projector can no longer accurately interpret the true brightness or
+color of the incoming pixels.</li>
+</ul>
+<h3 id="visual-symptoms-of-ground-loop-interference">Visual Symptoms of
+Ground Loop Interference</h3>
+<p>When stray current corrupts the VGA signal, several distinct visual
+artifacts appear on the projected image:</p>
+<ul>
+<li><strong>Hum Bars (Rolling Horizontal Bands):</strong> The most
+common symptom is one or two faint, dark, or bright horizontal bars that
+slowly roll vertically across the screen. These "hum bars" occur because
+the 50 Hz or 60 Hz AC ground current is close to, but slightly out of
+sync with, the PC's video refresh rate (often 60 Hz), creating a visual
+beat frequency.</li>
+<li><strong>Jitter and Pixel Swimming:</strong> High-frequency
+electrical noise carried along with the ground current interferes with
+the horizontal and vertical synchronization signals (H-Sync and V-Sync).
+This causes the image to vibrate, jitter, or display a "swimming" effect
+on static elements like text and sharp lines.</li>
+<li><strong>Color Shifting and Smearing:</strong> Because the RGB color
+channels share the disturbed ground return path, the color balance
+becomes unstable. White backgrounds may take on a tinted, muddy
+appearance, and sharp color transitions can smear horizontally across
+the display.</li>
+<li><strong>Ghosting:</strong> The impedance mismatch caused by the
+extraneous current traveling through the cable shield can result in
+signal reflections, creating faint duplicate images offset to the right
+of primary graphics.</li>
+</ul>
+<h3 id="resolving-ground-loop-issues">Resolving Ground Loop Issues</h3>
+<p>Eliminating ground loops requires breaking the loop or equalizing the
+ground potential:</p>
+<ul>
+<li><strong>Common Power Source:</strong> Plug both the computer and the
+projector into the same electrical outlet or power distribution unit
+(PDU) to eliminate differences in ground potential.</li>
+<li><strong>VGA Ground Loop Isolators:</strong> Install an inline VGA
+ground loop isolator (an analog video transformer) that galvanically
+isolates the PC from the projector, blocking direct electrical current
+while allowing high-frequency video signals to pass.</li>
+<li><strong>Switch to Digital:</strong> Transition from analog VGA to
+digital interfaces such as HDMI, DVI, or DisplayPort, which are far more
+resilient to ground potential differences due to differential signaling
+and better error correction.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

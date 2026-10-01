@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Limits Color Gradations Over VGA? - vga</title>
+    <meta name="description" content="The physical component on a graphics card that limits the discrete color gradations sent over a Video Graphics Array (VGA) connection is the Random Access Memory Digital-to-Analog Converter, commonly known as the RAMDAC. While modern digital displays rec">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/what-limits-color-gradations-over-vga">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Limits Color Gradations Over VGA? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/what-limits-color-gradations-over-vga" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The physical component on a graphics card that limits the discrete color gradations sent over a Video Graphics Array (VGA) connection is the Random Access Memory Digital-to-Analog Converter, commonly known as the RAMDAC. While modern digital displays rec" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-limits-color-gradations-over-vga">What Limits Color
+Gradations Over VGA?</h1>
+<p>The physical component on a graphics card that limits the discrete
+color gradations sent over a Video Graphics Array (VGA) connection is
+the Random Access Memory Digital-to-Analog Converter, commonly known as
+the <strong>RAMDAC</strong>. While modern digital displays receive exact
+numerical color values, VGA relies on continuous analog voltage levels
+generated directly by the graphics card. The internal resolution of the
+RAMDAC's digital-to-analog converter circuits determines the exact
+number of distinct voltage steps—and therefore discrete color shades—the
+card can produce.</p>
+<h3 id="the-function-of-the-ramdac">The Function of the RAMDAC</h3>
+<p>Computers store visual information digitally as binary values in
+video memory (VRAM). Because VGA is an analog standard, these digital
+numbers cannot be transmitted directly to the monitor. The RAMDAC
+bridges this gap by reading digital pixel values and converting them
+into three variable analog voltage signals: one each for red, green, and
+blue (RGB). These voltages typically range from 0.0 volts (completely
+off) to 0.7 volts (maximum intensity).</p>
+<h3 id="how-the-dac-resolution-restricts-color">How the DAC Resolution
+Restricts Color</h3>
+<p>The fundamental limit on color gradations comes down to the bit-depth
+of the individual Digital-to-Analog Converters (DACs) inside the RAMDAC
+unit:</p>
+<ul>
+<li><strong>6-bit DACs:</strong> Early VGA implementations featured
+6-bit converters per color channel. A 6-bit converter can only divide
+the voltage range into <span class="math inline">\(2^6\)</span>, or 64
+discrete voltage levels. When combined across the three color channels
+(<span class="math inline">\(64 \times 64 \times 64\)</span>), the
+hardware is physically restricted to producing 262,144 discrete color
+gradations. Even if the video memory held higher-resolution data, the
+hardware could not generate the intermediate voltages needed for
+smoother transitions.</li>
+<li><strong>8-bit DACs:</strong> Later, high-performance RAMDACs
+upgraded to 8-bit converters per channel. An 8-bit DAC provides <span
+class="math inline">\(2^8\)</span>, or 256 distinct voltage steps per
+channel, enabling the standard 24-bit "True Color" palette of
+approximately 16.7 million distinct gradations (<span
+class="math inline">\(256 \times 256 \times 256\)</span>).</li>
+<li><strong>10-bit DACs:</strong> Professional-grade workstation cards
+occasionally implemented 10-bit DACs (1,024 levels per channel),
+allowing over one billion gradations to eliminate visible color banding
+in specialized analog workflows.</li>
+</ul>
+<h3 id="discrete-chips-vs-integrated-gpu-architecture">Discrete Chips
+vs. Integrated GPU Architecture</h3>
+<p>In early graphics architectures, the RAMDAC was an independent
+physical microchip mounted on the graphics card circuit board. As
+manufacturing processes improved, graphics hardware manufacturers
+integrated the RAMDAC directly into the main Graphics Processing Unit
+(GPU) die to reduce latency, lower costs, and support higher pixel clock
+rates.</p>
+<p>Regardless of whether the RAMDAC exists as a standalone integrated
+circuit or as a dedicated sub-block inside the GPU core, the physical
+bit-depth of its converter circuitry remains the hard ceiling defining
+how many discrete color gradations can travel across a VGA cable.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

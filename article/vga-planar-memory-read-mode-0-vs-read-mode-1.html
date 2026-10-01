@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Planar Memory: Read Mode 0 vs Read Mode 1 - vga</title>
+    <meta name="description" content="In Video Graphics Array (VGA) planar graphics modes, video RAM is divided across four parallel memory planes (Planes 0 through 3), mapping multiple bits per pixel across the same physical address space. Because a standard 8-bit CPU bus cycle can only acc">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-planar-memory-read-mode-0-vs-read-mode-1">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Planar Memory: Read Mode 0 vs Read Mode 1 - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-planar-memory-read-mode-0-vs-read-mode-1" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In Video Graphics Array (VGA) planar graphics modes, video RAM is divided across four parallel memory planes (Planes 0 through 3), mapping multiple bits per pixel across the same physical address space. Because a standard 8-bit CPU bus cycle can only acc" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-planar-memory-read-mode-0-vs-read-mode-1">VGA Planar Memory:
+Read Mode 0 vs Read Mode 1</h1>
+<p>In Video Graphics Array (VGA) planar graphics modes, video RAM is
+divided across four parallel memory planes (Planes 0 through 3), mapping
+multiple bits per pixel across the same physical address space. Because
+a standard 8-bit CPU bus cycle can only access one byte at a time, the
+VGA Graphics Controller employs two distinct read methods: Read Mode 0
+and Read Mode 1. Read Mode 0 retrieves the raw byte data directly from a
+single user-selected plane, whereas Read Mode 1 compares pixels across
+all four planes simultaneously using hardware registers, returning a
+bitmask of matching pixels directly to the CPU.</p>
+<h2 id="vga-planar-memory-architecture">VGA Planar Memory
+Architecture</h2>
+<p>Standard VGA 16-color modes (such as standard Mode 12h: 640x480 at 16
+colors) arrange memory into four 64 KB planes. A single byte address
+across the four planes addresses 8 horizontal pixels, where each pixel's
+4-bit color value is assembled from one bit out of each of the four
+planes:</p>
+<ul>
+<li><strong>Plane 0:</strong> Blue / Low Intensity</li>
+<li><strong>Plane 1:</strong> Green</li>
+<li><strong>Plane 2:</strong> Red</li>
+<li><strong>Plane 3:</strong> High Intensity</li>
+</ul>
+<p>The Graphics Controller handles how the CPU interacts with these four
+layers, switching between Read Mode 0 and Read Mode 1 via bit 3 of the
+Graphics Mode Register (Index 05h).</p>
+<h2 id="read-mode-0-plane-selection">Read Mode 0: Plane Selection</h2>
+<p>Read Mode 0 is the default and most straightforward read method. In
+this mode, a memory read operation fetches the raw 8-bit data stored in
+one designated plane at the target memory address.</p>
+<ul>
+<li><strong>Configuration:</strong> Controlled by the <strong>Read Map
+Select Register</strong> (Graphics Controller Index 04h). Bits 0 and 1
+specify which plane (0, 1, 2, or 3) is connected to the CPU data
+bus.</li>
+<li><strong>Operation:</strong> When the CPU reads from a video memory
+address, the hardware routes the exact 8-bit value from the selected
+plane directly to the processor.</li>
+<li><strong>Application:</strong> Read Mode 0 is typically used for
+general-purpose pixel reading, reading back font definitions in text
+modes, and standard software blitting routines where data from each
+plane is copied sequentially to system RAM.</li>
+</ul>
+<p>To read the complete color of all 8 pixels at an address using Read
+Mode 0, the CPU must perform four separate read cycles, reprogramming
+the Read Map Select Register between each operation.</p>
+<h2 id="read-mode-1-hardware-color-comparison">Read Mode 1: Hardware
+Color Comparison</h2>
+<p>Read Mode 1 bypasses direct byte retrieval to provide
+hardware-accelerated color matching across all four planes in a single
+read cycle.</p>
+<ul>
+<li><strong>Configuration:</strong> Configured using the <strong>Color
+Compare Register</strong> (Index 02h) and the <strong>Color Don't Care
+Register</strong> (Index 07h). The Color Compare Register holds a 4-bit
+target color value, while the Color Don't Care Register determines which
+planes are included in or excluded from the evaluation.</li>
+<li><strong>Operation:</strong> When the CPU executes a read at a memory
+address, the VGA hardware evaluates all 8 pixels located at that byte
+offset across all four planes in parallel. For each pixel position (bits
+0 through 7), the 4-bit color is matched against the Color Compare
+Register. If the bits match on all planes marked active by the Color
+Don't Care Register, the corresponding bit in the returned byte is set
+to <code>1</code>. If they do not match, the bit is set to
+<code>0</code>.</li>
+<li><strong>Application:</strong> Read Mode 1 drastically reduces CPU
+overhead for common raster algorithms, including:
+<ul>
+<li><strong>Collision Detection:</strong> Checking whether any
+non-background color pixels occupy a specific coordinate.</li>
+<li><strong>Transparency / Chroma Keying:</strong> Quickly locating
+transparent pixels without manually unpacking color planes in
+software.</li>
+<li><strong>Flood Fill and Boundary Tracing:</strong> Rapidly scanning
+large areas for specific edge or fill boundaries.</li>
+</ul></li>
+</ul>
+<h2 id="key-differences">Key Differences</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Read Mode 0</th>
+<th style="text-align: left;">Read Mode 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Output Data</strong></td>
+<td style="text-align: left;">Raw byte from a single plane</td>
+<td style="text-align: left;">8-bit match mask across all four
+planes</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Planes Accessed</strong></td>
+<td style="text-align: left;">Single plane (selected by Read Map
+Select)</td>
+<td style="text-align: left;">All active planes simultaneously</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Primary Registers</strong></td>
+<td style="text-align: left;">Read Map Select Register (04h)</td>
+<td style="text-align: left;">Color Compare (02h), Color Don't Care
+(07h)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CPU Workload</strong></td>
+<td style="text-align: left;">Higher for color logic (requires 4
+reads)</td>
+<td style="text-align: left;">Minimal (hardware handles the
+comparison)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Primary Use Case</strong></td>
+<td style="text-align: left;">Plane-by-plane copying, reading
+textures</td>
+<td style="text-align: left;">Collision detection, mask generation,
+boundary checks</td>
+</tr>
+</tbody>
+</table></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

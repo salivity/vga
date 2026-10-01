@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Is the VGA Synchronous Reset Register Bit? - vga</title>
+    <meta name="description" content="The Video Graphics Array (VGA) Synchronous Reset register bit is a hardware control mechanism designed to safely halt the internal sequencer of a VGA controller without corrupting dynamic RAM or video memory. This article explains the exact location and">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/what-is-the-vga-synchronous-reset-register-bit">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Is the VGA Synchronous Reset Register Bit? - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/what-is-the-vga-synchronous-reset-register-bit" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Video Graphics Array (VGA) Synchronous Reset register bit is a hardware control mechanism designed to safely halt the internal sequencer of a VGA controller without corrupting dynamic RAM or video memory. This article explains the exact location and" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-is-the-vga-synchronous-reset-register-bit">What Is the VGA
+Synchronous Reset Register Bit?</h1>
+<p>The Video Graphics Array (VGA) Synchronous Reset register bit is a
+hardware control mechanism designed to safely halt the internal
+sequencer of a VGA controller without corrupting dynamic RAM or video
+memory. This article explains the exact location and function of the
+Synchronous Reset bit, how it contrasts with an asynchronous reset, and
+its critical role in facilitating clean video mode switching and clock
+reconfiguration.</p>
+<h3 id="location-and-register-layout">Location and Register Layout</h3>
+<p>The Synchronous Reset bit resides in the VGA Sequencer register
+group:</p>
+<ul>
+<li><strong>I/O Port:</strong> Indexed via <code>0x03C4</code>, data
+accessed via <code>0x03C5</code></li>
+<li><strong>Register Index:</strong> <code>0x00</code> (Reset
+Register)</li>
+<li><strong>Bit Position:</strong> Bit 1 (Bit 0 is the Asynchronous
+Reset bit)</li>
+</ul>
+<p>When bit 1 is set to <code>1</code>, the sequencer runs normally.
+When bit 1 is cleared to <code>0</code>, the sequencer initiates a
+synchronous reset.</p>
+<h3 id="primary-function">Primary Function</h3>
+<p>The primary function of the Synchronous Reset bit is to halt
+sequencer operations at the completion of the current memory cycle.</p>
+<p>The VGA sequencer is responsible for generating internal timing
+signals, character clock generation, and arbitrating memory cycles
+between the display controller and the host CPU. If the sequencer timing
+is interrupted mid-cycle, dynamic RAM refresh cycles can be truncated,
+and incomplete read/write operations can cause visible screen artifacts
+("snow") or corrupted display memory.</p>
+<p>Setting the Synchronous Reset bit to <code>0</code> instructs the
+sequencer to finish its active memory operation and cleanly transition
+to an idle state. During this synchronous idle state:</p>
+<ul>
+<li>Sequencer timing outputs are held in a stable, defined state.</li>
+<li>Video memory arbitration is paused cleanly.</li>
+<li>Video output to the digital-to-analog converter (DAC) is suppressed,
+effectively blanking display artifacts.</li>
+</ul>
+<h3 id="synchronous-reset-vs-asynchronous-reset">Synchronous Reset vs.
+Asynchronous Reset</h3>
+<p>Register <code>0x00</code> provides two reset bits with distinct
+behaviors:</p>
+<ul>
+<li><strong>Asynchronous Reset (Bit 0):</strong> Clearing this bit
+forces an immediate halt of the sequencer logic, regardless of where it
+is within a memory or clock cycle. This can interrupt dynamic RAM
+refresh cycles and corrupt display memory.</li>
+<li><strong>Synchronous Reset (Bit 1):</strong> Clearing this bit delays
+the halt until the end of the current cycle, preserving the integrity of
+the video memory and dynamic RAM refresh sequencing.</li>
+</ul>
+<h3 id="common-use-cases">Common Use Cases</h3>
+<ol type="1">
+<li><strong>Video Mode Switching:</strong> Software clears bit 1 (along
+with bit 0) before modifying fundamental video timing registers, such as
+the Clocking Mode register (<code>0x01</code>) or the Miscellaneous
+Output Register.</li>
+<li><strong>Clock Frequency Selection:</strong> Changing dot clocks
+(such as switching between 25 MHz and 28 MHz) generates transient clock
+glitches. Putting the sequencer into a synchronous reset state isolates
+internal logic from these glitches until the new clock stabilizes.</li>
+<li><strong>Restoring Normal Operation:</strong> Once new configuration
+parameters are written to the Sequencer and Cathode Ray Tube Controller
+(CRTC) registers, the software sets both reset bits back to
+<code>1</code> (writing <code>0x03</code> to index <code>0x00</code>),
+allowing the sequencer to resume normal scanning cleanly from the start
+of a frame.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

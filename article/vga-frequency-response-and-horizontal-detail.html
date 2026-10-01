@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGA Frequency Response and Horizontal Detail - vga</title>
+    <meta name="description" content="In analog Video Graphics Array (VGA) displays, image clarity relies entirely on the precision and bandwidth of an continuous analog electrical signal. When a VGA video amplifier suffers from poor high-frequency response, it cannot process the rapid volta">
+    <link rel="canonical" href="https://salivity.github.io/vga/article/vga-frequency-response-and-horizontal-detail">
+    <link rel="search" type="application/opensearchdescription+xml" title="vga" href="/vga/opensearch.xml">
+    <link rel="icon" href="/vga/favicon.ico">
+    <link rel="stylesheet" href="/vga/css/style.css">
+    <link media="print" rel="stylesheet" href="/vga/css/print.css">
+    <script src="/vga/js/fuse.min.js"></script>
+    <script src="/vga/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VGA Frequency Response and Horizontal Detail - vga" />
+    <meta property="og:url" content="https://salivity.github.io/vga/article/vga-frequency-response-and-horizontal-detail" />
+    <meta property="og:image" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/vga/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In analog Video Graphics Array (VGA) displays, image clarity relies entirely on the precision and bandwidth of an continuous analog electrical signal. When a VGA video amplifier suffers from poor high-frequency response, it cannot process the rapid volta" />
+    <link rel="manifest" href="/vga/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/vga/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>vga</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/vga/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="vga-frequency-response-and-horizontal-detail">VGA Frequency
+Response and Horizontal Detail</h1>
+<p>In analog Video Graphics Array (VGA) displays, image clarity relies
+entirely on the precision and bandwidth of an continuous analog
+electrical signal. When a VGA video amplifier suffers from poor
+high-frequency response, it cannot process the rapid voltage transitions
+needed to display sharp pixel boundaries across a line. This article
+explains how the frequency limits of a video amplifier act as an
+unintended low-pass filter, why this degradation exclusively affects
+horizontal resolution, and how it results in visible blurring and loss
+of fine picture elements.</p>
+<h3 id="the-mechanism-of-horizontal-image-construction">The Mechanism of
+Horizontal Image Construction</h3>
+<p>VGA generates an image through raster scanning. The electron beam (or
+the internal digitizer of an LCD monitor) sweeps horizontally across the
+screen from left to right to draw a single scanline, resets during a
+blanking interval, and moves down to draw the next line.</p>
+<p>Because the vertical resolution is predetermined by the fixed number
+of discrete scanlines (such as 480 lines in standard 640x480 VGA),
+vertical detail is primarily governed by timing and line count.
+Horizontal detail, by contrast, is completely continuous and depends on
+how rapidly the analog voltage can fluctuate as the beam sweeps across
+each individual line.</p>
+<h3 id="high-frequencies-and-rapid-pixel-transitions">High Frequencies
+and Rapid Pixel Transitions</h3>
+<p>To display fine horizontal detail—such as single-pixel vertical
+lines, crisp text edges, or alternating black-and-white dots—the video
+signal must switch between minimum voltage (black level) and maximum
+voltage (white level) nearly instantaneously.</p>
+<p>In signal theory, sharp square-wave transitions are composed of a
+fundamental frequency combined with numerous high-frequency odd
+harmonics. Rendering a sharp edge between two horizontally adjacent
+pixels requires an amplifier capable of passing these upper harmonic
+frequencies without attenuation or phase distortion. The higher the
+display's horizontal resolution and refresh rate, the higher the
+required pixel clock and signal frequency.</p>
+<h3 id="how-inadequate-bandwidth-degrades-detail">How Inadequate
+Bandwidth Degrades Detail</h3>
+<p>When a video amplifier has a poor high-frequency response, its gain
+drops significantly at higher frequencies, causing it to behave like a
+low-pass filter. This limitation reduces horizontal detail in three
+specific ways:</p>
+<ul>
+<li><strong>Increased Rise and Fall Times:</strong> A low-bandwidth
+amplifier limits the slew rate of the video signal. Instead of switching
+abruptly from 0 volts to 0.7 volts (standard VGA peak), the voltage
+rises and falls slowly. Sharp square transitions become rounded, sloped
+ramps.</li>
+<li><strong>Loss of Contrast in Fine Patterns:</strong> If an
+alternating black-and-white pattern requires switching faster than the
+amplifier's cutoff frequency, the voltage never has enough time to reach
+its full high or low levels before reversing direction. As a result, the
+peak-to-peak amplitude collapses, turning high-contrast alternating
+pixels into a flat, low-contrast gray smear.</li>
+<li><strong>Horizontal Smearing and Ringing:</strong> Attenuated high
+frequencies stretch pixel boundaries horizontally into neighboring
+pixels. This produces visual smearing, soft edges on text, and
+"ghosting" or ringing artifacts trailing to the right side of sharp
+contrast boundaries.</li>
+</ul>
+<p>Because the sweep speed across the screen is fixed by the horizontal
+sync frequency, any delay in voltage transition maps directly to
+physical space on the monitor. A slow transition translates into a
+wider, blurry transition zone across the horizontal axis, ultimately
+eliminating the high-frequency information that defines crisp horizontal
+detail.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/vga'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/vga/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/vga/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>
